@@ -2,6 +2,7 @@ services:
   - type: web
     name: scutta-api
     runtime: python
+    rootDir: backend
     plan: starter
     region: singapore
     buildCommand: pip install .
@@ -37,6 +38,22 @@ services:
         value: '["중간고사 이후","종강총회"]'
       - key: SETTLEMENT_PRIZES
         value: '{"matches":"경기 수 부문 상품","wins":"승리 수 부문 상품","losses":"패배 수 부문 상품","opponents":"상대 수 부문 상품"}'
+
+  - type: web
+    name: scutta-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: 24.11.1
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
 
 databases:
   - name: scutta-db

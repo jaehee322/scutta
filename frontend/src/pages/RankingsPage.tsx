@@ -1,0 +1,138 @@
+import { Crown, Medal, Sparkles, Trophy } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+
+import { apiRequest } from "../api/client";
+import { useAuth } from "../auth/AuthContext";
+import { PageLoader } from "../components/Loading";
+import { Notice } from "../components/Notice";
+import type { RankingCategory, RankingsResponse } from "../types";
+
+const categoryMeta: Record<
+  RankingCategory,
+  { label: string; shortLabel: string; unit: string; description: string }
+> = {
+  matches: { label: "경기 수", shortLabel: "경기", unit: "판", description: "가장 꾸준히 경기한 선수" },
+  wins: { label: "승리 수", shortLabel: "승리", unit: "승", description: "가장 많은 승리를 만든 선수" },
+  losses: { label: "패배 수", shortLabel: "패배", unit: "패", description: "도전을 멈추지 않은 선수" },
+  opponents: { label: "상대 수", shortLabel: "상대", unit: "명", description: "가장 다양한 선수를 만난 선수" },
+};
+
+const categories = Object.keys(categoryMeta) as RankingCategory[];
+
+export function RankingsPage() {
+  const { user } = useAuth();
+  const [data, setData] = useState<RankingsResponse | null>(null);
+  const [category, setCategory] = useState<RankingCategory>("wins");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    apiRequest<RankingsResponse>("/rankings")
+      .then(setData)
+      .catch((caught) => setError(caught instanceof Error ? caught.message : "랭킹을 불러오지 못했습니다."));
+  }, []);
+
+  const table = useMemo(
+    () => data?.categories.find((item) => item.category === category),
+    [category, data],
+  );
+  const myEntry = table?.entries.find((entry) => entry.player.id === user?.id);
+
+  if (!data && !error) return <PageLoader />;
+
+  return (
+    <div className="page rankings-page">
+      <header className="page-heading">
+        <span className="eyebrow">SCUTTA RANKING</span>
+        <h1>우리의 기록이 쌓인 랭킹</h1>
+        <p>승부도 도전도 모두 소중한 기록이에요.</p>
+      </header>
+
+      {error && <Notice>{error}</Notice>}
+
+      <div className="segmented-control" role="tablist" aria-label="랭킹 부문">
+        {categories.map((item) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={category === item}
+            key={item}
+            className={category === item ? "is-active" : ""}
+            onClick={() => setCategory(item)}
+          >
+            {categoryMeta[item].shortLabel}
+          </button>
+        ))}
+      </div>
+
+      {table && (
+        <>
+          <section className="rank-hero">
+            <div className="rank-hero__copy">
+              <span>
+                <Sparkles size={17} /> 이번 부문
+              </span>
+              <h2>{categoryMeta[category].label} 랭킹</h2>
+              <p>{categoryMeta[category].description}</p>
+            </div>
+            {myEntry && (
+              <div className="my-rank-card">
+                <span>내 순위</span>
+                <strong>{myEntry.rank}위</strong>
+                <small>
+                  {myEntry.value}{categoryMeta[category].unit}
+                </small>
+              </div>
+            )}
+          </section>
+
+          <section className="ranking-card">
+            <div className="ranking-header-row">
+              <span>순위</span>
+              <span>선수</span>
+              <span>{categoryMeta[category].label}</span>
+            </div>
+            <div className="ranking-list">
+              {table.entries.map((entry) => {
+                const isMe = entry.player.id === user?.id;
+                return (
+                  <article className={`ranking-row ${isMe ? "is-me" : ""}`} key={entry.player.id}>
+                    <div className={`rank-number rank-number--${entry.rank}`}>
+                      {entry.rank === 1 ? (
+                        <Crown size={22} fill="currentColor" />
+                      ) : entry.rank <= 3 ? (
+                        <Medal size={21} />
+                      ) : (
+                        entry.rank
+                      )}
+                    </div>
+                    <div className="ranking-player">
+                      <span className="avatar-circle">{entry.player.username.slice(0, 1)}</span>
+                      <div>
+                        <strong>
+                          {entry.player.username}
+                          {isMe && <small>나</small>}
+                        </strong>
+                        <span>
+                          {entry.player.club_rank}부 · {entry.player.gender === "F" ? "여" : "남"}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="ranking-value">
+                      <strong>{entry.value}</strong>
+                      <span>{categoryMeta[category].unit}</span>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
+          <aside className="ranking-note">
+            <Trophy size={20} />
+            <p>동점자는 같은 순위로 표시되고 다음 순위는 건너뛰어요.</p>
+          </aside>
+        </>
+      )}
+    </div>
+  );
+}

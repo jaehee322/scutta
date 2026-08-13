@@ -28,7 +28,9 @@ class Settings(BaseSettings):
     app_name: str = "Scutta API"
     environment: str = "development"
     database_url: str = "sqlite:///./scutta.db"
-    cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:5173"])
+    cors_origins: list[str] = Field(
+        default_factory=lambda: ["http://localhost:5173", "http://127.0.0.1:5173"]
+    )
 
     session_cookie_name: str = "scutta_session"
     session_cookie_secure: bool = False
