@@ -1,0 +1,41 @@
+name: Backend CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://scutta:scutta@localhost:5432/scutta_test
+      ENVIRONMENT: test
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: scutta_test
+          POSTGRES_USER: scutta
+          POSTGRES_PASSWORD: scutta
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U scutta -d scutta_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: alembic upgrade head
+      - run: alembic check
+      - run: ruff check .
+      - run: ruff format --check .
+      - run: pytest

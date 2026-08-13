@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: scutta-api
+    runtime: python
+    plan: starter
+    region: singapore
+    buildCommand: pip install .
+    preDeployCommand: alembic upgrade head
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.13
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: scutta-db
+          property: connectionString
+      - key: CORS_ORIGINS
+        sync: false
+      - key: SESSION_COOKIE_SECURE
+        value: "true"
+      - key: SESSION_COOKIE_SAMESITE
+        value: "none"
+      - key: SESSION_TTL_DAYS
+        value: "400"
+      - key: SESSION_REFRESH_DAYS
+        value: "7"
+      - key: SESSION_MAX_PER_USER
+        value: "5"
+      - key: LOGIN_RATE_LIMIT_ATTEMPTS
+        value: "5"
+      - key: LOGIN_RATE_LIMIT_WINDOW_SECONDS
+        value: "300"
+      - key: SETTLEMENT_DRAWS
+        value: '["중간고사 이후","종강총회"]'
+      - key: SETTLEMENT_PRIZES
+        value: '{"matches":"경기 수 부문 상품","wins":"승리 수 부문 상품","losses":"패배 수 부문 상품","opponents":"상대 수 부문 상품"}'
+
+databases:
+  - name: scutta-db
+    plan: basic-256mb
+    region: singapore
+    postgresMajorVersion: "17"
+    databaseName: scutta
+    user: scutta
+    ipAllowList: []

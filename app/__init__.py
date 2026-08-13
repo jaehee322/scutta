@@ -1,0 +1,1 @@
+"""Scutta FastAPI backend."""
