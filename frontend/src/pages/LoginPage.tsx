@@ -83,7 +83,7 @@ export function LoginPage() {
                   onChange={(event) => setPassword(event.target.value)}
                   autoComplete="current-password"
                   placeholder="학번 또는 변경한 비밀번호"
-                  minLength={8}
+                  minLength={4}
                   maxLength={128}
                   required
                 />

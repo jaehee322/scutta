@@ -13,6 +13,43 @@ from app.core.database import SessionLocal
 from app.core.security import hash_password
 from app.models import User, UserRole
 
+BOOTSTRAP_ADMIN_USERNAME = "admin"
+BOOTSTRAP_ADMIN_PASSWORD = "1234"
+
+
+def ensure_bootstrap_admin(db: Session) -> tuple[User, bool]:
+    """Create the initial Render admin once without changing an existing admin."""
+    existing_admin = db.scalar(
+        select(User).where(User.role == UserRole.ADMIN).order_by(User.id.asc()).limit(1)
+    )
+    if existing_admin is not None:
+        return existing_admin, False
+
+    admin = User(
+        username=BOOTSTRAP_ADMIN_USERNAME,
+        password_hash=hash_password(BOOTSTRAP_ADMIN_PASSWORD),
+        role=UserRole.ADMIN,
+        gender=None,
+        is_freshman=False,
+        club_rank=None,
+        is_active=True,
+        auth_version=1,
+    )
+    db.add(admin)
+    try:
+        db.commit()
+    except IntegrityError as exc:
+        db.rollback()
+        existing_admin = db.scalar(
+            select(User).where(User.role == UserRole.ADMIN).order_by(User.id.asc()).limit(1)
+        )
+        if existing_admin is not None:
+            return existing_admin, False
+        raise ValueError("admin 사용자 이름을 이미 다른 계정이 사용 중입니다.") from exc
+
+    db.refresh(admin)
+    return admin, True
+
 
 def create_admin(db: Session, *, username: str, password: str) -> User:
     username = username.strip()
@@ -57,13 +94,29 @@ def _build_parser() -> argparse.ArgumentParser:
         "--password",
         help="비밀번호(생략하면 노출되지 않는 프롬프트에서 입력)",
     )
+    subparsers.add_parser(
+        "ensure-admin",
+        description="관리자가 없을 때만 최초 admin 계정을 생성합니다.",
+    )
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = _build_parser().parse_args(argv)
-    if args.command != "create-admin":
-        return 2
+
+    if args.command == "ensure-admin":
+        try:
+            with SessionLocal() as db:
+                admin, created = ensure_bootstrap_admin(db)
+        except (ValueError, OSError) as exc:
+            print(f"오류: {exc}", file=sys.stderr)
+            return 1
+
+        if created:
+            print(f"최초 관리자를 생성했습니다: {admin.username} (id={admin.id})")
+        else:
+            print(f"기존 관리자를 유지합니다: {admin.username} (id={admin.id})")
+        return 0
 
     password = args.password
     if password is None:

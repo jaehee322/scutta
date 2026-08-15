@@ -3,11 +3,13 @@ services:
     name: scutta-api
     runtime: python
     rootDir: backend
-    plan: starter
+    plan: free
     region: singapore
     buildCommand: pip install .
-    preDeployCommand: alembic upgrade head
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: >-
+      alembic upgrade head &&
+      python -m app.cli ensure-admin &&
+      exec uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
@@ -58,6 +60,7 @@ services:
 databases:
   - name: scutta-db
     plan: basic-256mb
+    diskSizeGB: 1
     region: singapore
     postgresMajorVersion: "17"
     databaseName: scutta

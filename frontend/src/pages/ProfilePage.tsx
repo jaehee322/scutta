@@ -169,7 +169,7 @@ export function ProfilePage() {
       {passwordOpen && (
         <Modal title="비밀번호 변경" description="새 비밀번호는 8자 이상 입력해 주세요." onClose={() => setPasswordOpen(false)}>
           <form className="modal-form" onSubmit={handlePassword}>
-            <label className="field"><span>현재 비밀번호</span><input type="password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} minLength={8} required /></label>
+            <label className="field"><span>현재 비밀번호</span><input type="password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} minLength={4} required /></label>
             <label className="field"><span>새 비밀번호</span><input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} minLength={8} required /></label>
             {message && <Notice tone={message.includes("변경했습니다") ? "success" : "error"}>{message}</Notice>}
             <button className="primary-button primary-button--large" disabled={submitting}>{submitting ? "변경하는 중" : "변경하기"}</button>
