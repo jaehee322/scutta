@@ -76,7 +76,6 @@ def create_player(payload: PlayerCreate, db: DbSession, _: CurrentAdmin) -> User
         gender=payload.gender,
         is_freshman=payload.is_freshman,
         club_rank=payload.club_rank,
-        is_active=payload.is_active,
         auth_version=1,
     )
     db.add(player)
@@ -122,12 +121,6 @@ def update_player(
         player.is_freshman = payload.is_freshman
     if "club_rank" in fields:
         player.club_rank = payload.club_rank
-    if "is_active" in fields:
-        assert payload.is_active is not None
-        player.is_active = payload.is_active
-        if not payload.is_active:
-            player.auth_version += 1
-            db.execute(delete(AuthSession).where(AuthSession.user_id == player.id))
 
     try:
         db.commit()

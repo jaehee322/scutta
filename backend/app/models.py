@@ -90,7 +90,6 @@ class User(TimestampMixin, Base):
     gender: Mapped[Gender | None] = mapped_column(string_enum(Gender, "gender"), nullable=True)
     is_freshman: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     club_rank: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True, index=True, nullable=False)
     auth_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
 
     sessions: Mapped[list[AuthSession]] = relationship(

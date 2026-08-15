@@ -31,7 +31,6 @@ class ApiHarness:
                 gender=None,
                 is_freshman=False,
                 club_rank=None,
-                is_active=True,
             )
             db.add(admin)
             db.commit()

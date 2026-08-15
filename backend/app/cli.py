@@ -32,7 +32,6 @@ def ensure_bootstrap_admin(db: Session) -> tuple[User, bool]:
         gender=None,
         is_freshman=False,
         club_rank=None,
-        is_active=True,
         auth_version=1,
     )
     db.add(admin)
@@ -69,7 +68,6 @@ def create_admin(db: Session, *, username: str, password: str) -> User:
         gender=None,
         is_freshman=False,
         club_rank=None,
-        is_active=True,
         auth_version=1,
     )
     db.add(admin)

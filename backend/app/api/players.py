@@ -34,11 +34,7 @@ def list_players(
     current_player: CurrentPlayer,
     exclude_self: bool = Query(default=False),
 ) -> list[PlayerSummary]:
-    query = (
-        select(User)
-        .where(User.role == UserRole.PLAYER, User.is_active.is_(True))
-        .order_by(User.username.asc())
-    )
+    query = select(User).where(User.role == UserRole.PLAYER).order_by(User.username.asc())
     if exclude_self:
         query = query.where(User.id != current_player.id)
     return [_player_summary(user) for user in db.scalars(query).all()]

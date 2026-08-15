@@ -57,6 +57,7 @@ def test_auth_and_admin_player_management(api) -> None:
     player = _create_player(admin_client, "홍길동", "20261234", gender="F")
     assert player["username"] == "홍길동"
     assert player["role"] == "player"
+    assert "is_active" not in player
 
     duplicate = admin_client.post(
         "/api/v1/admin/players",
@@ -96,14 +97,14 @@ def test_auth_and_admin_player_management(api) -> None:
     assert player_client.get("/api/v1/auth/me").status_code == 401
     api.login(api.client(), "홍길동", "reset-password")
 
-    disabled = admin_client.patch(
+    updated = admin_client.patch(
         f"/api/v1/admin/players/{player['id']}",
-        json={"username": "홍길동2", "club_rank": 6, "is_active": False},
+        json={"username": "홍길동2", "club_rank": 6},
     )
-    assert disabled.status_code == 200
-    assert disabled.json()["username"] == "홍길동2"
-    assert disabled.json()["club_rank"] == 6
-    assert disabled.json()["is_active"] is False
+    assert updated.status_code == 200
+    assert updated.json()["username"] == "홍길동2"
+    assert updated.json()["club_rank"] == 6
+    assert "is_active" not in updated.json()
 
 
 def test_matches_rankings_settlement_and_admin_edits(api) -> None:

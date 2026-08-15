@@ -73,12 +73,8 @@ def _canonicalize(
 def _ensure_players(
     db: Session,
     player_ids: set[int],
-    *,
-    require_active: bool,
 ) -> None:
     query = select(User.id).where(User.id.in_(player_ids), User.role == UserRole.PLAYER)
-    if require_active:
-        query = query.where(User.is_active.is_(True))
     query = query.order_by(User.id).with_for_update()
     existing_ids = set(db.scalars(query).all())
     if existing_ids != player_ids:
@@ -200,7 +196,7 @@ def create_player_match(
     my_score: int,
     opponent_score: int,
 ) -> MatchRecord:
-    _ensure_players(db, {submitter.id, opponent_id}, require_active=True)
+    _ensure_players(db, {submitter.id, opponent_id})
     player1_id, player2_id, score1, score2 = _canonicalize(
         submitter.id,
         opponent_id,
@@ -291,7 +287,7 @@ def update_match(
             supplied_score1,
             supplied_score2,
         )
-        _ensure_players(db, {player1_id, player2_id}, require_active=False)
+        _ensure_players(db, {player1_id, player2_id})
     elif "score1" in changes:
         score1 = int(changes["score1"])
         score2 = int(changes["score2"])

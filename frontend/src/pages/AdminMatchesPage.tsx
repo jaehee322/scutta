@@ -176,7 +176,7 @@ function MatchEditModal({
             <select value={player1Id} onChange={(event) => setPlayer1Id(Number(event.target.value))}>
               {players.map((player) => (
                 <option key={player.id} value={player.id} disabled={player.id === player2Id}>
-                  {player.username}{player.is_active ? "" : " · 비활성"}
+                  {player.username}
                 </option>
               ))}
             </select>
@@ -186,7 +186,7 @@ function MatchEditModal({
             <select value={player2Id} onChange={(event) => setPlayer2Id(Number(event.target.value))}>
               {players.map((player) => (
                 <option key={player.id} value={player.id} disabled={player.id === player1Id}>
-                  {player.username}{player.is_active ? "" : " · 비활성"}
+                  {player.username}
                 </option>
               ))}
             </select>

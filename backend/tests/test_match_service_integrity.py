@@ -102,7 +102,6 @@ def test_player_validation_locks_rows_in_deterministic_order() -> None:
     match_service._ensure_players(
         cast(Session, CapturingSession()),
         {9, 2},
-        require_active=True,
     )
     statement = captured["statement"]
     sql = str(statement.compile(dialect=postgresql.dialect()))  # type: ignore[attr-defined]

@@ -68,7 +68,7 @@ def _stats_select():
         )
         .select_from(User)
         .outerjoin(participants, participants.c.user_id == User.id)
-        .where(User.is_active.is_(True), User.role == UserRole.PLAYER)
+        .where(User.role == UserRole.PLAYER)
         .group_by(
             User.id,
             User.username,

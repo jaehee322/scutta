@@ -10,7 +10,6 @@ export interface UserRead {
   gender: Gender | null;
   is_freshman: boolean;
   club_rank: number | null;
-  is_active: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -121,7 +120,6 @@ export type PlayerCreateInput = {
   gender: Gender;
   is_freshman: boolean;
   club_rank: number;
-  is_active: boolean;
 };
 
 export type PlayerUpdateInput = Partial<Omit<PlayerCreateInput, "password">>;

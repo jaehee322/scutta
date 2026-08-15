@@ -35,8 +35,11 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
                 constraint["column_names"] == ["username"]
                 for constraint in schema.get_unique_constraints("users")
             )
-            assert {"auth_version", "gender", "club_rank"} <= {
-                column["name"] for column in schema.get_columns("users")
+            user_columns = {column["name"] for column in schema.get_columns("users")}
+            assert {"auth_version", "gender", "club_rank"} <= user_columns
+            assert "is_active" not in user_columns
+            assert "ix_users_is_active" not in {
+                index["name"] for index in schema.get_indexes("users")
             }
             assert any(
                 constraint["name"] == "daily_player_pair"

@@ -50,8 +50,6 @@ def create_auth_session(db: Session, user: User) -> tuple[AuthSession, str]:
     settings = get_settings()
     now = utc_now()
     token, token_hash = new_session_token()
-    if not user.is_active:
-        raise _unauthorized()
 
     db.execute(
         delete(AuthSession).where(
@@ -116,7 +114,6 @@ def get_current_session(
     now = utc_now()
     if (
         _as_utc(auth_session.expires_at) <= now
-        or not auth_session.user.is_active
         or auth_session.auth_version != auth_session.user.auth_version
     ):
         db.delete(auth_session)

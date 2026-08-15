@@ -123,7 +123,7 @@ def login(
     user = db.scalar(select(User).where(User.username == payload.username).with_for_update())
     password_hash = user.password_hash if user is not None else DUMMY_PASSWORD_HASH
     password_matches = verify_password(payload.password, password_hash)
-    if user is None or not user.is_active or not password_matches:
+    if user is None or not password_matches:
         raise _invalid_login()
 
     _, token = create_auth_session(db, user)

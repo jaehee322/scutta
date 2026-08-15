@@ -20,7 +20,6 @@ class PlayerCreate(BaseModel):
     gender: Gender
     is_freshman: bool = False
     club_rank: int = Field(gt=0)
-    is_active: bool = True
 
     _normalize_username = field_validator("username")(_strip_username)
 
@@ -30,7 +29,6 @@ class PlayerUpdate(BaseModel):
     gender: Gender | None = None
     is_freshman: bool | None = None
     club_rank: int | None = Field(default=None, gt=0)
-    is_active: bool | None = None
 
     @field_validator("username")
     @classmethod
@@ -47,7 +45,6 @@ class PlayerUpdate(BaseModel):
             "gender",
             "is_freshman",
             "club_rank",
-            "is_active",
         }
         for field_name in required_when_present & self.model_fields_set:
             if getattr(self, field_name) is None:
@@ -64,6 +61,5 @@ class UserRead(BaseModel):
     gender: Gender | None
     is_freshman: bool
     club_rank: int | None
-    is_active: bool
     created_at: datetime
     updated_at: datetime
