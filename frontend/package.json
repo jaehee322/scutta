@@ -9,6 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint src --deny-warnings",
     "test": "vitest run",
+    "verify:build": "node scripts/verify-build.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

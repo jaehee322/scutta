@@ -1,19 +1,13 @@
 services:
   - type: web
-    name: scutta-api
-    runtime: python
-    rootDir: backend
+    name: scutta-app
+    runtime: docker
     plan: free
     region: singapore
-    buildCommand: pip install .
-    startCommand: >-
-      alembic upgrade head &&
-      python -m app.cli ensure-admin &&
-      exec uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     healthCheckPath: /health
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.12.13
       - key: ENVIRONMENT
         value: production
       - key: DATABASE_URL
@@ -21,11 +15,11 @@ services:
           name: scutta-db
           property: connectionString
       - key: CORS_ORIGINS
-        sync: false
+        value: '[]'
       - key: SESSION_COOKIE_SECURE
         value: "true"
       - key: SESSION_COOKIE_SAMESITE
-        value: "none"
+        value: "lax"
       - key: SESSION_TTL_DAYS
         value: "400"
       - key: SESSION_REFRESH_DAYS
@@ -40,22 +34,6 @@ services:
         value: '["중간고사 이후","종강총회"]'
       - key: SETTLEMENT_PRIZES
         value: '{"matches":"경기 수 부문 상품","wins":"승리 수 부문 상품","losses":"패배 수 부문 상품","opponents":"상대 수 부문 상품"}'
-
-  - type: web
-    name: scutta-web
-    runtime: static
-    rootDir: frontend
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
-    staticPublishPath: dist
-    envVars:
-      - key: NODE_VERSION
-        value: 24.11.1
-      - key: VITE_API_URL
-        sync: false
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
 
 databases:
   - name: scutta-db

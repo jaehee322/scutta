@@ -145,13 +145,36 @@ def test_unsafe_cross_origin_is_rejected(api) -> None:
     )
 
 
+def test_render_forwarded_same_origin_is_accepted(api) -> None:
+    api.create_admin()
+    response = api.client().post(
+        "/api/v1/auth/login",
+        headers={"Origin": "https://testserver", "X-Forwarded-Proto": "https"},
+        json={"username": "admin", "password": "admin-password"},
+    )
+    assert response.status_code == 200
+
+
 @pytest.mark.parametrize(
     "origins",
-    [[], [""], ["*"], ["null"], ["http://app.example"], ["https://app.example/path"]],
+    [[""], ["*"], ["null"], ["http://app.example"], ["https://app.example/path"]],
 )
 def test_production_rejects_unsafe_cors_origins(origins: list[str]) -> None:
     with pytest.raises(ValidationError):
-        Settings(environment="production", cors_origins=origins)
+        Settings(
+            environment="production",
+            cors_origins=origins,
+            session_cookie_secure=True,
+        )
+
+
+def test_production_allows_same_origin_only() -> None:
+    settings = Settings(
+        environment="production",
+        cors_origins=[],
+        session_cookie_secure=True,
+    )
+    assert settings.cors_origins == []
 
 
 def test_player_profile_and_password_validation(api) -> None:

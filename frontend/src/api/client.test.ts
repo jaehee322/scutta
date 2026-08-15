@@ -24,17 +24,19 @@ describe("formatApiError", () => {
     const listener = vi.fn();
     browserWindow.addEventListener(AUTH_EXPIRED_EVENT, listener);
     vi.stubGlobal("window", browserWindow);
-    vi.stubGlobal(
-      "fetch",
-      vi.fn().mockResolvedValue(
-        new Response(JSON.stringify({ detail: "로그인이 필요합니다." }), {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
-        }),
-      ),
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ detail: "로그인이 필요합니다." }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      }),
     );
+    vi.stubGlobal("fetch", fetchMock);
 
     await expect(apiRequest("/rankings")).rejects.toMatchObject({ status: 401 });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/v1/rankings",
+      expect.objectContaining({ credentials: "include" }),
+    );
     expect(listener).toHaveBeenCalledOnce();
   });
 });

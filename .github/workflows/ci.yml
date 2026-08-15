@@ -64,3 +64,34 @@ jobs:
       - run: pnpm lint
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm verify:build
+
+  container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: docker build --tag scutta:test .
+      - run: >-
+          docker run --detach --name scutta-ci --publish 10000:10000
+          --env ENVIRONMENT=production
+          --env DATABASE_URL=sqlite:////tmp/scutta-ci.db
+          --env CORS_ORIGINS=[]
+          --env SESSION_COOKIE_SECURE=true
+          --env SESSION_COOKIE_SAMESITE=lax
+          scutta:test
+      - name: Smoke test integrated app
+        run: |
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:10000/health > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          curl --fail --silent http://127.0.0.1:10000/health | grep '"status":"ok"'
+          curl --fail --silent --header 'Accept: text/html' http://127.0.0.1:10000/rankings | grep 'SCUTTA'
+          test "$(curl --silent --output /tmp/api-body --write-out '%{http_code}' http://127.0.0.1:10000/api/v1/missing)" = "404"
+          grep '"detail":"Not Found"' /tmp/api-body
+      - if: always()
+        run: |
+          docker logs scutta-ci || true
+          docker rm --force scutta-ci || true

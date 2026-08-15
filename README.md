@@ -6,6 +6,7 @@ SCUTTA 탁구 동아리의 모바일 경기 기록 서비스입니다. 하나의
 scutta/
 ├─ backend/   FastAPI · SQLAlchemy · Alembic
 ├─ frontend/  React · TypeScript · Vite · PWA
+├─ Dockerfile 단일 운영 이미지
 ├─ render.yaml
 └─ .github/workflows/ci.yml
 ```
@@ -49,6 +50,16 @@ pnpm dev
 
 개발 중 `frontend`의 Vite 서버가 `/api`를 FastAPI로 프록시하므로 `VITE_API_URL`은 비워 둡니다. 별도 API 주소에 직접 연결할 때만 `frontend/.env`에 값을 설정합니다.
 
+운영 이미지는 React를 먼저 빌드한 뒤 FastAPI가 결과물을 같은 origin에서 제공합니다. 로컬에서 운영 이미지 자체를 확인하려면 저장소 루트에서 실행합니다.
+
+```powershell
+docker build -t scutta .
+docker run --rm -p 10000:10000 scutta
+```
+
+- 통합 웹: `http://127.0.0.1:10000`
+- 통합 API: `http://127.0.0.1:10000/api/v1`
+
 ## 검사
 
 ```powershell
@@ -62,9 +73,13 @@ Set-Location ..\frontend
 pnpm lint
 pnpm test
 pnpm build
+pnpm verify:build
+
+Set-Location ..
+docker build -t scutta:test .
 ```
 
-GitHub Actions도 두 디렉터리를 별도 작업으로 검사합니다.
+GitHub Actions는 백엔드, 프론트엔드, 최종 Docker 이미지를 각각 검사합니다.
 
 ## 데이터베이스와 관리자
 
@@ -86,19 +101,18 @@ python -m app.cli create-admin --username admin
 
 ## Render 배포
 
-루트의 `render.yaml`을 Blueprint로 연결하면 같은 저장소에서 다음 세 자원을 배포합니다.
+루트의 `render.yaml`을 Blueprint로 연결하면 같은 저장소에서 다음 두 자원을 배포합니다.
 
-- `scutta-web`: `frontend/`를 빌드하는 정적 사이트
-- `scutta-api`: `backend/`를 실행하는 FastAPI Web Service
-- `scutta-db`: PostgreSQL 17
+- `scutta-app`: React PWA와 FastAPI를 함께 실행하는 무료 Docker Web Service
+- `scutta-db`: 1GB 저장공간을 사용하는 유료 PostgreSQL 17
 
-Blueprint 생성 시 아래 값을 설정합니다.
+Docker 이미지는 Node 단계에서 React를 빌드하고, Python 단계에서 FastAPI와 빌드 결과만 실행합니다. 브라우저는 화면과 API를 하나의 HTTPS origin에서 사용하므로 별도 `VITE_API_URL`이나 운영 CORS origin 입력이 필요하지 않습니다.
 
-- `VITE_API_URL`: 배포된 API의 HTTPS 주소
-- `CORS_ORIGINS`: 프론트 origin을 담은 JSON 배열, 예: `["https://app.example.com"]`
-- 정산 상품·추첨 이름이 기본값과 다르면 해당 환경변수 수정
+- API Web Service: 무료
+- 프론트: 같은 Web Service에 포함되어 추가 비용 없음
+- PostgreSQL: `basic-256mb` 컴퓨팅과 1GB 저장공간, 약 `$6.30/월`
 
-API는 무료 Web Service, PostgreSQL은 유료 `basic-256mb` 인스턴스로 구성됩니다. 무료 Web Service에는 Shell과 pre-deploy 명령이 없으므로, 시작 명령이 다음 순서로 자동 실행됩니다.
+무료 Web Service에는 Shell과 pre-deploy 명령이 없으므로, 컨테이너 시작 명령이 다음 순서로 자동 실행됩니다.
 
 1. `alembic upgrade head`로 DB 스키마 반영
 2. 관리자가 없을 때만 최초 관리자 `admin / 1234` 생성
@@ -113,6 +127,10 @@ API는 무료 Web Service, PostgreSQL은 유료 `basic-256mb` 인스턴스로 �
 
 관리자는 상대 선택 목록, 랭킹, 정산 집계에 포함되지 않습니다. 학기 초기화를 실행해도 관리자 계정과 변경한 비밀번호는 유지됩니다.
 
-> **모바일 출시 전 필수:** 프론트와 API를 `app.example.com`, `api.example.com`처럼 같은 커스텀 도메인 아래에 두거나 동일 origin 프록시를 구성하세요. 서로 다른 `*.onrender.com` 주소는 iOS Safari/PWA에서 API 세션 쿠키가 제3자 쿠키로 차단되어 로그인이 동작하지 않을 수 있습니다. 같은 사이트로 배치한 뒤에는 `SESSION_COOKIE_SAMESITE=lax`로 좁힐 수 있습니다.
+React와 API가 같은 주소를 사용하며 세션 쿠키는 `Secure`, `HttpOnly`, `SameSite=Lax`로 설정됩니다. 따라서 기본 `onrender.com` 주소에서도 iPhone과 Android PWA 로그인이 제3자 쿠키로 취급되지 않습니다. 커스텀 도메인은 선택 사항입니다.
+
+서버는 Render의 전달 헤더를 신뢰하도록 실행되어 로그인 횟수 제한을 실제 접속 IP별로 적용합니다. 이 프록시 신뢰 설정을 Render 외의 공개 서버에서 그대로 사용할 때는 앞단 프록시가 `X-Forwarded-For`를 덮어쓰는지 먼저 확인해야 합니다.
+
+무료 Web Service는 유휴 상태에서 잠들기 때문에 첫 접속이 늦을 수 있습니다. 첫 화면과 API가 같은 프로세스에서 함께 깨어난 뒤에는 정상적으로 동작합니다.
 
 운영 데이터에는 유료 PostgreSQL과 백업 정책을 사용하세요. Render 무료 PostgreSQL은 장기 학기 기록 저장소에 적합하지 않습니다.

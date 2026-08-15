@@ -86,8 +86,6 @@ class Settings(BaseSettings):
         if self.environment.strip().lower() != "production":
             return self
 
-        if not self.cors_origins:
-            raise ValueError("CORS_ORIGINS must not be empty in production")
         if not self.session_cookie_secure:
             raise ValueError("SESSION_COOKIE_SECURE must be true in production")
 

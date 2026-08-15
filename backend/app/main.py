@@ -1,16 +1,66 @@
 from __future__ import annotations
 
+from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from starlette.datastructures import Headers
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api import admin, auth, matches, players, rankings, settlements
 from app.core.config import get_settings
 
+DEFAULT_FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+RESERVED_FRONTEND_PATHS = frozenset({"api", "docs", "health", "openapi.json", "redoc"})
 
-def create_app() -> FastAPI:
+
+class SpaStaticFiles(StaticFiles):
+    """Serve built frontend files and fall back to index.html for client routes."""
+
+    async def get_response(self, path: str, scope):
+        root_path = path.partition("/")[0]
+        if root_path in RESERVED_FRONTEND_PATHS:
+            raise StarletteHTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+        try:
+            response = await super().get_response(path, scope)
+        except StarletteHTTPException as exc:
+            if exc.status_code != status.HTTP_404_NOT_FOUND:
+                raise
+        else:
+            if response.status_code != status.HTTP_404_NOT_FOUND:
+                return response
+
+        accept = Headers(scope=scope).get("accept", "")
+        if PurePosixPath(path).suffix or "text/html" not in accept:
+            raise StarletteHTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+        return await super().get_response("index.html", scope)
+
+
+def mount_frontend(
+    application: FastAPI,
+    frontend_dist: Path,
+    *,
+    required: bool,
+) -> None:
+    index_file = frontend_dist / "index.html"
+    if not index_file.is_file():
+        if required:
+            raise RuntimeError(f"frontend build not found: {index_file}")
+        return
+
+    application.mount(
+        "/",
+        SpaStaticFiles(directory=frontend_dist, html=True),
+        name="frontend",
+    )
+
+
+def create_app(frontend_dist: Path | None = None) -> FastAPI:
     settings = get_settings()
     application = FastAPI(
         title=settings.app_name,
@@ -66,6 +116,27 @@ def create_app() -> FastAPI:
     application.include_router(settlements.router, prefix=api_prefix)
     application.include_router(admin.router, prefix=api_prefix)
     application.include_router(matches.admin_router, prefix=api_prefix)
+
+    missing_api_methods = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+
+    @application.api_route(
+        "/api",
+        methods=missing_api_methods,
+        include_in_schema=False,
+    )
+    @application.api_route(
+        "/api/{path:path}",
+        methods=missing_api_methods,
+        include_in_schema=False,
+    )
+    def missing_api_route(path: str | None = None) -> None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
+
+    mount_frontend(
+        application,
+        frontend_dist or DEFAULT_FRONTEND_DIST,
+        required=settings.environment.strip().lower() == "production",
+    )
 
     return application
 
