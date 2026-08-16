@@ -1,4 +1,4 @@
-import { ArrowRight, LockKeyhole, Trophy, UserRound } from "lucide-react";
+import { ArrowRight, LockKeyhole, UserRound } from "lucide-react";
 import { type FormEvent, useState } from "react";
 
 import { ApiError } from "../api/client";
@@ -34,18 +34,6 @@ export function LoginPage() {
     <main className="login-page">
       <section className="login-hero" aria-label="SCUTTA 소개">
         <Brand />
-        <div className="login-hero__copy">
-          <span className="eyebrow eyebrow--light">SCUTTA TABLE TENNIS</span>
-          <h1>
-            오늘의 한 게임이
-            <br />
-            우리 동아리의 기록이 돼요
-          </h1>
-          <p>경기를 남기고, 함께 만든 랭킹과 추첨권을 확인하세요.</p>
-        </div>
-        <div className="login-hero__orb login-hero__orb--one" />
-        <div className="login-hero__orb login-hero__orb--two" />
-        <Trophy className="login-hero__trophy" size={108} strokeWidth={1.25} />
       </section>
 
       <section className="login-panel">
@@ -53,9 +41,8 @@ export function LoginPage() {
           <div className="mobile-brand">
             <Brand />
           </div>
-          <span className="eyebrow">다시 만나서 반가워요</span>
-          <h2>SCUTTA에 로그인</h2>
-          <p className="login-panel__lead">관리자가 등록한 이름과 학번을 입력해 주세요.</p>
+          <h2>로그인</h2>
+          <p className="login-panel__lead">이름과 비밀번호를 입력하세요.</p>
 
           <form className="login-form" onSubmit={handleSubmit}>
             <label className="field">
@@ -93,7 +80,7 @@ export function LoginPage() {
             {error && <Notice>{error}</Notice>}
 
             <button className="primary-button primary-button--large" disabled={submitting}>
-              <span>{submitting ? "확인하고 있어요" : "로그인"}</span>
+              <span>{submitting ? "로그인 중" : "로그인"}</span>
               {!submitting && <ArrowRight size={20} />}
             </button>
           </form>

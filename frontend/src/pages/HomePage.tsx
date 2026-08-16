@@ -2,13 +2,20 @@ import {
   ArrowRight,
   CalendarDays,
   Check,
-  ChevronDown,
-  CircleUserRound,
+  Search,
   Swords,
   Trophy,
   UsersRound,
 } from "lucide-react";
-import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  type FormEvent,
+  type KeyboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
 
 import { ApiError, apiRequest, jsonBody } from "../api/client";
@@ -16,6 +23,7 @@ import { useAuth } from "../auth/AuthContext";
 import { Notice } from "../components/Notice";
 import { PageLoader } from "../components/Loading";
 import { formatKoreanDate, getMatchPerspective, toMatchScore } from "../lib/match";
+import { findPlayerByName, searchPlayers } from "../lib/playerSearch";
 import type { MatchListResponse, PlayerSummary, PlayerWithStats } from "../types";
 
 type Outcome = "win" | "loss";
@@ -33,13 +41,18 @@ export function HomePage() {
   const [profile, setProfile] = useState<PlayerWithStats | null>(null);
   const [players, setPlayers] = useState<PlayerSummary[]>([]);
   const [matches, setMatches] = useState<MatchListResponse | null>(null);
-  const [opponentId, setOpponentId] = useState("");
+  const [opponentQuery, setOpponentQuery] = useState("");
+  const [selectedOpponentId, setSelectedOpponentId] = useState<number | null>(null);
+  const [isOpponentListOpen, setIsOpponentListOpen] = useState(false);
+  const [activeOpponentIndex, setActiveOpponentIndex] = useState(0);
   const [outcome, setOutcome] = useState<Outcome>("win");
   const [score, setScore] = useState<MatchScore>("3:0");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [loadError, setLoadError] = useState("");
+  const [formError, setFormError] = useState("");
   const [success, setSuccess] = useState("");
+  const opponentOptionRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const load = useCallback(async () => {
     try {
@@ -51,9 +64,9 @@ export function HomePage() {
       setProfile(nextProfile);
       setPlayers(nextPlayers);
       setMatches(nextMatches);
-      setError("");
+      setLoadError("");
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "데이터를 불러오지 못했습니다.");
+      setLoadError(caught instanceof Error ? caught.message : "데이터를 불러오지 못했습니다.");
     } finally {
       setLoading(false);
     }
@@ -63,34 +76,99 @@ export function HomePage() {
     void load();
   }, [load]);
 
-  const selectedOpponent = useMemo(
-    () => players.find((player) => String(player.id) === opponentId),
-    [opponentId, players],
+  const suggestedPlayers = useMemo(
+    () => searchPlayers(players, opponentQuery),
+    [opponentQuery, players],
   );
+  const selectedOpponent = useMemo(
+    () =>
+      (selectedOpponentId === null
+        ? findPlayerByName(players, opponentQuery)
+        : players.find((player) => player.id === selectedOpponentId)),
+    [opponentQuery, players, selectedOpponentId],
+  );
+  const showOpponentList = isOpponentListOpen && opponentQuery.trim().length > 0;
+
+  useEffect(() => {
+    if (!showOpponentList) return;
+    opponentOptionRefs.current[activeOpponentIndex]?.scrollIntoView({ block: "nearest" });
+  }, [activeOpponentIndex, showOpponentList]);
+
+  const selectOpponent = (player: PlayerSummary) => {
+    setOpponentQuery(player.username);
+    setSelectedOpponentId(player.id);
+    setIsOpponentListOpen(false);
+    setActiveOpponentIndex(0);
+    setFormError("");
+    setSuccess("");
+  };
+
+  const handleOpponentKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing || event.keyCode === 229) return;
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      if (!suggestedPlayers.length) return;
+      setIsOpponentListOpen(true);
+      setActiveOpponentIndex((current) =>
+        isOpponentListOpen ? (current + 1) % suggestedPlayers.length : 0,
+      );
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (!suggestedPlayers.length) return;
+      setIsOpponentListOpen(true);
+      setActiveOpponentIndex((current) =>
+        isOpponentListOpen
+          ? (current - 1 + suggestedPlayers.length) % suggestedPlayers.length
+          : suggestedPlayers.length - 1,
+      );
+      return;
+    }
+
+    if (event.key === "Enter" && showOpponentList && suggestedPlayers.length) {
+      event.preventDefault();
+      selectOpponent(suggestedPlayers[activeOpponentIndex] ?? suggestedPlayers[0]);
+      return;
+    }
+
+    if (event.key === "Escape") {
+      setIsOpponentListOpen(false);
+    }
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!opponentId) {
-      setError("상대를 먼저 선택해 주세요.");
+    if (!opponentQuery.trim()) {
+      setFormError("상대 이름을 입력해 주세요.");
+      return;
+    }
+    if (!selectedOpponent) {
+      setFormError("검색 결과에서 선수를 선택해 주세요.");
+      setIsOpponentListOpen(true);
       return;
     }
 
     setSubmitting(true);
-    setError("");
+    setFormError("");
     setSuccess("");
     try {
       await apiRequest("/matches", {
         method: "POST",
-        body: jsonBody({ opponent_id: Number(opponentId), ...toMatchScore(outcome, score) }),
+        body: jsonBody({ opponent_id: selectedOpponent.id, ...toMatchScore(outcome, score) }),
       });
-      setSuccess(`${selectedOpponent?.username ?? "상대"}님과의 경기를 기록했어요.`);
-      setOpponentId("");
+      setSuccess(`${selectedOpponent.username}님과의 경기를 제출했습니다.`);
+      setOpponentQuery("");
+      setSelectedOpponentId(null);
+      setIsOpponentListOpen(false);
       await load();
     } catch (caught) {
       if (caught instanceof ApiError && caught.status === 409) {
-        setError("오늘은 이 상대와 이미 경기를 기록했어요.");
+        setFormError("오늘은 이 상대와 이미 경기를 기록했어요.");
       } else {
-        setError(caught instanceof Error ? caught.message : "경기를 기록하지 못했습니다.");
+        setFormError(caught instanceof Error ? caught.message : "경기를 기록하지 못했습니다.");
       }
     } finally {
       setSubmitting(false);
@@ -99,36 +177,29 @@ export function HomePage() {
 
   if (loading) return <PageLoader />;
 
+  if (loadError && !profile && !matches) {
+    return (
+      <div className="page home-page">
+        <div className="card home-load-error">
+          <Notice>{loadError}</Notice>
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={() => {
+              setLoading(true);
+              void load();
+            }}
+          >
+            다시 불러오기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="page home-page">
-      <section className="welcome-row">
-        <div>
-          <span className="eyebrow">오늘도 즐거운 탁구</span>
-          <h1>{user?.username}님, 경기 준비됐나요?</h1>
-          <p>방금 끝난 경기를 간단하게 기록해 보세요.</p>
-        </div>
-        <div className="welcome-illustration" aria-hidden="true">
-          <div className="welcome-illustration__ball" />
-          <div className="welcome-illustration__paddle">
-            <span />
-          </div>
-        </div>
-      </section>
-
-      {profile && (
-        <section className="stats-strip" aria-label="내 누적 기록">
-          {statMeta.map(({ key, label, suffix }) => (
-            <div key={key} className="stat-item">
-              <span>{label}</span>
-              <strong>
-                {profile.stats[key]}
-                <small>{suffix}</small>
-              </strong>
-            </div>
-          ))}
-        </section>
-      )}
-
+      {loadError && <Notice>{loadError}</Notice>}
       <div className="home-grid">
         <section className="card submit-card">
           <header className="section-heading">
@@ -136,31 +207,92 @@ export function HomePage() {
               <Swords size={22} />
             </div>
             <div>
-              <span>경기 결과 제출</span>
-              <h2>오늘의 한 게임을 남겨요</h2>
+              <h1>경기 결과 제출</h1>
             </div>
           </header>
 
           <form onSubmit={handleSubmit}>
-            <label className="field">
-              <span>누구와 경기했나요?</span>
-              <div className="select-shell">
-                <CircleUserRound size={20} />
-                <select
-                  value={opponentId}
-                  onChange={(event) => setOpponentId(event.target.value)}
-                  required
-                >
-                  <option value="">상대를 선택하세요</option>
-                  {players.map((player) => (
-                    <option key={player.id} value={player.id}>
-                      {player.username} · {player.club_rank}부
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown size={18} />
+            <div className="field">
+              <label htmlFor="opponent-search">상대</label>
+              <div
+                className="opponent-combobox"
+                onBlur={(event) => {
+                  const nextTarget = event.relatedTarget;
+                  if (!(nextTarget instanceof Node) || !event.currentTarget.contains(nextTarget)) {
+                    setIsOpponentListOpen(false);
+                  }
+                }}
+              >
+                <div className="input-shell opponent-input-shell">
+                  <Search size={20} />
+                  <input
+                    id="opponent-search"
+                    type="search"
+                    value={opponentQuery}
+                    placeholder="선수 이름 입력"
+                    autoComplete="off"
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-expanded={showOpponentList}
+                    aria-controls="opponent-suggestions"
+                    aria-activedescendant={
+                      showOpponentList && suggestedPlayers[activeOpponentIndex]
+                        ? `opponent-option-${suggestedPlayers[activeOpponentIndex].id}`
+                        : undefined
+                    }
+                    onFocus={() => setIsOpponentListOpen(opponentQuery.trim().length > 0)}
+                    onChange={(event) => {
+                      setOpponentQuery(event.target.value);
+                      setSelectedOpponentId(null);
+                      setIsOpponentListOpen(event.target.value.trim().length > 0);
+                      setActiveOpponentIndex(0);
+                      setFormError("");
+                      setSuccess("");
+                    }}
+                    onKeyDown={handleOpponentKeyDown}
+                  />
+                </div>
+
+                {showOpponentList && (
+                  <div
+                    id="opponent-suggestions"
+                    className="opponent-suggestions"
+                    role="listbox"
+                    aria-label="선수 검색 결과"
+                  >
+                    {suggestedPlayers.length ? (
+                      suggestedPlayers.map((player, index) => (
+                        <button
+                          type="button"
+                          tabIndex={-1}
+                          ref={(element) => {
+                            opponentOptionRefs.current[index] = element;
+                          }}
+                          id={`opponent-option-${player.id}`}
+                          role="option"
+                          aria-selected={selectedOpponent?.id === player.id}
+                          key={player.id}
+                          className={`opponent-suggestion ${
+                            index === activeOpponentIndex ? "is-active" : ""
+                          }`}
+                          onMouseDown={(event) => event.preventDefault()}
+                          onMouseEnter={() => setActiveOpponentIndex(index)}
+                          onClick={() => selectOpponent(player)}
+                        >
+                          <span>
+                            <strong>{player.username}</strong>
+                            {player.club_rank && <small>{player.club_rank}부</small>}
+                          </span>
+                          {selectedOpponent?.id === player.id && <Check size={16} />}
+                        </button>
+                      ))
+                    ) : (
+                      <p className="opponent-suggestions__empty">일치하는 선수가 없습니다.</p>
+                    )}
+                  </div>
+                )}
               </div>
-            </label>
+            </div>
 
             <fieldset className="choice-group">
               <legend>경기 결과</legend>
@@ -172,7 +304,7 @@ export function HomePage() {
                   aria-pressed={outcome === "win"}
                 >
                   <Trophy size={20} />
-                  내가 이겼어요
+                  승리
                   {outcome === "win" && <Check className="choice-check" size={16} />}
                 </button>
                 <button
@@ -182,7 +314,7 @@ export function HomePage() {
                   aria-pressed={outcome === "loss"}
                 >
                   <UsersRound size={20} />
-                  상대가 이겼어요
+                  패배
                   {outcome === "loss" && <Check className="choice-check" size={16} />}
                 </button>
               </div>
@@ -200,31 +332,27 @@ export function HomePage() {
                     aria-pressed={score === option}
                   >
                     <strong>{option}</strong>
-                    <span>{option === "3:0" ? "완승" : "접전"}</span>
                   </button>
                 ))}
               </div>
             </fieldset>
 
-            {error && <Notice>{error}</Notice>}
+            {formError && <Notice>{formError}</Notice>}
             {success && <Notice tone="success">{success}</Notice>}
 
             <button className="primary-button primary-button--large" disabled={submitting}>
-              {submitting ? "기록하는 중" : "경기 기록하기"}
+              {submitting ? "제출 중" : "제출"}
               {!submitting && <ArrowRight size={20} />}
             </button>
-            <p className="form-hint">같은 상대와의 경기는 하루에 한 번만 기록할 수 있어요.</p>
+            <p className="form-hint">같은 상대와는 하루 1경기만 기록할 수 있습니다.</p>
           </form>
         </section>
 
         <section className="card recent-card">
           <header className="card-title-row">
-            <div>
-              <span className="eyebrow">RECENT</span>
-              <h2>최근 경기</h2>
-            </div>
+            <h2>최근 경기</h2>
             <Link to="/profile" className="text-link">
-              전체 기록 <ArrowRight size={16} />
+              전체 <ArrowRight size={16} />
             </Link>
           </header>
 
@@ -233,8 +361,7 @@ export function HomePage() {
               <span className="empty-state__icon">
                 <CalendarDays size={25} />
               </span>
-              <strong>아직 기록한 경기가 없어요</strong>
-              <p>첫 경기를 제출하면 이곳에 바로 나타나요.</p>
+              <strong>경기 기록이 없습니다.</strong>
             </div>
           ) : (
             <div className="match-list">
@@ -261,6 +388,20 @@ export function HomePage() {
           )}
         </section>
       </div>
+
+      {profile && (
+        <section className="stats-strip" aria-label="내 누적 기록">
+          {statMeta.map(({ key, label, suffix }) => (
+            <div key={key} className="stat-item">
+              <span>{label}</span>
+              <strong>
+                {profile.stats[key]}
+                <small>{suffix}</small>
+              </strong>
+            </div>
+          ))}
+        </section>
+      )}
     </div>
   );
 }

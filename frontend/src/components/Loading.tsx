@@ -1,8 +1,7 @@
 export function LoadingScreen() {
   return (
     <main className="splash" aria-label="앱을 불러오는 중">
-      <div className="splash__mark" aria-hidden="true" />
-      <strong>SCUTTA</strong>
+      <img className="splash__logo" src="/scutta-logo.png" alt="" />
       <span className="loading-dots" aria-hidden="true">
         <i />
         <i />

@@ -5,7 +5,6 @@ import {
   KeyRound,
   LogOut,
   Medal,
-  Settings2,
   ShieldCheck,
   UserRoundCog,
 } from "lucide-react";
@@ -83,7 +82,6 @@ export function ProfilePage() {
       <section className="profile-hero">
         <div className="profile-avatar">{user?.username.slice(0, 1)}</div>
         <div>
-          <span className="eyebrow">MY SCUTTA</span>
           <h1>{user?.username}</h1>
           <p>
             {user?.role === "admin"
@@ -108,23 +106,10 @@ export function ProfilePage() {
         </section>
       )}
 
-      {user?.role === "admin" && (
-        <section className="admin-entry-card">
-          <div className="section-icon section-icon--blue"><Settings2 size={22} /></div>
-          <div>
-            <span>관리자 전용</span>
-            <h2>선수와 경기 기록 관리</h2>
-            <p>선수 등록, 비밀번호 초기화, 경기 수정과 학기 초기화를 할 수 있어요.</p>
-          </div>
-          <a href="#admin-console" className="primary-button">관리 화면 열기 <ArrowRight size={18} /></a>
-        </section>
-      )}
-
       {matches && (
         <section className="profile-history card">
           <header className="card-title-row">
             <div>
-              <span className="eyebrow">HISTORY</span>
               <h2>내 경기 기록</h2>
             </div>
             <span className="muted-count">총 {matches.total}경기</span>
@@ -156,12 +141,12 @@ export function ProfilePage() {
       <section className="settings-list">
         <button type="button" onClick={() => setPasswordOpen(true)}>
           <span className="settings-list__icon"><KeyRound size={20} /></span>
-          <div><strong>비밀번호 변경</strong><small>현재 비밀번호를 알고 있을 때 변경할 수 있어요.</small></div>
+          <div><strong>비밀번호 변경</strong></div>
           <ArrowRight size={18} />
         </button>
         <button type="button" className="is-danger" onClick={() => void handleLogout()}>
           <span className="settings-list__icon"><LogOut size={20} /></span>
-          <div><strong>로그아웃</strong><small>이 기기에서 로그인 정보를 지워요.</small></div>
+          <div><strong>로그아웃</strong></div>
           <ArrowRight size={18} />
         </button>
       </section>
@@ -187,7 +172,7 @@ function AdminConsole() {
     <section className="admin-console-anchor" id="admin-console">
       <div className="admin-console-heading">
         <span className="section-icon section-icon--blue"><UserRoundCog size={23} /></span>
-        <div><span className="eyebrow">ADMIN</span><h2>관리자 콘솔</h2><p>선수와 경기, 학기 데이터를 한곳에서 관리하세요.</p></div>
+        <div><h2>관리자</h2></div>
       </div>
       <div className="admin-quick-grid">
         <AdminPlayers />

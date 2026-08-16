@@ -45,9 +45,7 @@ export function AdminMatchesPage() {
       </Link>
       <header className="admin-page-heading">
         <div>
-          <span className="eyebrow">ADMIN · MATCHES</span>
           <h1>경기 관리</h1>
-          <p>잘못 선택한 선수, 점수와 날짜를 수정하거나 기록을 삭제해요.</p>
         </div>
       </header>
 
@@ -55,8 +53,7 @@ export function AdminMatchesPage() {
 
       <section className="admin-list-card">
         <div className="admin-list-card__summary">
-          <strong>{data?.total ?? 0}</strong>
-          <span>개의 경기 기록이 있어요</span>
+          <strong>경기 {data?.total ?? 0}개</strong>
         </div>
         {!data?.items.length ? (
           <div className="empty-state">

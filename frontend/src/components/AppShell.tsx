@@ -44,7 +44,6 @@ export function AppShell({ children }: { children: ReactNode }) {
             ))}
           </nav>
           <NavLink className="user-chip" to="/profile" aria-label="내 정보 보기">
-            <span>{user?.username.slice(0, 1)}</span>
             <strong>{user?.username}</strong>
           </NavLink>
         </div>

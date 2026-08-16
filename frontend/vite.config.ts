@@ -8,7 +8,7 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       pwaAssets: {
-        image: "public/favicon.svg",
+        image: "public/scutta-logo.png",
         preset: "minimal-2023",
         overrideManifestIcons: true,
       },

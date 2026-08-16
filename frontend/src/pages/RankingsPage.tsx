@@ -1,4 +1,4 @@
-import { Crown, Medal, Sparkles, Trophy } from "lucide-react";
+import { Crown, Medal, Trophy } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { apiRequest } from "../api/client";
@@ -9,12 +9,12 @@ import type { RankingCategory, RankingsResponse } from "../types";
 
 const categoryMeta: Record<
   RankingCategory,
-  { label: string; shortLabel: string; unit: string; description: string }
+  { label: string; shortLabel: string; unit: string }
 > = {
-  matches: { label: "경기 수", shortLabel: "경기", unit: "판", description: "가장 꾸준히 경기한 선수" },
-  wins: { label: "승리 수", shortLabel: "승리", unit: "승", description: "가장 많은 승리를 만든 선수" },
-  losses: { label: "패배 수", shortLabel: "패배", unit: "패", description: "도전을 멈추지 않은 선수" },
-  opponents: { label: "상대 수", shortLabel: "상대", unit: "명", description: "가장 다양한 선수를 만난 선수" },
+  matches: { label: "경기 수", shortLabel: "경기", unit: "판" },
+  wins: { label: "승리 수", shortLabel: "승리", unit: "승" },
+  losses: { label: "패배 수", shortLabel: "패배", unit: "패" },
+  opponents: { label: "상대 수", shortLabel: "상대", unit: "명" },
 };
 
 const categories = Object.keys(categoryMeta) as RankingCategory[];
@@ -42,9 +42,7 @@ export function RankingsPage() {
   return (
     <div className="page rankings-page">
       <header className="page-heading">
-        <span className="eyebrow">SCUTTA RANKING</span>
-        <h1>우리의 기록이 쌓인 랭킹</h1>
-        <p>승부도 도전도 모두 소중한 기록이에요.</p>
+        <h1>랭킹</h1>
       </header>
 
       {error && <Notice>{error}</Notice>}
@@ -68,11 +66,7 @@ export function RankingsPage() {
         <>
           <section className="rank-hero">
             <div className="rank-hero__copy">
-              <span>
-                <Sparkles size={17} /> 이번 부문
-              </span>
-              <h2>{categoryMeta[category].label} 랭킹</h2>
-              <p>{categoryMeta[category].description}</p>
+              <h2>{categoryMeta[category].label}</h2>
             </div>
             {myEntry && (
               <div className="my-rank-card">

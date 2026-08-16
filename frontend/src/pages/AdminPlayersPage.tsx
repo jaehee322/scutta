@@ -45,12 +45,12 @@ export function AdminPlayersPage() {
     <div className="page admin-page">
       <Link className="back-link" to="/profile"><ArrowLeft size={18} /> 내 정보</Link>
       <header className="admin-page-heading">
-        <div><span className="eyebrow">ADMIN · PLAYERS</span><h1>선수 관리</h1><p>이번 학기 선수 계정과 기본 정보를 관리해요.</p></div>
+        <div><h1>선수 관리</h1></div>
         <button className="primary-button" type="button" onClick={() => setCreateOpen(true)}><Plus size={18} /> 선수 등록</button>
       </header>
       {error && <Notice>{error}</Notice>}
       <section className="admin-list-card">
-        <div className="admin-list-card__summary"><strong>{players.length}</strong><span>명의 선수가 등록되어 있어요</span></div>
+        <div className="admin-list-card__summary"><strong>선수 {players.length}명</strong></div>
         <div className="admin-player-list">
           {players.map((player) => (
             <article key={player.id}>
