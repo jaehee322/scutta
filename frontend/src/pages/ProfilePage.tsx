@@ -6,9 +6,17 @@ import {
   LogOut,
   Medal,
   ShieldCheck,
+  Trophy,
   UserRoundCog,
 } from "lucide-react";
-import { type FormEvent, type ReactNode, useCallback, useEffect, useState } from "react";
+import {
+  type FormEvent,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { apiRequest, jsonBody } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
@@ -16,35 +24,121 @@ import { Modal } from "../components/Modal";
 import { Notice } from "../components/Notice";
 import { PageLoader } from "../components/Loading";
 import { formatKoreanDate, getMatchPerspective } from "../lib/match";
+import { getNextOffset, hasNextPage, isPageOutOfSync, tryAppendPage } from "../lib/pagination";
 import type { MatchListResponse, PlayerWithStats } from "../types";
+
+const MATCH_PAGE_SIZE = 50;
 
 export function ProfilePage() {
   const { user, logout } = useAuth();
   const [profile, setProfile] = useState<PlayerWithStats | null>(null);
   const [matches, setMatches] = useState<MatchListResponse | null>(null);
-  const [error, setError] = useState("");
+  const [loadError, setLoadError] = useState("");
+  const [loadMoreError, setLoadMoreError] = useState("");
+  const [actionError, setActionError] = useState("");
+  const [nextOffset, setNextOffset] = useState(0);
+  const [pageStale, setPageStale] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const requestVersion = useRef(0);
+  const loadMoreInFlight = useRef(false);
+  const refreshingInFlight = useRef(false);
 
   const load = useCallback(async () => {
     if (user?.role !== "player") return;
+    const version = ++requestVersion.current;
+    loadMoreInFlight.current = false;
+    refreshingInFlight.current = true;
+    setRefreshing(true);
+    setLoadingMore(false);
+    setLoadError("");
+    setLoadMoreError("");
     try {
       const [nextProfile, nextMatches] = await Promise.all([
         apiRequest<PlayerWithStats>("/players/me"),
-        apiRequest<MatchListResponse>("/matches?limit=50"),
+        apiRequest<MatchListResponse>(`/matches?limit=${MATCH_PAGE_SIZE}&offset=0`),
       ]);
+      if (version !== requestVersion.current) return;
       setProfile(nextProfile);
       setMatches(nextMatches);
+      setNextOffset(getNextOffset(nextMatches));
+      setPageStale(false);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "내 정보를 불러오지 못했습니다.");
+      if (version !== requestVersion.current) return;
+      setLoadError(caught instanceof Error ? caught.message : "내 정보를 불러오지 못했습니다.");
+    } finally {
+      if (version === requestVersion.current) {
+        refreshingInFlight.current = false;
+        setRefreshing(false);
+      }
     }
   }, [user?.role]);
 
+  const loadMore = useCallback(async () => {
+    if (
+      loadMoreInFlight.current ||
+      refreshingInFlight.current ||
+      !matches ||
+      !hasNextPage(matches, nextOffset)
+    ) {
+      return;
+    }
+
+    const version = requestVersion.current;
+    loadMoreInFlight.current = true;
+    setLoadingMore(true);
+    setLoadMoreError("");
+    try {
+      const anchorOffset = nextOffset - 1;
+      const anchorRequest: Promise<MatchListResponse | null> =
+        anchorOffset >= 0
+          ? apiRequest<MatchListResponse>(`/matches?limit=1&offset=${anchorOffset}`)
+          : Promise.resolve(null);
+      const [anchorPage, nextPage] = await Promise.all([
+        anchorRequest,
+        apiRequest<MatchListResponse>(
+          `/matches?limit=${MATCH_PAGE_SIZE}&offset=${nextOffset}`,
+        ),
+      ]);
+      if (version !== requestVersion.current) return;
+      const result = tryAppendPage(
+        matches,
+        nextPage,
+        anchorPage
+          ? {
+              offset: anchorOffset,
+              total: anchorPage.total,
+              itemId: anchorPage.items[0]?.id ?? null,
+            }
+          : undefined,
+      );
+      if (result.status === "stale") {
+        setPageStale(true);
+        return;
+      }
+      setMatches(result.value);
+      setNextOffset(getNextOffset(nextPage));
+    } catch (caught) {
+      if (version !== requestVersion.current) return;
+      setLoadMoreError(
+        caught instanceof Error ? caught.message : "경기를 더 불러오지 못했습니다.",
+      );
+    } finally {
+      loadMoreInFlight.current = false;
+      if (version === requestVersion.current) setLoadingMore(false);
+    }
+  }, [matches, nextOffset]);
+
   useEffect(() => {
     void load();
+    return () => {
+      requestVersion.current += 1;
+    };
   }, [load]);
 
   const handlePassword = async (event: FormEvent) => {
@@ -67,15 +161,18 @@ export function ProfilePage() {
   };
 
   const handleLogout = async () => {
-    setError("");
+    setActionError("");
     try {
       await logout();
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "로그아웃하지 못했습니다.");
+      setActionError(caught instanceof Error ? caught.message : "로그아웃하지 못했습니다.");
     }
   };
 
-  if (user?.role === "player" && !profile && !error) return <PageLoader />;
+  if (user?.role === "player" && !profile && !loadError) return <PageLoader />;
+
+  const canLoadMore = hasNextPage(matches, nextOffset);
+  const pageOutOfSync = pageStale || isPageOutOfSync(matches, nextOffset);
 
   return (
     <div className="page profile-page">
@@ -86,7 +183,9 @@ export function ProfilePage() {
           <p>
             {user?.role === "admin"
               ? "SCUTTA 관리자"
-              : `${profile?.club_rank}부 · ${profile?.is_freshman ? "신입 부원" : "SCUTTA 부원"}`}
+              : profile
+                ? `${profile.club_rank}부 · ${profile.is_freshman ? "신입 부원" : "SCUTTA 부원"}`
+                : "SCUTTA 선수"}
           </p>
         </div>
         <span className={`role-badge ${user?.role === "admin" ? "is-admin" : ""}`}>
@@ -95,7 +194,20 @@ export function ProfilePage() {
         </span>
       </section>
 
-      {error && <Notice>{error}</Notice>}
+      {loadError && (
+        <div className="page-load-error">
+          <Notice>{loadError}</Notice>
+          <button
+            type="button"
+            className="secondary-button"
+            disabled={refreshing}
+            onClick={() => void load()}
+          >
+            {refreshing ? "불러오는 중" : "다시 불러오기"}
+          </button>
+        </div>
+      )}
+      {actionError && <Notice>{actionError}</Notice>}
 
       {profile && (
         <section className="profile-stats">
@@ -112,7 +224,11 @@ export function ProfilePage() {
             <div>
               <h2>내 경기 기록</h2>
             </div>
-            <span className="muted-count">총 {matches.total}경기</span>
+            <span className="muted-count">
+              {matches.items.length === matches.total
+                ? `총 ${matches.total}경기`
+                : `${matches.items.length} / 총 ${matches.total}경기`}
+            </span>
           </header>
           {!matches.items.length ? (
             <div className="empty-state">
@@ -133,6 +249,27 @@ export function ProfilePage() {
                   </article>
                 );
               })}
+            </div>
+          )}
+          {(canLoadMore || loadMoreError || pageOutOfSync) && (
+            <div className="pagination-footer">
+              {pageOutOfSync ? (
+                <Notice tone="info">목록이 변경되었습니다. 최신 목록을 다시 불러와 주세요.</Notice>
+              ) : (
+                loadMoreError && <Notice>{loadMoreError}</Notice>
+              )}
+              <button
+                type="button"
+                className="secondary-button"
+                disabled={loadingMore || refreshing || (!canLoadMore && !pageOutOfSync)}
+                onClick={() => void (pageOutOfSync ? load() : loadMore())}
+              >
+                {loadingMore || refreshing
+                  ? "불러오는 중"
+                  : pageOutOfSync
+                    ? "목록 새로고침"
+                    : "더 보기"}
+              </button>
             </div>
           )}
         </section>
@@ -177,6 +314,7 @@ function AdminConsole() {
       <div className="admin-quick-grid">
         <AdminPlayers />
         <AdminMatches />
+        <AdminCompetitions />
         <AdminReset />
       </div>
     </section>
@@ -189,6 +327,10 @@ function AdminPlayers() {
 
 function AdminMatches() {
   return <AdminFeatureCard icon={<DatabaseZap size={22} />} title="경기 관리" description="오기입 수정과 삭제" href="/admin/matches" />;
+}
+
+function AdminCompetitions() {
+  return <AdminFeatureCard icon={<Trophy size={22} />} title="리그전 관리" description="생성·수정·마감" href="/competitions" />;
 }
 
 function AdminReset() {

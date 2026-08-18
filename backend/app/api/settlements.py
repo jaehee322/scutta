@@ -1,21 +1,13 @@
 from __future__ import annotations
 
-from typing import Annotated
+from fastapi import APIRouter
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-
-from app.api.deps import get_current_player
+from app.api.deps import CurrentPlayer, DbSession
 from app.core.config import get_settings
-from app.core.database import get_db
-from app.models import User
 from app.schemas.stats import RankingCategory, SettlementCategory, SettlementResponse
 from app.services.stats import list_player_stats
 
 router = APIRouter(prefix="/settlements", tags=["settlements"])
-
-DbSession = Annotated[Session, Depends(get_db)]
-CurrentPlayer = Annotated[User, Depends(get_current_player)]
 
 
 @router.get("", response_model=SettlementResponse)

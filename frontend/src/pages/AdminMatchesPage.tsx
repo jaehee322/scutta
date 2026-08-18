@@ -1,5 +1,5 @@
 import { ArrowLeft, CalendarDays, Pencil, Trash2 } from "lucide-react";
-import { type FormEvent, useCallback, useEffect, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { apiRequest, jsonBody } from "../api/client";
@@ -7,36 +7,122 @@ import { PageLoader } from "../components/Loading";
 import { Modal } from "../components/Modal";
 import { Notice } from "../components/Notice";
 import { formatKoreanDate } from "../lib/match";
+import { getNextOffset, hasNextPage, isPageOutOfSync, tryAppendPage } from "../lib/pagination";
 import type { MatchListResponse, MatchRead, UserRead } from "../types";
 
 type AllowedScore = "3:0" | "2:1" | "1:2" | "0:3";
+const MATCH_PAGE_SIZE = 200;
 
 export function AdminMatchesPage() {
   const [data, setData] = useState<MatchListResponse | null>(null);
   const [players, setPlayers] = useState<UserRead[]>([]);
-  const [error, setError] = useState("");
+  const [loadError, setLoadError] = useState("");
+  const [loadMoreError, setLoadMoreError] = useState("");
+  const [nextOffset, setNextOffset] = useState(0);
+  const [pageStale, setPageStale] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [editing, setEditing] = useState<MatchRead | null>(null);
   const [deleting, setDeleting] = useState<MatchRead | null>(null);
+  const requestVersion = useRef(0);
+  const loadMoreInFlight = useRef(false);
+  const refreshingInFlight = useRef(false);
 
   const load = useCallback(async () => {
+    const version = ++requestVersion.current;
+    loadMoreInFlight.current = false;
+    refreshingInFlight.current = true;
+    setRefreshing(true);
+    setLoadingMore(false);
+    setLoadError("");
+    setLoadMoreError("");
     try {
       const [nextMatches, nextPlayers] = await Promise.all([
-        apiRequest<MatchListResponse>("/admin/matches?limit=200"),
+        apiRequest<MatchListResponse>(`/admin/matches?limit=${MATCH_PAGE_SIZE}&offset=0`),
         apiRequest<UserRead[]>("/admin/players"),
       ]);
+      if (version !== requestVersion.current) return;
       setData(nextMatches);
       setPlayers(nextPlayers);
-      setError("");
+      setNextOffset(getNextOffset(nextMatches));
+      setPageStale(false);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "경기 목록을 불러오지 못했습니다.");
+      if (version !== requestVersion.current) return;
+      setLoadError(caught instanceof Error ? caught.message : "경기 목록을 불러오지 못했습니다.");
+    } finally {
+      if (version === requestVersion.current) {
+        refreshingInFlight.current = false;
+        setRefreshing(false);
+      }
     }
   }, []);
 
+  const loadMore = useCallback(async () => {
+    if (
+      loadMoreInFlight.current ||
+      refreshingInFlight.current ||
+      !data ||
+      !hasNextPage(data, nextOffset)
+    ) {
+      return;
+    }
+
+    const version = requestVersion.current;
+    loadMoreInFlight.current = true;
+    setLoadingMore(true);
+    setLoadMoreError("");
+    try {
+      const anchorOffset = nextOffset - 1;
+      const anchorRequest: Promise<MatchListResponse | null> =
+        anchorOffset >= 0
+          ? apiRequest<MatchListResponse>(`/admin/matches?limit=1&offset=${anchorOffset}`)
+          : Promise.resolve(null);
+      const [anchorPage, nextPage] = await Promise.all([
+        anchorRequest,
+        apiRequest<MatchListResponse>(
+          `/admin/matches?limit=${MATCH_PAGE_SIZE}&offset=${nextOffset}`,
+        ),
+      ]);
+      if (version !== requestVersion.current) return;
+      const result = tryAppendPage(
+        data,
+        nextPage,
+        anchorPage
+          ? {
+              offset: anchorOffset,
+              total: anchorPage.total,
+              itemId: anchorPage.items[0]?.id ?? null,
+            }
+          : undefined,
+      );
+      if (result.status === "stale") {
+        setPageStale(true);
+        return;
+      }
+      setData(result.value);
+      setNextOffset(getNextOffset(nextPage));
+    } catch (caught) {
+      if (version !== requestVersion.current) return;
+      setLoadMoreError(
+        caught instanceof Error ? caught.message : "경기를 더 불러오지 못했습니다.",
+      );
+    } finally {
+      loadMoreInFlight.current = false;
+      if (version === requestVersion.current) setLoadingMore(false);
+    }
+  }, [data, nextOffset]);
+
   useEffect(() => {
     void load();
+    return () => {
+      requestVersion.current += 1;
+    };
   }, [load]);
 
-  if (!data && !error) return <PageLoader />;
+  if (!data && !loadError) return <PageLoader />;
+
+  const canLoadMore = hasNextPage(data, nextOffset);
+  const pageOutOfSync = pageStale || isPageOutOfSync(data, nextOffset);
 
   return (
     <div className="page admin-page">
@@ -49,53 +135,89 @@ export function AdminMatchesPage() {
         </div>
       </header>
 
-      {error && <Notice>{error}</Notice>}
-
-      <section className="admin-list-card">
-        <div className="admin-list-card__summary">
-          <strong>경기 {data?.total ?? 0}개</strong>
+      {loadError && (
+        <div className="page-load-error">
+          <Notice>{loadError}</Notice>
+          <button
+            type="button"
+            className="secondary-button"
+            disabled={refreshing}
+            onClick={() => void load()}
+          >
+            {refreshing ? "불러오는 중" : "다시 불러오기"}
+          </button>
         </div>
-        {!data?.items.length ? (
-          <div className="empty-state">
-            <span className="empty-state__icon"><CalendarDays size={24} /></span>
-            <strong>아직 경기 기록이 없어요</strong>
+      )}
+
+      {data && (
+        <section className="admin-list-card">
+          <div className="admin-list-card__summary">
+            <strong>경기 {data.total}개</strong>
+            <span>{data.items.length}개 표시</span>
           </div>
-        ) : (
-          <div className="admin-match-list">
-            {data.items.map((match) => {
-              const matchName = `${match.player1.username} 대 ${match.player2.username}`;
-              return (
-                <article key={match.id}>
-                  <span>{formatKoreanDate(match.played_on)}</span>
-                  <div>
-                    <strong>{match.player1.username}</strong>
-                    <small>vs</small>
-                    <strong>{match.player2.username}</strong>
-                  </div>
-                  <b>{match.score1} : {match.score2}</b>
-                  <div className="admin-row-actions">
-                    <button
-                      type="button"
-                      aria-label={`${matchName} 경기 수정`}
-                      onClick={() => setEditing(match)}
-                    >
-                      <Pencil size={18} />
-                    </button>
-                    <button
-                      type="button"
-                      className="is-danger"
-                      aria-label={`${matchName} 경기 삭제`}
-                      onClick={() => setDeleting(match)}
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
-      </section>
+          {!data.items.length ? (
+            <div className="empty-state">
+              <span className="empty-state__icon"><CalendarDays size={24} /></span>
+              <strong>아직 경기 기록이 없어요</strong>
+            </div>
+          ) : (
+            <div className="admin-match-list">
+              {data.items.map((match) => {
+                const matchName = `${match.player1.username} 대 ${match.player2.username}`;
+                return (
+                  <article key={match.id}>
+                    <span>{formatKoreanDate(match.played_on)}</span>
+                    <div>
+                      <strong>{match.player1.username}</strong>
+                      <small>vs</small>
+                      <strong>{match.player2.username}</strong>
+                    </div>
+                    <b>{match.score1} : {match.score2}</b>
+                    <div className="admin-row-actions">
+                      <button
+                        type="button"
+                        aria-label={`${matchName} 경기 수정`}
+                        onClick={() => setEditing(match)}
+                      >
+                        <Pencil size={18} />
+                      </button>
+                      <button
+                        type="button"
+                        className="is-danger"
+                        aria-label={`${matchName} 경기 삭제`}
+                        onClick={() => setDeleting(match)}
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+          {(canLoadMore || loadMoreError || pageOutOfSync) && (
+            <div className="pagination-footer">
+              {pageOutOfSync ? (
+                <Notice tone="info">목록이 변경되었습니다. 최신 목록을 다시 불러와 주세요.</Notice>
+              ) : (
+                loadMoreError && <Notice>{loadMoreError}</Notice>
+              )}
+              <button
+                type="button"
+                className="secondary-button"
+                disabled={loadingMore || refreshing || (!canLoadMore && !pageOutOfSync)}
+                onClick={() => void (pageOutOfSync ? load() : loadMore())}
+              >
+                {loadingMore || refreshing
+                  ? "불러오는 중"
+                  : pageOutOfSync
+                    ? "목록 새로고침"
+                    : "더 보기"}
+              </button>
+            </div>
+          )}
+        </section>
+      )}
 
       {editing && (
         <MatchEditModal

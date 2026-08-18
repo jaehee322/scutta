@@ -1,21 +1,14 @@
 from __future__ import annotations
 
-from typing import Annotated
-
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, status
 from sqlalchemy import select
-from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_player
-from app.core.database import get_db
+from app.api.deps import CurrentPlayer, DbSession
 from app.models import User, UserRole
 from app.schemas.stats import PlayerStats, PlayerSummary, PlayerWithStats
 from app.services.stats import get_player_stats
 
 router = APIRouter(prefix="/players", tags=["players"])
-
-DbSession = Annotated[Session, Depends(get_db)]
-CurrentPlayer = Annotated[User, Depends(get_current_player)]
 
 
 def _player_summary(user: User) -> PlayerSummary:

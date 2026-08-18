@@ -124,6 +124,13 @@ def test_matches_rankings_settlement_and_admin_edits(api) -> None:
     assert submitted.status_code == 201, submitted.text
     match_id = submitted.json()["id"]
     assert submitted.json()["winner_id"] == player_a["id"]
+    assert (
+        admin_client.patch(
+            f"/api/v1/admin/matches/{match_id}",
+            json={"kind": "competition"},
+        ).status_code
+        == 422
+    )
 
     assert (
         client_a.post(

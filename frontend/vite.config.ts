@@ -7,6 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      includeAssets: ["scutta-logo.png", "scutta-university-logo.png"],
       pwaAssets: {
         image: "public/scutta-logo.png",
         preset: "minimal-2023",
@@ -15,7 +16,7 @@ export default defineConfig({
       manifest: {
         name: "SCUTTA 경기 기록",
         short_name: "SCUTTA",
-        description: "SCUTTA 탁구 동아리 경기 기록과 랭킹",
+        description: "SCUTTA 탁구 동아리 경기 기록, 랭킹과 리그전",
         theme_color: "#3182f6",
         background_color: "#f2f4f6",
         display: "standalone",
@@ -27,7 +28,7 @@ export default defineConfig({
       },
       workbox: {
         navigateFallback: "/index.html",
-        navigateFallbackDenylist: [/^\/api\//, /^\/health$/],
+        navigateFallbackDenylist: [/^\/api(?:\/|$)/, /^\/health$/],
         cleanupOutdatedCaches: true,
       },
     }),

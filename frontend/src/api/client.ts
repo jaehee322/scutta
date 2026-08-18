@@ -1,7 +1,7 @@
 import type { ApiErrorBody } from "../types";
 
 const configuredBase = import.meta.env.VITE_API_URL?.trim().replace(/\/$/, "") ?? "";
-export const API_BASE = `${configuredBase}/api/v1`;
+const API_BASE = `${configuredBase}/api/v1`;
 export const AUTH_EXPIRED_EVENT = "scutta:auth-expired";
 
 export class ApiError extends Error {

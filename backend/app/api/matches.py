@@ -3,12 +3,9 @@ from __future__ import annotations
 from datetime import date
 from typing import Annotated, NoReturn
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, Query, Response, status
 
-from app.api.deps import get_current_admin, get_current_player
-from app.core.database import get_db
-from app.models import User
+from app.api.deps import CurrentAdmin, CurrentPlayer, DbSession
 from app.schemas.matches import (
     MatchAdminUpdate,
     MatchCreate,
@@ -17,6 +14,7 @@ from app.schemas.matches import (
     MatchRead,
 )
 from app.services.matches import (
+    CompetitionMatchManagedError,
     DailyMatchConflictError,
     InvalidMatchError,
     MatchNotFoundError,
@@ -30,10 +28,6 @@ from app.services.matches import (
 
 router = APIRouter(prefix="/matches", tags=["matches"])
 admin_router = APIRouter(prefix="/admin/matches", tags=["admin:matches"])
-
-DbSession = Annotated[Session, Depends(get_db)]
-CurrentPlayer = Annotated[User, Depends(get_current_player)]
-CurrentAdmin = Annotated[User, Depends(get_current_admin)]
 
 
 def _match_read(record: MatchRecord) -> MatchRead:
@@ -61,6 +55,8 @@ def _raise_match_error(error: Exception) -> NoReturn:
     if isinstance(error, MatchNotFoundError | PlayerNotFoundError):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
     if isinstance(error, DailyMatchConflictError):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
+    if isinstance(error, CompetitionMatchManagedError):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
     if isinstance(error, InvalidMatchError):
         raise HTTPException(
@@ -141,6 +137,7 @@ def list_all_matches(
         played_to=played_to,
         limit=limit,
         offset=offset,
+        casual_only=True,
     )
     return MatchListResponse(
         items=[_match_read(record) for record in records],
@@ -166,6 +163,7 @@ def patch_match(
         )
     except (
         DailyMatchConflictError,
+        CompetitionMatchManagedError,
         InvalidMatchError,
         MatchNotFoundError,
         PlayerNotFoundError,
@@ -178,6 +176,6 @@ def patch_match(
 def remove_match(match_id: int, db: DbSession, _admin: CurrentAdmin) -> Response:
     try:
         delete_match(db, match_id=match_id)
-    except MatchNotFoundError as error:
+    except (MatchNotFoundError, CompetitionMatchManagedError) as error:
         _raise_match_error(error)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

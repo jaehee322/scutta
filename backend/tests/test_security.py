@@ -189,6 +189,20 @@ def test_player_profile_and_password_validation(api) -> None:
     assert missing_profile.status_code == 422
 
     player = _create_player(admin)
+    rank_zero = admin.patch(
+        f"/api/v1/admin/players/{player['id']}",
+        json={"club_rank": 0},
+    )
+    assert rank_zero.status_code == 200
+    assert rank_zero.json()["club_rank"] == 0
+    assert (
+        admin.patch(f"/api/v1/admin/players/{player['id']}", json={"club_rank": -3}).status_code
+        == 422
+    )
+    assert (
+        admin.patch(f"/api/v1/admin/players/{player['id']}", json={"club_rank": 7}).status_code
+        == 422
+    )
     assert (
         admin.patch(f"/api/v1/admin/players/{player['id']}", json={"gender": None}).status_code
         == 422

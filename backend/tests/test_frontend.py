@@ -21,6 +21,10 @@ def _write_frontend(frontend_dist: Path) -> None:
         "window.SCUTTA = true;",
         encoding="utf-8",
     )
+    (frontend_dist / "assets" / "large.js").write_text(
+        "const value = 'SCUTTA';\n" * 100,
+        encoding="utf-8",
+    )
     (frontend_dist / "sw.js").write_text("self.skipWaiting();", encoding="utf-8")
 
 
@@ -29,12 +33,27 @@ def test_frontend_files_and_spa_routes_are_served(tmp_path: Path) -> None:
     client = TestClient(create_app(frontend_dist=tmp_path))
 
     navigation_headers = {"Accept": "text/html"}
-    assert "SCUTTA" in client.get("/", headers=navigation_headers).text
-    assert "SCUTTA" in client.get("/rankings", headers=navigation_headers).text
+    root = client.get("/", headers=navigation_headers)
+    fallback = client.get("/rankings", headers=navigation_headers)
+    assert "SCUTTA" in root.text
+    assert "SCUTTA" in fallback.text
     assert "SCUTTA" in client.get("/admin/players", headers=navigation_headers).text
-    assert client.get("/assets/app.js").text == "window.SCUTTA = true;"
-    assert client.get("/manifest.webmanifest").json() == {"name": "SCUTTA"}
-    assert client.get("/sw.js").headers["content-type"].startswith("text/javascript")
+    asset = client.get("/assets/app.js")
+    compressed_asset = client.get("/assets/large.js", headers={"Accept-Encoding": "gzip"})
+    service_worker = client.get("/sw.js")
+    assert asset.text == "window.SCUTTA = true;"
+    manifest = client.get("/manifest.webmanifest")
+    assert manifest.json() == {"name": "SCUTTA"}
+    assert service_worker.headers["content-type"].startswith("text/javascript")
+    assert root.headers["cache-control"] == "no-cache"
+    assert fallback.headers["cache-control"] == "no-cache"
+    assert service_worker.headers["cache-control"] == "no-cache"
+    assert manifest.headers["cache-control"] == "no-cache"
+    assert asset.headers["cache-control"] == "public, max-age=31536000, immutable"
+    assert compressed_asset.headers["content-encoding"] == "gzip"
+    assert compressed_asset.headers["vary"] == "Accept-Encoding"
+    assert int(compressed_asset.headers["content-length"]) < len(compressed_asset.content)
+    assert compressed_asset.text.splitlines() == ["const value = 'SCUTTA';"] * 100
 
     missing_asset = client.get("/assets/missing.js")
     assert missing_asset.status_code == 404

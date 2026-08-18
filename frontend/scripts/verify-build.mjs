@@ -11,11 +11,19 @@ async function requireFile(relativePath) {
 
 const indexPath = await requireFile("index.html");
 const manifestPath = await requireFile("manifest.webmanifest");
-await requireFile("sw.js");
+const serviceWorkerPath = await requireFile("sw.js");
 
 const index = await readFile(indexPath, "utf8");
+const serviceWorker = await readFile(serviceWorkerPath, "utf8");
 if (!index.includes("manifest.webmanifest")) {
   throw new Error("index.html does not link the PWA manifest");
+}
+
+for (const logo of ["scutta-logo.png", "scutta-university-logo.png"]) {
+  await requireFile(logo);
+  if (!serviceWorker.includes(logo)) {
+    throw new Error(`PWA service worker does not precache ${logo}`);
+  }
 }
 
 const manifest = JSON.parse(await readFile(manifestPath, "utf8"));

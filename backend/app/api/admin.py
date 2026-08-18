@@ -11,7 +11,13 @@ from app.models import (
     AuthSession,
     Competition,
     CompetitionMember,
+    CompetitionTeam,
+    CompetitionTeamMember,
+    LeagueFixture,
     Match,
+    TeamDoublesGame,
+    TeamEncounter,
+    TeamSingleGame,
     User,
     UserRole,
 )
@@ -166,7 +172,7 @@ def get_database_reset_preview(db: Session) -> DatabaseResetPreview:
     return DatabaseResetPreview(
         confirmation_required=DATABASE_RESET_CONFIRMATION,
         matches=_count(db, Match),
-        competition_members=_count(db, CompetitionMember),
+        competition_members=(_count(db, CompetitionMember) + _count(db, CompetitionTeamMember)),
         competitions=_count(db, Competition),
         players=_count(db, User, User.role == UserRole.PLAYER),
         player_sessions=_count(db, AuthSession, AuthSession.user_id.in_(player_ids)),
@@ -195,14 +201,13 @@ def reset_database(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="확인 문구가 일치하지 않습니다.",
         )
-    locked_admin = db.scalar(
+    checked_admin = db.scalar(
         select(User)
         .where(User.id == admin.id, User.role == UserRole.ADMIN)
-        .with_for_update()
         .execution_options(populate_existing=True)
     )
-    if locked_admin is None or not verify_password(
-        payload.admin_password, locked_admin.password_hash
+    if checked_admin is None or not verify_password(
+        payload.admin_password, checked_admin.password_hash
     ):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -210,13 +215,31 @@ def reset_database(
         )
 
     if db.get_bind().dialect.name == "postgresql":
-        # Make the reset one serializable maintenance operation. Ordinary writes
-        # either finish before this point or wait until the reset commits.
+        # Competition writes lock their competition before player rows. Locking
+        # tables in the same direction avoids a reset/result-submit deadlock.
         db.execute(
             text(
-                "LOCK TABLE users, competitions, auth_sessions, "
-                "competition_members, matches IN ACCESS EXCLUSIVE MODE"
+                "LOCK TABLE competitions, competition_members, competition_teams, "
+                "competition_team_members, "
+                "league_fixtures, team_encounters, team_single_games, "
+                "team_doubles_games, matches, users, auth_sessions "
+                "IN ACCESS EXCLUSIVE MODE"
             )
+        )
+
+    # Recheck after the maintenance locks so a concurrent password change can
+    # never authorize the reset with a stale credential.
+    checked_admin = db.scalar(
+        select(User)
+        .where(User.id == admin.id, User.role == UserRole.ADMIN)
+        .execution_options(populate_existing=True)
+    )
+    if checked_admin is None or not verify_password(
+        payload.admin_password, checked_admin.password_hash
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="관리자 비밀번호가 올바르지 않습니다.",
         )
 
     preview = get_database_reset_preview(db)
@@ -229,7 +252,13 @@ def reset_database(
     )
 
     player_ids = select(User.id).where(User.role == UserRole.PLAYER)
+    db.execute(delete(TeamDoublesGame))
+    db.execute(delete(TeamSingleGame))
+    db.execute(delete(LeagueFixture))
     db.execute(delete(Match))
+    db.execute(delete(TeamEncounter))
+    db.execute(delete(CompetitionTeamMember))
+    db.execute(delete(CompetitionTeam))
     db.execute(delete(CompetitionMember))
     db.execute(delete(Competition))
     db.execute(delete(AuthSession).where(AuthSession.user_id.in_(player_ids)))

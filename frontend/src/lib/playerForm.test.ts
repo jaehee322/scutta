@@ -30,8 +30,17 @@ describe("buildPlayerPayload", () => {
     });
   });
 
-  it("rejects an empty or non-positive rank", () => {
-    expect(() => buildPlayerPayload({ ...form, club_rank: "" }, false)).toThrow("부수는 1 이상의 정수");
-    expect(() => buildPlayerPayload({ ...form, club_rank: "0" }, false)).toThrow("부수는 1 이상의 정수");
+  it("accepts every integer rank from -2 through 6", () => {
+    expect(buildPlayerPayload({ ...form, club_rank: "-2" }, false).club_rank).toBe(-2);
+    expect(buildPlayerPayload({ ...form, club_rank: "0" }, false).club_rank).toBe(0);
+    expect(buildPlayerPayload({ ...form, club_rank: "6" }, false).club_rank).toBe(6);
+  });
+
+  it("rejects an empty, fractional, or out-of-range rank", () => {
+    const message = "부수는 -2부터 6 사이의 정수";
+    expect(() => buildPlayerPayload({ ...form, club_rank: "" }, false)).toThrow(message);
+    expect(() => buildPlayerPayload({ ...form, club_rank: "1.5" }, false)).toThrow(message);
+    expect(() => buildPlayerPayload({ ...form, club_rank: "-3" }, false)).toThrow(message);
+    expect(() => buildPlayerPayload({ ...form, club_rank: "7" }, false)).toThrow(message);
   });
 });

@@ -5,12 +5,13 @@ from urllib.parse import urlsplit
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.datastructures import Headers
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api import admin, auth, matches, players, rankings, settlements
+from app.api import admin, auth, competitions, matches, players, rankings, settlements
 from app.core.config import get_settings
 
 DEFAULT_FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
@@ -19,6 +20,21 @@ RESERVED_FRONTEND_PATHS = frozenset({"api", "docs", "health", "openapi.json", "r
 
 class SpaStaticFiles(StaticFiles):
     """Serve built frontend files and fall back to index.html for client routes."""
+
+    @staticmethod
+    def _set_cache_control(response, path: str, *, spa_fallback: bool = False):
+        normalized_path = path.replace("\\", "/")
+        if spa_fallback or normalized_path in {
+            "",
+            ".",
+            "index.html",
+            "manifest.webmanifest",
+            "sw.js",
+        }:
+            response.headers["Cache-Control"] = "no-cache"
+        elif normalized_path.startswith("assets/"):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        return response
 
     async def get_response(self, path: str, scope):
         root_path = path.partition("/")[0]
@@ -32,13 +48,14 @@ class SpaStaticFiles(StaticFiles):
                 raise
         else:
             if response.status_code != status.HTTP_404_NOT_FOUND:
-                return response
+                return self._set_cache_control(response, path)
 
         accept = Headers(scope=scope).get("accept", "")
         if PurePosixPath(path).suffix or "text/html" not in accept:
             raise StarletteHTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-        return await super().get_response("index.html", scope)
+        response = await super().get_response("index.html", scope)
+        return self._set_cache_control(response, path, spa_fallback=True)
 
 
 def mount_frontend(
@@ -72,9 +89,10 @@ def create_app(frontend_dist: Path | None = None) -> FastAPI:
         CORSMiddleware,
         allow_origins=settings.cors_origins,
         allow_credentials=True,
-        allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         allow_headers=["Content-Type"],
     )
+    application.add_middleware(GZipMiddleware, minimum_size=1_000, compresslevel=5)
 
     unsafe_methods = frozenset({"POST", "PUT", "PATCH", "DELETE"})
     allowed_origins = frozenset(settings.cors_origins)
@@ -114,8 +132,10 @@ def create_app(frontend_dist: Path | None = None) -> FastAPI:
     application.include_router(matches.router, prefix=api_prefix)
     application.include_router(rankings.router, prefix=api_prefix)
     application.include_router(settlements.router, prefix=api_prefix)
+    application.include_router(competitions.router, prefix=api_prefix)
     application.include_router(admin.router, prefix=api_prefix)
     application.include_router(matches.admin_router, prefix=api_prefix)
+    application.include_router(competitions.admin_router, prefix=api_prefix)
 
     missing_api_methods = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 

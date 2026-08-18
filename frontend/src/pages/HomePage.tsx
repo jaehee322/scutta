@@ -281,7 +281,7 @@ export function HomePage() {
                         >
                           <span>
                             <strong>{player.username}</strong>
-                            {player.club_rank && <small>{player.club_rank}부</small>}
+                            {player.club_rank !== null && <small>{player.club_rank}부</small>}
                           </span>
                           {selectedOpponent?.id === player.id && <Check size={16} />}
                         </button>

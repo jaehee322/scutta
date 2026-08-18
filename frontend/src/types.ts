@@ -2,6 +2,8 @@ export type UserRole = "player" | "admin";
 export type Gender = "M" | "F";
 export type MatchKind = "casual" | "daily" | "competition";
 export type RankingCategory = "matches" | "wins" | "losses" | "opponents";
+export type CompetitionType = "league" | "team";
+export type CompetitionStatus = "active" | "completed";
 
 export interface UserRead {
   id: number;
@@ -109,10 +111,145 @@ export interface DatabaseResetResponse {
   deleted: DatabaseResetCounts;
 }
 
-export interface PasswordResetResponse {
-  message: string;
-  revoked_sessions: number;
+export interface CompetitionSummary {
+  id: number;
+  name: string;
+  type: CompetitionType;
+  status: CompetitionStatus;
+  completed_count: number;
+  total_count: number;
+  completed_at: string | null;
+  created_at: string;
+  updated_at: string;
 }
+
+export interface CompetitionPlayerRef {
+  id: number;
+  username: string;
+  club_rank: number | null;
+}
+
+export interface LeagueStanding {
+  rank: number;
+  player: CompetitionPlayerRef;
+  played: number;
+  wins: number;
+  losses: number;
+  sets_won: number;
+  sets_lost: number;
+  set_difference: number;
+}
+
+export interface LeagueFixture {
+  id: number;
+  round_no: number;
+  order_no: number;
+  player1: CompetitionPlayerRef;
+  player2: CompetitionPlayerRef;
+  score1: number | null;
+  score2: number | null;
+  played_on: string | null;
+  winner_id: number | null;
+  completed: boolean;
+  can_submit: boolean;
+}
+
+export interface LeagueCompetitionDetail extends Omit<CompetitionSummary, "type"> {
+  type: "league";
+  members: CompetitionPlayerRef[];
+  standings: LeagueStanding[];
+  fixtures: LeagueFixture[];
+}
+
+export interface CompetitionTeamRef {
+  id: number;
+  name: string;
+}
+
+export interface CompetitionTeam extends CompetitionTeamRef {
+  members: CompetitionPlayerRef[];
+}
+
+export interface TeamStanding {
+  rank: number;
+  team: CompetitionTeamRef;
+  played: number;
+  wins: number;
+  losses: number;
+  games_won: number;
+  games_lost: number;
+  game_difference: number;
+}
+
+export interface TeamSingleMatch {
+  id: number;
+  sequence: number;
+  team1_player: CompetitionPlayerRef;
+  team2_player: CompetitionPlayerRef;
+  score1: number;
+  score2: number;
+  played_on: string;
+  winner_team_id: number;
+}
+
+export interface TeamDoublesMatch {
+  id: number;
+  team1_players: CompetitionPlayerRef[];
+  team2_players: CompetitionPlayerRef[];
+  score1: number | null;
+  score2: number | null;
+  played_on: string | null;
+  winner_team_id: number | null;
+  completed: boolean;
+}
+
+export interface TeamEncounter {
+  id: number;
+  round_no: number;
+  order_no: number;
+  team1: CompetitionTeamRef;
+  team2: CompetitionTeamRef;
+  singles: TeamSingleMatch[];
+  doubles: TeamDoublesMatch | null;
+  team1_wins: number;
+  team2_wins: number;
+  winner_team_id: number | null;
+  completed: boolean;
+  available_team1_players: CompetitionPlayerRef[];
+  available_team2_players: CompetitionPlayerRef[];
+  can_submit_singles: boolean;
+  can_submit_doubles: boolean;
+}
+
+export interface TeamCompetitionDetail extends Omit<CompetitionSummary, "type"> {
+  type: "team";
+  teams: CompetitionTeam[];
+  standings: TeamStanding[];
+  encounters: TeamEncounter[];
+}
+
+export type CompetitionDetail = LeagueCompetitionDetail | TeamCompetitionDetail;
+
+export interface CompetitionTeamInput {
+  name: string;
+  member_ids: number[];
+}
+
+export interface CompetitionTeamNameInput {
+  id: number;
+  name: string;
+}
+
+export interface CompetitionUpdateInput {
+  name: string;
+  participant_ids?: number[];
+  teams?: CompetitionTeamInput[];
+  team_names?: CompetitionTeamNameInput[];
+}
+
+export type CompetitionCreateInput =
+  | { name: string; type: "league"; participant_ids: number[] }
+  | { name: string; type: "team"; teams: CompetitionTeamInput[] };
 
 export type PlayerCreateInput = {
   username: string;

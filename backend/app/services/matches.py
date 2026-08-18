@@ -44,6 +44,10 @@ class DailyMatchConflictError(MatchServiceError):
     pass
 
 
+class CompetitionMatchManagedError(MatchServiceError):
+    pass
+
+
 @dataclass(frozen=True, slots=True)
 class MatchRecord:
     match: Match
@@ -239,8 +243,11 @@ def list_match_records(
     played_to: date | None = None,
     limit: int,
     offset: int,
+    casual_only: bool = False,
 ) -> tuple[list[MatchRecord], int]:
     filters = []
+    if casual_only:
+        filters.append(Match.competition_id.is_(None))
     if participant_id is not None:
         filters.append(or_(Match.player1_id == participant_id, Match.player2_id == participant_id))
     if played_from is not None:
@@ -270,6 +277,8 @@ def update_match(
     admin: User,
 ) -> MatchRecord:
     match = _get_match_for_update(db, match_id)
+    if match.competition_id is not None:
+        raise CompetitionMatchManagedError("대회 경기는 대회 관리 화면에서만 수정할 수 있습니다.")
 
     player1_id = match.player1_id
     player2_id = match.player2_id
@@ -311,8 +320,6 @@ def update_match(
     match.score1 = score1
     match.score2 = score2
     match.played_on = played_on
-    if "kind" in changes:
-        match.kind = changes["kind"]  # type: ignore[assignment]
     match.updated_by_id = admin.id
 
     try:
@@ -330,6 +337,8 @@ def update_match(
 
 def delete_match(db: Session, *, match_id: int) -> None:
     match = _get_match_for_update(db, match_id)
+    if match.competition_id is not None:
+        raise CompetitionMatchManagedError("대회 경기는 대회 관리 화면에서만 삭제할 수 있습니다.")
     db.delete(match)
     try:
         db.commit()

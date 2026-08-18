@@ -4,6 +4,7 @@ import {
   Home,
   ListRestart,
   ReceiptText,
+  Trophy,
   UserRound,
   UsersRound,
 } from "lucide-react";
@@ -16,6 +17,7 @@ import { Brand } from "./Brand";
 const playerNavItems = [
   { to: "/", label: "홈", icon: Home, end: true },
   { to: "/rankings", label: "랭킹", icon: ChartNoAxesColumnIncreasing, end: false },
+  { to: "/competitions", label: "리그전", icon: Trophy, end: false },
   { to: "/settlements", label: "정산", icon: ReceiptText, end: false },
   { to: "/profile", label: "내 정보", icon: UserRound, end: false },
 ] as const;
@@ -23,6 +25,7 @@ const playerNavItems = [
 const adminNavItems = [
   { to: "/admin/players", label: "선수", icon: UsersRound, end: false },
   { to: "/admin/matches", label: "경기", icon: ListRestart, end: false },
+  { to: "/competitions", label: "리그전", icon: Trophy, end: false },
   { to: "/admin/reset", label: "초기화", icon: DatabaseZap, end: false },
   { to: "/profile", label: "관리자", icon: UserRound, end: false },
 ] as const;

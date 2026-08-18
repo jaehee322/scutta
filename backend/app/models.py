@@ -10,6 +10,7 @@ from sqlalchemy import (
     DateTime,
     Enum,
     ForeignKey,
+    ForeignKeyConstraint,
     Index,
     Integer,
     SmallInteger,
@@ -40,7 +41,7 @@ class MatchKind(enum.StrEnum):
 
 class CompetitionType(enum.StrEnum):
     LEAGUE = "league"
-    TOURNAMENT = "tournament"
+    TEAM = "team"
 
 
 class CompetitionStatus(enum.StrEnum):
@@ -71,7 +72,10 @@ class TimestampMixin:
 class User(TimestampMixin, Base):
     __tablename__ = "users"
     __table_args__ = (
-        CheckConstraint("club_rank IS NULL OR club_rank > 0", name="club_rank_positive"),
+        CheckConstraint(
+            "club_rank IS NULL OR club_rank BETWEEN -2 AND 6",
+            name="club_rank_range",
+        ),
         CheckConstraint("auth_version > 0", name="auth_version_positive"),
         CheckConstraint("role IN ('player', 'admin')", name="user_role"),
         CheckConstraint("gender IN ('M', 'F')", name="gender"),
@@ -120,8 +124,13 @@ class AuthSession(Base):
 class Competition(TimestampMixin, Base):
     __tablename__ = "competitions"
     __table_args__ = (
-        CheckConstraint("type IN ('league', 'tournament')", name="competition_type"),
+        CheckConstraint("type IN ('league', 'team')", name="competition_type"),
         CheckConstraint("status IN ('active', 'completed')", name="competition_status"),
+        CheckConstraint(
+            "(status = 'active' AND completed_at IS NULL) OR "
+            "(status = 'completed' AND completed_at IS NOT NULL)",
+            name="completion_state",
+        ),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -134,17 +143,24 @@ class Competition(TimestampMixin, Base):
         default=CompetitionStatus.ACTIVE,
         nullable=False,
     )
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     members: Mapped[list[CompetitionMember]] = relationship(
+        back_populates="competition", cascade="all, delete-orphan", passive_deletes=True
+    )
+    league_fixtures: Mapped[list[LeagueFixture]] = relationship(
+        back_populates="competition", cascade="all, delete-orphan", passive_deletes=True
+    )
+    teams: Mapped[list[CompetitionTeam]] = relationship(
+        back_populates="competition", cascade="all, delete-orphan", passive_deletes=True
+    )
+    team_encounters: Mapped[list[TeamEncounter]] = relationship(
         back_populates="competition", cascade="all, delete-orphan", passive_deletes=True
     )
 
 
 class CompetitionMember(Base):
     __tablename__ = "competition_members"
-    __table_args__ = (
-        CheckConstraint("position IS NULL OR position > 0", name="position_positive"),
-    )
 
     competition_id: Mapped[int] = mapped_column(
         ForeignKey("competitions.id", ondelete="CASCADE"), primary_key=True
@@ -152,9 +168,209 @@ class CompetitionMember(Base):
     user_id: Mapped[int] = mapped_column(
         ForeignKey("users.id", ondelete="RESTRICT"), primary_key=True
     )
-    position: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
-
     competition: Mapped[Competition] = relationship(back_populates="members")
+
+
+class LeagueFixture(Base):
+    __tablename__ = "league_fixtures"
+    __table_args__ = (
+        CheckConstraint("player1_id < player2_id", name="canonical_player_order"),
+        CheckConstraint("round_no > 0", name="round_positive"),
+        CheckConstraint("order_no > 0", name="order_positive"),
+        UniqueConstraint(
+            "competition_id",
+            "player1_id",
+            "player2_id",
+            name="league_fixture_player_pair",
+        ),
+        UniqueConstraint(
+            "competition_id",
+            "round_no",
+            "order_no",
+            name="league_fixture_round_order",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    competition_id: Mapped[int] = mapped_column(
+        ForeignKey("competitions.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    player1_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
+    )
+    player2_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
+    )
+    round_no: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    order_no: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    match_id: Mapped[int | None] = mapped_column(
+        ForeignKey("matches.id", ondelete="SET NULL"), unique=True, nullable=True
+    )
+
+    competition: Mapped[Competition] = relationship(back_populates="league_fixtures")
+
+
+class CompetitionTeam(Base):
+    __tablename__ = "competition_teams"
+    __table_args__ = (
+        UniqueConstraint("competition_id", "name", name="competition_team_name"),
+        UniqueConstraint("id", "competition_id", name="competition_team_identity"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    competition_id: Mapped[int] = mapped_column(
+        ForeignKey("competitions.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    name: Mapped[str] = mapped_column(String(64), nullable=False)
+
+    competition: Mapped[Competition] = relationship(back_populates="teams")
+    members: Mapped[list[CompetitionTeamMember]] = relationship(
+        back_populates="team", cascade="all, delete-orphan", passive_deletes=True
+    )
+
+
+class CompetitionTeamMember(Base):
+    __tablename__ = "competition_team_members"
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["team_id", "competition_id"],
+            ["competition_teams.id", "competition_teams.competition_id"],
+            ondelete="CASCADE",
+            name="team_member_team_identity",
+        ),
+    )
+
+    competition_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"), primary_key=True
+    )
+    team_id: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+
+    team: Mapped[CompetitionTeam] = relationship(back_populates="members")
+
+
+class TeamEncounter(Base):
+    __tablename__ = "team_encounters"
+    __table_args__ = (
+        CheckConstraint("team1_id < team2_id", name="canonical_team_order"),
+        CheckConstraint("round_no > 0", name="round_positive"),
+        CheckConstraint("order_no > 0", name="order_positive"),
+        UniqueConstraint(
+            "competition_id",
+            "team1_id",
+            "team2_id",
+            name="team_encounter_pair",
+        ),
+        UniqueConstraint(
+            "competition_id",
+            "round_no",
+            "order_no",
+            name="team_encounter_round_order",
+        ),
+        ForeignKeyConstraint(
+            ["team1_id", "competition_id"],
+            ["competition_teams.id", "competition_teams.competition_id"],
+            ondelete="CASCADE",
+            name="team_encounter_team1_identity",
+        ),
+        ForeignKeyConstraint(
+            ["team2_id", "competition_id"],
+            ["competition_teams.id", "competition_teams.competition_id"],
+            ondelete="CASCADE",
+            name="team_encounter_team2_identity",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    competition_id: Mapped[int] = mapped_column(
+        ForeignKey("competitions.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    team1_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    team2_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    round_no: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    order_no: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+
+    competition: Mapped[Competition] = relationship(back_populates="team_encounters")
+    singles: Mapped[list[TeamSingleGame]] = relationship(
+        back_populates="encounter", cascade="all, delete-orphan", passive_deletes=True
+    )
+    doubles: Mapped[TeamDoublesGame | None] = relationship(
+        back_populates="encounter",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        uselist=False,
+    )
+
+
+class TeamSingleGame(Base):
+    __tablename__ = "team_single_games"
+    __table_args__ = (
+        CheckConstraint("sequence BETWEEN 1 AND 4", name="sequence_range"),
+        UniqueConstraint("encounter_id", "sequence", name="team_single_sequence"),
+        UniqueConstraint("encounter_id", "team1_player_id", name="team_single_team1_player"),
+        UniqueConstraint("encounter_id", "team2_player_id", name="team_single_team2_player"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    encounter_id: Mapped[int] = mapped_column(
+        ForeignKey("team_encounters.id", ondelete="CASCADE"), index=True, nullable=False
+    )
+    sequence: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    team1_player_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
+    )
+    team2_player_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
+    )
+    match_id: Mapped[int] = mapped_column(
+        ForeignKey("matches.id", ondelete="CASCADE"), unique=True, nullable=False
+    )
+
+    encounter: Mapped[TeamEncounter] = relationship(back_populates="singles")
+
+
+class TeamDoublesGame(TimestampMixin, Base):
+    __tablename__ = "team_doubles_games"
+    __table_args__ = (
+        CheckConstraint("team1_player1_id < team1_player2_id", name="team1_player_order"),
+        CheckConstraint("team2_player1_id < team2_player2_id", name="team2_player_order"),
+        CheckConstraint(
+            "(score1 IS NULL AND score2 IS NULL AND played_on IS NULL) OR "
+            "((score1 = 3 AND score2 = 0) OR "
+            "(score1 = 0 AND score2 = 3) OR "
+            "(score1 = 2 AND score2 = 1) OR "
+            "(score1 = 1 AND score2 = 2)) AND played_on IS NOT NULL",
+            name="allowed_score",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    encounter_id: Mapped[int] = mapped_column(
+        ForeignKey("team_encounters.id", ondelete="CASCADE"), unique=True, nullable=False
+    )
+    team1_player1_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
+    )
+    team1_player2_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
+    )
+    team2_player1_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
+    )
+    team2_player2_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
+    )
+    score1: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    score2: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
+    played_on: Mapped[date | None] = mapped_column(Date, nullable=True)
+    submitted_by_id: Mapped[int | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+    updated_by_id: Mapped[int | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+
+    encounter: Mapped[TeamEncounter] = relationship(back_populates="doubles")
 
 
 class Match(TimestampMixin, Base):
@@ -162,6 +378,11 @@ class Match(TimestampMixin, Base):
     __table_args__ = (
         CheckConstraint("player1_id < player2_id", name="canonical_player_order"),
         CheckConstraint("kind IN ('casual', 'daily', 'competition')", name="match_kind"),
+        CheckConstraint(
+            "(kind = 'competition' AND competition_id IS NOT NULL) OR "
+            "(kind IN ('casual', 'daily') AND competition_id IS NULL)",
+            name="competition_link",
+        ),
         CheckConstraint(
             "(score1 = 3 AND score2 = 0) OR "
             "(score1 = 0 AND score2 = 3) OR "

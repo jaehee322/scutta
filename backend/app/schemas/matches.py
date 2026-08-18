@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.models import MatchKind
 
@@ -26,12 +26,13 @@ class MatchCreate(BaseModel):
 
 
 class MatchAdminUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     player1_id: int | None = Field(default=None, gt=0)
     player2_id: int | None = Field(default=None, gt=0)
     score1: int | None = Field(default=None, ge=0, le=3)
     score2: int | None = Field(default=None, ge=0, le=3)
     played_on: date | None = None
-    kind: MatchKind | None = None
 
     @model_validator(mode="after")
     def validate_patch(self) -> MatchAdminUpdate:
@@ -63,8 +64,6 @@ class MatchAdminUpdate(BaseModel):
 
         if "played_on" in fields and self.played_on is None:
             raise ValueError("played_on cannot be null")
-        if "kind" in fields and self.kind is None:
-            raise ValueError("kind cannot be null")
         return self
 
 
