@@ -35,7 +35,6 @@ export function RankingsPage() {
     () => data?.categories.find((item) => item.category === category),
     [category, data],
   );
-  const myEntry = table?.entries.find((entry) => entry.player.id === user?.id);
 
   if (!data && !error) return <PageLoader />;
 
@@ -64,21 +63,6 @@ export function RankingsPage() {
 
       {table && (
         <>
-          <section className="rank-hero">
-            <div className="rank-hero__copy">
-              <h2>{categoryMeta[category].label}</h2>
-            </div>
-            {myEntry && (
-              <div className="my-rank-card">
-                <span>내 순위</span>
-                <strong>{myEntry.rank}위</strong>
-                <small>
-                  {myEntry.value}{categoryMeta[category].unit}
-                </small>
-              </div>
-            )}
-          </section>
-
           <section className="ranking-card">
             <div className="ranking-header-row">
               <span>순위</span>
@@ -103,7 +87,7 @@ export function RankingsPage() {
                       <span className="avatar-circle">{entry.player.username.slice(0, 1)}</span>
                       <div>
                         <strong>
-                          {entry.player.username}
+                          <span className="ranking-player__name">{entry.player.username}</span>
                           {isMe && <small>나</small>}
                         </strong>
                         <span>

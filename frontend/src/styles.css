@@ -22,8 +22,19 @@
   box-sizing: border-box;
 }
 
+html, body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 body {
@@ -124,6 +135,18 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   object-fit: contain;
   width: 54px;
   height: 50px;
+}
+
+.brand--compact {
+  gap: 10px;
+}
+
+.brand__wordmark {
+  color: var(--ink);
+  letter-spacing: -.6px;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
 }
 
 .login-page {
@@ -332,6 +355,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .app-frame {
   min-height: 100vh;
+  overflow-x: clip;
 }
 
 .topbar {
@@ -415,7 +439,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .page {
   width: min(100% - 40px, 1080px);
   margin: 0 auto;
-  padding: 48px 0 80px;
+  padding: 32px 0 80px;
 }
 
 .page-loader {
@@ -455,8 +479,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .stat-item {
-  justify-content: space-between;
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  gap: 5px;
+  min-width: 0;
   padding: 23px 30px;
   display: flex;
   position: relative;
@@ -468,17 +496,24 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   width: 1px;
   height: 35px;
   position: absolute;
+  top: 50%;
   right: 0;
+  transform: translateY(-50%);
 }
 
 .stat-item > span {
   color: var(--muted);
+  white-space: nowrap;
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.2;
 }
 
 .stat-item strong {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
   font-size: 23px;
+  line-height: 1.2;
 }
 
 .stat-item small, .settlement-metrics small {
@@ -515,6 +550,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .submit-card, .recent-card {
   padding: 32px;
+}
+
+.submit-card {
+  padding-block: 28px;
 }
 
 .section-heading {
@@ -672,7 +711,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .opponent-suggestion > span {
   align-items: baseline;
   gap: 8px;
+  min-width: 0;
   display: flex;
+}
+
+.opponent-suggestion strong {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .opponent-suggestion small {
@@ -788,11 +835,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .match-row__opponent {
   gap: 2px;
+  min-width: 0;
   display: grid;
 }
 
 .match-row__opponent strong {
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 15px;
+  overflow: hidden;
 }
 
 .match-row__opponent span {
@@ -857,43 +908,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   box-shadow: 0 3px 10px #00000012;
 }
 
-.rank-hero {
-  color: #fff;
-  background: linear-gradient(115deg, #2375ec, #5a9bfb);
-  border-radius: 26px;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 30px 36px;
-  display: flex;
-  position: relative;
-  overflow: hidden;
-}
-
-.rank-hero h2 {
-  margin: 0;
-  font-size: 26px;
-}
-
-.my-rank-card {
-  text-align: center;
-  backdrop-filter: blur(10px);
-  background: #ffffff29;
-  border: 1px solid #ffffff40;
-  border-radius: 20px;
-  padding: 16px 28px;
-  display: grid;
-}
-
-.my-rank-card span, .my-rank-card small {
-  color: #fffc;
-  font-size: 11px;
-}
-
-.my-rank-card strong {
-  font-size: 28px;
-}
-
 .ranking-card {
   box-shadow: var(--shadow);
   background: #fff;
@@ -951,18 +965,30 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .ranking-player {
   align-items: center;
   gap: 12px;
+  min-width: 0;
   display: flex;
 }
 
 .ranking-player > div {
   gap: 2px;
+  min-width: 0;
   display: grid;
 }
 
 .ranking-player strong {
   align-items: center;
   gap: 7px;
+  min-width: 0;
   display: flex;
+}
+
+.ranking-player .ranking-player__name {
+  color: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  font-size: inherit;
+  overflow: hidden;
 }
 
 .ranking-player strong small {
@@ -2413,7 +2439,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .topbar__inner {
-    padding: 0 20px;
+    padding-right: max(20px,env(safe-area-inset-right));
+    padding-left: max(20px,env(safe-area-inset-left));
   }
 
   .brand--compact .brand__logo {
@@ -2421,18 +2448,26 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     height: 45px;
   }
 
+  .brand--compact {
+    gap: 8px;
+  }
+
+  .brand__wordmark {
+    font-size: 16px;
+  }
+
   .desktop-nav, .user-chip {
     display: none;
   }
 
   .app-content {
-    min-height: calc(100vh - 64px);
+    min-height: calc(100svh - 64px);
   }
 
   .bottom-nav {
     z-index: 60;
     min-height: 68px;
-    padding: 7px 8px max(7px,env(safe-area-inset-bottom));
+    padding: 7px max(8px,env(safe-area-inset-right)) max(7px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
     border-top: 1px solid var(--line);
     backdrop-filter: blur(14px);
     background: #fffffff5;
@@ -2448,8 +2483,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .bottom-nav a {
     color: #a3adb8;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: 3px;
+    min-height: 54px;
     min-width: 0;
     font-size: 10px;
     font-weight: 700;
@@ -2462,7 +2499,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
   .page {
     width: 100%;
-    padding: 28px 18px 100px;
+    padding: 20px 18px calc(92px + env(safe-area-inset-bottom));
+  }
+
+  .field input, .field select, .input-shell input {
+    font-size: 16px;
   }
 
   .stats-strip {
@@ -2491,6 +2532,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .submit-card, .recent-card {
     border-radius: 23px;
     padding: 25px 20px;
+  }
+
+  .submit-card {
+    padding-block: 21px;
   }
 
   .recent-card {
@@ -2525,20 +2570,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .segmented-control button {
     white-space: nowrap;
     flex: 1;
+    min-height: 44px;
     padding: 10px 16px;
-  }
-
-  .rank-hero {
-    border-radius: 22px;
-    padding: 24px;
-  }
-
-  .rank-hero h2 {
-    font-size: 22px;
-  }
-
-  .my-rank-card {
-    padding: 13px 17px;
   }
 
   .ranking-card {
@@ -2620,6 +2653,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .admin-page-heading .primary-button {
     white-space: nowrap;
     padding: 0 13px;
+  }
+
+  .admin-row-actions button, .icon-button, .small-icon-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .small-primary-button {
+    min-height: 44px;
   }
 
   .admin-player-list article {
@@ -2880,6 +2922,29 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
   .settlement-grid {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (width <= 360px) {
+  .stats-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stat-item {
+    min-height: 72px;
+    padding: 14px 8px;
+  }
+
+  .stat-item:not(:last-child):after {
+    display: none;
+  }
+
+  .stat-item:nth-child(odd) {
+    border-right: 1px solid var(--line);
+  }
+
+  .stat-item:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
   }
 }
 

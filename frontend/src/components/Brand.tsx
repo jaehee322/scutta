@@ -8,6 +8,7 @@ export function Brand({ compact = false }: { compact?: boolean }) {
         width={compact ? 255 : 509}
         height={compact ? 237 : 360}
       />
+      {compact && <span className="brand__wordmark" aria-hidden="true">SCUTTA</span>}
     </div>
   );
 }
