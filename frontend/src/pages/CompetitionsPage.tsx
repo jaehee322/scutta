@@ -42,7 +42,7 @@ export function CompetitionsPage() {
 
   if (!items) {
     return (
-      <div className="page competitions-page">
+      <div className="page">
         <header className="competition-page-heading"><h1>리그전</h1></header>
         <div className="page-load-error">
           <Notice>{error || "리그전을 불러오지 못했습니다."}</Notice>
@@ -55,7 +55,7 @@ export function CompetitionsPage() {
   }
 
   return (
-    <div className="page competitions-page">
+    <div className="page">
       <header className="competition-page-heading">
         <h1>리그전</h1>
         {user?.role === "admin" && (

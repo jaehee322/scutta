@@ -1,4 +1,4 @@
-import { ArrowLeft, KeyRound, Pencil, Plus } from "lucide-react";
+import { ArrowLeft, KeyRound, Pencil, Plus, RefreshCw } from "lucide-react";
 import { type FormEvent, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -26,6 +26,7 @@ export function AdminPlayersPage() {
   const [resetting, setResetting] = useState<UserRead | null>(null);
 
   const load = useCallback(async () => {
+    setError("");
     try {
       setPlayers(await apiRequest<UserRead[]>("/admin/players"));
     } catch (caught) {
@@ -42,14 +43,28 @@ export function AdminPlayersPage() {
   if (loading) return <PageLoader />;
 
   return (
-    <div className="page admin-page">
-      <Link className="back-link" to="/profile"><ArrowLeft size={18} /> 내 정보</Link>
+    <div className="page">
+      <Link className="back-link" to="/"><ArrowLeft size={18} /> 홈</Link>
       <header className="admin-page-heading">
         <div><h1>선수 관리</h1></div>
-        <button className="primary-button" type="button" onClick={() => setCreateOpen(true)}><Plus size={18} /> 선수 등록</button>
+        <button className="primary-button" type="button" disabled={Boolean(error && !players.length)} onClick={() => setCreateOpen(true)}><Plus size={18} /> 선수 등록</button>
       </header>
-      {error && <Notice>{error}</Notice>}
-      <section className="admin-list-card">
+      {error && (
+        <div className="page-load-error">
+          <Notice>{error}</Notice>
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={() => {
+              setLoading(true);
+              void load();
+            }}
+          >
+            <RefreshCw size={17} /> 다시 불러오기
+          </button>
+        </div>
+      )}
+      {(!error || players.length > 0) && <section className="admin-list-card">
         <div className="admin-list-card__summary"><strong>선수 {players.length}명</strong></div>
         <div className="admin-player-list">
           {players.map((player) => (
@@ -63,7 +78,7 @@ export function AdminPlayersPage() {
             </article>
           ))}
         </div>
-      </section>
+      </section>}
       {createOpen && <PlayerFormModal title="새 선수 등록" initial={initialPlayer} onClose={() => setCreateOpen(false)} onSaved={load} />}
       {editing && <PlayerFormModal title="선수 정보 수정" initial={{ username: editing.username, password: "", gender: editing.gender ?? "M", is_freshman: editing.is_freshman, club_rank: String(editing.club_rank ?? 1) }} playerId={editing.id} onClose={() => setEditing(null)} onSaved={load} />}
       {resetting && <PasswordResetModal player={resetting} onClose={() => setResetting(null)} />}
@@ -84,10 +99,10 @@ function PlayerFormModal({ title, initial, playerId, onClose, onSaved }: { title
     } catch (caught) { setError(caught instanceof Error ? caught.message : "저장하지 못했습니다."); } finally { setSaving(false); }
   };
   return (
-    <Modal title={title} description="이름은 로그인 아이디로 사용돼요." onClose={onClose}>
+    <Modal title={title} description="이름은 로그인 아이디로 사용돼요." onClose={onClose} closeDisabled={saving}>
       <form className="modal-form" onSubmit={handleSubmit}>
         <label className="field"><span>이름</span><input value={form.username} onChange={(event) => setForm({ ...form, username: event.target.value })} required /></label>
-        {!playerId && <label className="field"><span>초기 비밀번호(학번)</span><input type="text" inputMode="numeric" autoComplete="off" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} minLength={8} required /></label>}
+        {!playerId && <label className="field"><span>초기 비밀번호</span><input type="text" autoComplete="off" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} minLength={8} required /></label>}
         <div className="form-row"><label className="field"><span>성별</span><select value={form.gender} onChange={(event) => setForm({ ...form, gender: event.target.value as Gender })}><option value="M">남</option><option value="F">여</option></select></label><label className="field"><span>부수</span><input type="number" min={-2} max={6} step={1} value={form.club_rank} onChange={(event) => setForm({ ...form, club_rank: event.target.value })} required /></label></div>
         <div className="toggle-row"><label><input type="checkbox" checked={form.is_freshman} onChange={(event) => setForm({ ...form, is_freshman: event.target.checked })} /><span>신입 부원</span></label></div>
         {error && <Notice>{error}</Notice>}
@@ -100,5 +115,5 @@ function PlayerFormModal({ title, initial, playerId, onClose, onSaved }: { title
 function PasswordResetModal({ player, onClose }: { player: UserRead; onClose: () => void }) {
   const [password, setPassword] = useState(""); const [message, setMessage] = useState(""); const [saving, setSaving] = useState(false);
   const submit = async (event: FormEvent) => { event.preventDefault(); setSaving(true); try { const response = await apiRequest<{ message: string }>(`/admin/players/${player.id}/password-reset`, { method: "POST", body: jsonBody({ new_password: password }) }); setMessage(response.message); setPassword(""); } catch (caught) { setMessage(caught instanceof Error ? caught.message : "초기화하지 못했습니다."); } finally { setSaving(false); } };
-  return <Modal title={`${player.username} 비밀번호 초기화`} description="기존 로그인 세션은 모두 종료돼요." onClose={onClose}><form className="modal-form" onSubmit={submit}><label className="field"><span>새 비밀번호</span><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} required /></label>{message && <Notice tone={message.includes("초기화했습니다") ? "success" : "error"}>{message}</Notice>}<button className="primary-button primary-button--large" disabled={saving}>{saving ? "초기화 중" : "비밀번호 초기화"}</button></form></Modal>;
+  return <Modal title={`${player.username} 비밀번호 초기화`} description="기존 로그인 세션은 모두 종료돼요." onClose={onClose} closeDisabled={saving}><form className="modal-form" onSubmit={submit}><label className="field"><span>새 비밀번호</span><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} disabled={saving} required /></label>{message && <Notice tone={message.includes("초기화했습니다") ? "success" : "error"}>{message}</Notice>}<button className="primary-button primary-button--large" disabled={saving}>{saving ? "초기화 중" : "비밀번호 초기화"}</button></form></Modal>;
 }

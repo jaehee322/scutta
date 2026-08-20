@@ -1,4 +1,5 @@
 from app.cli import ensure_bootstrap_admin
+from app.schemas.admin import DATABASE_RESET_CONFIRMATION
 from app.schemas.stats import RankingCategory
 from app.services.stats import get_rankings
 
@@ -18,6 +19,15 @@ def test_bootstrap_admin_is_idempotent_and_excluded_from_rankings(api) -> None:
 
     client = api.client()
     api.login(client, "admin", "1234")
+    reset = client.post(
+        "/api/v1/admin/database/reset",
+        json={
+            "confirmation": DATABASE_RESET_CONFIRMATION,
+            "admin_password": "1234",
+        },
+    )
+    assert reset.status_code == 200, reset.text
+
     changed = client.patch(
         "/api/v1/auth/password",
         json={"current_password": "1234", "new_password": "changed-password"},

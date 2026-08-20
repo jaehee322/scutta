@@ -2,6 +2,7 @@ import type { ApiErrorBody } from "../types";
 
 const configuredBase = import.meta.env.VITE_API_URL?.trim().replace(/\/$/, "") ?? "";
 const API_BASE = `${configuredBase}/api/v1`;
+const REQUEST_TIMEOUT_MS = 20_000;
 export const AUTH_EXPIRED_EVENT = "scutta:auth-expired";
 
 export class ApiError extends Error {
@@ -29,15 +30,33 @@ export async function apiRequest<T>(path: string, options: RequestInit = {}): Pr
     headers.set("Content-Type", "application/json");
   }
 
+  const controller = new AbortController();
+  const callerSignal = options.signal;
+  let timedOut = false;
+  const abortFromCaller = () => controller.abort(callerSignal?.reason);
+  if (callerSignal?.aborted) abortFromCaller();
+  else callerSignal?.addEventListener("abort", abortFromCaller, { once: true });
+  const timeout = globalThis.setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, REQUEST_TIMEOUT_MS);
+
   let response: Response;
   try {
     response = await fetch(`${API_BASE}${path}`, {
       ...options,
       headers,
       credentials: "include",
+      signal: controller.signal,
     });
   } catch {
+    if (timedOut) {
+      throw new ApiError(0, "서버 응답이 늦어 요청을 중단했습니다. 다시 시도해 주세요.");
+    }
     throw new ApiError(0, "서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.");
+  } finally {
+    globalThis.clearTimeout(timeout);
+    callerSignal?.removeEventListener("abort", abortFromCaller);
   }
 
   if (!response.ok) {

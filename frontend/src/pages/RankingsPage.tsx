@@ -39,19 +39,18 @@ export function RankingsPage() {
   if (!data && !error) return <PageLoader />;
 
   return (
-    <div className="page rankings-page">
+    <div className="page">
       <header className="page-heading">
         <h1>랭킹</h1>
       </header>
 
       {error && <Notice>{error}</Notice>}
 
-      <div className="segmented-control" role="tablist" aria-label="랭킹 부문">
+      <div className="segmented-control" role="group" aria-label="랭킹 부문">
         {categories.map((item) => (
           <button
             type="button"
-            role="tab"
-            aria-selected={category === item}
+            aria-pressed={category === item}
             key={item}
             className={category === item ? "is-active" : ""}
             onClick={() => setCategory(item)}
@@ -69,16 +68,25 @@ export function RankingsPage() {
               <span>선수</span>
               <span>{categoryMeta[category].label}</span>
             </div>
-            <div className="ranking-list">
+            <div>
               {table.entries.map((entry) => {
                 const isMe = entry.player.id === user?.id;
                 return (
                   <article className={`ranking-row ${isMe ? "is-me" : ""}`} key={entry.player.id}>
-                    <div className={`rank-number rank-number--${entry.rank}`}>
+                    <div
+                      className={`rank-number rank-number--${entry.rank}`}
+                      aria-label={`${entry.rank}위`}
+                    >
                       {entry.rank === 1 ? (
-                        <Crown size={22} fill="currentColor" />
+                        <>
+                          <Crown size={22} fill="currentColor" aria-hidden="true" />
+                          <span>{entry.rank}</span>
+                        </>
                       ) : entry.rank <= 3 ? (
-                        <Medal size={21} />
+                        <>
+                          <Medal size={21} aria-hidden="true" />
+                          <span>{entry.rank}</span>
+                        </>
                       ) : (
                         entry.rank
                       )}

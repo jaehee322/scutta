@@ -4,15 +4,15 @@
   color: #191f28;
   font-synthesis: none;
   text-rendering: optimizelegibility;
-  --blue: #3182f6;
-  --blue-dark: #1b64da;
+  --blue: #1b64da;
+  --blue-dark: #134fb8;
   --blue-soft: #eaf3ff;
   --ink: #191f28;
   --muted: #6b7684;
-  --subtle: #8b95a1;
+  --subtle: #6b7684;
   --line: #e5e8eb;
   --background: #f2f4f6;
-  --red: #f04452;
+  --red: #d73343;
   --shadow: 0 14px 40px #10234612;
   background: #f2f4f6;
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
@@ -67,7 +67,7 @@ a {
 
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
   outline-offset: 2px;
-  outline: 3px solid #3182f640;
+  outline: 3px solid var(--blue);
 }
 
 .splash {
@@ -320,6 +320,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 13px;
 }
 
+.login-install-button {
+  color: var(--blue-dark);
+  background: var(--blue-soft);
+  border: 0;
+  border-radius: 14px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 14px;
+  font-weight: 800;
+  display: flex;
+}
+
 /* Shared application shell and controls */
 
 .notice {
@@ -568,12 +583,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: grid;
 }
 
-.section-heading span {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
-}
-
 .section-heading h1, .section-heading h2 {
   letter-spacing: -.5px;
   margin: 0;
@@ -659,11 +668,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .score-choice strong {
   font-size: 19px;
-}
-
-.score-choice span {
-  color: var(--subtle);
-  font-size: 11px;
 }
 
 .opponent-combobox {
@@ -791,11 +795,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #4e5968;
 }
 
-.empty-state p {
-  margin: 8px 0 0;
-  font-size: 13px;
-}
-
 .match-list {
   display: grid;
 }
@@ -878,11 +877,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 34px;
 }
 
-.page-heading p {
-  color: var(--muted);
-  margin: 0;
-}
-
 .segmented-control {
   background: #e8ebee;
   border-radius: 16px;
@@ -946,20 +940,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .rank-number {
   color: var(--subtle);
   font-variant-numeric: tabular-nums;
+  align-items: center;
+  gap: 5px;
   font-size: 16px;
   font-weight: 800;
+  display: flex;
 }
 
 .rank-number--1 {
-  color: #f2a900;
+  color: #8a6100;
 }
 
 .rank-number--2 {
-  color: #8d99a6;
+  color: #596572;
 }
 
 .rank-number--3 {
-  color: #c77844;
+  color: #8f4f2f;
 }
 
 .ranking-player {
@@ -1154,92 +1151,40 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   line-height: 1.6;
 }
 
-/* Profile and administration */
-
-.profile-hero {
+.settlement-schedule {
   box-shadow: var(--shadow);
   background: #fff;
-  border-radius: 28px;
-  align-items: center;
-  gap: 20px;
-  padding: 32px 38px;
-  display: flex;
-  position: relative;
-}
-
-.profile-avatar {
-  color: #fff;
-  background: linear-gradient(145deg, #3182f6, #74adff);
-  border-radius: 25px;
-  place-items: center;
-  width: 72px;
-  height: 72px;
-  font-size: 28px;
-  font-weight: 800;
+  border-radius: 20px;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 20px 24px;
   display: grid;
-  box-shadow: 0 13px 25px #3182f633;
 }
 
-.profile-hero h1 {
-  margin: 4px 0;
-  font-size: 28px;
-}
-
-.profile-hero p {
-  color: var(--muted);
+.settlement-schedule h2 {
   margin: 0;
-  font-size: 13px;
+  font-size: 17px;
 }
 
-.role-badge {
+.settlement-schedule > div {
+  flex-wrap: wrap;
+  gap: 8px;
+  display: flex;
+}
+
+.settlement-schedule span {
+  color: var(--blue-dark);
   background: var(--blue-soft);
-  color: var(--blue);
-  border-radius: 12px;
-  align-items: center;
-  gap: 5px;
-  margin-left: auto;
-  padding: 8px 12px;
+  border-radius: 11px;
+  padding: 8px 11px;
   font-size: 12px;
   font-weight: 800;
-  display: flex;
 }
 
-.role-badge.is-admin {
-  color: #7655d4;
-  background: #f2edff;
-}
+/* Match history, account settings and administration */
 
-.profile-stats {
-  box-shadow: var(--shadow);
-  background: #fff;
-  border-radius: 22px;
-  grid-template-columns: repeat(4, 1fr);
-  margin-top: 18px;
-  display: grid;
-}
-
-.profile-stats div {
-  border-right: 1px solid var(--line);
-  justify-items: center;
-  padding: 22px;
-  display: grid;
-}
-
-.profile-stats div:last-child {
-  border: 0;
-}
-
-.profile-stats span {
-  color: var(--subtle);
-  font-size: 11px;
-}
-
-.profile-stats strong {
-  font-size: 24px;
-}
-
-.profile-history {
-  margin-top: 20px;
+.match-history-card {
+  margin-top: 0;
   padding: 30px;
 }
 
@@ -1248,7 +1193,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 12px;
 }
 
-.history-table article {
+.match-history-table article {
   border-top: 1px solid #f2f4f6;
   grid-template-columns: 45px 1fr auto;
   align-items: center;
@@ -1257,16 +1202,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: grid;
 }
 
-.history-table article > div {
+.match-history-table article > div {
   display: grid;
 }
 
-.history-table article div span {
+.match-history-table article div span {
   color: var(--subtle);
   font-size: 11px;
 }
 
-.history-score {
+.match-history-score {
   font-variant-numeric: tabular-nums;
 }
 
@@ -1295,6 +1240,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border: 0;
 }
 
+.settings-list__install {
+  color: var(--blue-dark);
+}
+
+.settings-list__install .settings-list__icon {
+  color: var(--blue);
+  background: var(--blue-soft);
+}
+
 .settings-list button.is-danger strong {
   color: var(--red);
 }
@@ -1313,11 +1267,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: grid;
 }
 
-.settings-list small {
-  color: var(--subtle);
-  font-size: 11px;
-}
-
 .admin-console-anchor {
   margin-top: 40px;
   scroll-margin-top: 100px;
@@ -1332,11 +1281,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .admin-console-heading h2 {
   margin: 3px 0;
   font-size: 25px;
-}
-
-.admin-console-heading p {
-  color: var(--muted);
-  margin: 0;
 }
 
 .admin-quick-grid {
@@ -1635,6 +1579,116 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: var(--muted);
   margin: 6px 0 0;
   font-size: 12px;
+}
+
+.pwa-install-guide {
+  color: #4e5968;
+  gap: 18px;
+  display: grid;
+}
+
+.pwa-install-guide__notice {
+  color: var(--blue-dark);
+  background: var(--blue-soft);
+  border-radius: 16px;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  display: flex;
+}
+
+.pwa-install-guide__notice svg {
+  flex: none;
+}
+
+.pwa-install-guide__notice div {
+  gap: 4px;
+  display: grid;
+}
+
+.pwa-install-guide__notice span {
+  color: #4e5968;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.pwa-install-guide ol {
+  gap: 10px;
+  margin: 0;
+  padding-left: 24px;
+  font-size: 14px;
+  line-height: 1.55;
+  display: grid;
+}
+
+.pwa-install-guide p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.pwa-update-toast {
+  z-index: 95;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 11px;
+  width: min(calc(100% - 32px), 560px);
+  padding: 13px;
+  display: grid;
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  box-shadow: 0 18px 50px #1023462b;
+}
+
+.pwa-update-toast__icon {
+  color: var(--blue-dark);
+  background: var(--blue-soft);
+  border-radius: 12px;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  display: grid;
+}
+
+.pwa-update-toast > div {
+  gap: 2px;
+  min-width: 0;
+  display: grid;
+}
+
+.pwa-update-toast > div span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.pwa-update-toast__apply {
+  color: #fff;
+  background: var(--blue-dark);
+  border: 0;
+  border-radius: 11px;
+  min-height: 40px;
+  padding: 0 13px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pwa-update-toast__apply:disabled {
+  opacity: .55;
+}
+
+.pwa-update-toast__close {
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  display: grid;
 }
 
 .icon-button {
@@ -2405,7 +2459,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .login-panel {
     align-items: start;
     min-height: 100svh;
-    padding: 40px 24px 34px;
+    padding: max(40px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(34px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));
   }
 
   .login-panel__inner {
@@ -2435,7 +2489,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .topbar {
-    height: 64px;
+    height: calc(64px + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
   }
 
   .topbar__inner {
@@ -2461,7 +2516,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .app-content {
-    min-height: calc(100svh - 64px);
+    min-height: calc(100svh - 64px - env(safe-area-inset-top));
   }
 
   .bottom-nav {
@@ -2481,7 +2536,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .bottom-nav a {
-    color: #a3adb8;
+    color: var(--muted);
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -2495,11 +2550,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
   .bottom-nav a.active {
     color: var(--blue);
+    background: var(--blue-soft);
+    border-radius: 12px;
+  }
+
+  .pwa-update-toast {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    right: 16px;
+    bottom: calc(82px + env(safe-area-inset-bottom));
+  }
+
+  .pwa-update-toast__apply {
+    grid-column: 2;
+  }
+
+  .pwa-update-toast__close {
+    grid-area: 1 / 3;
   }
 
   .page {
     width: 100%;
-    padding: 20px 18px calc(92px + env(safe-area-inset-bottom));
+    padding: 20px max(18px,env(safe-area-inset-right)) calc(92px + env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
   }
 
   .field input, .field select, .input-shell input {
@@ -2604,32 +2675,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     padding: 22px;
   }
 
-  .profile-hero {
-    gap: 13px;
-    padding: 24px 20px;
-  }
-
-  .profile-avatar {
-    border-radius: 20px;
-    width: 57px;
-    height: 57px;
-  }
-
-  .profile-hero h1 {
-    font-size: 23px;
-  }
-
-  .role-badge {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-  }
-
-  .profile-stats div {
-    padding: 17px 5px;
-  }
-
-  .profile-history {
+  .match-history-card {
     padding: 24px 20px;
   }
 
@@ -2706,7 +2752,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .modal-sheet {
     width: 100%;
     max-height: 92svh;
-    padding: 24px 20px max(24px,env(safe-area-inset-bottom));
+    padding: 24px max(20px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));
     border-radius: 26px 26px 0 0;
   }
 

@@ -26,7 +26,7 @@ export function SettlementsPage() {
   if (!data && !error) return <PageLoader />;
 
   return (
-    <div className="page settlement-page">
+    <div className="page">
       <header className="page-heading">
         <h1>정산</h1>
       </header>
@@ -75,6 +75,15 @@ export function SettlementsPage() {
               );
             })}
           </div>
+
+          <section className="settlement-schedule" aria-labelledby="settlement-schedule-title">
+            <h2 id="settlement-schedule-title">추첨 일정</h2>
+            <div>
+              {data.draws.map((draw, index) => (
+                <span key={`${draw}-${index}`}>{index + 1}차 · {draw}</span>
+              ))}
+            </div>
+          </section>
 
           <p className="settlement-note">
             각 부문 기록 10개마다 추첨권 1장이 지급되며 종강총회까지 누적됩니다.

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-DATABASE_RESET_CONFIRMATION = "모든 경기와 선수 데이터를 삭제합니다"
+DATABASE_RESET_CONFIRMATION = "모든 경기, 대회와 선수 데이터를 삭제합니다"
 
 
 class PasswordResetRequest(BaseModel):
@@ -16,7 +16,7 @@ class PasswordResetResponse(BaseModel):
 
 class DatabaseResetRequest(BaseModel):
     confirmation: str
-    admin_password: str = Field(min_length=8, max_length=128)
+    admin_password: str = Field(min_length=4, max_length=128)
 
 
 class DatabaseResetCounts(BaseModel):

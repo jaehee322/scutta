@@ -262,7 +262,7 @@ def test_full_semester_reset_preserves_admin(api) -> None:
     wrong_password = admin_client.post(
         "/api/v1/admin/database/reset",
         json={
-            "confirmation": "모든 경기와 선수 데이터를 삭제합니다",
+            "confirmation": "모든 경기, 대회와 선수 데이터를 삭제합니다",
             "admin_password": "wrong-password",
         },
     )
@@ -271,7 +271,7 @@ def test_full_semester_reset_preserves_admin(api) -> None:
     reset = admin_client.post(
         "/api/v1/admin/database/reset",
         json={
-            "confirmation": "모든 경기와 선수 데이터를 삭제합니다",
+            "confirmation": "모든 경기, 대회와 선수 데이터를 삭제합니다",
             "admin_password": "admin-password",
         },
     )

@@ -18,6 +18,9 @@ const serviceWorker = await readFile(serviceWorkerPath, "utf8");
 if (!index.includes("manifest.webmanifest")) {
   throw new Error("index.html does not link the PWA manifest");
 }
+if (!index.includes("apple-touch-icon")) {
+  throw new Error("index.html does not include an Apple touch icon");
+}
 
 for (const logo of ["scutta-logo.png", "scutta-university-logo.png"]) {
   await requireFile(logo);
@@ -27,8 +30,13 @@ for (const logo of ["scutta-logo.png", "scutta-university-logo.png"]) {
 }
 
 const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
-if (manifest.display !== "standalone" || manifest.start_url !== "/" || manifest.scope !== "/") {
-  throw new Error("PWA manifest has invalid display, start_url, or scope");
+if (
+  manifest.display !== "standalone" ||
+  manifest.start_url !== "/" ||
+  manifest.scope !== "/" ||
+  manifest.id !== "/"
+) {
+  throw new Error("PWA manifest has invalid display, start_url, scope, or id");
 }
 
 const icons = Array.isArray(manifest.icons) ? manifest.icons : [];
@@ -39,5 +47,11 @@ for (const requiredSize of ["192x192", "512x512"]) {
   }
   await requireFile(icon.src.replace(/^\//, ""));
 }
+
+const maskableIcon = icons.find((candidate) => candidate.purpose?.split(" ").includes("maskable"));
+if (!maskableIcon?.src) {
+  throw new Error("PWA manifest is missing a maskable icon");
+}
+await requireFile(maskableIcon.src.replace(/^\//, ""));
 
 console.log("PWA build verification passed");

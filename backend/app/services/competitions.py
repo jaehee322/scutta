@@ -881,7 +881,6 @@ def _team_summary_progress(
 def list_competitions(
     db: Session,
     *,
-    actor_id: int | None,
     status: CompetitionStatus | None,
     competition_type: CompetitionType | None,
 ) -> list[CompetitionSummary]:
@@ -899,10 +898,8 @@ def list_competitions(
             )
         )
     )
-    # Summary responses do not contain actor-specific submission permissions.
     # Build progress for every competition in a fixed number of queries instead
     # of rebuilding each full detail (and its standings) one competition at a time.
-    del actor_id
     progress: dict[int, tuple[int, int]] = {competition.id: (0, 0) for competition in competitions}
 
     league_ids = [
@@ -1097,7 +1094,7 @@ def update_competition(
     *,
     competition_id: int,
     payload: CompetitionUpdate,
-) -> int:
+) -> None:
     competition = _competition_or_error(db, competition_id, for_update=True)
     fields = payload.model_fields_set
     if "team_names" in fields:
@@ -1132,7 +1129,6 @@ def update_competition(
         _flush(db)
         _add_team_structure(db, competition, payload.teams)
     _commit(db)
-    return competition.id
 
 
 def delete_competition(db: Session, *, competition_id: int) -> None:
@@ -1164,7 +1160,7 @@ def _reopen_if_incomplete(db: Session, competition: Competition) -> None:
         _flush(db)
 
 
-def complete_competition(db: Session, *, competition_id: int) -> int:
+def complete_competition(db: Session, *, competition_id: int) -> None:
     competition = _competition_or_error(db, competition_id, for_update=True)
     if not _competition_complete(db, competition):
         raise CompetitionConflictError("모든 대진의 결과가 있어야 마감할 수 있습니다.")
@@ -1172,7 +1168,6 @@ def complete_competition(db: Session, *, competition_id: int) -> int:
         competition.status = CompetitionStatus.COMPLETED
         competition.completed_at = utc_now()
         _commit(db)
-    return competition.id
 
 
 def submit_league_result(
@@ -1583,7 +1578,7 @@ def delete_admin_team_single(
     *,
     competition_id: int,
     single_id: int,
-) -> int:
+) -> None:
     competition = _competition_or_error(db, competition_id, for_update=True)
     _ensure_type(competition, CompetitionType.TEAM)
     single, encounter_from_join = _single_or_error(db, competition_id, single_id, for_update=False)
@@ -1597,7 +1592,6 @@ def delete_admin_team_single(
     _reconcile_doubles(db, encounter)
     _reopen_if_incomplete(db, competition)
     _commit(db)
-    return encounter.id
 
 
 def _doubles_or_error(

@@ -5,6 +5,7 @@ import { ApiError } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { Brand } from "../components/Brand";
 import { Notice } from "../components/Notice";
+import { PwaInstallButton } from "../components/PwaManager";
 
 export function LoginPage() {
   const { login } = useAuth();
@@ -69,7 +70,7 @@ export function LoginPage() {
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   autoComplete="current-password"
-                  placeholder="학번 또는 변경한 비밀번호"
+                  placeholder="비밀번호를 입력하세요"
                   minLength={4}
                   maxLength={128}
                   required
@@ -84,6 +85,8 @@ export function LoginPage() {
               {!submitting && <ArrowRight size={20} />}
             </button>
           </form>
+
+          <PwaInstallButton className="login-install-button" />
 
           <p className="login-help">비밀번호를 잊었다면 동아리 관리자에게 문의해 주세요.</p>
         </div>

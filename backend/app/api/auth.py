@@ -63,7 +63,7 @@ class LoginRateLimiter:
             by_ip = self.ip_attempts.get(key[0])
             if recent is not None and len(recent) >= limit:
                 return max(1, int(recent[0] + window_seconds - now) + 1)
-            ip_limit = limit * 5
+            ip_limit = max(limit * 20, 100)
             if by_ip is not None and len(by_ip) >= ip_limit:
                 return max(1, int(by_ip[0] + window_seconds - now) + 1)
             self.attempts.setdefault(key, deque()).append(now)
@@ -73,7 +73,6 @@ class LoginRateLimiter:
     def clear(self, key: tuple[str, str]) -> None:
         with self.lock:
             self.attempts.pop(key, None)
-            self.ip_attempts.pop(key[0], None)
 
     def reset(self) -> None:
         """Clear process-local state; intended for tests and worker lifecycle hooks."""

@@ -181,7 +181,7 @@ export function AdminCompetitionFormPage() {
 
   if (!loaded) {
     return (
-      <div className="page admin-competition-form-page">
+      <div className="page">
         <Link className="back-link" to={backTo}><ArrowLeft size={18} /> 리그전</Link>
         <div className="page-load-error">
           <Notice>{error || "정보를 불러오지 못했습니다."}</Notice>
@@ -194,7 +194,7 @@ export function AdminCompetitionFormPage() {
   }
 
   return (
-    <div className="page admin-competition-form-page">
+    <div className="page">
       <Link className="back-link" to={backTo}><ArrowLeft size={18} /> 리그전</Link>
       <header className="admin-page-heading"><div><h1>{editing ? "리그전 수정" : "리그전 생성"}</h1></div></header>
 
@@ -244,7 +244,7 @@ export function AdminCompetitionFormPage() {
               {teams.map((team, index) => {
                 const usedByOtherTeams = new Set(teams.filter((item) => item.key !== team.key).flatMap((item) => item.member_ids));
                 return (
-                  <article className="competition-form-card competition-team-form-card" key={team.key}>
+                  <article className="competition-form-card" key={team.key}>
                     <div className="competition-team-form-card__topline">
                       <label className="field"><span>팀 {index + 1}</span><input value={team.name} disabled={saving} placeholder="팀 이름" maxLength={64} onChange={(event) => setTeams((current) => current.map((item) => item.key === team.key ? { ...item, name: event.target.value } : item))} required /></label>
                       {!rosterLocked && teams.length > 2 && <button className="small-icon-button is-danger" type="button" aria-label={`${index + 1}번 팀 삭제`} onClick={() => setTeams((current) => current.filter((item) => item.key !== team.key))}><Trash2 size={18} /></button>}

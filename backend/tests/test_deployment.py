@@ -43,3 +43,14 @@ def test_dockerfile_builds_frontend_into_python_runtime() -> None:
     assert "uvicorn app.main:app" in dockerfile
     assert "--proxy-headers" in dockerfile
     assert "--forwarded-allow-ips='*'" in dockerfile
+
+
+def test_dockerignore_excludes_local_secrets_and_package_stores() -> None:
+    patterns = {
+        line.strip()
+        for line in (REPOSITORY_ROOT / ".dockerignore").read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    }
+
+    assert {".env", ".env.*", "**/.env", "**/.env.*"} <= patterns
+    assert {".pnpm-store", "**/.pnpm-store"} <= patterns

@@ -76,8 +76,28 @@ def test_frontend_fallback_does_not_hide_api_errors(tmp_path: Path) -> None:
     assert missing_api_post.status_code == 404
     assert missing_api_post.json() == {"detail": "Not Found"}
     assert client.post("/api", json={}).json() == {"detail": "Not Found"}
-    assert client.get("/health").json() == {"status": "ok"}
+    health = client.get("/health")
+    assert health.json() == {"status": "ok"}
+    assert health.headers["cache-control"] == "no-store"
+    assert health.headers["x-content-type-options"] == "nosniff"
+    assert health.headers["x-frame-options"] == "DENY"
+    assert "content-security-policy" not in health.headers
     assert client.get("/openapi.json").status_code == 200
+
+
+def test_production_uses_security_headers_and_hides_openapi(tmp_path: Path) -> None:
+    _write_frontend(tmp_path)
+    settings = get_settings()
+    original_environment = settings.environment
+    settings.environment = "production"
+    try:
+        client = TestClient(create_app(frontend_dist=tmp_path))
+        response = client.get("/")
+        assert "frame-ancestors 'none'" in response.headers["content-security-policy"]
+        assert response.headers["strict-transport-security"].startswith("max-age=31536000")
+        assert client.get("/openapi.json").status_code == 404
+    finally:
+        settings.environment = original_environment
 
 
 def test_missing_optional_frontend_keeps_development_api_available(tmp_path: Path) -> None:

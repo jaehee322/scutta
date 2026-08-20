@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 
 import { ApiError, apiRequest, jsonBody } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
+import { AccountSettings } from "../components/AccountSettings";
 import { Notice } from "../components/Notice";
 import { PageLoader } from "../components/Loading";
 import { formatKoreanDate, getMatchPerspective, toMatchScore } from "../lib/match";
@@ -151,13 +152,21 @@ export function HomePage() {
       return;
     }
 
+    const submittedScore = toMatchScore(outcome, score);
+    const myScore = submittedScore.my_score;
+    const opponentScore = submittedScore.opponent_score;
+    const confirmed = window.confirm(
+      `${selectedOpponent.username}님과의 경기를 ${myScore}:${opponentScore}로 기록할까요?\n제출 후에는 관리자만 수정할 수 있습니다.`,
+    );
+    if (!confirmed) return;
+
     setSubmitting(true);
     setFormError("");
     setSuccess("");
     try {
       await apiRequest("/matches", {
         method: "POST",
-        body: jsonBody({ opponent_id: selectedOpponent.id, ...toMatchScore(outcome, score) }),
+        body: jsonBody({ opponent_id: selectedOpponent.id, ...submittedScore }),
       });
       setSuccess(`${selectedOpponent.username}님과의 경기를 제출했습니다.`);
       setOpponentQuery("");
@@ -193,6 +202,7 @@ export function HomePage() {
             다시 불러오기
           </button>
         </div>
+        <AccountSettings />
       </div>
     );
   }
@@ -351,7 +361,7 @@ export function HomePage() {
         <section className="card recent-card">
           <header className="card-title-row">
             <h2>최근 경기</h2>
-            <Link to="/profile" className="text-link">
+            <Link to="/history" className="text-link">
               전체 <ArrowRight size={16} />
             </Link>
           </header>
@@ -402,6 +412,8 @@ export function HomePage() {
           ))}
         </section>
       )}
+
+      <AccountSettings />
     </div>
   );
 }

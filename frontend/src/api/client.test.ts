@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { AUTH_EXPIRED_EVENT, apiRequest, formatApiError } from "./client";
 
 afterEach(() => {
+  vi.useRealTimers();
   vi.unstubAllGlobals();
 });
 
@@ -38,5 +39,22 @@ describe("formatApiError", () => {
       expect.objectContaining({ credentials: "include" }),
     );
     expect(listener).toHaveBeenCalledOnce();
+  });
+
+  it("stops a request that exceeds the response timeout", async () => {
+    vi.useFakeTimers();
+    const fetchMock = vi.fn((_url: string, options: RequestInit) =>
+      new Promise<Response>((_resolve, reject) => {
+        options.signal?.addEventListener("abort", () => reject(new Error("aborted")));
+      }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const expectation = expect(apiRequest("/rankings")).rejects.toMatchObject({
+      status: 0,
+      message: "서버 응답이 늦어 요청을 중단했습니다. 다시 시도해 주세요.",
+    });
+    await vi.advanceTimersByTimeAsync(20_000);
+    await expectation;
   });
 });

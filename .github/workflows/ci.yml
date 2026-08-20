@@ -77,7 +77,7 @@ jobs:
       - run: docker build --tag scutta:test .
       - run: >-
           docker run --detach --name scutta-ci --publish 10000:10000
-          --env ENVIRONMENT=production
+          --env ENVIRONMENT=ci
           --env DATABASE_URL=sqlite:////tmp/scutta-ci.db
           --env CORS_ORIGINS=[]
           --env SESSION_COOKIE_SECURE=true

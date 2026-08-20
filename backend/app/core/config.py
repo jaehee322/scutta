@@ -89,6 +89,10 @@ class Settings(BaseSettings):
         if not self.session_cookie_secure:
             raise ValueError("SESSION_COOKIE_SECURE must be true in production")
 
+        database_driver = make_url(self.database_url).drivername
+        if database_driver not in {"postgres", "postgresql", "postgresql+psycopg"}:
+            raise ValueError("production DATABASE_URL must use PostgreSQL")
+
         for origin in self.cors_origins:
             if not origin or origin.casefold() in {"*", "null"}:
                 raise ValueError("CORS_ORIGINS must contain explicit HTTPS origins")

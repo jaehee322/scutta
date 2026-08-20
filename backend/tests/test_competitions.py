@@ -417,7 +417,7 @@ def test_reset_removes_all_competition_children(api) -> None:
     reset = admin.post(
         "/api/v1/admin/database/reset",
         json={
-            "confirmation": "모든 경기와 선수 데이터를 삭제합니다",
+            "confirmation": "모든 경기, 대회와 선수 데이터를 삭제합니다",
             "admin_password": "admin-password",
         },
     )
@@ -494,7 +494,6 @@ def test_competition_list_progress_uses_constant_query_count(api) -> None:
         try:
             summaries = list_competitions(
                 db,
-                actor_id=None,
                 status=None,
                 competition_type=None,
             )

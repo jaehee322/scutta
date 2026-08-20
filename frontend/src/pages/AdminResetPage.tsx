@@ -32,8 +32,8 @@ export function AdminResetPage() {
         method: "POST",
         body: jsonBody({ confirmation, admin_password: password }),
       });
-      window.alert(`${result.deleted.players}명의 선수와 ${result.deleted.matches}개의 경기를 삭제했습니다.`);
-      navigate("/profile");
+      window.alert(`${result.deleted.players}명의 선수, ${result.deleted.competitions}개의 대회와 ${result.deleted.matches}개의 경기를 삭제했습니다.`);
+      navigate("/");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "초기화하지 못했습니다.");
     } finally {
@@ -44,9 +44,9 @@ export function AdminResetPage() {
   if (!preview && !error) return <PageLoader />;
 
   return (
-    <div className="page admin-page reset-page">
-      <Link className="back-link" to="/profile">
-        <ArrowLeft size={18} />내 정보
+    <div className="page">
+      <Link className="back-link" to="/">
+        <ArrowLeft size={18} /> 홈
       </Link>
       <header className="admin-page-heading">
         <div><h1>학기 데이터 초기화</h1></div>
@@ -87,7 +87,7 @@ export function AdminResetPage() {
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                minLength={8}
+                minLength={4}
                 required
               />
             </label>
@@ -95,7 +95,7 @@ export function AdminResetPage() {
               className="danger-button danger-button--large"
               disabled={submitting || confirmation !== preview.confirmation_required}
             >
-              {submitting ? "초기화하는 중" : "모든 선수와 경기 데이터 삭제"}
+              {submitting ? "초기화하는 중" : "모든 선수·대회·경기 데이터 삭제"}
             </button>
           </form>
         </>

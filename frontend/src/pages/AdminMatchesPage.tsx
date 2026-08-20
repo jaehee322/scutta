@@ -125,13 +125,14 @@ export function AdminMatchesPage() {
   const pageOutOfSync = pageStale || isPageOutOfSync(data, nextOffset);
 
   return (
-    <div className="page admin-page">
-      <Link className="back-link" to="/profile">
-        <ArrowLeft size={18} /> 내 정보
+    <div className="page">
+      <Link className="back-link" to="/">
+        <ArrowLeft size={18} /> 홈
       </Link>
       <header className="admin-page-heading">
         <div>
-          <h1>경기 관리</h1>
+          <h1>일반 경기 관리</h1>
+          <p>리그전 결과는 리그전 상세 화면에서 관리해 주세요.</p>
         </div>
       </header>
 
@@ -152,7 +153,7 @@ export function AdminMatchesPage() {
       {data && (
         <section className="admin-list-card">
           <div className="admin-list-card__summary">
-            <strong>경기 {data.total}개</strong>
+            <strong>일반 경기 {data.total}개</strong>
             <span>{data.items.length}개 표시</span>
           </div>
           {!data.items.length ? (
@@ -287,7 +288,7 @@ function MatchEditModal({
   };
 
   return (
-    <Modal title="경기 기록 수정" description="선수, 점수와 날짜를 모두 바로잡을 수 있어요." onClose={onClose}>
+    <Modal title="경기 기록 수정" description="선수, 점수와 날짜를 모두 바로잡을 수 있어요." onClose={onClose} closeDisabled={saving}>
       <form className="modal-form" onSubmit={submit}>
         <div className="form-row">
           <label className="field">
@@ -368,14 +369,14 @@ function DeleteMatchModal({
   };
 
   return (
-    <Modal title="경기 기록을 삭제할까요?" description="삭제 즉시 랭킹과 정산에도 반영돼요." onClose={onClose}>
+    <Modal title="경기 기록을 삭제할까요?" description="삭제 즉시 랭킹과 정산에도 반영돼요." onClose={onClose} closeDisabled={deleting}>
       <div className="confirm-match">
         <strong>{match.player1.username} {match.score1} : {match.score2} {match.player2.username}</strong>
         <span>{formatKoreanDate(match.played_on)}</span>
       </div>
       {error && <Notice>{error}</Notice>}
       <div className="modal-actions">
-        <button type="button" className="secondary-button" onClick={onClose}>취소</button>
+        <button type="button" className="secondary-button" disabled={deleting} onClick={onClose}>취소</button>
         <button type="button" className="danger-button" disabled={deleting} onClick={() => void remove()}>
           {deleting ? "삭제하는 중" : "삭제하기"}
         </button>

@@ -70,7 +70,7 @@ def test_login_rate_limit_and_success_reset(api) -> None:
         valid = {"username": "admin", "password": "admin-password"}
         assert client.post("/api/v1/auth/login", json=valid).status_code == 200
         assert not login_rate_limiter.attempts
-        assert not login_rate_limiter.ip_attempts
+        assert login_rate_limiter.ip_attempts
         assert client.post("/api/v1/auth/login", json=payload).status_code == 401
     finally:
         settings.login_rate_limit_attempts = original_attempts
@@ -165,6 +165,7 @@ def test_production_rejects_unsafe_cors_origins(origins: list[str]) -> None:
             environment="production",
             cors_origins=origins,
             session_cookie_secure=True,
+            database_url="postgresql://user:password@db.example/app",
         )
 
 
@@ -173,8 +174,19 @@ def test_production_allows_same_origin_only() -> None:
         environment="production",
         cors_origins=[],
         session_cookie_secure=True,
+        database_url="postgresql://user:password@db.example/app",
     )
     assert settings.cors_origins == []
+
+
+def test_production_rejects_ephemeral_sqlite_database() -> None:
+    with pytest.raises(ValidationError, match="PostgreSQL"):
+        Settings(
+            environment="production",
+            cors_origins=[],
+            session_cookie_secure=True,
+            database_url="sqlite:///./scutta.db",
+        )
 
 
 def test_player_profile_and_password_validation(api) -> None:

@@ -5,56 +5,118 @@ import { useAuth } from "./auth/AuthContext";
 import { AppShell } from "./components/AppShell";
 import { ConnectionErrorScreen, LoadingScreen, PageLoader } from "./components/Loading";
 
+const loadAdminCompetitionFormPage = () => import("./pages/AdminCompetitionFormPage");
+const loadAdminHomePage = () => import("./pages/AdminHomePage");
+const loadAdminMatchesPage = () => import("./pages/AdminMatchesPage");
+const loadAdminPlayersPage = () => import("./pages/AdminPlayersPage");
+const loadAdminResetPage = () => import("./pages/AdminResetPage");
+const loadCompetitionDetailPage = () => import("./pages/CompetitionDetailPage");
+const loadCompetitionsPage = () => import("./pages/CompetitionsPage");
+const loadHomePage = () => import("./pages/HomePage");
+const loadLoginPage = () => import("./pages/LoginPage");
+const loadMatchHistoryPage = () => import("./pages/MatchHistoryPage");
+const loadRankingsPage = () => import("./pages/RankingsPage");
+const loadSettlementsPage = () => import("./pages/SettlementsPage");
+
 const AdminCompetitionFormPage = lazy(() =>
-  import("./pages/AdminCompetitionFormPage").then((module) => ({
+  loadAdminCompetitionFormPage().then((module) => ({
     default: module.AdminCompetitionFormPage,
   })),
 );
+const AdminHomePage = lazy(() =>
+  loadAdminHomePage().then((module) => ({ default: module.AdminHomePage })),
+);
 const AdminMatchesPage = lazy(() =>
-  import("./pages/AdminMatchesPage").then((module) => ({ default: module.AdminMatchesPage })),
+  loadAdminMatchesPage().then((module) => ({ default: module.AdminMatchesPage })),
 );
 const AdminPlayersPage = lazy(() =>
-  import("./pages/AdminPlayersPage").then((module) => ({ default: module.AdminPlayersPage })),
+  loadAdminPlayersPage().then((module) => ({ default: module.AdminPlayersPage })),
 );
 const AdminResetPage = lazy(() =>
-  import("./pages/AdminResetPage").then((module) => ({ default: module.AdminResetPage })),
+  loadAdminResetPage().then((module) => ({ default: module.AdminResetPage })),
 );
 const CompetitionDetailPage = lazy(() =>
-  import("./pages/CompetitionDetailPage").then((module) => ({
+  loadCompetitionDetailPage().then((module) => ({
     default: module.CompetitionDetailPage,
   })),
 );
 const CompetitionsPage = lazy(() =>
-  import("./pages/CompetitionsPage").then((module) => ({ default: module.CompetitionsPage })),
+  loadCompetitionsPage().then((module) => ({ default: module.CompetitionsPage })),
 );
 const HomePage = lazy(() =>
-  import("./pages/HomePage").then((module) => ({ default: module.HomePage })),
+  loadHomePage().then((module) => ({ default: module.HomePage })),
 );
 const LoginPage = lazy(() =>
-  import("./pages/LoginPage").then((module) => ({ default: module.LoginPage })),
+  loadLoginPage().then((module) => ({ default: module.LoginPage })),
 );
-const ProfilePage = lazy(() =>
-  import("./pages/ProfilePage").then((module) => ({ default: module.ProfilePage })),
+const MatchHistoryPage = lazy(() =>
+  loadMatchHistoryPage().then((module) => ({ default: module.MatchHistoryPage })),
 );
 const RankingsPage = lazy(() =>
-  import("./pages/RankingsPage").then((module) => ({ default: module.RankingsPage })),
+  loadRankingsPage().then((module) => ({ default: module.RankingsPage })),
 );
 const SettlementsPage = lazy(() =>
-  import("./pages/SettlementsPage").then((module) => ({ default: module.SettlementsPage })),
+  loadSettlementsPage().then((module) => ({ default: module.SettlementsPage })),
 );
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+  const { user } = useAuth();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-  }, [pathname]);
+    const pageName = pathname.startsWith("/admin/players")
+      ? "선수 관리"
+      : pathname.startsWith("/admin/matches")
+        ? "일반 경기 관리"
+        : pathname.startsWith("/admin/reset")
+          ? "학기 초기화"
+            : pathname.startsWith("/admin/competitions")
+              ? "리그전 관리"
+              : pathname.startsWith("/competitions")
+                ? "리그전"
+                : pathname === "/rankings"
+                  ? "랭킹"
+                  : pathname === "/history"
+                    ? "경기 기록"
+                    : pathname === "/settlements"
+                      ? "정산"
+                      : user?.role === "admin"
+                        ? "관리 홈"
+                        : "홈";
+    document.title = `${pageName} | SCUTTA`;
+    window.requestAnimationFrame(() => document.getElementById("main-content")?.focus());
+  }, [pathname, user?.role]);
 
   return null;
 }
 
 export default function App() {
   const { user, booting, connectionError, refreshUser } = useAuth();
+
+  useEffect(() => {
+    if (!user) return;
+    const timer = window.setTimeout(() => {
+      if (!navigator.onLine) return;
+      const sharedPageLoaders: Array<() => Promise<unknown>> = [
+        loadCompetitionsPage,
+        loadCompetitionDetailPage,
+      ];
+      const rolePageLoaders: Array<() => Promise<unknown>> = user.role === "admin"
+        ? [
+            loadAdminHomePage,
+            loadAdminPlayersPage,
+            loadAdminMatchesPage,
+            loadAdminCompetitionFormPage,
+            loadAdminResetPage,
+          ]
+        : [loadHomePage, loadMatchHistoryPage, loadRankingsPage, loadSettlementsPage];
+      void Promise.allSettled(
+        [...sharedPageLoaders, ...rolePageLoaders].map((loadPage) => loadPage()),
+      );
+    }, 1_000);
+    return () => window.clearTimeout(timer);
+  }, [user]);
 
   if (booting) return <LoadingScreen />;
   if (connectionError) {
@@ -78,18 +140,19 @@ export default function App() {
       <ScrollToTop />
       <Suspense fallback={<PageLoader />}>
         <Routes>
-          <Route path="/" element={user.role === "player" ? <HomePage /> : <Navigate to="/profile" replace />} />
-          <Route path="/rankings" element={user.role === "player" ? <RankingsPage /> : <Navigate to="/profile" replace />} />
+          <Route path="/" element={user.role === "player" ? <HomePage /> : <AdminHomePage />} />
+          <Route path="/rankings" element={user.role === "player" ? <RankingsPage /> : <Navigate to="/" replace />} />
           <Route path="/competitions" element={<CompetitionsPage />} />
           <Route path="/competitions/:competitionId" element={<CompetitionDetailPage />} />
-          <Route path="/settlements" element={user.role === "player" ? <SettlementsPage /> : <Navigate to="/profile" replace />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/settlements" element={user.role === "player" ? <SettlementsPage /> : <Navigate to="/" replace />} />
+          <Route path="/history" element={user.role === "player" ? <MatchHistoryPage /> : <Navigate to="/" replace />} />
+          <Route path="/profile" element={<Navigate to="/" replace />} />
           <Route path="/admin/players" element={user.role === "admin" ? <AdminPlayersPage /> : <Navigate to="/" replace />} />
           <Route path="/admin/matches" element={user.role === "admin" ? <AdminMatchesPage /> : <Navigate to="/" replace />} />
           <Route path="/admin/competitions/new" element={user.role === "admin" ? <AdminCompetitionFormPage /> : <Navigate to="/" replace />} />
           <Route path="/admin/competitions/:competitionId/edit" element={user.role === "admin" ? <AdminCompetitionFormPage /> : <Navigate to="/" replace />} />
           <Route path="/admin/reset" element={user.role === "admin" ? <AdminResetPage /> : <Navigate to="/" replace />} />
-          <Route path="*" element={<Navigate to={user.role === "admin" ? "/profile" : "/"} replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
     </AppShell>

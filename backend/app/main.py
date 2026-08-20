@@ -8,10 +8,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 from starlette.datastructures import Headers
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api import admin, auth, competitions, matches, players, rankings, settlements
+from app.api.deps import DbSession
 from app.core.config import get_settings
 
 DEFAULT_FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
@@ -84,6 +87,7 @@ def create_app(frontend_dist: Path | None = None) -> FastAPI:
         version="0.1.0",
         docs_url="/docs" if settings.environment != "production" else None,
         redoc_url=None,
+        openapi_url="/openapi.json" if settings.environment != "production" else None,
     )
     application.add_middleware(
         CORSMiddleware,
@@ -96,6 +100,23 @@ def create_app(frontend_dist: Path | None = None) -> FastAPI:
 
     unsafe_methods = frozenset({"POST", "PUT", "PATCH", "DELETE"})
     allowed_origins = frozenset(settings.cors_origins)
+
+    def add_security_headers(response, path: str):
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["Referrer-Policy"] = "same-origin"
+        response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+        if settings.environment.strip().lower() == "production":
+            response.headers["Content-Security-Policy"] = (
+                "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; "
+                "form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
+                "img-src 'self' data:; font-src 'self' data:; connect-src 'self'; "
+                "manifest-src 'self'; worker-src 'self'"
+            )
+            response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        if path == "/health" or path.startswith("/api/"):
+            response.headers["Cache-Control"] = "no-store"
+        return response
 
     @application.middleware("http")
     async def enforce_origin(request: Request, call_next):
@@ -116,14 +137,25 @@ def create_app(frontend_dist: Path | None = None) -> FastAPI:
             and origin is not None
             and not (same_origin or origin in allowed_origins)
         ):
-            return JSONResponse(
-                status_code=status.HTTP_403_FORBIDDEN,
-                content={"detail": "허용되지 않은 요청 출처입니다."},
+            return add_security_headers(
+                JSONResponse(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    content={"detail": "허용되지 않은 요청 출처입니다."},
+                ),
+                request.url.path,
             )
-        return await call_next(request)
+        response = await call_next(request)
+        return add_security_headers(response, request.url.path)
 
     @application.get("/health", tags=["system"])
-    def health() -> dict[str, str]:
+    def health(db: DbSession) -> dict[str, str]:
+        try:
+            db.execute(text("SELECT 1"))
+        except SQLAlchemyError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Database unavailable",
+            ) from exc
         return {"status": "ok"}
 
     api_prefix = "/api/v1"

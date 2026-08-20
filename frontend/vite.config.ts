@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "prompt",
       includeAssets: ["scutta-logo.png", "scutta-university-logo.png"],
       pwaAssets: {
         image: "public/scutta-logo.png",
@@ -17,11 +17,12 @@ export default defineConfig({
         name: "SCUTTA 경기 기록",
         short_name: "SCUTTA",
         description: "SCUTTA 탁구 동아리 경기 기록, 랭킹과 리그전",
-        theme_color: "#3182f6",
+        theme_color: "#1b64da",
         background_color: "#f2f4f6",
         display: "standalone",
         orientation: "portrait-primary",
         start_url: "/",
+        id: "/",
         scope: "/",
         lang: "ko-KR",
         categories: ["sports", "lifestyle"],

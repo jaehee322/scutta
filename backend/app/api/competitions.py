@@ -91,13 +91,12 @@ def _team_encounter(detail: CompetitionDetail, encounter_id: int) -> TeamEncount
 @router.get("", response_model=list[CompetitionSummary])
 def list_player_competitions(
     db: DbSession,
-    current_player: CurrentPlayer,
+    _current_player: CurrentPlayer,
     competition_status: Annotated[CompetitionStatus | None, Query(alias="status")] = None,
     competition_type: Annotated[CompetitionType | None, Query(alias="type")] = None,
 ) -> list[CompetitionSummary]:
     return list_competitions(
         db,
-        actor_id=current_player.id,
         status=competition_status,
         competition_type=competition_type,
     )
@@ -213,7 +212,6 @@ def list_admin_competitions(
 ) -> list[CompetitionSummary]:
     return list_competitions(
         db,
-        actor_id=None,
         status=competition_status,
         competition_type=competition_type,
     )

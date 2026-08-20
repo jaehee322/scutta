@@ -158,6 +158,5 @@ def get_current_admin(
     return user
 
 
-CurrentUser = Annotated[User, Depends(get_current_user)]
 CurrentPlayer = Annotated[User, Depends(get_current_player)]
 CurrentAdmin = Annotated[User, Depends(get_current_admin)]
