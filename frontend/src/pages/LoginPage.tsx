@@ -3,7 +3,6 @@ import { type FormEvent, useState } from "react";
 
 import { ApiError } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
-import { Brand } from "../components/Brand";
 import { Notice } from "../components/Notice";
 import { PwaInstallButton } from "../components/PwaManager";
 
@@ -33,16 +32,9 @@ export function LoginPage() {
 
   return (
     <main className="login-page">
-      <section className="login-hero" aria-label="SCUTTA 소개">
-        <Brand />
-      </section>
-
       <section className="login-panel">
         <div className="login-panel__inner">
-          <div className="mobile-brand">
-            <Brand />
-          </div>
-          <h2>로그인</h2>
+          <h1>로그인</h1>
           <p className="login-panel__lead">이름과 비밀번호를 입력하세요.</p>
 
           <form className="login-form" onSubmit={handleSubmit}>

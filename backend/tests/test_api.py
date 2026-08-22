@@ -47,6 +47,9 @@ def test_auth_and_admin_player_management(api) -> None:
     api.create_admin()
     anonymous = api.client()
     assert anonymous.get("/health").json() == {"status": "ok"}
+    health_head = anonymous.head("/health")
+    assert health_head.status_code == 200
+    assert health_head.content == b""
     assert anonymous.get("/api/v1/auth/me").status_code == 401
 
     admin_client = api.client()

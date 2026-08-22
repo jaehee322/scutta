@@ -11,10 +11,10 @@ const categoryMeta: Record<
   RankingCategory,
   { label: string; shortLabel: string; unit: string }
 > = {
-  matches: { label: "경기 수", shortLabel: "경기", unit: "판" },
-  wins: { label: "승리 수", shortLabel: "승리", unit: "승" },
-  losses: { label: "패배 수", shortLabel: "패배", unit: "패" },
-  opponents: { label: "상대 수", shortLabel: "상대", unit: "명" },
+  matches: { label: "경기 수", shortLabel: "경기 수", unit: "판" },
+  wins: { label: "승리 수", shortLabel: "승리 수", unit: "승" },
+  losses: { label: "패배 수", shortLabel: "패배 수", unit: "패" },
+  opponents: { label: "상대 수", shortLabel: "상대 수", unit: "명" },
 };
 
 const categories = Object.keys(categoryMeta) as RankingCategory[];
@@ -22,7 +22,7 @@ const categories = Object.keys(categoryMeta) as RankingCategory[];
 export function RankingsPage() {
   const { user } = useAuth();
   const [data, setData] = useState<RankingsResponse | null>(null);
-  const [category, setCategory] = useState<RankingCategory>("wins");
+  const [category, setCategory] = useState<RankingCategory>("matches");
   const [error, setError] = useState("");
 
   useEffect(() => {

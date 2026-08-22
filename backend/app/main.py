@@ -148,6 +148,7 @@ def create_app(frontend_dist: Path | None = None) -> FastAPI:
         return add_security_headers(response, request.url.path)
 
     @application.get("/health", tags=["system"])
+    @application.head("/health", include_in_schema=False)
     def health(db: DbSession) -> dict[str, str]:
         try:
             db.execute(text("SELECT 1"))

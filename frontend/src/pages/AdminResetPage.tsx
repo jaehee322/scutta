@@ -55,21 +55,23 @@ export function AdminResetPage() {
       {error && <Notice>{error}</Notice>}
 
       {preview && (
-        <>
-          <section className="reset-warning">
-            <ShieldAlert size={28} />
-            <div>
-              <strong>이 작업은 되돌릴 수 없어요</strong>
-              <p>관리자 계정과 관리자 로그인 세션, 상품 설정은 유지됩니다.</p>
-            </div>
-          </section>
+        <div className="reset-layout">
+          <div className="reset-overview">
+            <section className="reset-warning">
+              <ShieldAlert size={28} />
+              <div>
+                <strong>이 작업은 되돌릴 수 없어요</strong>
+                <p>관리자 계정과 관리자 로그인 세션, 상품 설정은 유지됩니다.</p>
+              </div>
+            </section>
 
-          <section className="reset-counts">
-            <div><span>경기</span><strong>{preview.matches}</strong></div>
-            <div><span>선수</span><strong>{preview.players}</strong></div>
-            <div><span>대회</span><strong>{preview.competitions}</strong></div>
-            <div><span>선수 세션</span><strong>{preview.player_sessions}</strong></div>
-          </section>
+            <section className="reset-counts">
+              <div><span>경기</span><strong>{preview.matches}</strong></div>
+              <div><span>선수</span><strong>{preview.players}</strong></div>
+              <div><span>대회</span><strong>{preview.competitions}</strong></div>
+              <div><span>선수 세션</span><strong>{preview.player_sessions}</strong></div>
+            </section>
+          </div>
 
           <form className="reset-form card" onSubmit={submit}>
             <div className="section-heading">
@@ -98,7 +100,7 @@ export function AdminResetPage() {
               {submitting ? "초기화하는 중" : "모든 선수·대회·경기 데이터 삭제"}
             </button>
           </form>
-        </>
+        </div>
       )}
     </div>
   );

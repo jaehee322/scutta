@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Response, status
 from sqlalchemy import delete, func, select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -137,6 +137,24 @@ def update_player(
         raise
     db.refresh(player)
     return player
+
+
+@router.delete("/players/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_player(user_id: int, db: DbSession, _: CurrentAdmin) -> Response:
+    player = _player_or_404(db, user_id, for_update=True)
+    db.delete(player)
+    try:
+        db.commit()
+    except IntegrityError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                "경기 또는 대회 기록이 있는 선수는 삭제할 수 없습니다. "
+                "연결된 기록을 먼저 삭제해 주세요."
+            ),
+        ) from exc
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.post(

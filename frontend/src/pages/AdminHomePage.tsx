@@ -36,7 +36,7 @@ export function AdminHomePage() {
           <AdminFeatureCard
             icon={<UserRoundCog size={22} />}
             title="선수 관리"
-            description="등록·수정·비밀번호 초기화"
+            description="등록·수정·삭제·비밀번호 초기화"
             href="/admin/players"
           />
           <AdminFeatureCard
