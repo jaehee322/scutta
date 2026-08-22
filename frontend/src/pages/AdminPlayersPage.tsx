@@ -70,7 +70,6 @@ export function AdminPlayersPage() {
         <div className="admin-player-list">
           {players.map((player) => (
             <article key={player.id}>
-              <span className="avatar-circle">{player.username.slice(0, 1)}</span>
               <div className="admin-player-main"><strong>{player.username}</strong><span>{player.club_rank}부 · {player.gender === "F" ? "여" : "남"}{player.is_freshman ? " · 신입" : ""}</span></div>
               <div className="admin-row-actions">
                 <button type="button" onClick={() => setResetting(player)} aria-label={`${player.username} 비밀번호 초기화`}><KeyRound size={18} /></button>

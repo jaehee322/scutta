@@ -1,4 +1,3 @@
-import { ArrowRight, LockKeyhole, UserRound } from "lucide-react";
 import { type FormEvent, useState } from "react";
 
 import { ApiError } from "../api/client";
@@ -40,41 +39,34 @@ export function LoginPage() {
           <form className="login-form" onSubmit={handleSubmit}>
             <label className="field">
               <span>이름</span>
-              <div className="input-shell">
-                <UserRound size={20} aria-hidden="true" />
-                <input
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                  autoComplete="username"
-                  placeholder="이름을 입력하세요"
-                  maxLength={64}
-                  required
-                />
-              </div>
+              <input
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                autoComplete="username"
+                placeholder="이름을 입력하세요"
+                maxLength={64}
+                required
+              />
             </label>
 
             <label className="field">
               <span>비밀번호</span>
-              <div className="input-shell">
-                <LockKeyhole size={20} aria-hidden="true" />
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  autoComplete="current-password"
-                  placeholder="비밀번호를 입력하세요"
-                  minLength={4}
-                  maxLength={128}
-                  required
-                />
-              </div>
+              <input
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                autoComplete="current-password"
+                placeholder="비밀번호를 입력하세요"
+                minLength={4}
+                maxLength={128}
+                required
+              />
             </label>
 
             {error && <Notice>{error}</Notice>}
 
             <button className="primary-button primary-button--large" disabled={submitting}>
               <span>{submitting ? "로그인 중" : "로그인"}</span>
-              {!submitting && <ArrowRight size={20} />}
             </button>
           </form>
 

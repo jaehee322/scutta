@@ -1,4 +1,3 @@
-import { ArrowRight, KeyRound, LogOut } from "lucide-react";
 import { type FormEvent, useState } from "react";
 
 import { apiRequest, jsonBody } from "../api/client";
@@ -51,14 +50,12 @@ export function AccountSettings() {
       <section className="settings-list" aria-label="계정 설정">
         <PwaInstallButton className="settings-list__install" />
         <button type="button" onClick={() => setPasswordOpen(true)}>
-          <span className="settings-list__icon"><KeyRound size={20} /></span>
           <div><strong>비밀번호 변경</strong></div>
-          <ArrowRight size={18} />
+          <span className="settings-list__action">변경</span>
         </button>
         <button type="button" className="is-danger" onClick={() => void handleLogout()}>
-          <span className="settings-list__icon"><LogOut size={20} /></span>
           <div><strong>로그아웃</strong></div>
-          <ArrowRight size={18} />
+          <span className="settings-list__action">나가기</span>
         </button>
       </section>
 

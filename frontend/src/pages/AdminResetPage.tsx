@@ -1,4 +1,4 @@
-import { ArrowLeft, DatabaseZap, ShieldAlert } from "lucide-react";
+import { ArrowLeft, ShieldAlert } from "lucide-react";
 import { type FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -75,8 +75,7 @@ export function AdminResetPage() {
 
           <form className="reset-form card" onSubmit={submit}>
             <div className="section-heading">
-              <div className="section-icon section-icon--red"><DatabaseZap size={22} /></div>
-              <div><h2>최종 확인</h2></div>
+              <h2>최종 확인</h2>
             </div>
             <label className="field">
               <span>아래 문구를 그대로 입력하세요</span>

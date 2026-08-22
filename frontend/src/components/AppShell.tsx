@@ -55,7 +55,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <nav className="bottom-nav" aria-label="주요 메뉴">
         {navItems.map(({ to, label, icon: Icon, end }) => (
           <NavLink key={to} to={to} end={end}>
-            <Icon size={22} strokeWidth={2.2} />
+            <Icon size={22} strokeWidth={2} />
             <span>{label}</span>
           </NavLink>
         ))}

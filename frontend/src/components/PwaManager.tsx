@@ -13,6 +13,7 @@ import { registerSW } from "virtual:pwa-register";
 
 import { Modal } from "./Modal";
 import { detectInstallEnvironment, type InstallEnvironment } from "./pwaEnvironment";
+import { applyPwaUpdateLifecycle } from "./pwaUpdate";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -110,11 +111,37 @@ export function PwaProvider({ children }: { children: ReactNode }) {
   }, [installPrompt]);
 
   const applyUpdate = async () => {
-    if (!updateServiceWorker.current) return;
+    const pluginUpdate = updateServiceWorker.current;
+    const waitingWorker = registration?.waiting ?? null;
+    if (!pluginUpdate && !waitingWorker) {
+      setUpdateError("업데이트 준비가 끝나지 않았습니다. 잠시 후 다시 시도해 주세요.");
+      return;
+    }
+
     setUpdating(true);
     setUpdateError("");
     try {
-      await updateServiceWorker.current(true);
+      await applyPwaUpdateLifecycle({
+        activate: async () => {
+          if (waitingWorker) {
+            waitingWorker.postMessage({ type: "SKIP_WAITING" });
+            return;
+          }
+          await pluginUpdate?.(false);
+        },
+        reload: () => window.location.reload(),
+        subscribeToControllerChange: (listener) => {
+          navigator.serviceWorker.addEventListener("controllerchange", listener, { once: true });
+          return () => navigator.serviceWorker.removeEventListener("controllerchange", listener);
+        },
+        subscribeToWaitingStateChange: waitingWorker
+          ? (listener) => {
+              waitingWorker.addEventListener("statechange", listener);
+              return () => waitingWorker.removeEventListener("statechange", listener);
+            }
+          : undefined,
+        waitingState: waitingWorker ? () => waitingWorker.state : undefined,
+      });
     } catch {
       setUpdateError("업데이트하지 못했습니다. 연결을 확인하고 다시 시도해 주세요.");
     } finally {

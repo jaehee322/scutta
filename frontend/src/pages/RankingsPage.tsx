@@ -1,4 +1,3 @@
-import { Crown, Medal, Trophy } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { apiRequest } from "../api/client";
@@ -77,31 +76,16 @@ export function RankingsPage() {
                       className={`rank-number rank-number--${entry.rank}`}
                       aria-label={`${entry.rank}위`}
                     >
-                      {entry.rank === 1 ? (
-                        <>
-                          <Crown size={22} fill="currentColor" aria-hidden="true" />
-                          <span>{entry.rank}</span>
-                        </>
-                      ) : entry.rank <= 3 ? (
-                        <>
-                          <Medal size={21} aria-hidden="true" />
-                          <span>{entry.rank}</span>
-                        </>
-                      ) : (
-                        entry.rank
-                      )}
+                      {entry.rank}
                     </div>
                     <div className="ranking-player">
-                      <span className="avatar-circle">{entry.player.username.slice(0, 1)}</span>
-                      <div>
-                        <strong>
-                          <span className="ranking-player__name">{entry.player.username}</span>
-                          {isMe && <small>나</small>}
-                        </strong>
-                        <span>
-                          {entry.player.club_rank}부 · {entry.player.gender === "F" ? "여" : "남"}
-                        </span>
-                      </div>
+                      <strong>
+                        <span className="ranking-player__name">{entry.player.username}</span>
+                        {isMe && <small>나</small>}
+                      </strong>
+                      <span>
+                        {entry.player.club_rank}부 · {entry.player.gender === "F" ? "여" : "남"}
+                      </span>
                     </div>
                     <div className="ranking-value">
                       <strong>{entry.value}</strong>
@@ -114,7 +98,6 @@ export function RankingsPage() {
           </section>
 
           <aside className="ranking-note">
-            <Trophy size={20} />
             <p>동점자는 같은 순위로 표시되고 다음 순위는 건너뛰어요.</p>
           </aside>
         </>

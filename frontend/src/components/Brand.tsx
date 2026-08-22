@@ -2,16 +2,13 @@ export function Brand({ compact = false }: { compact?: boolean }) {
   if (compact) {
     return (
       <div className="brand brand--compact">
-        <span className="brand__symbol" aria-hidden="true">
-          <img
-            className="brand__logo"
-            src="/scutta-logo.png"
-            alt=""
-            width={255}
-            height={237}
-          />
-        </span>
-        <span className="brand__wordmark">SCUTTA</span>
+        <img
+          className="brand__logo"
+          src="/scutta-logo.png"
+          alt="SCUTTA"
+          width={255}
+          height={237}
+        />
       </div>
     );
   }

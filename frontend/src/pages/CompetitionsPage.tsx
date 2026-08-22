@@ -1,4 +1,4 @@
-import { ChevronRight, Plus, Trophy } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -7,7 +7,6 @@ import { useAuth } from "../auth/AuthContext";
 import { PageLoader } from "../components/Loading";
 import { Notice } from "../components/Notice";
 import {
-  competitionProgress,
   competitionTypeLabel,
   splitCompetitions,
 } from "../lib/competition";
@@ -76,7 +75,6 @@ export function CompetitionsPage() {
 
       {!items.length ? (
         <div className="empty-state competition-empty-state">
-          <span className="empty-state__icon"><Trophy size={24} /></span>
           <strong>등록된 리그전이 없습니다</strong>
         </div>
       ) : (
@@ -108,32 +106,17 @@ function CompetitionSection({ title, items }: { title: string; items: Competitio
 }
 
 function CompetitionCard({ item }: { item: CompetitionSummary }) {
-  const progress = competitionProgress(item);
   return (
     <Link className="competition-card" to={`/competitions/${item.id}`}>
-      <div className="competition-card__topline">
-        <span className="competition-type-badge">{competitionTypeLabel[item.type]}</span>
-        <span className={`competition-status-badge is-${item.status}`}>
-          {item.status === "active" ? "진행 중" : "종료"}
-        </span>
-      </div>
       <div className="competition-card__title">
         <h3>{item.name}</h3>
-        <ChevronRight size={20} />
+        <span>
+          {competitionTypeLabel[item.type]} · {item.status === "active" ? "진행 중" : "종료"}
+        </span>
       </div>
       <div className="competition-progress-copy">
         <span>경기</span>
         <strong>{item.completed_count} / {item.total_count}</strong>
-      </div>
-      <div
-        className="competition-progress"
-        role="progressbar"
-        aria-label={`${item.name} 진행률`}
-        aria-valuemin={0}
-        aria-valuemax={item.total_count}
-        aria-valuenow={item.completed_count}
-      >
-        <i style={{ width: `${progress}%` }} />
       </div>
     </Link>
   );

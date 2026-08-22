@@ -1,4 +1,3 @@
-import { Gift } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { apiRequest } from "../api/client";
@@ -6,11 +5,11 @@ import { PageLoader } from "../components/Loading";
 import { Notice } from "../components/Notice";
 import type { RankingCategory, SettlementResponse } from "../types";
 
-const meta: Record<RankingCategory, { label: string; unit: string; color: string }> = {
-  matches: { label: "경기 수", unit: "판", color: "blue" },
-  wins: { label: "승리 수", unit: "승", color: "green" },
-  losses: { label: "패배 수", unit: "패", color: "orange" },
-  opponents: { label: "상대 수", unit: "명", color: "purple" },
+const meta: Record<RankingCategory, { label: string; unit: string }> = {
+  matches: { label: "경기 수", unit: "판" },
+  wins: { label: "승리 수", unit: "승" },
+  losses: { label: "패배 수", unit: "패" },
+  opponents: { label: "상대 수", unit: "명" },
 };
 
 export function SettlementsPage() {
@@ -39,11 +38,8 @@ export function SettlementsPage() {
             {data.categories.map((category) => {
               const categoryMeta = meta[category.category];
               return (
-                <article className={`settlement-card settlement-card--${categoryMeta.color}`} key={category.category}>
+                <article className="settlement-card" key={category.category}>
                   <header>
-                    <span className="settlement-card__icon">
-                      <Gift size={21} />
-                    </span>
                     <div>
                       <span>{categoryMeta.label} 부문</span>
                       <strong>{category.prize}</strong>
@@ -65,9 +61,6 @@ export function SettlementsPage() {
                     <div>
                       <span>당첨 확률</span>
                       <strong>{category.probability_percent.toFixed(1)}%</strong>
-                    </div>
-                    <div className="probability-track" aria-hidden="true">
-                      <i style={{ width: `${Math.min(category.probability_percent, 100)}%` }} />
                     </div>
                     <small>전체 {category.total_tickets}장 중 내 추첨권 기준</small>
                   </div>
