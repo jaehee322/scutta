@@ -1,6 +1,11 @@
 import {
+  ArrowRight,
+  CalendarDays,
   Check,
   Search,
+  Swords,
+  Trophy,
+  UsersRound,
 } from "lucide-react";
 import {
   type FormEvent,
@@ -208,7 +213,12 @@ export function HomePage() {
       <div className="home-grid">
         <section className="card submit-card">
           <header className="section-heading">
-            <h1>경기 결과 제출</h1>
+            <div className="section-icon section-icon--blue">
+              <Swords size={22} />
+            </div>
+            <div>
+              <h1>경기 결과 제출</h1>
+            </div>
           </header>
 
           <form onSubmit={handleSubmit}>
@@ -303,7 +313,9 @@ export function HomePage() {
                   onClick={() => setOutcome("win")}
                   aria-pressed={outcome === "win"}
                 >
+                  <Trophy size={20} />
                   승리
+                  {outcome === "win" && <Check className="choice-check" size={16} />}
                 </button>
                 <button
                   type="button"
@@ -311,7 +323,9 @@ export function HomePage() {
                   onClick={() => setOutcome("loss")}
                   aria-pressed={outcome === "loss"}
                 >
+                  <UsersRound size={20} />
                   패배
+                  {outcome === "loss" && <Check className="choice-check" size={16} />}
                 </button>
               </div>
             </fieldset>
@@ -338,6 +352,7 @@ export function HomePage() {
 
             <button className="primary-button primary-button--large" disabled={submitting}>
               {submitting ? "제출 중" : "제출"}
+              {!submitting && <ArrowRight size={20} />}
             </button>
             <p className="form-hint">같은 상대와는 하루 1경기만 기록할 수 있습니다.</p>
           </form>
@@ -347,12 +362,15 @@ export function HomePage() {
           <header className="card-title-row">
             <h2>최근 경기</h2>
             <Link to="/history" className="text-link">
-              전체 보기
+              전체 <ArrowRight size={16} />
             </Link>
           </header>
 
           {!matches?.items.length ? (
             <div className="empty-state">
+              <span className="empty-state__icon">
+                <CalendarDays size={25} />
+              </span>
               <strong>경기 기록이 없습니다.</strong>
             </div>
           ) : (

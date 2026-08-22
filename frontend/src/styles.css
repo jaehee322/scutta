@@ -8,14 +8,14 @@
   --blue-dark: #134fb8;
   --blue-soft: #eaf3ff;
   --ink: #191f28;
-  --muted: #596574;
+  --muted: #6b7684;
   --subtle: #6b7684;
-  --line: #e6e9ed;
-  --background: #f7f8fa;
+  --line: #e5e8eb;
+  --background: #f2f4f6;
   --red: #d73343;
-  --shadow: none;
-  background: #f7f8fa;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --shadow: 0 14px 40px #10234612;
+  background: #f2f4f6;
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
 }
 
 * {
@@ -42,9 +42,6 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  font-size: 15px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
 }
 
 body.modal-open {
@@ -141,63 +138,76 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .login-page {
+  background: #fff;
+  grid-template-columns: minmax(400px, 1.08fr) minmax(420px, .92fr);
   min-height: 100vh;
-  min-height: 100svh;
-  background: #f7f8fa;
-  place-items: center;
-  padding: 36px;
   display: grid;
 }
 
-.login-panel {
-  width: 100%;
+.login-hero {
+  background: linear-gradient(145deg, #1f73ec 0%, #3182f6 58%, #65a4ff 100%);
   place-items: center;
+  min-height: 100vh;
+  padding: clamp(36px, 5vw, 74px);
+  display: grid;
+}
+
+.login-hero .brand {
+  justify-content: center;
+  width: 100%;
+}
+
+.login-hero .brand__logo {
+  filter: brightness(0) invert();
+}
+
+.login-panel {
+  place-items: center;
+  padding: 36px clamp(32px, 7vw, 110px);
   display: grid;
 }
 
 .login-panel__inner {
-  width: min(100%, 420px);
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 32px;
+  width: min(100%, 440px);
 }
 
-.login-panel h1 {
-  letter-spacing: -.02em;
+.mobile-brand {
+  display: none;
+}
+
+.login-panel h2 {
+  letter-spacing: -1.3px;
   margin: 0 0 10px;
-  font-size: 30px;
+  font-size: 36px;
 }
 
 .login-panel__lead {
   color: var(--muted);
-  margin: 0 0 24px;
+  margin: 0 0 35px;
   line-height: 1.65;
 }
 
 .login-form, .modal-form {
-  gap: 16px;
+  gap: 20px;
   display: grid;
 }
 
 .field {
   color: #4e5968;
-  gap: 7px;
-  min-width: 0;
+  gap: 9px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   display: grid;
 }
 
 .field input, .field select {
   border: 1px solid var(--line);
   width: 100%;
-  min-height: 48px;
+  min-height: 52px;
   color: var(--ink);
   background: #fff;
-  border-radius: 10px;
-  padding: 0 13px;
-  font-size: 16px;
+  border-radius: 15px;
+  padding: 0 15px;
   transition: all .2s;
 }
 
@@ -209,12 +219,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .input-shell {
   border: 1px solid var(--line);
-  min-height: 48px;
+  min-height: 58px;
   color: var(--subtle);
   background: #fff;
-  border-radius: 10px;
+  border-radius: 17px;
   align-items: center;
-  padding: 0 13px;
+  padding: 0 17px;
   transition: all .2s;
   display: flex;
 }
@@ -227,13 +237,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .input-shell input {
   min-width: 0;
-  height: 46px;
+  height: 56px;
   color: var(--ink);
   background: none;
   border: 0;
   outline: 0;
   flex: 1;
-  padding: 0 10px;
+  padding: 0 12px;
 }
 
 .input-shell input:focus {
@@ -242,13 +252,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .primary-button, .secondary-button, .danger-button {
   border: 0;
-  border-radius: 10px;
+  border-radius: 14px;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  min-height: 42px;
-  padding: 0 16px;
-  font-weight: 700;
+  min-height: 48px;
+  padding: 0 20px;
+  font-weight: 800;
   transition: all .2s;
   display: inline-flex;
 }
@@ -256,10 +266,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .primary-button {
   color: #fff;
   background: var(--blue);
+  box-shadow: 0 8px 18px #3182f62e;
 }
 
 .primary-button:hover {
   background: var(--blue-dark);
+  transform: translateY(-1px);
 }
 
 .primary-button:disabled, .secondary-button:disabled, .danger-button:disabled {
@@ -270,7 +282,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .primary-button--large {
   width: 100%;
-  min-height: 50px;
+  min-height: 58px;
   font-size: 16px;
 }
 
@@ -286,13 +298,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .danger-button--large {
   width: 100%;
-  min-height: 50px;
+  min-height: 56px;
 }
 
 .login-help {
   text-align: center;
   color: var(--subtle);
-  margin-top: 18px;
+  margin-top: 22px;
   font-size: 13px;
 }
 
@@ -300,13 +312,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: var(--blue-dark);
   background: var(--blue-soft);
   border: 0;
-  border-radius: 11px;
+  border-radius: 14px;
   justify-content: center;
   align-items: center;
   gap: 8px;
   width: 100%;
-  min-height: 44px;
-  margin-top: 12px;
+  min-height: 48px;
+  margin-top: 14px;
   font-weight: 800;
   display: flex;
 }
@@ -314,10 +326,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* Shared application shell and controls */
 
 .notice {
-  border-radius: 10px;
+  border-radius: 13px;
   align-items: flex-start;
   gap: 9px;
-  padding: 11px 13px;
+  padding: 13px 15px;
   font-size: 13px;
   font-weight: 600;
   line-height: 1.5;
@@ -408,8 +420,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .avatar-circle {
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
   color: var(--blue-dark);
   background: var(--blue-soft);
   border-radius: 50%;
@@ -431,9 +443,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .page {
-  width: min(100% - 48px, 1080px);
+  width: min(100% - 40px, 1080px);
   margin: 0 auto;
-  padding: 24px 0 56px;
+  padding: 32px 0 80px;
 }
 
 .page-loader {
@@ -466,10 +478,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .stats-strip {
   box-shadow: var(--shadow);
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 24px;
   grid-template-columns: repeat(4, 1fr);
-  margin-top: 14px;
+  margin-top: 22px;
   display: grid;
 }
 
@@ -478,9 +489,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 3px;
+  gap: 5px;
   min-width: 0;
-  padding: 14px 20px;
+  padding: 23px 30px;
   display: flex;
   position: relative;
 }
@@ -499,15 +510,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .stat-item > span {
   color: var(--muted);
   white-space: nowrap;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   line-height: 1.2;
 }
 
 .stat-item strong {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  font-size: 20px;
+  font-size: 23px;
   line-height: 1.2;
 }
 
@@ -533,41 +544,48 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .home-grid {
   grid-template-columns: minmax(0, 1.08fr) minmax(340px, .92fr);
   align-items: start;
-  gap: 14px;
+  gap: 22px;
   display: grid;
 }
 
 .card {
   box-shadow: var(--shadow);
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 26px;
 }
 
 .submit-card, .recent-card {
-  padding: 22px 24px;
+  padding: 32px;
 }
 
 .submit-card {
-  padding-block: 20px;
+  padding-block: 28px;
 }
 
 .section-heading {
-  margin-bottom: 16px;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 27px;
+  display: flex;
+}
+
+.section-heading > div:last-child {
+  gap: 3px;
+  display: grid;
 }
 
 .section-heading h1, .section-heading h2 {
-  letter-spacing: -.01em;
+  letter-spacing: -.5px;
   margin: 0;
-  font-size: 20px;
+  font-size: 21px;
 }
 
 .section-icon {
-  border-radius: 11px;
+  border-radius: 15px;
   flex: none;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   display: grid;
 }
 
@@ -582,13 +600,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .submit-card form {
-  gap: 16px;
+  gap: 23px;
   display: grid;
 }
 
 .choice-group {
   border: 0;
-  gap: 6px;
+  gap: 10px;
   margin: 0;
   padding: 0;
   display: grid;
@@ -596,9 +614,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .choice-group legend {
   color: #4e5968;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .choice-grid, .score-choice {
@@ -611,24 +629,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border: 1px solid var(--line);
   color: #4e5968;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 16px;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  min-height: 46px;
-  font-size: 15px;
-  font-weight: 600;
+  min-height: 58px;
+  font-weight: 700;
   display: flex;
   position: relative;
-}
-
-.choice-grid button::before, .score-choice button::before {
-  content: "";
-  border: 1px solid #b0b8c1;
-  border-radius: 50%;
-  flex: none;
-  width: 14px;
-  height: 14px;
 }
 
 .choice-grid button.is-selected, .score-choice button.is-selected {
@@ -638,18 +646,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   box-shadow: inset 0 0 0 1px var(--blue);
 }
 
-.choice-grid button.is-selected::before, .score-choice button.is-selected::before {
-  border: 4px solid var(--blue);
-  background: #fff;
+.choice-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .score-choice button {
-  flex-direction: row;
-  gap: 8px;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .score-choice strong {
-  font-size: 18px;
+  font-size: 19px;
 }
 
 .opponent-combobox {
@@ -664,8 +673,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   z-index: 30;
   border: 1px solid var(--line);
   background: #fff;
-  border-radius: 12px;
-  max-height: 220px;
+  border-radius: 16px;
+  max-height: 260px;
   padding: 7px;
   position: absolute;
   top: calc(100% + 8px);
@@ -677,7 +686,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .opponent-suggestion {
   width: 100%;
-  min-height: 44px;
+  min-height: 52px;
   color: var(--ink);
   text-align: left;
   background: #fff;
@@ -710,7 +719,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .opponent-suggestion small {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .opponent-suggestions__empty {
@@ -725,50 +734,51 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .form-hint {
   text-align: center;
   color: var(--subtle);
-  margin: -5px 0 0;
+  margin: -8px 0 0;
   font-size: 12px;
 }
 
 .card-title-row {
   justify-content: space-between;
   align-items: end;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
   display: flex;
 }
 
 .card-title-row h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .text-link {
   color: var(--blue);
   align-items: center;
   gap: 3px;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   display: inline-flex;
 }
 
 .empty-state {
   text-align: center;
-  min-height: 180px;
+  min-height: 270px;
   color: var(--muted);
-  border-top: 1px solid #f2f4f6;
+  border: 1px dashed #d8dee5;
+  border-radius: 20px;
   place-content: center;
   justify-items: center;
-  padding: 18px;
+  padding: 25px;
   display: grid;
 }
 
 .empty-state__icon {
-  width: 40px;
-  height: 40px;
+  width: 54px;
+  height: 54px;
   color: var(--subtle);
   background: #f2f4f6;
-  border-radius: 12px;
+  border-radius: 18px;
   place-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 13px;
   display: grid;
 }
 
@@ -782,10 +792,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .match-row {
   border-bottom: 1px solid #f2f4f6;
-  grid-template-columns: 36px 1fr auto;
+  grid-template-columns: 44px 1fr auto;
   align-items: center;
-  gap: 10px;
-  padding: 11px 0;
+  gap: 12px;
+  padding: 17px 0;
   display: grid;
 }
 
@@ -794,20 +804,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .result-badge {
+  border-radius: 12px;
   place-items: center;
-  width: 28px;
-  height: 28px;
-  font-size: 14px;
-  font-weight: 700;
+  width: 34px;
+  height: 34px;
+  font-size: 12px;
+  font-weight: 800;
   display: grid;
 }
 
 .result-badge.is-win {
+  background: var(--blue-soft);
   color: var(--blue);
 }
 
 .result-badge.is-loss {
   color: var(--subtle);
+  background: #f2f4f6;
 }
 
 .match-row__opponent {
@@ -825,7 +838,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .match-row__opponent span {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .match-row__score {
@@ -846,42 +859,44 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* Rankings and settlement */
 
 .page-heading {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .page-heading h1 {
-  letter-spacing: -.02em;
+  letter-spacing: -1.3px;
   margin: 0;
-  font-size: 28px;
+  font-size: 34px;
 }
 
 .segmented-control {
-  gap: 8px;
+  background: #e8ebee;
+  border-radius: 16px;
+  gap: 5px;
   width: fit-content;
-  margin-bottom: 16px;
+  margin-bottom: 22px;
+  padding: 5px;
   display: flex;
 }
 
 .segmented-control button {
   color: var(--muted);
-  background: #f2f4f6;
+  background: none;
   border: 0;
-  border-radius: 999px;
-  min-height: 40px;
-  padding: 9px 18px;
-  font-size: 14px;
-  font-weight: 600;
+  border-radius: 12px;
+  padding: 11px 25px;
+  font-weight: 700;
 }
 
 .segmented-control button.is-active {
-  color: #fff;
-  background: var(--blue);
+  color: var(--blue);
+  background: #fff;
+  box-shadow: 0 3px 10px #00000012;
 }
 
 .ranking-card {
+  box-shadow: var(--shadow);
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 26px;
   overflow: hidden;
 }
 
@@ -894,9 +909,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .ranking-header-row {
   color: var(--subtle);
   background: #fafbfc;
-  padding: 12px 22px;
+  padding: 17px 30px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .ranking-header-row span:last-child {
@@ -905,8 +920,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .ranking-row {
   border-top: 1px solid #f2f4f6;
-  min-height: 58px;
-  padding: 8px 22px;
+  min-height: 78px;
+  padding: 10px 30px;
 }
 
 .ranking-row.is-me {
@@ -917,24 +932,40 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: var(--subtle);
   font-variant-numeric: tabular-nums;
   align-items: center;
-  font-size: 15px;
-  font-weight: 700;
+  gap: 5px;
+  font-size: 16px;
+  font-weight: 800;
+  display: flex;
 }
 
-.rank-number--1, .rank-number--2, .rank-number--3 {
-  color: var(--blue);
+.rank-number--1 {
+  color: #8a6100;
+}
+
+.rank-number--2 {
+  color: #596572;
+}
+
+.rank-number--3 {
+  color: #8f4f2f;
 }
 
 .ranking-player {
-  align-items: baseline;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
   min-width: 0;
   display: flex;
 }
 
+.ranking-player > div {
+  gap: 2px;
+  min-width: 0;
+  display: grid;
+}
+
 .ranking-player strong {
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   min-width: 0;
   display: flex;
 }
@@ -944,18 +975,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   text-overflow: ellipsis;
   white-space: nowrap;
   min-width: 0;
-  font-size: 15px;
+  font-size: inherit;
   overflow: hidden;
 }
 
 .ranking-player strong small {
-  color: var(--blue);
-  font-size: 12px;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 8px;
+  padding: 2px 6px;
+  font-size: 9px;
 }
 
 .ranking-player span {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .ranking-value {
@@ -965,20 +999,22 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .ranking-value strong {
   color: var(--blue);
   font-variant-numeric: tabular-nums;
-  font-size: 18px;
+  font-size: 22px;
 }
 
 .ranking-value span {
   color: var(--subtle);
   margin-left: 3px;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .ranking-note {
   color: var(--muted);
   align-items: center;
-  padding: 12px 6px;
-  font-size: 12px;
+  gap: 10px;
+  padding: 16px 8px;
+  font-size: 13px;
+  display: flex;
 }
 
 .ranking-note p {
@@ -986,38 +1022,43 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .settlement-grid {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  overflow: hidden;
-}
-
-.settlement-card {
-  border-top: 1px solid #f2f4f6;
-  grid-template-columns: minmax(180px, 1.5fr) minmax(210px, 1fr) minmax(220px, 1.2fr);
-  align-items: center;
-  gap: 24px;
-  min-height: 86px;
-  padding: 14px 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
   display: grid;
 }
 
-.settlement-card:first-child {
-  border-top: 0;
+.settlement-card {
+  box-shadow: var(--shadow);
+  border-top: 4px solid var(--blue);
+  background: #fff;
+  border-radius: 24px;
+  padding: 26px;
+}
+
+.settlement-card--green {
+  border-color: #00b386;
+}
+
+.settlement-card--orange {
+  border-color: #ff9f2f;
+}
+
+.settlement-card--purple {
+  border-color: #8b6cf6;
 }
 
 .settlement-card header {
   align-items: center;
-  gap: 9px;
+  gap: 12px;
   display: flex;
 }
 
 .settlement-card__icon {
   background: var(--blue-soft);
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
   color: var(--blue);
-  border-radius: 10px;
+  border-radius: 14px;
   place-items: center;
   display: grid;
 }
@@ -1029,16 +1070,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .settlement-card header span {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .settlement-card header strong {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .settlement-metrics {
   grid-template-columns: 1fr 1fr;
-  margin: 0;
+  margin: 24px 0 20px;
   display: grid;
 }
 
@@ -1049,20 +1090,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .settlement-metrics > div + div {
   border-left: 1px solid var(--line);
-  padding-left: 14px;
+  padding-left: 24px;
 }
 
 .settlement-metrics span, .probability-row span {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .settlement-metrics strong {
-  font-size: 19px;
+  font-size: 25px;
 }
 
 .probability-row {
-  gap: 3px;
+  gap: 7px;
   display: grid;
 }
 
@@ -1078,7 +1119,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .probability-track {
   background: #e9edf1;
   border-radius: 10px;
-  height: 4px;
+  height: 7px;
   overflow: hidden;
 }
 
@@ -1091,31 +1132,29 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .probability-row > small {
   color: var(--subtle);
-  text-align: right;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .settlement-note {
   color: var(--muted);
-  margin: 12px 4px 0;
+  margin: 20px 4px 0;
   font-size: 13px;
-  line-height: 1.45;
+  line-height: 1.6;
 }
 
 .settlement-schedule {
   box-shadow: var(--shadow);
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  gap: 9px;
-  margin-top: 14px;
-  padding: 14px 16px;
+  border-radius: 20px;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 20px 24px;
   display: grid;
 }
 
 .settlement-schedule h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
 }
 
 .settlement-schedule > div {
@@ -1125,17 +1164,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .settlement-schedule span {
-  color: var(--muted);
-  padding-right: 12px;
-  font-size: 13px;
-  font-weight: 600;
+  color: var(--blue-dark);
+  background: var(--blue-soft);
+  border-radius: 11px;
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 /* Match history, account settings and administration */
 
 .match-history-card {
   margin-top: 0;
-  padding: 20px 22px;
+  padding: 30px;
 }
 
 .muted-count {
@@ -1145,10 +1186,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .match-history-table article {
   border-top: 1px solid #f2f4f6;
-  grid-template-columns: 36px 1fr auto;
+  grid-template-columns: 45px 1fr auto;
   align-items: center;
-  gap: 10px;
-  padding: 10px 0;
+  gap: 12px;
+  padding: 15px 0;
   display: grid;
 }
 
@@ -1158,7 +1199,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .match-history-table article div span {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .match-history-score {
@@ -1168,9 +1209,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .settings-list {
   box-shadow: var(--shadow);
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  margin-top: 14px;
+  border-radius: 22px;
+  margin-top: 20px;
   display: grid;
   overflow: hidden;
 }
@@ -1180,11 +1220,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: #fff;
   border: 0;
   border-bottom: 1px solid #f2f4f6;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 42px 1fr auto;
   align-items: center;
-  gap: 10px;
-  min-height: 54px;
-  padding: 9px 16px;
+  gap: 12px;
+  padding: 17px 22px;
   display: grid;
 }
 
@@ -1194,7 +1233,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .settings-list__install {
   color: var(--blue-dark);
-  grid-template-columns: 24px 1fr auto !important;
 }
 
 .settings-list__install .settings-list__icon {
@@ -1209,10 +1247,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .settings-list__icon {
   color: #6b7684;
   background: #f2f4f6;
-  border-radius: 10px;
+  border-radius: 13px;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   display: grid;
 }
 
@@ -1220,50 +1258,48 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: grid;
 }
 
-.settings-list__action {
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 600;
-}
-
 .admin-console-anchor {
-  margin-top: 22px;
+  margin-top: 40px;
   scroll-margin-top: 100px;
 }
 
 .admin-console-heading {
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   display: flex;
 }
 
 .admin-console-heading h2 {
   margin: 3px 0;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .admin-quick-grid {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  margin-top: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
   display: grid;
-  overflow: hidden;
 }
 
 .admin-feature-card {
+  box-shadow: var(--shadow);
   background: #fff;
-  border-bottom: 1px solid #f2f4f6;
-  grid-template-columns: 1fr auto;
+  border-radius: 19px;
+  grid-template-columns: 44px 1fr auto;
   align-items: center;
-  gap: 16px;
-  min-height: 64px;
-  padding: 12px 18px;
+  gap: 12px;
+  padding: 20px;
   display: grid;
 }
 
-.admin-feature-card:last-child {
-  border-bottom: 0;
+.admin-feature-card > span {
+  background: var(--blue-soft);
+  width: 42px;
+  height: 42px;
+  color: var(--blue);
+  border-radius: 14px;
+  place-items: center;
+  display: grid;
 }
 
 .admin-feature-card > div {
@@ -1272,58 +1308,45 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .admin-feature-card small {
   color: var(--subtle);
-  font-size: 13px;
+  font-size: 10px;
 }
 
-.admin-feature-card.is-danger strong {
+.admin-feature-card.is-danger > span {
   color: var(--red);
-}
-
-.admin-feature-card__action {
-  color: var(--blue);
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.admin-feature-card.is-danger .admin-feature-card__action {
-  color: var(--red);
+  background: #fff0f1;
 }
 
 .back-link {
   color: var(--muted);
   align-items: center;
   gap: 5px;
-  margin-bottom: 14px;
-  font-size: 14px;
-  font-weight: 600;
+  margin-bottom: 24px;
+  font-size: 13px;
+  font-weight: 700;
   display: inline-flex;
 }
 
 .admin-page-heading {
   justify-content: space-between;
   align-items: end;
-  margin-bottom: 16px;
+  margin-bottom: 25px;
   display: flex;
 }
 
 .admin-page-heading h1 {
-  margin: 3px 0;
-  font-size: 28px;
-  letter-spacing: -.02em;
+  margin: 6px 0;
+  font-size: 33px;
 }
 
 .admin-page-heading p {
   color: var(--muted);
   margin: 0;
-  font-size: 14px;
-  line-height: 1.45;
 }
 
 .admin-list-card {
   box-shadow: var(--shadow);
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 25px;
   overflow: hidden;
 }
 
@@ -1331,44 +1354,36 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border-bottom: 1px solid var(--line);
   align-items: baseline;
   gap: 7px;
-  padding: 13px 20px;
+  padding: 22px 28px;
   display: flex;
 }
 
 .admin-list-card__summary strong {
   color: var(--blue);
-  font-size: 17px;
+  font-size: 27px;
 }
 
 .admin-list-card__summary span {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .admin-player-list article {
   border-bottom: 1px solid #f2f4f6;
-  grid-template-columns: 1fr 120px;
+  grid-template-columns: 44px 1fr 90px;
   align-items: center;
   gap: 12px;
-  padding: 10px 20px;
+  padding: 16px 28px;
   display: grid;
 }
 
 .admin-player-main {
-  min-width: 0;
   display: grid;
-}
-
-.admin-player-main strong {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 15px;
 }
 
 .admin-player-main span {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .admin-row-actions {
@@ -1381,10 +1396,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #6b7684;
   background: #f2f4f6;
   border: 0;
-  border-radius: 9px;
+  border-radius: 11px;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 37px;
+  height: 37px;
   display: grid;
 }
 
@@ -1395,10 +1410,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .admin-match-list article {
   border-bottom: 1px solid #f2f4f6;
-  grid-template-columns: 96px 1fr 56px 76px;
+  grid-template-columns: 120px 1fr 80px 90px;
   align-items: center;
-  gap: 10px;
-  padding: 11px 20px;
+  gap: 15px;
+  padding: 17px 28px;
   display: grid;
 }
 
@@ -1410,7 +1425,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .admin-match-list article > div:nth-child(2) {
   align-items: center;
   gap: 8px;
-  min-width: 0;
   display: flex;
 }
 
@@ -1425,52 +1439,45 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .reset-warning {
   color: #d73343;
   background: #fff0f1;
-  border-radius: 14px;
-  gap: 11px;
-  padding: 14px 16px;
+  border-radius: 19px;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding: 20px 24px;
   display: flex;
 }
 
 .reset-warning p {
   margin: 3px 0 0;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .reset-counts {
   box-shadow: var(--shadow);
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 20px;
   grid-template-columns: repeat(4, 1fr);
-  margin-top: 12px;
+  margin-bottom: 18px;
   display: grid;
 }
 
 .reset-counts div {
   text-align: center;
-  padding: 13px 8px;
+  padding: 20px;
   display: grid;
 }
 
 .reset-counts span {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .reset-counts strong {
-  font-size: 20px;
-}
-
-.reset-layout {
-  grid-template-columns: minmax(0, 1fr) minmax(340px, .8fr);
-  align-items: start;
-  gap: 14px;
-  display: grid;
+  font-size: 25px;
 }
 
 .reset-form {
-  gap: 14px;
-  padding: 20px;
+  gap: 20px;
+  padding: 30px;
   display: grid;
 }
 
@@ -1478,13 +1485,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #4e5968;
   background: #f2f4f6;
   border-radius: 10px;
-  padding: 8px;
+  padding: 10px;
   font-size: 12px;
 }
 
 .form-row {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   display: grid;
 }
 
@@ -1497,17 +1504,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #4e5968;
   align-items: center;
   gap: 7px;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
 }
 
 .confirm-match {
   text-align: center;
   background: #f7f9fa;
-  border-radius: 11px;
+  border-radius: 15px;
   gap: 5px;
-  margin-bottom: 14px;
-  padding: 13px;
+  margin-bottom: 18px;
+  padding: 18px;
   display: grid;
 }
 
@@ -1518,7 +1525,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .modal-actions {
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 10px;
   display: grid;
 }
 
@@ -1535,38 +1542,34 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .modal-sheet {
   background: #fff;
-  border-radius: 18px;
-  width: min(100%, 440px);
+  border-radius: 26px;
+  width: min(100%, 480px);
   max-height: calc(100vh - 40px);
-  padding: 22px;
+  padding: 28px;
   overflow: auto;
   box-shadow: 0 30px 80px #0003;
 }
 
-.modal-sheet:focus {
-  outline: none;
-}
-
 .modal-sheet--wide {
-  width: min(100%, 680px);
+  width: min(100%, 720px);
 }
 
 .modal-sheet__header {
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   display: flex;
 }
 
 .modal-sheet__header h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 23px;
 }
 
 .modal-sheet__header p {
   color: var(--muted);
   margin: 6px 0 0;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .pwa-install-guide {
@@ -1596,7 +1599,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .pwa-install-guide__notice span {
   color: #4e5968;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.55;
 }
 
@@ -1612,7 +1615,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .pwa-install-guide p {
   color: var(--muted);
   margin: 0;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.55;
 }
 
@@ -1651,7 +1654,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .pwa-update-toast > div span {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .pwa-update-toast__apply {
@@ -1661,8 +1664,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border-radius: 11px;
   min-height: 44px;
   padding: 0 13px;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .pwa-update-toast__apply:disabled {
@@ -1683,10 +1686,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #6b7684;
   background: #f2f4f6;
   border: 0;
-  border-radius: 10px;
+  border-radius: 13px;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: grid;
 }
 
@@ -1708,10 +1711,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   box-shadow: var(--shadow);
   text-align: center;
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 26px;
   justify-items: center;
-  padding: 26px;
+  padding: 34px;
   display: grid;
 }
 
@@ -1753,8 +1755,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .pagination-footer {
   border-top: 1px solid var(--line);
-  gap: 10px;
-  padding: 13px 20px;
+  gap: 12px;
+  padding: 20px 28px;
   display: grid;
 }
 
@@ -1771,14 +1773,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .competition-page-heading {
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   display: flex;
 }
 
 .competition-page-heading h1 {
-  letter-spacing: -.02em;
+  letter-spacing: -1.3px;
   margin: 0;
-  font-size: 28px;
+  font-size: 34px;
 }
 
 .competition-sections, .competition-section, .competition-card-grid, .competition-card {
@@ -1786,20 +1788,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-sections {
-  gap: 24px;
+  gap: 34px;
   display: grid;
 }
 
 .competition-section__heading {
   align-items: center;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   display: flex;
 }
 
 .competition-section__heading h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 22px;
 }
 
 .competition-section__heading span {
@@ -1813,31 +1815,29 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: var(--subtle);
   text-align: center;
   background: #fff;
-  border-radius: 14px;
-  padding: 18px;
+  border-radius: 20px;
+  padding: 27px;
   font-size: 13px;
 }
 
 .competition-card-grid {
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
   display: grid;
-  overflow: hidden;
 }
 
 .competition-card {
+  box-shadow: var(--shadow);
   background: #fff;
-  border-bottom: 1px solid #f2f4f6;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 20px;
-  min-height: 70px;
-  padding: 12px 18px;
+  border-radius: 23px;
+  gap: 16px;
+  padding: 24px;
+  transition: all .2s;
   display: grid;
 }
 
-.competition-card:last-child {
-  border-bottom: 0;
+.competition-card:hover {
+  transform: translateY(-2px);
 }
 
 .competition-card__topline {
@@ -1847,11 +1847,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-type-badge, .competition-status-badge {
-  border-radius: 999px;
+  border-radius: 10px;
   align-items: center;
-  padding: 4px 7px;
-  font-size: 12px;
-  font-weight: 700;
+  padding: 6px 9px;
+  font-size: 11px;
+  font-weight: 800;
   display: inline-flex;
 }
 
@@ -1871,9 +1871,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-card__title {
-  gap: 3px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
   min-width: 0;
-  display: grid;
+  display: flex;
 }
 
 .competition-card__title h3 {
@@ -1881,13 +1883,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   white-space: nowrap;
   min-width: 0;
   margin: 0;
-  font-size: 16px;
+  font-size: 20px;
   overflow: hidden;
-}
-
-.competition-card__title span {
-  color: var(--muted);
-  font-size: 13px;
 }
 
 .competition-card__title svg {
@@ -1896,22 +1893,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-progress-copy {
-  text-align: right;
   color: var(--subtle);
-  gap: 2px;
+  justify-content: space-between;
+  align-items: center;
   font-size: 12px;
-  display: grid;
+  display: flex;
 }
 
 .competition-progress-copy strong {
   color: #4e5968;
-  font-size: 15px;
 }
 
 .competition-progress {
   background: #e9edf1;
   border-radius: 9px;
-  height: 4px;
+  height: 7px;
   overflow: hidden;
 }
 
@@ -1924,26 +1920,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .competition-empty-state {
   box-shadow: var(--shadow);
-  border: 1px solid var(--line);
   background: #fff;
 }
 
 .competition-detail-page > .notice {
-  margin: 14px 0;
+  margin: 18px 0;
 }
 
 .competition-detail-hero {
-  gap: 10px;
+  box-shadow: var(--shadow);
+  background: #fff;
+  border-radius: 26px;
+  gap: 16px;
   margin-bottom: 20px;
-  padding: 4px 0;
+  padding: 30px 34px;
   display: grid;
 }
 
-.competition-detail-hero__meta {
-  color: var(--muted);
-  margin: 0;
-  font-size: 13px;
-  font-weight: 600;
+.competition-detail-hero__badges {
+  align-items: center;
+  gap: 8px;
+  display: flex;
 }
 
 .competition-detail-hero__title {
@@ -1954,13 +1951,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-detail-hero h1 {
-  letter-spacing: -.02em;
+  letter-spacing: -1px;
   margin: 0;
-  font-size: 26px;
+  font-size: 30px;
 }
 
 .competition-admin-actions {
-  gap: 6px;
+  gap: 9px;
   display: flex;
 }
 
@@ -1970,16 +1967,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-delete-form {
-  gap: 14px;
+  gap: 18px;
   display: grid;
 }
 
 .competition-delete-warning {
   color: #d73343;
   background: #fff0f1;
-  border-radius: 12px;
+  border-radius: 15px;
   gap: 7px;
-  padding: 14px;
+  padding: 18px;
   display: grid;
 }
 
@@ -1993,15 +1990,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-detail-sections {
-  gap: 14px;
+  gap: 20px;
   display: grid;
 }
 
 .competition-panel {
   box-shadow: var(--shadow);
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 25px;
   overflow: hidden;
 }
 
@@ -2009,13 +2005,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border-bottom: 1px solid var(--line);
   justify-content: space-between;
   align-items: baseline;
-  padding: 15px 20px;
+  padding: 24px 28px;
   display: flex;
 }
 
 .competition-panel__heading h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 21px;
 }
 
 .competition-panel__heading span {
@@ -2025,7 +2021,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-table-wrap {
-  overflow-x: auto;
+  overflow: hidden;
 }
 
 .league-standing-row, .team-standing-row {
@@ -2034,10 +2030,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   grid-template-columns: 70px minmax(140px, 1fr) repeat(3, 70px) 90px;
   align-items: center;
   gap: 10px;
-  min-height: 50px;
-  padding: 7px 20px;
+  min-height: 62px;
+  padding: 11px 28px;
   display: grid;
-  min-width: 620px;
 }
 
 .league-standing-row:first-child, .team-standing-row:first-child {
@@ -2045,11 +2040,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .league-standing-row--header, .team-standing-row--header {
-  min-height: 36px;
+  min-height: 44px;
   color: var(--subtle);
   background: #fafbfc;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .league-standing-row > span:nth-child(2), .team-standing-row > b {
@@ -2081,7 +2076,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .standing-name small {
   color: var(--subtle);
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .is-positive {
@@ -2095,11 +2090,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .competition-match-row {
   border-top: 1px solid #f2f4f6;
-  grid-template-columns: 46px minmax(0, 1fr) 105px auto;
+  grid-template-columns: 60px minmax(0, 1fr) 130px auto;
   align-items: center;
-  gap: 10px;
-  min-height: 60px;
-  padding: 9px 18px;
+  gap: 16px;
+  min-height: 76px;
+  padding: 14px 28px;
   display: grid;
   position: relative;
 }
@@ -2147,7 +2142,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .competition-match-result small, .competition-match-result span {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .competition-match-actions {
@@ -2160,15 +2155,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: var(--blue-soft);
   color: var(--blue);
   border: 0;
-  border-radius: 9px;
+  border-radius: 11px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .small-primary-button {
   white-space: nowrap;
-  min-height: 36px;
-  padding: 0 11px;
+  min-height: 38px;
+  padding: 0 13px;
 }
 
 .small-primary-button:disabled, .team-add-game-button:disabled {
@@ -2180,10 +2175,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #6b7684;
   background: #f2f4f6;
   border: 0;
-  border-radius: 9px;
+  border-radius: 11px;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   display: grid;
 }
 
@@ -2207,30 +2202,30 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .team-encounter-list {
-  gap: 10px;
-  padding: 12px;
+  gap: 14px;
+  padding: 18px;
   display: grid;
 }
 
 .team-encounter-card {
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 19px;
   overflow: hidden;
 }
 
 .team-encounter-card__header {
   background: #fafbfc;
-  grid-template-columns: 42px 1fr auto;
+  grid-template-columns: 50px 1fr auto;
   align-items: center;
-  gap: 8px;
-  padding: 12px 14px;
+  gap: 12px;
+  padding: 18px 20px;
   display: grid;
 }
 
 .team-encounter-card__header > span, .team-encounter-card__header > small {
   color: var(--subtle);
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .team-encounter-card__header > div {
@@ -2255,18 +2250,18 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .team-game-row {
   border-top: 1px solid #f2f4f6;
-  grid-template-columns: 58px minmax(0, 1fr) 58px auto;
+  grid-template-columns: 70px minmax(0, 1fr) 70px auto;
   align-items: center;
   gap: 12px;
-  min-height: 52px;
-  padding: 8px 14px;
+  min-height: 64px;
+  padding: 12px 20px;
   display: grid;
 }
 
 .team-game-row > span {
   color: var(--subtle);
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .team-game-row > div:nth-child(2) {
@@ -2299,28 +2294,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   justify-content: center;
   align-items: center;
   gap: 6px;
-  width: calc(100% - 28px);
-  min-height: 40px;
-  margin: 0 14px 12px;
+  width: calc(100% - 40px);
+  min-height: 44px;
+  margin: 0 20px 18px;
   display: flex;
 }
 
 .team-encounter-card > .competition-row-error {
-  padding: 0 14px 12px;
+  padding: 0 20px 18px;
 }
 
 .competition-form {
-  gap: 14px;
+  gap: 18px;
   display: grid;
 }
 
 .competition-form-card {
   box-shadow: var(--shadow);
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  gap: 16px;
-  padding: 20px;
+  border-radius: 23px;
+  gap: 22px;
+  padding: 28px;
   display: grid;
 }
 
@@ -2333,7 +2327,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .competition-form-card__heading h2, .competition-form-card__heading h3, .competition-form-section-heading h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 19px;
 }
 
 .competition-form-card__heading span {
@@ -2347,8 +2341,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-player-check-grid {
-  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-  gap: 7px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
   display: grid;
 }
 
@@ -2356,12 +2350,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border: 1px solid var(--line);
   color: #4e5968;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 13px;
   align-items: center;
-  gap: 7px;
-  min-height: 44px;
+  gap: 9px;
   min-width: 0;
-  padding: 7px 10px;
+  padding: 12px;
   display: flex;
 }
 
@@ -2393,14 +2386,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .competition-player-check-grid strong {
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 14px;
+  font-size: 13px;
   overflow: hidden;
 }
 
 .competition-player-check-grid small {
   color: var(--subtle);
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .competition-player-empty {
@@ -2413,12 +2406,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-team-form-section {
-  gap: 12px;
+  gap: 15px;
   display: grid;
 }
 
 .competition-team-form-list {
-  gap: 12px;
+  gap: 16px;
   display: grid;
 }
 
@@ -2438,21 +2431,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   max-width: 520px;
 }
 
-@media (width >= 801px) {
-  .competition-form-card:has(> .choice-group) {
-    grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr);
-    align-items: end;
-  }
-
-  .competition-team-form-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .competition-team-form-list .competition-player-check-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 /* Responsive layout */
 
 @media (width <= 800px) {
@@ -2461,25 +2439,39 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .login-page {
-    background: #fff;
     min-height: 100svh;
-    padding: max(28px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));
-    display: grid;
+    display: block;
+  }
+
+  .login-hero {
+    display: none;
   }
 
   .login-panel {
-    padding: 0;
+    align-items: start;
+    min-height: 100svh;
+    padding: max(40px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(34px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));
   }
 
   .login-panel__inner {
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    padding: 0;
-    box-shadow: none;
+    margin: auto 0;
   }
 
-  .login-panel h1 {
+  .mobile-brand {
+    margin-bottom: 52px;
+    display: block;
+  }
+
+  .mobile-brand .brand {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .mobile-brand .brand__logo {
+    width: min(82%, 320px);
+  }
+
+  .login-panel h2 {
     font-size: 30px;
   }
 
@@ -2499,6 +2491,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
   .brand--compact .brand__logo {
     width: 46px;
+    max-width: none;
+    height: auto;
   }
 
   .desktop-nav, .user-chip {
@@ -2511,10 +2505,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
   .bottom-nav {
     z-index: 60;
-    min-height: 62px;
-    padding: 5px max(8px,env(safe-area-inset-right)) max(5px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
+    min-height: 68px;
+    padding: 7px max(8px,env(safe-area-inset-right)) max(7px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
     border-top: 1px solid var(--line);
-    background: #fff;
+    backdrop-filter: blur(14px);
+    background: #fffffff5;
     grid-auto-columns: minmax(0, 1fr);
     grid-auto-flow: column;
     display: grid;
@@ -2530,21 +2525,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     justify-content: center;
     align-items: center;
     gap: 3px;
-    min-height: 50px;
+    min-height: 54px;
     min-width: 0;
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 10px;
+    font-weight: 700;
     display: flex;
   }
 
   .bottom-nav a.active {
     color: var(--blue);
+    background: var(--blue-soft);
+    border-radius: 12px;
   }
 
   .pwa-update-toast {
     grid-template-columns: auto minmax(0, 1fr) auto;
     right: 16px;
-    bottom: calc(74px + env(safe-area-inset-bottom));
+    bottom: calc(82px + env(safe-area-inset-bottom));
   }
 
   .pwa-update-toast__apply {
@@ -2558,7 +2555,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
   .page {
     width: 100%;
-    padding: 18px max(16px,env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+    padding: 20px max(18px,env(safe-area-inset-right)) calc(92px + env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
   }
 
   .field input, .field select, .input-shell input {
@@ -2566,22 +2563,22 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .stats-strip {
-    border-radius: 14px;
+    border-radius: 20px;
   }
 
   .stat-item {
     justify-items: center;
     gap: 4px;
-    padding: 12px 6px;
+    padding: 18px 8px;
     display: grid;
   }
 
   .stat-item > span {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .stat-item strong {
-    font-size: 18px;
+    font-size: 19px;
   }
 
   .home-grid {
@@ -2589,12 +2586,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .submit-card, .recent-card {
-    border-radius: 14px;
-    padding: 18px 16px;
+    border-radius: 23px;
+    padding: 25px 20px;
   }
 
   .submit-card {
-    padding-block: 16px;
+    padding-block: 21px;
   }
 
   .recent-card {
@@ -2602,23 +2599,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .section-heading h1, .section-heading h2 {
-    font-size: 20px;
+    font-size: 19px;
   }
 
   .choice-grid button {
-    font-size: 15px;
+    font-size: 12px;
   }
 
   .empty-state {
-    min-height: 140px;
+    min-height: 220px;
   }
 
   .page-heading {
-    margin-bottom: 14px;
+    margin-bottom: 22px;
   }
 
   .page-heading h1 {
-    font-size: 26px;
+    font-size: 28px;
   }
 
   .segmented-control {
@@ -2629,23 +2626,22 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .segmented-control button {
     white-space: nowrap;
     flex: 1;
-    min-height: 40px;
-    padding: 8px 13px;
+    min-height: 44px;
+    padding: 10px 16px;
   }
 
   .ranking-card {
-    border-radius: 14px;
+    border-radius: 22px;
   }
 
   .ranking-header-row {
     grid-template-columns: 55px 1fr 70px;
-    padding: 10px 12px;
+    padding: 14px 16px;
   }
 
   .ranking-row {
     grid-template-columns: 55px 1fr 70px;
-    min-height: 58px;
-    padding: 7px 12px;
+    padding: 10px 16px;
   }
 
   .ranking-player .avatar-circle {
@@ -2657,67 +2653,32 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .settlement-grid {
-    border-radius: 14px;
+    grid-template-columns: 1fr;
   }
 
   .settlement-card {
-    grid-template-columns: minmax(110px, 1fr) minmax(145px, 1.2fr);
-    gap: 12px;
-    min-height: 0;
-    padding: 14px;
-  }
-
-  .settlement-card__icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 9px;
-  }
-
-  .settlement-card header strong {
-    font-size: 14px;
-  }
-
-  .settlement-metrics {
-    margin: 0;
-  }
-
-  .settlement-metrics strong {
-    font-size: 18px;
-  }
-
-  .probability-row {
-    grid-column: 1 / -1;
-    gap: 3px;
+    padding: 22px;
   }
 
   .match-history-card {
-    padding: 14px 16px;
+    padding: 24px 20px;
   }
 
   .admin-quick-grid {
     grid-template-columns: 1fr;
   }
 
-  .admin-feature-card {
-    grid-template-columns: minmax(0, 1fr) auto;
-    padding: 12px 16px;
-  }
-
-  .admin-feature-card small {
-    font-size: 13px;
-  }
-
   .settings-list button {
-    padding: 9px 14px;
+    padding: 16px;
   }
 
   .admin-page-heading {
     align-items: flex-start;
-    gap: 12px;
+    gap: 18px;
   }
 
   .admin-page-heading h1 {
-    font-size: 26px;
+    font-size: 28px;
   }
 
   .admin-page-heading .primary-button {
@@ -2735,34 +2696,29 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .admin-player-list article {
-    grid-template-columns: 1fr auto;
-    padding: 10px 12px;
+    grid-template-columns: 40px 1fr auto;
+    padding: 14px 16px;
   }
 
-  .admin-player-list .admin-row-actions {
-    grid-area: 1 / 2;
+  .admin-row-actions {
+    grid-area: 1 / 3 / 3;
   }
 
   .admin-match-list article {
-    grid-template-columns: minmax(0, 1fr) auto auto;
-    gap: 4px 8px;
-    padding: 10px 12px;
+    grid-template-columns: 1fr auto;
+    padding: 15px 16px;
   }
 
   .admin-match-list > article > span {
-    grid-area: 1 / 1;
+    grid-column: 1 / -1;
   }
 
   .admin-match-list article > div:nth-child(2) {
-    grid-area: 2 / 1 / 3 / 3;
-  }
-
-  .admin-match-list article > b {
-    grid-area: 1 / 2;
+    grid-column: 1;
   }
 
   .admin-match-list .admin-row-actions {
-    grid-area: 1 / 3 / 3 / 4;
+    grid-area: 2 / 2;
   }
 
   .reset-counts {
@@ -2770,11 +2726,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .reset-form {
-    padding: 16px;
-  }
-
-  .reset-layout {
-    grid-template-columns: 1fr;
+    padding: 24px 20px;
   }
 
   .modal-backdrop {
@@ -2785,8 +2737,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .modal-sheet {
     width: 100%;
     max-height: 92svh;
-    padding: 20px max(18px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
-    border-radius: 20px 20px 0 0;
+    padding: 24px max(20px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left));
+    border-radius: 26px 26px 0 0;
   }
 
   .form-row {
@@ -2794,11 +2746,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .competition-page-heading {
-    margin-bottom: 16px;
+    margin-bottom: 22px;
   }
 
   .competition-page-heading h1 {
-    font-size: 26px;
+    font-size: 28px;
   }
 
   .competition-page-heading .primary-button {
@@ -2811,20 +2763,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .competition-card {
-    border-radius: 0;
-    padding: 12px 14px;
+    border-radius: 20px;
+    padding: 21px;
   }
 
   .competition-sections {
-    gap: 20px;
+    gap: 28px;
   }
 
   .competition-section__heading h2 {
-    font-size: 17px;
+    font-size: 19px;
   }
 
   .competition-detail-hero {
-    padding: 0;
+    border-radius: 22px;
+    padding: 23px 20px;
   }
 
   .competition-detail-hero__title {
@@ -2833,7 +2786,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .competition-detail-hero h1 {
-    font-size: 24px;
+    font-size: 25px;
   }
 
   .competition-admin-actions {
@@ -2845,29 +2798,28 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .competition-panel {
-    border-radius: 14px;
+    border-radius: 21px;
   }
 
   .competition-panel__heading {
-    padding: 13px 12px;
+    padding: 21px 16px;
   }
 
   .competition-table-wrap {
-    overflow-x: auto;
+    overflow: hidden;
   }
 
   .league-standing-row, .team-standing-row {
-    grid-template-columns: 28px minmax(96px, 1fr) 30px 30px 30px 44px;
+    grid-template-columns: 30px minmax(84px, 1fr) 28px 28px 28px 44px;
     gap: 2px;
-    min-height: 46px;
-    min-width: 0;
-    padding: 6px 8px;
-    font-size: 12px;
+    min-height: 56px;
+    padding: 9px 10px;
+    font-size: 11px;
   }
 
   .league-standing-row--header, .team-standing-row--header {
-    min-height: 34px;
-    font-size: 12px;
+    min-height: 40px;
+    font-size: 9px;
   }
 
   .standing-name {
@@ -2879,18 +2831,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     white-space: nowrap;
     min-width: 0;
     overflow: hidden;
-    font-size: 14px;
   }
 
   .standing-name small {
-    font-size: 12px;
+    font-size: 8px;
   }
 
   .competition-match-row {
-    grid-template-columns: 30px minmax(0, 1fr) auto auto;
-    gap: 6px;
-    min-height: 58px;
-    padding: 8px 10px;
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    gap: 8px;
+    min-height: 72px;
+    padding: 13px 14px;
   }
 
   .competition-match-result {
@@ -2898,7 +2849,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .competition-match-actions {
-    grid-column: 4;
+    grid-column: 2 / -1;
   }
 
   .competition-row-error {
@@ -2906,19 +2857,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .team-encounter-list {
-    gap: 8px;
-    padding: 8px;
+    gap: 12px;
+    padding: 12px;
   }
 
   .team-encounter-card__header {
-    grid-template-columns: 30px minmax(0, 1fr) auto;
-    gap: 6px;
-    padding: 10px;
+    grid-template-columns: 32px 1fr;
+    gap: 7px;
+    padding: 15px 12px;
   }
 
   .team-encounter-card__header > small {
     text-align: right;
-    grid-column: auto;
+    grid-column: 2;
   }
 
   .team-encounter-card__header > div {
@@ -2929,15 +2880,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 0;
-    font-size: 14px;
+    font-size: 12px;
     overflow: hidden;
   }
 
   .team-game-row {
-    grid-template-columns: 44px minmax(0, 1fr) 48px auto;
+    grid-template-columns: 44px minmax(0, 1fr) 48px;
     gap: 6px;
-    min-height: 52px;
-    padding: 7px 10px;
+    padding: 11px 12px;
   }
 
   .team-game-row > div:nth-child(2) {
@@ -2951,15 +2901,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .team-game-row > div:nth-child(2) strong {
-    font-size: 13px;
+    font-size: 11px;
   }
 
   .team-game-row > b {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .team-game-row .competition-match-actions {
-    grid-column: 4;
+    grid-column: 2 / -1;
   }
 
   .team-add-game-button {
@@ -2968,18 +2918,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .competition-form-card {
-    border-radius: 14px;
-    gap: 13px;
-    padding: 15px;
+    padding: 22px 18px;
   }
 
   .competition-player-check-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
   }
 
   .competition-player-check-grid label {
-    padding: 7px 8px;
+    padding: 10px 9px;
   }
 
   .competition-form-section-heading {
@@ -3010,17 +2957,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 @media (width <= 360px) {
-  .admin-quick-grid {
-    grid-template-columns: 1fr;
-  }
-
   .stats-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .stat-item {
-    min-height: 58px;
-    padding: 10px 6px;
+    min-height: 72px;
+    padding: 14px 8px;
   }
 
   .stat-item:not(:last-child):after {

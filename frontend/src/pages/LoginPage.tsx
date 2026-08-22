@@ -1,7 +1,9 @@
+import { ArrowRight, LockKeyhole, UserRound } from "lucide-react";
 import { type FormEvent, useState } from "react";
 
 import { ApiError } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
+import { Brand } from "../components/Brand";
 import { Notice } from "../components/Notice";
 import { PwaInstallButton } from "../components/PwaManager";
 
@@ -31,42 +33,56 @@ export function LoginPage() {
 
   return (
     <main className="login-page">
+      <section className="login-hero" aria-label="SCUTTA 소개">
+        <Brand />
+      </section>
+
       <section className="login-panel">
         <div className="login-panel__inner">
-          <h1>로그인</h1>
+          <div className="mobile-brand">
+            <Brand />
+          </div>
+          <h2>로그인</h2>
           <p className="login-panel__lead">이름과 비밀번호를 입력하세요.</p>
 
           <form className="login-form" onSubmit={handleSubmit}>
             <label className="field">
               <span>이름</span>
-              <input
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-                autoComplete="username"
-                placeholder="이름을 입력하세요"
-                maxLength={64}
-                required
-              />
+              <div className="input-shell">
+                <UserRound size={20} aria-hidden="true" />
+                <input
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                  autoComplete="username"
+                  placeholder="이름을 입력하세요"
+                  maxLength={64}
+                  required
+                />
+              </div>
             </label>
 
             <label className="field">
               <span>비밀번호</span>
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                autoComplete="current-password"
-                placeholder="비밀번호를 입력하세요"
-                minLength={4}
-                maxLength={128}
-                required
-              />
+              <div className="input-shell">
+                <LockKeyhole size={20} aria-hidden="true" />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  autoComplete="current-password"
+                  placeholder="비밀번호를 입력하세요"
+                  minLength={4}
+                  maxLength={128}
+                  required
+                />
+              </div>
             </label>
 
             {error && <Notice>{error}</Notice>}
 
             <button className="primary-button primary-button--large" disabled={submitting}>
               <span>{submitting ? "로그인 중" : "로그인"}</span>
+              {!submitting && <ArrowRight size={20} />}
             </button>
           </form>
 

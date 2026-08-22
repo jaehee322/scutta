@@ -14,6 +14,7 @@ import { PageLoader } from "../components/Loading";
 import { Modal } from "../components/Modal";
 import { Notice } from "../components/Notice";
 import {
+  competitionProgress,
   competitionTypeLabel,
   findPlayerTeam,
   isCompetitionDeleteConfirmed,
@@ -92,14 +93,19 @@ export function CompetitionDetailPage() {
     );
   }
 
+  const progress = competitionProgress(detail);
+
   return (
     <div className="page competition-detail-page">
       <Link className="back-link" to="/competitions"><ArrowLeft size={18} /> 리그전</Link>
 
       <section className="competition-detail-hero">
-        <p className="competition-detail-hero__meta">
-          {competitionTypeLabel[detail.type]} · {detail.status === "active" ? "진행 중" : "종료"}
-        </p>
+        <div className="competition-detail-hero__badges">
+          <span className="competition-type-badge">{competitionTypeLabel[detail.type]}</span>
+          <span className={`competition-status-badge is-${detail.status}`}>
+            {detail.status === "active" ? "진행 중" : "종료"}
+          </span>
+        </div>
         <div className="competition-detail-hero__title">
           <h1>{detail.name}</h1>
           {user?.role === "admin" && (
@@ -126,6 +132,7 @@ export function CompetitionDetailPage() {
           <span>경기</span>
           <strong>{detail.completed_count} / {detail.total_count}</strong>
         </div>
+        <div className="competition-progress" aria-hidden="true"><i style={{ width: `${progress}%` }} /></div>
       </section>
 
       {error && <Notice>{error}</Notice>}
