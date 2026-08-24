@@ -25,6 +25,7 @@
 html, body {
   scrollbar-width: none;
   -ms-overflow-style: none;
+  overscroll-behavior-y: none;
 }
 
 html {
@@ -2639,6 +2640,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 @media (width <= 800px) {
   body {
     background: #fff;
+    min-height: 100svh;
+    min-height: 100dvh;
+  }
+
+  .app-frame {
+    min-height: 100svh;
+    min-height: 100dvh;
   }
 
   .login-page {
@@ -2686,15 +2694,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
   .app-content {
     min-height: calc(100svh - 56px - env(safe-area-inset-top));
+    min-height: calc(100dvh - 56px - env(safe-area-inset-top));
   }
 
   .bottom-nav {
     z-index: 60;
-    min-height: 68px;
-    padding: 7px max(8px,env(safe-area-inset-right)) max(7px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
+    min-height: calc(60px + env(safe-area-inset-bottom));
+    padding: 5px max(8px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(8px,env(safe-area-inset-left));
     border-top: 1px solid var(--line);
     backdrop-filter: blur(14px);
-    background: #fffffff5;
+    background: #fff;
     grid-auto-columns: minmax(0, 1fr);
     grid-auto-flow: column;
     display: grid;
