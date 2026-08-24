@@ -41,6 +41,7 @@ class CompetitionSummary(BaseModel):
     status: CompetitionStatus
     completed_count: int
     total_count: int
+    is_participant: bool
     completed_at: datetime | None
     created_at: datetime
     updated_at: datetime
@@ -66,6 +67,7 @@ class LeagueFixtureRead(BaseModel):
     score1: int | None
     score2: int | None
     played_on: date | None
+    played_at: datetime | None
     winner_id: int | None
     completed: bool
     can_submit: bool
@@ -106,6 +108,7 @@ class TeamSingleRead(BaseModel):
     score1: int
     score2: int
     played_on: date
+    played_at: datetime | None
     winner_team_id: int
 
 
@@ -116,6 +119,7 @@ class TeamDoublesRead(BaseModel):
     score1: int | None
     score2: int | None
     played_on: date | None
+    played_at: datetime | None
     winner_team_id: int | None
     completed: bool
 

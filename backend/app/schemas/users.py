@@ -19,7 +19,7 @@ class PlayerCreate(BaseModel):
     password: str = Field(min_length=8, max_length=128)
     gender: Gender
     is_freshman: bool = False
-    club_rank: int = Field(ge=-2, le=6)
+    club_rank: int = Field(ge=-2, le=7)
 
     _normalize_username = field_validator("username")(_strip_username)
 
@@ -28,7 +28,7 @@ class PlayerUpdate(BaseModel):
     username: str | None = Field(default=None, min_length=1, max_length=64)
     gender: Gender | None = None
     is_freshman: bool | None = None
-    club_rank: int | None = Field(default=None, ge=-2, le=6)
+    club_rank: int | None = Field(default=None, ge=-2, le=7)
 
     @field_validator("username")
     @classmethod

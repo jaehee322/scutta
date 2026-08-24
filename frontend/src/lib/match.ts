@@ -35,3 +35,19 @@ export function formatKoreanDate(value: string): string {
     weekday: "short",
   }).format(new Date(year, month - 1, day));
 }
+
+export function formatKoreanDateTime(playedOn: string, playedAt: string | null): string {
+  const dateLabel = formatKoreanDate(playedOn);
+  if (!playedAt) return dateLabel;
+
+  const instant = new Date(playedAt);
+  if (Number.isNaN(instant.getTime())) return dateLabel;
+
+  const timeLabel = new Intl.DateTimeFormat("ko-KR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+    timeZone: "Asia/Seoul",
+  }).format(instant);
+  return `${dateLabel} · ${timeLabel}`;
+}

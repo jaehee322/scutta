@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from datetime import date
 from typing import Annotated, NoReturn
 
 from fastapi import APIRouter, HTTPException, Query, Response, status
@@ -23,6 +22,7 @@ from app.services.matches import (
     create_player_match,
     delete_match,
     list_match_records,
+    played_at_in_seoul,
     update_match,
 )
 
@@ -44,10 +44,7 @@ def _match_read(record: MatchRecord) -> MatchRead:
         loser_id=loser_id,
         kind=match.kind,
         played_on=match.played_on,
-        submitted_by_id=match.submitted_by_id,
-        updated_by_id=match.updated_by_id,
-        created_at=match.created_at,
-        updated_at=match.updated_at,
+        played_at=played_at_in_seoul(match.played_at),
     )
 
 
@@ -64,14 +61,6 @@ def _raise_match_error(error: Exception) -> NoReturn:
             detail=str(error),
         ) from error
     raise error
-
-
-def _validate_date_range(played_from: date | None, played_to: date | None) -> None:
-    if played_from is not None and played_to is not None and played_from > played_to:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="played_from must not be after played_to",
-        )
 
 
 @router.post("", response_model=MatchRead, status_code=status.HTTP_201_CREATED)
@@ -97,17 +86,12 @@ def submit_match(
 def list_my_matches(
     db: DbSession,
     current_player: CurrentPlayer,
-    played_from: Annotated[date | None, Query()] = None,
-    played_to: Annotated[date | None, Query()] = None,
     limit: Annotated[int, Query(ge=1, le=200)] = 50,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> MatchListResponse:
-    _validate_date_range(played_from, played_to)
     records, total = list_match_records(
         db,
         participant_id=current_player.id,
-        played_from=played_from,
-        played_to=played_to,
         limit=limit,
         offset=offset,
     )
@@ -123,18 +107,11 @@ def list_my_matches(
 def list_all_matches(
     db: DbSession,
     _admin: CurrentAdmin,
-    participant_id: Annotated[int | None, Query(gt=0)] = None,
-    played_from: Annotated[date | None, Query()] = None,
-    played_to: Annotated[date | None, Query()] = None,
     limit: Annotated[int, Query(ge=1, le=200)] = 50,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> MatchListResponse:
-    _validate_date_range(played_from, played_to)
     records, total = list_match_records(
         db,
-        participant_id=participant_id,
-        played_from=played_from,
-        played_to=played_to,
         limit=limit,
         offset=offset,
         casual_only=True,
@@ -152,14 +129,13 @@ def patch_match(
     match_id: int,
     payload: MatchAdminUpdate,
     db: DbSession,
-    admin: CurrentAdmin,
+    _admin: CurrentAdmin,
 ) -> MatchRead:
     try:
         record = update_match(
             db,
             match_id=match_id,
             changes=payload.model_dump(exclude_unset=True),
-            admin=admin,
         )
     except (
         DailyMatchConflictError,

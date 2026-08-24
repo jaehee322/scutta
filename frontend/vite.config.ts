@@ -2,6 +2,8 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
+const devApiTarget = process.env.SCUTTA_DEV_API_TARGET?.trim() || "http://127.0.0.1:8000";
+
 export default defineConfig({
   plugins: [
     react(),
@@ -38,8 +40,8 @@ export default defineConfig({
     host: "127.0.0.1",
     port: 5173,
     proxy: {
-      "/api": "http://127.0.0.1:8000",
-      "/health": "http://127.0.0.1:8000",
+      "/api": devApiTarget,
+      "/health": devApiTarget,
     },
   },
 });

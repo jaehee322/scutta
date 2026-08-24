@@ -4,14 +4,15 @@ import { useEffect, useState } from "react";
 import { apiRequest } from "../api/client";
 import { PageLoader } from "../components/Loading";
 import { Notice } from "../components/Notice";
-import type { RankingCategory, SettlementResponse } from "../types";
+import type { SettlementCategoryKey, SettlementResponse } from "../types";
 
-const meta: Record<RankingCategory, { label: string; unit: string; color: string }> = {
+const categoryOrder = ["matches", "wins", "losses"] as const satisfies readonly SettlementCategoryKey[];
+
+const meta = {
   matches: { label: "경기 수", unit: "판", color: "blue" },
   wins: { label: "승리 수", unit: "승", color: "green" },
   losses: { label: "패배 수", unit: "패", color: "orange" },
-  opponents: { label: "상대 수", unit: "명", color: "purple" },
-};
+} satisfies Record<SettlementCategoryKey, { label: string; unit: string; color: string }>;
 
 export function SettlementsPage() {
   const [data, setData] = useState<SettlementResponse | null>(null);
@@ -36,10 +37,13 @@ export function SettlementsPage() {
       {data && (
         <>
           <div className="settlement-grid">
-            {data.categories.map((category) => {
-              const categoryMeta = meta[category.category];
+            {categoryOrder.map((categoryKey) => {
+              const category = data.categories.find(({ category: key }) => key === categoryKey);
+              if (!category) return null;
+
+              const categoryMeta = meta[categoryKey];
               return (
-                <article className={`settlement-card settlement-card--${categoryMeta.color}`} key={category.category}>
+                <article className={`settlement-card settlement-card--${categoryMeta.color}`} key={categoryKey}>
                   <header>
                     <span className="settlement-card__icon">
                       <Gift size={21} />

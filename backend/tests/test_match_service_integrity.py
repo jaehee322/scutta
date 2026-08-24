@@ -119,7 +119,6 @@ def test_match_lookup_uses_select_for_update() -> None:
         score2=0,
         kind=MatchKind.CASUAL,
         played_on=date(2026, 8, 13),
-        submitted_by_id=1,
     )
 
     class CapturingSession:
@@ -167,7 +166,6 @@ def test_update_translates_foreign_key_error(monkeypatch: pytest.MonkeyPatch) ->
         score2=0,
         kind=MatchKind.CASUAL,
         played_on=date(2026, 8, 13),
-        submitted_by_id=1,
     )
     locked_lookup = MagicMock(return_value=match)
     monkeypatch.setattr(match_service, "_get_match_for_update", locked_lookup)
@@ -178,7 +176,6 @@ def test_update_translates_foreign_key_error(monkeypatch: pytest.MonkeyPatch) ->
             db,
             match_id=match.id,
             changes={"score1": 0, "score2": 3},
-            admin=User(id=10),
         )
 
     locked_lookup.assert_called_once_with(db, match.id)
@@ -197,7 +194,6 @@ def test_update_reraises_unrelated_integrity_error(monkeypatch: pytest.MonkeyPat
         score2=0,
         kind=MatchKind.CASUAL,
         played_on=date(2026, 8, 13),
-        submitted_by_id=1,
     )
     monkeypatch.setattr(match_service, "_get_match_for_update", MagicMock(return_value=match))
     monkeypatch.setattr(match_service, "_ensure_pair_available", MagicMock())
@@ -207,7 +203,6 @@ def test_update_reraises_unrelated_integrity_error(monkeypatch: pytest.MonkeyPat
             db,
             match_id=match.id,
             changes={"score1": 0, "score2": 3},
-            admin=User(id=10),
         )
 
     assert caught.value is error
@@ -229,7 +224,6 @@ def test_stale_admin_write_becomes_match_not_found(
         score2=0,
         kind=MatchKind.CASUAL,
         played_on=date(2026, 8, 13),
-        submitted_by_id=1,
     )
     locked_lookup = MagicMock(return_value=match)
     monkeypatch.setattr(match_service, "_get_match_for_update", locked_lookup)
@@ -241,7 +235,6 @@ def test_stale_admin_write_becomes_match_not_found(
                 db,
                 match_id=match.id,
                 changes={"score1": 0, "score2": 3},
-                admin=User(id=10),
             )
         else:
             match_service.delete_match(db, match_id=match.id)

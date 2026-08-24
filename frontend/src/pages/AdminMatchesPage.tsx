@@ -3,6 +3,7 @@ import { type FormEvent, useCallback, useEffect, useRef, useState } from "react"
 import { Link } from "react-router-dom";
 
 import { apiRequest, jsonBody } from "../api/client";
+import { CustomSelect, type CustomSelectOption } from "../components/CustomSelect";
 import { PageLoader } from "../components/Loading";
 import { Modal } from "../components/Modal";
 import { Notice } from "../components/Notice";
@@ -12,6 +13,12 @@ import type { MatchListResponse, MatchRead, UserRead } from "../types";
 
 type AllowedScore = "3:0" | "2:1" | "1:2" | "0:3";
 const MATCH_PAGE_SIZE = 200;
+const scoreOptions = [
+  { value: "3:0", label: "3 : 0" },
+  { value: "2:1", label: "2 : 1" },
+  { value: "1:2", label: "1 : 2" },
+  { value: "0:3", label: "0 : 3" },
+] satisfies readonly CustomSelectOption<AllowedScore>[];
 
 export function AdminMatchesPage() {
   const [data, setData] = useState<MatchListResponse | null>(null);
@@ -256,6 +263,16 @@ function MatchEditModal({
   const [playedOn, setPlayedOn] = useState(match.played_on);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const player1Options = players.map((player) => ({
+    value: player.id,
+    label: player.username,
+    disabled: player.id === player2Id,
+  }));
+  const player2Options = players.map((player) => ({
+    value: player.id,
+    label: player.username,
+    disabled: player.id === player1Id,
+  }));
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
@@ -291,26 +308,8 @@ function MatchEditModal({
     <Modal title="경기 기록 수정" description="선수, 점수와 날짜를 모두 바로잡을 수 있어요." onClose={onClose} closeDisabled={saving}>
       <form className="modal-form" onSubmit={submit}>
         <div className="form-row">
-          <label className="field">
-            <span>첫 번째 선수</span>
-            <select value={player1Id} onChange={(event) => setPlayer1Id(Number(event.target.value))}>
-              {players.map((player) => (
-                <option key={player.id} value={player.id} disabled={player.id === player2Id}>
-                  {player.username}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="field">
-            <span>두 번째 선수</span>
-            <select value={player2Id} onChange={(event) => setPlayer2Id(Number(event.target.value))}>
-              {players.map((player) => (
-                <option key={player.id} value={player.id} disabled={player.id === player1Id}>
-                  {player.username}
-                </option>
-              ))}
-            </select>
-          </label>
+          <CustomSelect label="첫 번째 선수" value={player1Id} options={player1Options} onChange={setPlayer1Id} />
+          <CustomSelect label="두 번째 선수" value={player2Id} options={player2Options} onChange={setPlayer2Id} />
         </div>
         <div className="form-row">
           <label className="field">
@@ -322,15 +321,7 @@ function MatchEditModal({
               required
             />
           </label>
-          <label className="field">
-            <span>점수</span>
-            <select value={score} onChange={(event) => setScore(event.target.value as AllowedScore)}>
-              <option value="3:0">3 : 0</option>
-              <option value="2:1">2 : 1</option>
-              <option value="1:2">1 : 2</option>
-              <option value="0:3">0 : 3</option>
-            </select>
-          </label>
+          <CustomSelect label="점수" value={score} options={scoreOptions} onChange={setScore} />
         </div>
         <p className="form-hint">점수는 위에 표시된 첫 번째 선수 기준이에요.</p>
         {error && <Notice>{error}</Notice>}

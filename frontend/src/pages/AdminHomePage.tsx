@@ -1,6 +1,7 @@
 import {
   ArrowRight,
   DatabaseZap,
+  Gift,
   ListRestart,
   Trophy,
   UserRoundCog,
@@ -50,6 +51,12 @@ export function AdminHomePage() {
             title="리그전 관리"
             description="생성·수정·마감"
             href="/competitions"
+          />
+          <AdminFeatureCard
+            icon={<Gift size={22} />}
+            title="정산 설정"
+            description="부문별 정산 상품 변경"
+            href="/admin/settlements"
           />
           <AdminFeatureCard
             icon={<DatabaseZap size={22} />}

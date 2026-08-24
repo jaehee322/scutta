@@ -110,7 +110,10 @@ function CompetitionSection({ title, items }: { title: string; items: Competitio
 function CompetitionCard({ item }: { item: CompetitionSummary }) {
   const progress = competitionProgress(item);
   return (
-    <Link className="competition-card" to={`/competitions/${item.id}`}>
+    <Link
+      className={`competition-card ${item.is_participant ? "is-participant" : ""}`}
+      to={`/competitions/${item.id}`}
+    >
       <div className="competition-card__topline">
         <span className="competition-type-badge">{competitionTypeLabel[item.type]}</span>
         <span className={`competition-status-badge is-${item.status}`}>

@@ -139,40 +139,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .login-page {
   background: #fff;
-  grid-template-columns: minmax(400px, 1.08fr) minmax(420px, .92fr);
   min-height: 100vh;
-  display: grid;
-}
-
-.login-hero {
-  background: linear-gradient(145deg, #1f73ec 0%, #3182f6 58%, #65a4ff 100%);
   place-items: center;
-  min-height: 100vh;
-  padding: clamp(36px, 5vw, 74px);
+  padding: clamp(28px, 5vw, 64px);
   display: grid;
-}
-
-.login-hero .brand {
-  justify-content: center;
-  width: 100%;
-}
-
-.login-hero .brand__logo {
-  filter: brightness(0) invert();
 }
 
 .login-panel {
+  width: 100%;
   place-items: center;
-  padding: 36px clamp(32px, 7vw, 110px);
   display: grid;
 }
 
 .login-panel__inner {
   width: min(100%, 440px);
-}
-
-.mobile-brand {
-  display: none;
 }
 
 .login-panel h2 {
@@ -190,6 +170,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .login-form, .modal-form {
   gap: 20px;
   display: grid;
+}
+
+.login-form {
+  text-align: left;
+}
+
+.login-form .input-shell input {
+  padding-inline: 0;
+}
+
+.login-form .input-shell input::placeholder {
+  color: #a5aeb8;
+  opacity: 1;
+  font-weight: 500;
 }
 
 .field {
@@ -211,10 +205,36 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   transition: all .2s;
 }
 
+.field select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%236b7684' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 18px;
+  padding-right: 44px;
+}
+
+.field select:hover:not(:disabled) {
+  border-color: #c7ced6;
+  background-color: #fbfcfd;
+}
+
+.field select:disabled {
+  color: #8b95a1;
+  cursor: not-allowed;
+  background-color: #f5f6f8;
+  opacity: 1;
+}
+
 .field input:focus, .field select:focus {
   border-color: var(--blue);
   outline: 0;
   box-shadow: 0 0 0 4px #3182f61a;
+}
+
+.field select:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%231b64da' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
 }
 
 .input-shell {
@@ -321,6 +341,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   margin-top: 14px;
   font-weight: 800;
   display: flex;
+}
+
+.login-install-button > svg {
+  display: none;
 }
 
 /* Shared application shell and controls */
@@ -620,30 +644,53 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .choice-grid, .score-choice {
+  border: 1px solid var(--line);
+  background: #f2f4f6;
+  border-radius: 15px;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 4px;
+  padding: 4px;
   display: grid;
 }
 
 .choice-grid button, .score-choice button {
-  border: 1px solid var(--line);
-  color: #4e5968;
-  background: #fff;
-  border-radius: 16px;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  border-radius: 11px;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  min-height: 58px;
+  min-height: 50px;
   font-weight: 700;
+  transition: color .18s, background-color .18s, box-shadow .18s, transform .18s;
   display: flex;
   position: relative;
 }
 
-.choice-grid button.is-selected, .score-choice button.is-selected {
-  background: var(--blue-soft);
-  border-color: var(--blue);
+.choice-grid button.is-selected,
+.choice-grid button[aria-pressed="true"],
+.score-choice button.is-selected,
+.score-choice button[aria-pressed="true"] {
+  background: #fff;
   color: var(--blue-dark);
-  box-shadow: inset 0 0 0 1px var(--blue);
+  box-shadow: 0 1px 3px #1023461f, 0 0 0 1px #1023460a;
+}
+
+.choice-grid button:hover:not(:disabled):not([aria-pressed="true"]),
+.score-choice button:hover:not(:disabled):not([aria-pressed="true"]) {
+  color: var(--ink);
+  background: #ffffffa3;
+}
+
+.choice-grid button:focus-visible, .score-choice button:focus-visible {
+  outline-width: 2px;
+  outline-offset: 2px;
+}
+
+.choice-grid button:disabled, .score-choice button:disabled {
+  color: #b0b8c1;
+  cursor: not-allowed;
 }
 
 .choice-check {
@@ -869,28 +916,47 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .segmented-control {
-  background: #e8ebee;
-  border-radius: 16px;
-  gap: 5px;
+  border: 1px solid var(--line);
+  background: #f2f4f6;
+  border-radius: 15px;
+  gap: 4px;
   width: fit-content;
   margin-bottom: 22px;
-  padding: 5px;
+  padding: 4px;
   display: flex;
 }
 
 .segmented-control button {
   color: var(--muted);
-  background: none;
+  background: transparent;
   border: 0;
-  border-radius: 12px;
-  padding: 11px 25px;
+  border-radius: 11px;
+  min-height: 42px;
+  padding: 9px 23px;
   font-weight: 700;
+  transition: color .18s, background-color .18s, box-shadow .18s;
 }
 
-.segmented-control button.is-active {
-  color: var(--blue);
+.segmented-control button.is-active,
+.segmented-control button[aria-pressed="true"] {
+  color: var(--blue-dark);
   background: #fff;
-  box-shadow: 0 3px 10px #00000012;
+  box-shadow: 0 1px 3px #1023461f, 0 0 0 1px #1023460a;
+}
+
+.segmented-control button:hover:not(:disabled):not([aria-pressed="true"]) {
+  color: var(--ink);
+  background: #ffffffa3;
+}
+
+.segmented-control button:focus-visible {
+  outline-width: 2px;
+  outline-offset: 2px;
+}
+
+.segmented-control button:disabled {
+  color: #b0b8c1;
+  cursor: not-allowed;
 }
 
 .ranking-card {
@@ -901,7 +967,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .ranking-header-row, .ranking-row {
-  grid-template-columns: 90px 1fr 130px;
+  grid-template-columns: 72px minmax(0, 1fr) 112px;
   align-items: center;
   display: grid;
 }
@@ -909,7 +975,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .ranking-header-row {
   color: var(--subtle);
   background: #fafbfc;
-  padding: 17px 30px;
+  padding: 14px 24px;
   font-size: 12px;
   font-weight: 700;
 }
@@ -920,8 +986,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .ranking-row {
   border-top: 1px solid #f2f4f6;
-  min-height: 78px;
-  padding: 10px 30px;
+  min-height: 64px;
+  padding: 6px 24px;
 }
 
 .ranking-row.is-me {
@@ -938,34 +1004,42 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: flex;
 }
 
+.rank-number svg {
+  flex: none;
+}
+
 .rank-number--1 {
-  color: #8a6100;
+  color: #c88a00;
 }
 
 .rank-number--2 {
-  color: #596572;
+  color: #7d8996;
 }
 
 .rank-number--3 {
-  color: #8f4f2f;
+  color: #ad643c;
 }
 
 .ranking-player {
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
   display: flex;
 }
 
+.ranking-player .avatar-circle {
+  width: 32px;
+  height: 32px;
+  font-size: 13px;
+}
+
 .ranking-player > div {
-  gap: 2px;
   min-width: 0;
-  display: grid;
 }
 
 .ranking-player strong {
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   min-width: 0;
   display: flex;
 }
@@ -977,6 +1051,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   min-width: 0;
   font-size: inherit;
   overflow: hidden;
+}
+
+.ranking-player .ranking-player__club-rank {
+  color: var(--subtle);
+  flex: none;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 .ranking-player strong small {
@@ -1022,7 +1103,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .settlement-grid {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
   display: grid;
 }
@@ -1041,10 +1122,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .settlement-card--orange {
   border-color: #ff9f2f;
-}
-
-.settlement-card--purple {
-  border-color: #8b6cf6;
 }
 
 .settlement-card header {
@@ -1495,6 +1572,26 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: grid;
 }
 
+.settlement-settings-form {
+  width: min(100%, 760px);
+  gap: 18px;
+  display: grid;
+}
+
+.settlement-settings-card {
+  padding: 28px;
+}
+
+.settlement-settings-card .section-heading {
+  margin-bottom: 22px;
+}
+
+.settlement-prize-fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px 14px;
+  display: grid;
+}
+
 .toggle-row {
   gap: 20px;
   display: flex;
@@ -1502,10 +1599,95 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .toggle-row label {
   color: #4e5968;
+  border: 1px solid transparent;
+  background: #f2f4f6;
+  cursor: pointer;
+  border-radius: 12px;
   align-items: center;
-  gap: 7px;
+  gap: 9px;
+  min-height: 44px;
+  padding: 9px 12px;
   font-size: 13px;
+  font-weight: 700;
+  transition: color .18s, border-color .18s, background-color .18s;
   display: flex;
+}
+
+.toggle-row label:hover {
+  background: #e9edf2;
+}
+
+.toggle-row label:has(input:checked) {
+  color: var(--blue-dark);
+  border-color: #c5dcff;
+  background: var(--blue-soft);
+}
+
+.toggle-row label:has(input:disabled) {
+  color: #b0b8c1;
+  cursor: not-allowed;
+  background: #f5f6f8;
+}
+
+.toggle-row input {
+  appearance: none;
+  border: 1.5px solid #b0b8c1;
+  background: #fff;
+  border-radius: 5px;
+  place-content: center;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  display: grid;
+}
+
+.toggle-row input::after {
+  content: "";
+  border: solid #fff;
+  border-width: 0 0 2px 2px;
+  width: 8px;
+  height: 4px;
+  opacity: 0;
+  transform: translateY(-1px) rotate(-45deg) scale(.7);
+  transition: opacity .12s, transform .12s;
+}
+
+.toggle-row input:checked {
+  border-color: var(--blue);
+  background: var(--blue);
+}
+
+.toggle-row input:checked::after {
+  opacity: 1;
+  transform: translateY(-1px) rotate(-45deg) scale(1);
+}
+
+.toggle-row input:focus-visible {
+  outline-width: 2px;
+}
+
+@media (forced-colors: active) {
+  .field select, .field select:focus {
+    appearance: auto;
+    background-image: none;
+    padding-right: 15px;
+  }
+
+  .choice-grid button[aria-pressed="true"],
+  .score-choice button[aria-pressed="true"],
+  .segmented-control button[aria-pressed="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -3px;
+  }
+
+  .toggle-row input {
+    appearance: auto;
+    accent-color: Highlight;
+  }
+
+  .toggle-row input::after {
+    display: none;
+  }
 }
 
 .confirm-match {
@@ -1827,6 +2009,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .competition-card {
+  border: 1px solid transparent;
   box-shadow: var(--shadow);
   background: #fff;
   border-radius: 23px;
@@ -1834,6 +2017,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   padding: 24px;
   transition: all .2s;
   display: grid;
+}
+
+.competition-card.is-participant {
+  border-color: #8ebcff;
+  box-shadow: 0 0 0 1px #3182f629, 0 10px 30px #3182f614;
 }
 
 .competition-card:hover {
@@ -2016,7 +2204,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .competition-panel__heading span {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
 }
 
@@ -2027,12 +2215,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .league-standing-row, .team-standing-row {
   text-align: center;
   border-top: 1px solid #f2f4f6;
-  grid-template-columns: 70px minmax(140px, 1fr) repeat(3, 70px) 90px;
   align-items: center;
   gap: 10px;
   min-height: 62px;
   padding: 11px 28px;
   display: grid;
+}
+
+.league-standing-row {
+  grid-template-columns: 70px minmax(140px, 1fr) repeat(2, 70px);
+}
+
+.team-standing-row {
+  grid-template-columns: 70px minmax(140px, 1fr) repeat(3, 70px) 90px;
 }
 
 .league-standing-row:first-child, .team-standing-row:first-child {
@@ -2047,7 +2242,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 700;
 }
 
-.league-standing-row > span:nth-child(2), .team-standing-row > b {
+.league-standing-row > span:nth-child(2),
+.team-standing-row > b,
+.team-standing-row--header > span:nth-child(2) {
   text-align: left;
 }
 
@@ -2076,7 +2273,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .standing-name small {
   color: var(--subtle);
   white-space: nowrap;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .is-positive {
@@ -2105,7 +2302,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .competition-round {
   color: var(--subtle);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
 }
 
@@ -2119,6 +2316,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .competition-match-players strong {
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 15px;
   overflow: hidden;
 }
 
@@ -2142,7 +2340,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .competition-match-result small, .competition-match-result span {
   color: var(--subtle);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .competition-match-actions {
@@ -2224,7 +2422,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .team-encounter-card__header > span, .team-encounter-card__header > small {
   color: var(--subtle);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
 }
 
@@ -2233,6 +2431,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   align-items: center;
   gap: 15px;
   display: grid;
+}
+
+.team-encounter-card__header > div strong {
+  font-size: 15px;
 }
 
 .team-encounter-card__header > div strong:first-child {
@@ -2260,7 +2462,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .team-game-row > span {
   color: var(--subtle);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
 }
 
@@ -2274,6 +2476,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .team-game-row > div:nth-child(2) strong {
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 14px;
   overflow: hidden;
 }
 
@@ -2440,35 +2643,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
   .login-page {
     min-height: 100svh;
-    display: block;
-  }
-
-  .login-hero {
-    display: none;
+    padding: 0;
+    display: grid;
   }
 
   .login-panel {
-    align-items: start;
     min-height: 100svh;
     padding: max(40px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(34px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));
   }
 
   .login-panel__inner {
-    margin: auto 0;
-  }
-
-  .mobile-brand {
-    margin-bottom: 52px;
-    display: block;
-  }
-
-  .mobile-brand .brand {
-    justify-content: center;
-    width: 100%;
-  }
-
-  .mobile-brand .brand__logo {
-    width: min(82%, 320px);
+    margin: 0;
   }
 
   .login-panel h2 {
@@ -2635,13 +2820,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .ranking-header-row {
-    grid-template-columns: 55px 1fr 70px;
-    padding: 14px 16px;
+    grid-template-columns: 44px minmax(0, 1fr) 62px;
+    padding: 12px 14px;
   }
 
   .ranking-row {
-    grid-template-columns: 55px 1fr 70px;
-    padding: 10px 16px;
+    grid-template-columns: 44px minmax(0, 1fr) 62px;
+    min-height: 54px;
+    padding: 5px 14px;
   }
 
   .ranking-player .avatar-circle {
@@ -2658,6 +2844,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
   .settlement-card {
     padding: 22px;
+  }
+
+  .settlement-settings-card {
+    padding: 22px 20px;
+  }
+
+  .settlement-prize-fields {
+    grid-template-columns: 1fr;
   }
 
   .match-history-card {
@@ -2810,16 +3004,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .league-standing-row, .team-standing-row {
-    grid-template-columns: 30px minmax(84px, 1fr) 28px 28px 28px 44px;
     gap: 2px;
     min-height: 56px;
     padding: 9px 10px;
-    font-size: 11px;
+    font-size: 13px;
+  }
+
+  .league-standing-row {
+    grid-template-columns: 36px minmax(100px, 1fr) repeat(2, 42px);
+  }
+
+  .team-standing-row {
+    grid-template-columns: 30px minmax(84px, 1fr) 28px 28px 28px 44px;
   }
 
   .league-standing-row--header, .team-standing-row--header {
     min-height: 40px;
-    font-size: 9px;
+    font-size: 11px;
   }
 
   .standing-name {
@@ -2834,7 +3035,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .standing-name small {
-    font-size: 8px;
+    font-size: 11px;
   }
 
   .competition-match-row {
@@ -2880,7 +3081,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 0;
-    font-size: 12px;
+    font-size: 13px;
     overflow: hidden;
   }
 
@@ -2901,7 +3102,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 
   .team-game-row > div:nth-child(2) strong {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .team-game-row > b {
@@ -2951,6 +3152,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     min-height: auto;
   }
 
+}
+
+@media (width >= 801px) and (width <= 900px) {
   .settlement-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -2985,5 +3189,199 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     transition-duration: .01ms !important;
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
+  }
+}
+
+/* Custom select */
+
+.custom-select-field {
+  color: #4e5968;
+  gap: 9px;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  display: grid;
+}
+
+.custom-select__label {
+  min-width: 0;
+}
+
+.custom-select {
+  min-width: 0;
+  position: relative;
+}
+
+.custom-select__trigger {
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 14px 0 15px;
+  text-align: left;
+  transition: border-color .18s, background-color .18s, box-shadow .18s;
+  display: flex;
+}
+
+.custom-select__trigger:hover:not(:disabled) {
+  background: #fbfcfd;
+  border-color: #c7ced6;
+}
+
+.custom-select__trigger:focus-visible,
+.custom-select__trigger[aria-expanded="true"] {
+  border-color: var(--blue);
+  outline: 0;
+  box-shadow: 0 0 0 4px #3182f61a;
+}
+
+.custom-select__trigger:disabled {
+  color: #8b95a1;
+  background: #f5f6f8;
+  cursor: not-allowed;
+}
+
+.custom-select__value {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.custom-select__value--placeholder {
+  color: #8b95a1;
+  font-weight: 500;
+}
+
+.custom-select__chevron {
+  color: var(--muted);
+  flex: 0 0 auto;
+  transition: color .18s, transform .18s;
+}
+
+.custom-select__trigger[aria-expanded="true"] .custom-select__chevron {
+  color: var(--blue);
+  transform: rotate(180deg);
+}
+
+.custom-select__menu {
+  z-index: 300;
+  background: #fff;
+  border: 1px solid #dfe3e8;
+  border-radius: 15px;
+  padding: 6px;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  box-shadow: 0 14px 38px #10234624, 0 2px 8px #10234612;
+  flex-direction: column;
+  display: flex;
+  position: fixed;
+}
+
+.custom-select__menu[data-placement="down"] {
+  transform-origin: top center;
+  animation: custom-select-open-down .14s ease-out;
+}
+
+.custom-select__menu[data-placement="up"] {
+  transform-origin: bottom center;
+  animation: custom-select-open-up .14s ease-out;
+}
+
+.custom-select__list {
+  scrollbar-color: #c9d0d8 transparent;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  list-style: none;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.custom-select__list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-select__list::-webkit-scrollbar-thumb {
+  background: #c9d0d8;
+  border-radius: 999px;
+}
+
+.custom-select__option {
+  color: var(--ink);
+  border-radius: 10px;
+  grid-template-columns: minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 9px 11px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  transition: color .12s, background-color .12s;
+  display: grid;
+}
+
+.custom-select__option > span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.custom-select__option > svg {
+  color: var(--blue);
+}
+
+.custom-select__option[data-active="true"] {
+  color: var(--blue-dark);
+  background: var(--blue-soft);
+}
+
+.custom-select__option[aria-selected="true"] {
+  color: var(--blue);
+}
+
+.custom-select__option[aria-disabled="true"] {
+  color: #a5aeb8;
+  background: transparent;
+  cursor: not-allowed;
+}
+
+@keyframes custom-select-open-down {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(.985);
+  }
+}
+
+@keyframes custom-select-open-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(.985);
+  }
+}
+
+@media (width <= 480px) {
+  .custom-select__option {
+    min-height: 48px;
+    padding-inline: 12px;
+  }
+}
+
+@media (forced-colors: active) {
+  .custom-select__trigger:focus-visible,
+  .custom-select__trigger[aria-expanded="true"],
+  .custom-select__option[data-active="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
   }
 }

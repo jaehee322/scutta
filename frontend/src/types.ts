@@ -2,6 +2,7 @@ export type UserRole = "player" | "admin";
 export type Gender = "M" | "F";
 export type MatchKind = "casual" | "daily" | "competition";
 export type RankingCategory = "matches" | "wins" | "losses" | "opponents";
+export type SettlementCategoryKey = Exclude<RankingCategory, "opponents">;
 export type CompetitionType = "league" | "team";
 export type CompetitionStatus = "active" | "completed";
 
@@ -50,10 +51,7 @@ export interface MatchRead {
   loser_id: number;
   kind: MatchKind;
   played_on: string;
-  submitted_by_id: number;
-  updated_by_id: number | null;
-  created_at: string;
-  updated_at: string;
+  played_at: string | null;
 }
 
 export interface MatchListResponse {
@@ -79,7 +77,7 @@ export interface RankingsResponse {
 }
 
 export interface SettlementCategory {
-  category: RankingCategory;
+  category: SettlementCategoryKey;
   prize: string;
   value: number;
   tickets: number;
@@ -90,6 +88,10 @@ export interface SettlementCategory {
 export interface SettlementResponse {
   draws: string[];
   categories: SettlementCategory[];
+}
+
+export interface SettlementSettings {
+  prizes: Record<SettlementCategoryKey, string>;
 }
 
 export interface DatabaseResetCounts {
@@ -118,6 +120,7 @@ export interface CompetitionSummary {
   status: CompetitionStatus;
   completed_count: number;
   total_count: number;
+  is_participant: boolean;
   completed_at: string | null;
   created_at: string;
   updated_at: string;
@@ -149,6 +152,7 @@ export interface LeagueFixture {
   score1: number | null;
   score2: number | null;
   played_on: string | null;
+  played_at: string | null;
   winner_id: number | null;
   completed: boolean;
   can_submit: boolean;
@@ -189,6 +193,7 @@ export interface TeamSingleMatch {
   score1: number;
   score2: number;
   played_on: string;
+  played_at: string | null;
   winner_team_id: number;
 }
 
@@ -199,6 +204,7 @@ export interface TeamDoublesMatch {
   score1: number | null;
   score2: number | null;
   played_on: string | null;
+  played_at: string | null;
   winner_team_id: number | null;
   completed: boolean;
 }

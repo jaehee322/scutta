@@ -1,9 +1,7 @@
-import { ArrowRight, LockKeyhole, UserRound } from "lucide-react";
 import { type FormEvent, useState } from "react";
 
 import { ApiError } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
-import { Brand } from "../components/Brand";
 import { Notice } from "../components/Notice";
 import { PwaInstallButton } from "../components/PwaManager";
 
@@ -33,15 +31,8 @@ export function LoginPage() {
 
   return (
     <main className="login-page">
-      <section className="login-hero" aria-label="SCUTTA 소개">
-        <Brand />
-      </section>
-
       <section className="login-panel">
         <div className="login-panel__inner">
-          <div className="mobile-brand">
-            <Brand />
-          </div>
           <h2>로그인</h2>
           <p className="login-panel__lead">이름과 비밀번호를 입력하세요.</p>
 
@@ -49,7 +40,6 @@ export function LoginPage() {
             <label className="field">
               <span>이름</span>
               <div className="input-shell">
-                <UserRound size={20} aria-hidden="true" />
                 <input
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
@@ -64,7 +54,6 @@ export function LoginPage() {
             <label className="field">
               <span>비밀번호</span>
               <div className="input-shell">
-                <LockKeyhole size={20} aria-hidden="true" />
                 <input
                   type="password"
                   value={password}
@@ -80,9 +69,8 @@ export function LoginPage() {
 
             {error && <Notice>{error}</Notice>}
 
-            <button className="primary-button primary-button--large" disabled={submitting}>
+            <button type="submit" className="primary-button primary-button--large" disabled={submitting}>
               <span>{submitting ? "로그인 중" : "로그인"}</span>
-              {!submitting && <ArrowRight size={20} />}
             </button>
           </form>
 

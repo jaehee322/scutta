@@ -10,6 +10,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ApiError, apiRequest, jsonBody } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
+import { CustomSelect, type CustomSelectOption } from "../components/CustomSelect";
 import { PageLoader } from "../components/Loading";
 import { Modal } from "../components/Modal";
 import { Notice } from "../components/Notice";
@@ -22,7 +23,7 @@ import {
   type ResultScore,
   resultScorePair,
 } from "../lib/competition";
-import { formatKoreanDate } from "../lib/match";
+import { formatKoreanDateTime } from "../lib/match";
 import type {
   CompetitionDetail,
   CompetitionPlayerRef,
@@ -35,6 +36,12 @@ import type {
 } from "../types";
 
 type AllowedScore = "3:0" | "2:1" | "1:2" | "0:3";
+const scoreOptions = [
+  { value: "3:0", label: "3 : 0" },
+  { value: "2:1", label: "2 : 1" },
+  { value: "1:2", label: "1 : 2" },
+  { value: "0:3", label: "0 : 3" },
+] satisfies readonly CustomSelectOption<AllowedScore>[];
 
 export function CompetitionDetailPage() {
   const { competitionId } = useParams();
@@ -313,7 +320,7 @@ function LeagueDetail({
         <PanelHeading title="순위" />
         <div className="competition-table-wrap" role="table" aria-label="개인 리그 순위">
           <div className="league-standing-row league-standing-row--header" role="row">
-            <span role="columnheader">순위</span><span role="columnheader">선수</span><span role="columnheader">경기</span><span role="columnheader">승</span><span role="columnheader">패</span><span role="columnheader">세트</span>
+            <span role="columnheader">순위</span><span role="columnheader">선수</span><span role="columnheader">승</span><span role="columnheader">패</span>
           </div>
           {detail.standings.map((standing) => (
             <div
@@ -325,10 +332,7 @@ function LeagueDetail({
               <span className="standing-name" role="cell">
                 <b>{standing.player.username}</b><small>{standing.player.club_rank}부</small>
               </span>
-              <span role="cell">{standing.played}</span><span role="cell">{standing.wins}</span><span role="cell">{standing.losses}</span>
-              <span role="cell" className={standing.set_difference > 0 ? "is-positive" : ""}>
-                {standing.sets_won}:{standing.sets_lost}
-              </span>
+              <span role="cell">{standing.wins}</span><span role="cell">{standing.losses}</span>
             </div>
           ))}
         </div>
@@ -422,7 +426,7 @@ function LeagueFixtureRow({
       </div>
       <div className="competition-match-result">
         {fixture.completed ? (
-          <><strong>{fixture.score1} : {fixture.score2}</strong><small>{formatKoreanDate(fixture.played_on!)}</small></>
+          <><strong>{fixture.score1} : {fixture.score2}</strong><small>{formatKoreanDateTime(fixture.played_on!, fixture.played_at)}</small></>
         ) : <span>예정</span>}
       </div>
       <div className="competition-match-actions">
@@ -1079,7 +1083,7 @@ function AdminScoreFields({
 }) {
   return (
     <div className="form-row">
-      <label className="field"><span>점수</span><select value={score} onChange={(event) => onScoreChange(event.target.value as AllowedScore)}><option value="3:0">3 : 0</option><option value="2:1">2 : 1</option><option value="1:2">1 : 2</option><option value="0:3">0 : 3</option></select></label>
+      <CustomSelect label="점수" value={score} options={scoreOptions} onChange={onScoreChange} />
       <label className="field"><span>날짜</span><input type="date" value={playedOn} onChange={(event) => onDateChange(event.target.value)} required /></label>
     </div>
   );
@@ -1097,7 +1101,15 @@ function PlayerSelect({
   onChange: (value: number) => void;
 }) {
   return (
-    <label className="field"><span>{label}</span><select value={value} onChange={(event) => onChange(Number(event.target.value))} required>{players.map((player) => <option key={player.id} value={player.id}>{player.username}</option>)}</select></label>
+    <CustomSelect
+      label={label}
+      value={value || null}
+      options={players.map((player) => ({ value: player.id, label: player.username }))}
+      onChange={onChange}
+      placeholder="선수 없음"
+      disabled={!players.length}
+      required
+    />
   );
 }
 

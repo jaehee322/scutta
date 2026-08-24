@@ -211,8 +211,14 @@ def test_player_profile_and_password_validation(api) -> None:
         admin.patch(f"/api/v1/admin/players/{player['id']}", json={"club_rank": -3}).status_code
         == 422
     )
+    rank_seven = admin.patch(
+        f"/api/v1/admin/players/{player['id']}",
+        json={"club_rank": 7},
+    )
+    assert rank_seven.status_code == 200
+    assert rank_seven.json()["club_rank"] == 7
     assert (
-        admin.patch(f"/api/v1/admin/players/{player['id']}", json={"club_rank": 7}).status_code
+        admin.patch(f"/api/v1/admin/players/{player['id']}", json={"club_rank": 8}).status_code
         == 422
     )
     assert (

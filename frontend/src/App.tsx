@@ -10,6 +10,7 @@ const loadAdminHomePage = () => import("./pages/AdminHomePage");
 const loadAdminMatchesPage = () => import("./pages/AdminMatchesPage");
 const loadAdminPlayersPage = () => import("./pages/AdminPlayersPage");
 const loadAdminResetPage = () => import("./pages/AdminResetPage");
+const loadAdminSettlementsPage = () => import("./pages/AdminSettlementsPage");
 const loadCompetitionDetailPage = () => import("./pages/CompetitionDetailPage");
 const loadCompetitionsPage = () => import("./pages/CompetitionsPage");
 const loadHomePage = () => import("./pages/HomePage");
@@ -34,6 +35,9 @@ const AdminPlayersPage = lazy(() =>
 );
 const AdminResetPage = lazy(() =>
   loadAdminResetPage().then((module) => ({ default: module.AdminResetPage })),
+);
+const AdminSettlementsPage = lazy(() =>
+  loadAdminSettlementsPage().then((module) => ({ default: module.AdminSettlementsPage })),
 );
 const CompetitionDetailPage = lazy(() =>
   loadCompetitionDetailPage().then((module) => ({
@@ -69,6 +73,8 @@ function ScrollToTop() {
       ? "선수 관리"
       : pathname.startsWith("/admin/matches")
         ? "일반 경기 관리"
+        : pathname.startsWith("/admin/settlements")
+          ? "정산 설정"
         : pathname.startsWith("/admin/reset")
           ? "학기 초기화"
             : pathname.startsWith("/admin/competitions")
@@ -109,6 +115,7 @@ export default function App() {
             loadAdminMatchesPage,
             loadAdminCompetitionFormPage,
             loadAdminResetPage,
+            loadAdminSettlementsPage,
           ]
         : [loadHomePage, loadMatchHistoryPage, loadRankingsPage, loadSettlementsPage];
       void Promise.allSettled(
@@ -149,6 +156,7 @@ export default function App() {
           <Route path="/profile" element={<Navigate to="/" replace />} />
           <Route path="/admin/players" element={user.role === "admin" ? <AdminPlayersPage /> : <Navigate to="/" replace />} />
           <Route path="/admin/matches" element={user.role === "admin" ? <AdminMatchesPage /> : <Navigate to="/" replace />} />
+          <Route path="/admin/settlements" element={user.role === "admin" ? <AdminSettlementsPage /> : <Navigate to="/" replace />} />
           <Route path="/admin/competitions/new" element={user.role === "admin" ? <AdminCompetitionFormPage /> : <Navigate to="/" replace />} />
           <Route path="/admin/competitions/:competitionId/edit" element={user.role === "admin" ? <AdminCompetitionFormPage /> : <Navigate to="/" replace />} />
           <Route path="/admin/reset" element={user.role === "admin" ? <AdminResetPage /> : <Navigate to="/" replace />} />

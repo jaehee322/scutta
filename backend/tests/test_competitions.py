@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime, timedelta
 from itertools import combinations
 
 import pytest
@@ -137,6 +138,46 @@ def _create_team_competition(admin, players: list[dict], team_count: int = 2) ->
     return response.json()
 
 
+def test_competition_list_marks_current_user_participation(api) -> None:
+    admin = _admin(api)
+    players = _players(admin, 13)
+    league = admin.post(
+        "/api/v1/admin/competitions",
+        json={
+            "name": "참가 확인 리그",
+            "type": "league",
+            "participant_ids": [player["id"] for player in players[:4]],
+        },
+    )
+    assert league.status_code == 201, league.text
+    team = _create_team_competition(admin, players[4:12])
+
+    league_member = _login(api, players[0]["username"])
+    league_items = {
+        item["id"]: item for item in league_member.get("/api/v1/competitions").json()
+    }
+    assert league_items[league.json()["id"]]["is_participant"] is True
+    assert league_items[team["id"]]["is_participant"] is False
+
+    team_member = _login(api, players[4]["username"])
+    team_items = {
+        item["id"]: item for item in team_member.get("/api/v1/competitions").json()
+    }
+    assert team_items[league.json()["id"]]["is_participant"] is False
+    assert team_items[team["id"]]["is_participant"] is True
+
+    outsider = _login(api, players[12]["username"])
+    assert all(
+        item["is_participant"] is False
+        for item in outsider.get("/api/v1/competitions").json()
+    )
+
+    assert all(
+        item["is_participant"] is False
+        for item in admin.get("/api/v1/admin/competitions").json()
+    )
+
+
 def test_team_round_robin_and_dynamic_singles_doubles(api) -> None:
     admin = _admin(api)
     players = _players(admin, 12)
@@ -188,6 +229,10 @@ def test_team_round_robin_and_dynamic_singles_doubles(api) -> None:
         body = result.json()
         assert len(body["available_team1_players"]) == 3 - index
         assert len(body["available_team2_players"]) == 3 - index
+        latest_single = body["singles"][-1]
+        played_at = datetime.fromisoformat(latest_single["played_at"])
+        assert played_at.utcoffset() == timedelta(hours=9)
+        assert played_at.date().isoformat() == latest_single["played_on"]
 
     encounter = result.json()
     assert encounter["completed"] is False
@@ -212,6 +257,9 @@ def test_team_round_robin_and_dynamic_singles_doubles(api) -> None:
         json={"my_team_score": 2, "opponent_team_score": 1},
     )
     assert doubles.status_code == 200, doubles.text
+    doubles_at = datetime.fromisoformat(doubles.json()["doubles"]["played_at"])
+    assert doubles_at.utcoffset() == timedelta(hours=9)
+    assert doubles_at.date().isoformat() == doubles.json()["doubles"]["played_on"]
     assert doubles.json()["winner_team_id"] == encounter["team2"]["id"]
     assert doubles.json()["team1_wins"] == 2
     assert doubles.json()["team2_wins"] == 3
@@ -360,6 +408,23 @@ def test_league_standings_daily_rule_completion_and_admin_isolation(api) -> None
     assert admin.delete(f"/api/v1/admin/matches/{first_match_id}").status_code == 409
     assert admin.get("/api/v1/admin/matches?limit=200").json()["total"] == 0
 
+    dated_fixture = detail["fixtures"][0]
+    original_at = datetime.fromisoformat(dated_fixture["played_at"])
+    redated = admin.put(
+        f"/api/v1/admin/competitions/{competition_id}/league-fixtures/"
+        f"{dated_fixture['id']}/result",
+        json={
+            "score1": dated_fixture["score1"],
+            "score2": dated_fixture["score2"],
+            "played_on": "2026-07-01",
+        },
+    )
+    assert redated.status_code == 200, redated.text
+    redated_at = datetime.fromisoformat(redated.json()["played_at"])
+    assert redated_at.date().isoformat() == "2026-07-01"
+    assert redated_at.timetz() == original_at.timetz()
+
+    detail = admin.get(f"/api/v1/admin/competitions/{competition_id}").json()
     deleted_fixture = detail["fixtures"][0]
     assert (
         admin.delete(
@@ -391,6 +456,10 @@ def test_competition_single_conflicts_with_same_day_casual_match(api) -> None:
         json={"my_score": 3, "opponent_score": 0},
     )
     assert submitted.status_code == 200, submitted.text
+    fixture_result = submitted.json()
+    fixture_at = datetime.fromisoformat(fixture_result["played_at"])
+    assert fixture_at.utcoffset() == timedelta(hours=9)
+    assert fixture_at.date().isoformat() == fixture_result["played_on"]
     assert (
         actor.post(
             "/api/v1/matches",
@@ -494,6 +563,7 @@ def test_competition_list_progress_uses_constant_query_count(api) -> None:
         try:
             summaries = list_competitions(
                 db,
+                actor_id=players[0]["id"],
                 status=None,
                 competition_type=None,
             )
@@ -501,7 +571,8 @@ def test_competition_list_progress_uses_constant_query_count(api) -> None:
             event.remove(engine, "before_cursor_execute", count_statement)
 
     assert len(summaries) == 6
-    assert len(statements) == 3
+    assert len(statements) == 4
+    assert all(summary.is_participant for summary in summaries)
     assert {summary.total_count for summary in summaries if summary.type.value == "league"} == {6}
     assert {summary.total_count for summary in summaries if summary.type.value == "team"} == {1}
     by_id = {summary.id: summary for summary in summaries}

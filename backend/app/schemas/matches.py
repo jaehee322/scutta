@@ -82,10 +82,7 @@ class MatchRead(BaseModel):
     loser_id: int
     kind: MatchKind
     played_on: date
-    submitted_by_id: int
-    updated_by_id: int | None
-    created_at: datetime
-    updated_at: datetime
+    played_at: datetime | None
 
 
 class MatchListResponse(BaseModel):

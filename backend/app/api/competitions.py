@@ -91,12 +91,13 @@ def _team_encounter(detail: CompetitionDetail, encounter_id: int) -> TeamEncount
 @router.get("", response_model=list[CompetitionSummary])
 def list_player_competitions(
     db: DbSession,
-    _current_player: CurrentPlayer,
+    current_player: CurrentPlayer,
     competition_status: Annotated[CompetitionStatus | None, Query(alias="status")] = None,
     competition_type: Annotated[CompetitionType | None, Query(alias="type")] = None,
 ) -> list[CompetitionSummary]:
     return list_competitions(
         db,
+        actor_id=current_player.id,
         status=competition_status,
         competition_type=competition_type,
     )
@@ -212,6 +213,7 @@ def list_admin_competitions(
 ) -> list[CompetitionSummary]:
     return list_competitions(
         db,
+        actor_id=None,
         status=competition_status,
         competition_type=competition_type,
     )
@@ -296,14 +298,13 @@ def put_admin_league_fixture_result(
     fixture_id: int,
     payload: AdminLeagueResult,
     db: DbSession,
-    admin: CurrentAdmin,
+    _admin: CurrentAdmin,
 ) -> LeagueFixtureRead:
     try:
         put_admin_league_result(
             db,
             competition_id=competition_id,
             fixture_id=fixture_id,
-            admin=admin,
             score1=payload.score1,
             score2=payload.score2,
             played_on=payload.played_on,
@@ -351,14 +352,13 @@ def post_admin_team_single_result(
     encounter_id: int,
     payload: AdminTeamSingleResult,
     db: DbSession,
-    admin: CurrentAdmin,
+    _admin: CurrentAdmin,
 ) -> TeamEncounterRead:
     try:
         post_admin_team_single(
             db,
             competition_id=competition_id,
             encounter_id=encounter_id,
-            admin=admin,
             team1_player_id=payload.team1_player_id,
             team2_player_id=payload.team2_player_id,
             score1=payload.score1,
@@ -383,14 +383,13 @@ def put_admin_team_single_result(
     single_id: int,
     payload: AdminTeamSingleResult,
     db: DbSession,
-    admin: CurrentAdmin,
+    _admin: CurrentAdmin,
 ) -> TeamEncounterRead:
     try:
         encounter_id = put_admin_team_single(
             db,
             competition_id=competition_id,
             single_id=single_id,
-            admin=admin,
             team1_player_id=payload.team1_player_id,
             team2_player_id=payload.team2_player_id,
             score1=payload.score1,

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from sqlalchemy import func, select
 
@@ -41,6 +41,30 @@ def _create_player(
 
 def _category(response: dict, category: str) -> dict:
     return next(item for item in response["categories"] if item["category"] == category)
+
+
+def test_match_api_excludes_unused_search_and_audit_contract(api) -> None:
+    openapi = api.client().get("/openapi.json").json()
+
+    for path in ("/api/v1/matches", "/api/v1/admin/matches"):
+        parameter_names = {
+            parameter["name"] for parameter in openapi["paths"][path]["get"]["parameters"]
+        }
+        assert parameter_names == {"limit", "offset"}
+
+    match_fields = openapi["components"]["schemas"]["MatchRead"]["properties"]
+    assert {
+        "submitted_by_id",
+        "updated_by_id",
+        "created_at",
+        "updated_at",
+    }.isdisjoint(match_fields)
+    assert {
+        "submitted_by_id",
+        "updated_by_id",
+        "created_at",
+        "updated_at",
+    }.isdisjoint(Match.__table__.columns.keys())
 
 
 def test_auth_and_admin_player_management(api) -> None:
@@ -127,6 +151,9 @@ def test_matches_rankings_settlement_and_admin_edits(api) -> None:
     assert submitted.status_code == 201, submitted.text
     match_id = submitted.json()["id"]
     assert submitted.json()["winner_id"] == player_a["id"]
+    submitted_at = datetime.fromisoformat(submitted.json()["played_at"])
+    assert submitted_at.utcoffset() == timedelta(hours=9)
+    assert submitted_at.date().isoformat() == submitted.json()["played_on"]
     assert (
         admin_client.patch(
             f"/api/v1/admin/matches/{match_id}",
@@ -169,7 +196,6 @@ def test_matches_rankings_settlement_and_admin_edits(api) -> None:
                     score2=0,
                     kind=MatchKind.CASUAL,
                     played_on=seoul_today() - timedelta(days=days_ago),
-                    submitted_by_id=player_a["id"],
                 )
             )
         db.commit()
@@ -210,6 +236,7 @@ def test_matches_rankings_settlement_and_admin_edits(api) -> None:
     )
     assert patched.status_code == 200, patched.text
     assert patched.json()["winner_id"] == player_b["id"]
+    assert patched.json()["played_at"] == submitted.json()["played_at"]
     my_stats = client_a.get("/api/v1/players/me").json()["stats"]
     assert my_stats == {"matches": 20, "wins": 19, "losses": 1, "opponents": 1}
 
@@ -245,7 +272,6 @@ def test_full_semester_reset_preserves_admin(api) -> None:
                 score2=0,
                 kind=MatchKind.COMPETITION,
                 played_on=seoul_today(),
-                submitted_by_id=player_a["id"],
             )
         )
         db.commit()

@@ -3,18 +3,24 @@ import { type FormEvent, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { apiRequest, jsonBody } from "../api/client";
+import { CustomSelect, type CustomSelectOption } from "../components/CustomSelect";
 import { Modal } from "../components/Modal";
 import { Notice } from "../components/Notice";
 import { PageLoader } from "../components/Loading";
-import { buildPlayerPayload, type PlayerFormValues } from "../lib/playerForm";
+import { buildPlayerPayload, getDefaultClubRank, type PlayerFormValues } from "../lib/playerForm";
 import type { Gender, UserRead } from "../types";
+
+const genderOptions = [
+  { value: "M", label: "남" },
+  { value: "F", label: "여" },
+] satisfies readonly CustomSelectOption<Gender>[];
 
 const initialPlayer: PlayerFormValues = {
   username: "",
   password: "",
   gender: "M",
   is_freshman: false,
-  club_rank: "",
+  club_rank: String(getDefaultClubRank("M", false)),
 };
 
 export function AdminPlayersPage() {
@@ -71,7 +77,7 @@ export function AdminPlayersPage() {
           {players.map((player) => (
             <article key={player.id}>
               <span className="avatar-circle">{player.username.slice(0, 1)}</span>
-              <div className="admin-player-main"><strong>{player.username}</strong><span>{player.club_rank}부 · {player.gender === "F" ? "여" : "남"}{player.is_freshman ? " · 신입" : ""}</span></div>
+              <div className="admin-player-main"><strong>{player.username}</strong><span>{player.club_rank}부 · {player.gender === "F" ? "여" : "남"}{player.is_freshman ? " · 1학년" : ""}</span></div>
               <div className="admin-row-actions">
                 <button type="button" onClick={() => setResetting(player)} aria-label={`${player.username} 비밀번호 초기화`}><KeyRound size={18} /></button>
                 <button type="button" onClick={() => setEditing(player)} aria-label={`${player.username} 수정`}><Pencil size={18} /></button>
@@ -92,6 +98,21 @@ function PlayerFormModal({ title, initial, playerId, onClose, onSaved }: { title
   const [form, setForm] = useState(initial);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const isCreating = playerId === undefined;
+  const updateGender = (gender: Gender) => {
+    setForm((current) => ({
+      ...current,
+      gender,
+      club_rank: isCreating ? String(getDefaultClubRank(gender, current.is_freshman)) : current.club_rank,
+    }));
+  };
+  const updateFirstYear = (isFreshman: boolean) => {
+    setForm((current) => ({
+      ...current,
+      is_freshman: isFreshman,
+      club_rank: isCreating ? String(getDefaultClubRank(current.gender, isFreshman)) : current.club_rank,
+    }));
+  };
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault(); setSaving(true); setError("");
     try {
@@ -105,8 +126,8 @@ function PlayerFormModal({ title, initial, playerId, onClose, onSaved }: { title
       <form className="modal-form" onSubmit={handleSubmit}>
         <label className="field"><span>이름</span><input value={form.username} onChange={(event) => setForm({ ...form, username: event.target.value })} required /></label>
         {!playerId && <label className="field"><span>초기 비밀번호</span><input type="text" autoComplete="off" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} minLength={8} required /></label>}
-        <div className="form-row"><label className="field"><span>성별</span><select value={form.gender} onChange={(event) => setForm({ ...form, gender: event.target.value as Gender })}><option value="M">남</option><option value="F">여</option></select></label><label className="field"><span>부수</span><input type="number" min={-2} max={6} step={1} value={form.club_rank} onChange={(event) => setForm({ ...form, club_rank: event.target.value })} required /></label></div>
-        <div className="toggle-row"><label><input type="checkbox" checked={form.is_freshman} onChange={(event) => setForm({ ...form, is_freshman: event.target.checked })} /><span>신입 부원</span></label></div>
+        <div className="form-row"><CustomSelect label="성별" value={form.gender} options={genderOptions} onChange={updateGender} /><label className="field"><span>부수</span><input type="number" min={-2} max={7} step={1} value={form.club_rank} onChange={(event) => setForm({ ...form, club_rank: event.target.value })} required /></label></div>
+        <div className="toggle-row"><label><input type="checkbox" checked={form.is_freshman} onChange={(event) => updateFirstYear(event.target.checked)} /><span>1학년</span></label></div>
         {error && <Notice>{error}</Notice>}
         <button className="primary-button primary-button--large" disabled={saving}>{saving ? "저장하는 중" : "저장하기"}</button>
       </form>

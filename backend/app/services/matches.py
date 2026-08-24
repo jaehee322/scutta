@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import sqlite3
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 from zoneinfo import ZoneInfo
 
 from sqlalchemy import func, or_, select
@@ -55,8 +55,45 @@ class MatchRecord:
     player2_username: str
 
 
+def seoul_now() -> datetime:
+    return datetime.now(SEOUL)
+
+
+def current_played_time() -> tuple[date, datetime]:
+    """Return one consistent Seoul calendar date and its UTC storage instant."""
+    local_now = seoul_now()
+    return local_now.date(), local_now.astimezone(UTC)
+
+
 def seoul_today() -> date:
-    return datetime.now(SEOUL).date()
+    return seoul_now().date()
+
+
+def played_at_in_seoul(value: datetime | None) -> datetime | None:
+    """Normalize a stored instant for the API.
+
+    PostgreSQL retains the timezone. SQLite's DateTime adapter drops it, so a
+    naive value in this column is deliberately interpreted as UTC.
+    """
+    if value is None:
+        return None
+    if value.tzinfo is None or value.utcoffset() is None:
+        value = value.replace(tzinfo=UTC)
+    return value.astimezone(SEOUL)
+
+
+def played_at_for_date(played_on: date, existing: datetime | None = None) -> datetime:
+    """Apply a date-only admin edit without inventing or discarding a known time.
+
+    A known time-of-day is preserved. Legacy rows whose time is unknown receive
+    the current Seoul time when an administrator next edits them.
+    """
+    local_time = played_at_in_seoul(existing) or seoul_now()
+    return local_time.replace(
+        year=played_on.year,
+        month=played_on.month,
+        day=played_on.day,
+    ).astimezone(UTC)
 
 
 def _canonicalize(
@@ -207,7 +244,7 @@ def create_player_match(
         my_score,
         opponent_score,
     )
-    played_on = seoul_today()
+    played_on, played_at = current_played_time()
     _ensure_pair_available(
         db,
         played_on=played_on,
@@ -222,7 +259,7 @@ def create_player_match(
         score2=score2,
         kind=MatchKind.CASUAL,
         played_on=played_on,
-        submitted_by_id=submitter.id,
+        played_at=played_at,
     )
     db.add(match)
     try:
@@ -239,8 +276,6 @@ def list_match_records(
     db: Session,
     *,
     participant_id: int | None = None,
-    played_from: date | None = None,
-    played_to: date | None = None,
     limit: int,
     offset: int,
     casual_only: bool = False,
@@ -250,16 +285,16 @@ def list_match_records(
         filters.append(Match.competition_id.is_(None))
     if participant_id is not None:
         filters.append(or_(Match.player1_id == participant_id, Match.player2_id == participant_id))
-    if played_from is not None:
-        filters.append(Match.played_on >= played_from)
-    if played_to is not None:
-        filters.append(Match.played_on <= played_to)
 
     total = int(db.scalar(select(func.count(Match.id)).where(*filters)) or 0)
     rows = db.execute(
         _record_select()
         .where(*filters)
-        .order_by(Match.played_on.desc(), Match.created_at.desc(), Match.id.desc())
+        .order_by(
+            Match.played_on.desc(),
+            Match.played_at.desc().nullslast(),
+            Match.id.desc(),
+        )
         .limit(limit)
         .offset(offset)
     ).all()
@@ -274,7 +309,6 @@ def update_match(
     *,
     match_id: int,
     changes: dict[str, object],
-    admin: User,
 ) -> MatchRecord:
     match = _get_match_for_update(db, match_id)
     if match.competition_id is not None:
@@ -320,7 +354,7 @@ def update_match(
     match.score1 = score1
     match.score2 = score2
     match.played_on = played_on
-    match.updated_by_id = admin.id
+    match.played_at = played_at_for_date(played_on, match.played_at)
 
     try:
         db.commit()

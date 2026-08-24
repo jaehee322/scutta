@@ -1,4 +1,4 @@
-import { Crown, Medal, Trophy } from "lucide-react";
+import { Medal, Trophy } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { apiRequest } from "../api/client";
@@ -77,16 +77,8 @@ export function RankingsPage() {
                       className={`rank-number rank-number--${entry.rank}`}
                       aria-label={`${entry.rank}위`}
                     >
-                      {entry.rank === 1 ? (
-                        <>
-                          <Crown size={22} fill="currentColor" aria-hidden="true" />
-                          <span>{entry.rank}</span>
-                        </>
-                      ) : entry.rank <= 3 ? (
-                        <>
-                          <Medal size={21} aria-hidden="true" />
-                          <span>{entry.rank}</span>
-                        </>
+                      {entry.rank <= 3 ? (
+                        <Medal size={21} strokeWidth={2.2} aria-hidden="true" />
                       ) : (
                         entry.rank
                       )}
@@ -96,11 +88,13 @@ export function RankingsPage() {
                       <div>
                         <strong>
                           <span className="ranking-player__name">{entry.player.username}</span>
+                          {entry.player.club_rank !== null && (
+                            <span className="ranking-player__club-rank">
+                              {entry.player.club_rank}부
+                            </span>
+                          )}
                           {isMe && <small>나</small>}
                         </strong>
-                        <span>
-                          {entry.player.club_rank}부 · {entry.player.gender === "F" ? "여" : "남"}
-                        </span>
                       </div>
                     </div>
                     <div className="ranking-value">

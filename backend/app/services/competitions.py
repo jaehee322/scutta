@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 
 from sqlalchemy import delete, func, select
 from sqlalchemy.exc import IntegrityError
@@ -52,6 +52,9 @@ from app.services.matches import (
     _classify_integrity_error,
     _ensure_pair_available,
     _ensure_players,
+    current_played_time,
+    played_at_for_date,
+    played_at_in_seoul,
     seoul_today,
 )
 
@@ -248,7 +251,7 @@ def _new_competition_match(
     score_a: int,
     score_b: int,
     played_on: date,
-    submitted_by_id: int,
+    played_at: datetime | None = None,
 ) -> Match:
     _ensure_players(db, {player_a_id, player_b_id})
     player1_id, player2_id, score1, score2 = _canonicalize(
@@ -273,7 +276,7 @@ def _new_competition_match(
         score2=score2,
         kind=MatchKind.COMPETITION,
         played_on=played_on,
-        submitted_by_id=submitted_by_id,
+        played_at=played_at or played_at_for_date(played_on),
     )
     db.add(match)
     _flush(db)
@@ -289,7 +292,6 @@ def _update_competition_match(
     score_a: int,
     score_b: int,
     played_on: date,
-    updated_by_id: int,
 ) -> None:
     _ensure_players(db, {player_a_id, player_b_id})
     player1_id, player2_id, score1, score2 = _canonicalize(
@@ -312,7 +314,7 @@ def _update_competition_match(
     match.score1 = score1
     match.score2 = score2
     match.played_on = played_on
-    match.updated_by_id = updated_by_id
+    match.played_at = played_at_for_date(played_on, match.played_at)
     _flush(db)
 
 
@@ -327,6 +329,7 @@ def _competition_common(
     *,
     completed_count: int,
     total_count: int,
+    is_participant: bool = False,
 ) -> dict[str, object]:
     return {
         "id": competition.id,
@@ -335,6 +338,7 @@ def _competition_common(
         "status": competition.status,
         "completed_count": completed_count,
         "total_count": total_count,
+        "is_participant": is_participant,
         "completed_at": competition.completed_at,
         "created_at": competition.created_at,
         "updated_at": competition.updated_at,
@@ -458,10 +462,12 @@ def _league_detail(
             assert match is not None
             score1, score2 = _score_for_players(match, fixture.player1_id)
             played_on = match.played_on
+            played_at = played_at_in_seoul(match.played_at)
             winner_id = fixture.player1_id if score1 > score2 else fixture.player2_id
         else:
             score1 = score2 = None
             played_on = None
+            played_at = None
             winner_id = None
         reads.append(
             LeagueFixtureRead(
@@ -473,6 +479,7 @@ def _league_detail(
                 score1=score1,
                 score2=score2,
                 played_on=played_on,
+                played_at=played_at,
                 winner_id=winner_id,
                 completed=completed,
                 can_submit=(
@@ -487,6 +494,7 @@ def _league_detail(
             competition,
             completed_count=completed_count,
             total_count=len(fixtures),
+            is_participant=actor_id in member_ids,
         ),
         members=[player_map[player_id] for player_id in member_ids],
         standings=_league_standings(member_ids, player_map, fixture_matches),
@@ -694,6 +702,7 @@ def _team_detail(
                     score1=score1,
                     score2=score2,
                     played_on=match.played_on,
+                    played_at=played_at_in_seoul(match.played_at),
                     winner_team_id=(encounter.team1_id if score1 > score2 else encounter.team2_id),
                 )
             )
@@ -715,6 +724,7 @@ def _team_detail(
                 score1=double.score1,
                 score2=double.score2,
                 played_on=double.played_on,
+                played_at=played_at_in_seoul(double.played_at),
                 winner_team_id=(
                     encounter.team1_id
                     if double_completed and double.score1 > double.score2
@@ -771,6 +781,7 @@ def _team_detail(
             competition,
             completed_count=completed_count,
             total_count=len(encounters),
+            is_participant=actor_team_id is not None,
         ),
         teams=[team_reads[team.id] for team in teams],
         standings=_team_standings(teams, encounters, singles, doubles),
@@ -881,6 +892,7 @@ def _team_summary_progress(
 def list_competitions(
     db: Session,
     *,
+    actor_id: int | None,
     status: CompetitionStatus | None,
     competition_type: CompetitionType | None,
 ) -> list[CompetitionSummary]:
@@ -914,12 +926,27 @@ def list_competitions(
     if team_ids:
         progress.update(_team_summary_progress(db, team_ids))
 
+    participating_ids: set[int] = set()
+    if actor_id is not None and competitions:
+        competition_ids = [competition.id for competition in competitions]
+        membership_statement = select(CompetitionMember.competition_id).where(
+            CompetitionMember.user_id == actor_id,
+            CompetitionMember.competition_id.in_(competition_ids),
+        ).union(
+            select(CompetitionTeamMember.competition_id).where(
+                CompetitionTeamMember.user_id == actor_id,
+                CompetitionTeamMember.competition_id.in_(competition_ids),
+            )
+        )
+        participating_ids = set(db.scalars(membership_statement))
+
     return [
         CompetitionSummary(
             **_competition_common(
                 competition,
                 completed_count=progress[competition.id][0],
                 total_count=progress[competition.id][1],
+                is_participant=competition.id in participating_ids,
             )
         )
         for competition in competitions
@@ -1191,6 +1218,7 @@ def submit_league_result(
         score1, score2 = my_score, opponent_score
     else:
         score1, score2 = opponent_score, my_score
+    played_on, played_at = current_played_time()
     match = _new_competition_match(
         db,
         competition=competition,
@@ -1198,8 +1226,8 @@ def submit_league_result(
         player_b_id=fixture.player2_id,
         score_a=score1,
         score_b=score2,
-        played_on=seoul_today(),
-        submitted_by_id=actor.id,
+        played_on=played_on,
+        played_at=played_at,
     )
     fixture.match_id = match.id
     _commit(db)
@@ -1210,7 +1238,6 @@ def put_admin_league_result(
     *,
     competition_id: int,
     fixture_id: int,
-    admin: User,
     score1: int,
     score2: int,
     played_on: date | None,
@@ -1228,7 +1255,6 @@ def put_admin_league_result(
             score_a=score1,
             score_b=score2,
             played_on=played_on or seoul_today(),
-            submitted_by_id=admin.id,
         )
         fixture.match_id = match.id
     else:
@@ -1240,7 +1266,6 @@ def put_admin_league_result(
             score_a=score1,
             score_b=score2,
             played_on=played_on or match.played_on,
-            updated_by_id=admin.id,
         )
     _commit(db)
 
@@ -1414,7 +1439,7 @@ def _create_team_single(
     score1: int,
     score2: int,
     played_on: date,
-    submitted_by_id: int,
+    played_at: datetime | None = None,
     team1_members: set[int] | None = None,
     team2_members: set[int] | None = None,
 ) -> TeamSingleGame:
@@ -1437,7 +1462,7 @@ def _create_team_single(
         score_a=score1,
         score_b=score2,
         played_on=played_on,
-        submitted_by_id=submitted_by_id,
+        played_at=played_at,
     )
     single = TeamSingleGame(
         encounter_id=encounter.id,
@@ -1475,6 +1500,7 @@ def submit_team_single(
     else:
         team1_player_id, team2_player_id = opponent_team_player_id, my_team_player_id
         score1, score2 = opponent_team_score, my_team_score
+    played_on, played_at = current_played_time()
     _create_team_single(
         db,
         competition=competition,
@@ -1483,8 +1509,8 @@ def submit_team_single(
         team2_player_id=team2_player_id,
         score1=score1,
         score2=score2,
-        played_on=seoul_today(),
-        submitted_by_id=actor.id,
+        played_on=played_on,
+        played_at=played_at,
         team1_members=team1_members,
         team2_members=team2_members,
     )
@@ -1496,7 +1522,6 @@ def post_admin_team_single(
     *,
     competition_id: int,
     encounter_id: int,
-    admin: User,
     team1_player_id: int,
     team2_player_id: int,
     score1: int,
@@ -1515,7 +1540,6 @@ def post_admin_team_single(
         score1=score1,
         score2=score2,
         played_on=played_on or seoul_today(),
-        submitted_by_id=admin.id,
     )
     _commit(db)
 
@@ -1525,7 +1549,6 @@ def put_admin_team_single(
     *,
     competition_id: int,
     single_id: int,
-    admin: User,
     team1_player_id: int,
     team2_player_id: int,
     score1: int,
@@ -1562,7 +1585,6 @@ def put_admin_team_single(
         score_a=score1,
         score_b=score2,
         played_on=played_on or match.played_on,
-        updated_by_id=admin.id,
     )
     single.team1_player_id = team1_player_id
     single.team2_player_id = team2_player_id
@@ -1631,9 +1653,11 @@ def submit_team_doubles(
         score1, score2 = my_team_score, opponent_team_score
     else:
         score1, score2 = opponent_team_score, my_team_score
+    played_on, played_at = current_played_time()
     double.score1 = score1
     double.score2 = score2
-    double.played_on = seoul_today()
+    double.played_on = played_on
+    double.played_at = played_at
     double.submitted_by_id = actor.id
     _commit(db)
 
@@ -1653,9 +1677,11 @@ def put_admin_team_doubles(
     encounter = _encounter_or_error(db, competition_id, encounter_id, for_update=True)
     double = _doubles_or_error(db, encounter.id, for_update=True)
     was_completed = double.score1 is not None
+    target_played_on = played_on or double.played_on or seoul_today()
     double.score1 = score1
     double.score2 = score2
-    double.played_on = played_on or double.played_on or seoul_today()
+    double.played_on = target_played_on
+    double.played_at = played_at_for_date(target_played_on, double.played_at)
     if was_completed:
         double.updated_by_id = admin.id
     else:
@@ -1678,6 +1704,7 @@ def delete_admin_team_doubles(
     double.score1 = None
     double.score2 = None
     double.played_on = None
+    double.played_at = None
     double.submitted_by_id = None
     double.updated_by_id = None
     _flush(db)

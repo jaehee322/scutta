@@ -73,7 +73,7 @@ class User(TimestampMixin, Base):
     __tablename__ = "users"
     __table_args__ = (
         CheckConstraint(
-            "club_rank IS NULL OR club_rank BETWEEN -2 AND 6",
+            "club_rank IS NULL OR club_rank BETWEEN -2 AND 7",
             name="club_rank_range",
         ),
         CheckConstraint("auth_version > 0", name="auth_version_positive"),
@@ -119,6 +119,17 @@ class AuthSession(Base):
     )
 
     user: Mapped[User] = relationship(back_populates="sessions")
+
+
+class SettlementSettings(TimestampMixin, Base):
+    __tablename__ = "settlement_settings"
+    __table_args__ = (CheckConstraint("id = 1", name="singleton"),)
+
+    id: Mapped[int] = mapped_column(SmallInteger, primary_key=True, default=1)
+    matches_prize: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    wins_prize: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    losses_prize: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    opponents_prize: Mapped[str | None] = mapped_column(String(200), nullable=True)
 
 
 class Competition(TimestampMixin, Base):
@@ -363,6 +374,7 @@ class TeamDoublesGame(TimestampMixin, Base):
     score1: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     score2: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     played_on: Mapped[date | None] = mapped_column(Date, nullable=True)
+    played_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     submitted_by_id: Mapped[int | None] = mapped_column(
         ForeignKey("users.id", ondelete="SET NULL"), nullable=True
     )
@@ -373,7 +385,7 @@ class TeamDoublesGame(TimestampMixin, Base):
     encounter: Mapped[TeamEncounter] = relationship(back_populates="doubles")
 
 
-class Match(TimestampMixin, Base):
+class Match(Base):
     __tablename__ = "matches"
     __table_args__ = (
         CheckConstraint("player1_id < player2_id", name="canonical_player_order"),
@@ -411,9 +423,9 @@ class Match(TimestampMixin, Base):
         string_enum(MatchKind, "match_kind"), default=MatchKind.CASUAL, nullable=False
     )
     played_on: Mapped[date] = mapped_column(Date, nullable=False)
-    submitted_by_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="RESTRICT"), nullable=False
-    )
-    updated_by_id: Mapped[int | None] = mapped_column(
-        ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    # Migration 0006 preserves historical submission times by renaming created_at.
+    # SQLite stores UTC values without tzinfo; the service layer interprets those
+    # naive values as UTC before exposing them.
+    played_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
     )

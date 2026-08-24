@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { MatchRead } from "../types";
-import { getMatchPerspective, toMatchScore } from "./match";
+import { formatKoreanDateTime, getMatchPerspective, toMatchScore } from "./match";
 
 const match: MatchRead = {
   id: 1,
@@ -13,10 +13,7 @@ const match: MatchRead = {
   loser_id: 9,
   kind: "casual",
   played_on: "2026-08-14",
-  submitted_by_id: 9,
-  updated_by_id: null,
-  created_at: "2026-08-14T00:00:00Z",
-  updated_at: "2026-08-14T00:00:00Z",
+  played_at: null,
 };
 
 describe("match helpers", () => {
@@ -33,5 +30,11 @@ describe("match helpers", () => {
   it("maps outcome controls to the API score payload", () => {
     expect(toMatchScore("win", "3:0")).toEqual({ my_score: 3, opponent_score: 0 });
     expect(toMatchScore("loss", "2:1")).toEqual({ my_score: 1, opponent_score: 2 });
+  });
+
+  it("adds Seoul hour and minute only when an exact played time exists", () => {
+    expect(formatKoreanDateTime("2026-08-25", null)).not.toContain(":");
+    expect(formatKoreanDateTime("2026-08-25", "2026-08-25T06:07:00+00:00"))
+      .toMatch(/15:07$/);
   });
 });

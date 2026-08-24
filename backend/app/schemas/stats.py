@@ -14,6 +14,12 @@ class RankingCategory(enum.StrEnum):
     OPPONENTS = "opponents"
 
 
+class SettlementCategoryKey(enum.StrEnum):
+    MATCHES = "matches"
+    WINS = "wins"
+    LOSSES = "losses"
+
+
 class PlayerSummary(BaseModel):
     id: int
     username: str
@@ -49,7 +55,7 @@ class RankingsResponse(BaseModel):
 
 
 class SettlementCategory(BaseModel):
-    category: RankingCategory
+    category: SettlementCategoryKey
     prize: str
     value: int
     tickets: int
