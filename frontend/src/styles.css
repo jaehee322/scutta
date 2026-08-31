@@ -2492,7 +2492,7 @@ body.minigame-fullscreen-open {
 
 .pwa-install-guide {
   color: #4e5968;
-  gap: 18px;
+  gap: 16px;
   display: grid;
 }
 
@@ -2522,19 +2522,108 @@ body.minigame-fullscreen-open {
 }
 
 .pwa-install-guide ol {
-  gap: 10px;
   margin: 0;
-  padding-left: 24px;
-  font-size: 14px;
+}
+
+.pwa-install-route {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  display: flex;
+}
+
+.pwa-install-route span {
+  align-items: center;
+  gap: 6px;
+  display: inline-flex;
+}
+
+.pwa-install-route b {
+  color: #b0b8c1;
+  font-size: 11px;
+}
+
+.pwa-install-route em {
+  color: #4e5968;
+  background: #f2f4f6;
+  border-radius: 8px;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.pwa-install-steps {
+  counter-reset: install-step;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  display: grid;
+}
+
+.pwa-install-steps > li {
+  counter-increment: install-step;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px 14px;
+  display: grid;
+}
+
+.pwa-install-steps > li + li {
+  border-top: 1px solid #f2f4f6;
+}
+
+.pwa-install-steps > li::before {
+  content: counter(install-step);
+  color: var(--blue-dark);
+  background: var(--blue-soft);
+  border-radius: 50%;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+  font-weight: 900;
+  display: grid;
+}
+
+.pwa-install-steps > li > div {
+  gap: 3px;
+  min-width: 0;
+  display: grid;
+}
+
+.pwa-install-steps strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.pwa-install-steps span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.pwa-install-guide__tip {
+  color: var(--muted);
+  background: #f7f8fa;
+  border-radius: 12px;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 11px 12px;
+  font-size: 12px;
   line-height: 1.55;
   display: grid;
 }
 
-.pwa-install-guide p {
-  color: var(--muted);
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.55;
+.pwa-install-guide__tip strong {
+  color: #4e5968;
+  font-size: 11px;
 }
 
 .pwa-update-toast {
