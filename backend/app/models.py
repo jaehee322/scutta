@@ -99,6 +99,12 @@ class User(TimestampMixin, Base):
     sessions: Mapped[list[AuthSession]] = relationship(
         back_populates="user", cascade="all, delete-orphan", passive_deletes=True
     )
+    coin_flip_state: Mapped[CoinFlipState | None] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        uselist=False,
+    )
 
 
 class AuthSession(Base):
@@ -130,6 +136,36 @@ class SettlementSettings(TimestampMixin, Base):
     wins_prize: Mapped[str | None] = mapped_column(String(200), nullable=True)
     losses_prize: Mapped[str | None] = mapped_column(String(200), nullable=True)
     opponents_prize: Mapped[str | None] = mapped_column(String(200), nullable=True)
+
+
+class CoinFlipState(Base):
+    __tablename__ = "coin_flip_states"
+    __table_args__ = (
+        CheckConstraint("current_streak >= 0", name="current_streak_nonnegative"),
+        CheckConstraint("best_streak >= 0", name="best_streak_nonnegative"),
+        CheckConstraint("run_id > 0", name="run_id_positive"),
+        CheckConstraint("current_streak <= best_streak", name="current_not_above_best"),
+        CheckConstraint("active OR current_streak = 0", name="inactive_streak_zero"),
+        CheckConstraint(
+            "(best_streak = 0 AND best_achieved_at IS NULL) OR "
+            "(best_streak > 0 AND best_achieved_at IS NOT NULL)",
+            name="best_achievement_time",
+        ),
+    )
+
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+    active: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    run_id: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+    current_streak: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    best_streak: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    best_achieved_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    last_flip_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    user: Mapped[User] = relationship(back_populates="coin_flip_state")
 
 
 class Competition(TimestampMixin, Base):

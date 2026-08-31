@@ -76,6 +76,34 @@ export interface RankingsResponse {
   categories: RankingTable[];
 }
 
+export type CoinSide = "heads" | "tails";
+
+export interface CoinFlipState {
+  active: boolean;
+  run_id: number;
+  current_streak: number;
+  best_streak: number;
+}
+
+export interface CoinFlipRankingEntry {
+  rank: number;
+  user_id: number;
+  username: string;
+  best_streak: number;
+}
+
+export interface CoinFlipSnapshot {
+  state: CoinFlipState;
+  ranking: CoinFlipRankingEntry[];
+}
+
+export interface CoinFlipResult extends CoinFlipSnapshot {
+  result: CoinSide;
+  correct: boolean;
+  game_over: boolean;
+  final_score: number | null;
+}
+
 export interface SettlementCategory {
   category: SettlementCategoryKey;
   prize: string;

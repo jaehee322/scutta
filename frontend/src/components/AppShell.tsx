@@ -1,6 +1,7 @@
 import {
   ChartNoAxesColumnIncreasing,
   DatabaseZap,
+  Gamepad2,
   Home,
   ListRestart,
   ReceiptText,
@@ -18,6 +19,7 @@ const playerNavItems = [
   { to: "/rankings", label: "랭킹", icon: ChartNoAxesColumnIncreasing, end: false },
   { to: "/competitions", label: "리그전", icon: Trophy, end: false },
   { to: "/settlements", label: "정산", icon: ReceiptText, end: false },
+  { to: "/minigame", label: "미니게임", icon: Gamepad2, end: false },
 ] as const;
 
 const adminNavItems = [

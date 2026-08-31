@@ -13,7 +13,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette.datastructures import Headers
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.api import admin, auth, competitions, matches, players, rankings, settlements
+from app.api import admin, auth, competitions, matches, minigames, players, rankings, settlements
 from app.api.deps import DbSession
 from app.core.config import get_settings
 
@@ -164,6 +164,7 @@ def create_app(frontend_dist: Path | None = None) -> FastAPI:
     application.include_router(players.router, prefix=api_prefix)
     application.include_router(matches.router, prefix=api_prefix)
     application.include_router(rankings.router, prefix=api_prefix)
+    application.include_router(minigames.router, prefix=api_prefix)
     application.include_router(settlements.router, prefix=api_prefix)
     application.include_router(settlements.admin_router, prefix=api_prefix)
     application.include_router(competitions.router, prefix=api_prefix)

@@ -38,6 +38,7 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
                 "team_single_games",
                 "team_doubles_games",
                 "settlement_settings",
+                "coin_flip_states",
             } <= set(schema.get_table_names())
             assert any(
                 constraint["column_names"] == ["username"]
@@ -78,6 +79,32 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
             assert "played_at" in {
                 column["name"] for column in schema.get_columns("team_doubles_games")
             }
+            assert {
+                "user_id",
+                "active",
+                "run_id",
+                "current_streak",
+                "best_streak",
+                "best_achieved_at",
+                "last_flip_at",
+            } == {
+                column["name"] for column in schema.get_columns("coin_flip_states")
+            }
+            coin_foreign_keys = schema.get_foreign_keys("coin_flip_states")
+            assert len(coin_foreign_keys) == 1
+            assert coin_foreign_keys[0]["referred_table"] == "users"
+            assert coin_foreign_keys[0]["options"].get("ondelete") == "CASCADE"
+            assert {
+                "ck_coin_flip_states_best_achievement_time",
+                "ck_coin_flip_states_best_streak_nonnegative",
+                "ck_coin_flip_states_current_not_above_best",
+                "ck_coin_flip_states_current_streak_nonnegative",
+                "ck_coin_flip_states_inactive_streak_zero",
+                "ck_coin_flip_states_run_id_positive",
+            } <= {
+                constraint["name"]
+                for constraint in schema.get_check_constraints("coin_flip_states")
+            }
         finally:
             engine.dispose()
 
@@ -100,6 +127,7 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
                 "team_single_games",
                 "team_doubles_games",
                 "settlement_settings",
+                "coin_flip_states",
             }
         finally:
             engine.dispose()

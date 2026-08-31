@@ -16,6 +16,7 @@ const loadCompetitionsPage = () => import("./pages/CompetitionsPage");
 const loadHomePage = () => import("./pages/HomePage");
 const loadLoginPage = () => import("./pages/LoginPage");
 const loadMatchHistoryPage = () => import("./pages/MatchHistoryPage");
+const loadMinigamePage = () => import("./pages/MinigamePage");
 const loadRankingsPage = () => import("./pages/RankingsPage");
 const loadSettlementsPage = () => import("./pages/SettlementsPage");
 
@@ -56,6 +57,9 @@ const LoginPage = lazy(() =>
 const MatchHistoryPage = lazy(() =>
   loadMatchHistoryPage().then((module) => ({ default: module.MatchHistoryPage })),
 );
+const MinigamePage = lazy(() =>
+  loadMinigamePage().then((module) => ({ default: module.MinigamePage })),
+);
 const RankingsPage = lazy(() =>
   loadRankingsPage().then((module) => ({ default: module.RankingsPage })),
 );
@@ -83,6 +87,8 @@ function ScrollToTop() {
                 ? "리그전"
                 : pathname === "/rankings"
                   ? "랭킹"
+                  : pathname === "/minigame"
+                    ? "미니게임"
                   : pathname === "/history"
                     ? "경기 기록"
                     : pathname === "/settlements"
@@ -117,7 +123,13 @@ export default function App() {
             loadAdminResetPage,
             loadAdminSettlementsPage,
           ]
-        : [loadHomePage, loadMatchHistoryPage, loadRankingsPage, loadSettlementsPage];
+        : [
+            loadHomePage,
+            loadMatchHistoryPage,
+            loadMinigamePage,
+            loadRankingsPage,
+            loadSettlementsPage,
+          ];
       void Promise.allSettled(
         [...sharedPageLoaders, ...rolePageLoaders].map((loadPage) => loadPage()),
       );
@@ -152,6 +164,7 @@ export default function App() {
           <Route path="/competitions" element={<CompetitionsPage />} />
           <Route path="/competitions/:competitionId" element={<CompetitionDetailPage />} />
           <Route path="/settlements" element={user.role === "player" ? <SettlementsPage /> : <Navigate to="/" replace />} />
+          <Route path="/minigame" element={user.role === "player" ? <MinigamePage /> : <Navigate to="/" replace />} />
           <Route path="/history" element={user.role === "player" ? <MatchHistoryPage /> : <Navigate to="/" replace />} />
           <Route path="/profile" element={<Navigate to="/" replace />} />
           <Route path="/admin/players" element={user.role === "admin" ? <AdminPlayersPage /> : <Navigate to="/" replace />} />
