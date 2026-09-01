@@ -1253,6 +1253,7 @@ body.minigame-fullscreen-open {
   width: 180px;
   height: 206px;
   margin: 18px auto 0;
+  -webkit-perspective: 900px;
   perspective: 900px;
   display: grid;
   position: relative;
@@ -1263,6 +1264,7 @@ body.minigame-fullscreen-open {
   width: 100px;
   height: 100px;
   will-change: transform;
+  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   position: absolute;
   bottom: 24px;
@@ -1272,6 +1274,7 @@ body.minigame-fullscreen-open {
   width: 100%;
   height: 100%;
   will-change: transform;
+  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   position: relative;
 }
@@ -1350,7 +1353,7 @@ body.minigame-fullscreen-open {
 }
 
 .coin-stage.is-tossing:not(.is-landing) .coin {
-  animation: coin-air-spin .52s linear 1 both;
+  animation: coin-air-spin .52s linear infinite both;
 }
 
 .coin-stage.is-tossing:not(.is-landing) .coin__face {
@@ -1384,6 +1387,10 @@ body.minigame-fullscreen-open {
   animation: coin-shadow-land .78s linear 1 both;
 }
 
+.coin-stage.is-tossing.is-landing .coin__face > * {
+  animation: coin-face-reveal .78s linear 1 both;
+}
+
 @keyframes coin-rise {
   0% {
     transform: translate3d(0, 0, 0);
@@ -1401,23 +1408,18 @@ body.minigame-fullscreen-open {
 
 @keyframes coin-air-spin {
   0% {
-    filter: saturate(.28) contrast(.88) brightness(1.05) blur(1.25px);
     transform: rotateX(19deg) rotateY(90deg) rotateZ(-4deg) scale(.98);
   }
   25% {
-    filter: saturate(.18) contrast(.82) brightness(1.1) blur(1.7px);
     transform: rotateX(-13deg) rotateY(270deg) rotateZ(3deg) scale(.96);
   }
   50% {
-    filter: saturate(.3) contrast(.9) brightness(1.04) blur(1.2px);
     transform: rotateX(-20deg) rotateY(450deg) rotateZ(5deg) scale(.98);
   }
   75% {
-    filter: saturate(.18) contrast(.82) brightness(1.1) blur(1.7px);
     transform: rotateX(12deg) rotateY(630deg) rotateZ(-2deg) scale(.96);
   }
   100% {
-    filter: saturate(.28) contrast(.88) brightness(1.05) blur(1.25px);
     transform: rotateX(19deg) rotateY(810deg) rotateZ(-4deg) scale(.98);
   }
 }
@@ -1468,15 +1470,24 @@ body.minigame-fullscreen-open {
 
 @keyframes coin-land-heads {
   0% {
-    filter: saturate(.15) contrast(.82) brightness(1.1) blur(1.8px);
     transform: rotateX(19deg) rotateY(810deg) rotateZ(-4deg) scale(.98);
   }
-  43% {
-    filter: saturate(.15) contrast(.82) brightness(1.1) blur(1.8px);
-    transform: rotateX(-10deg) rotateY(1530deg) rotateZ(3deg) scale(.99);
+  12% {
+    transform: rotateX(-12deg) rotateY(990deg) rotateZ(2deg) scale(.97);
+  }
+  24% {
+    transform: rotateX(14deg) rotateY(1170deg) rotateZ(4deg) scale(.98);
+  }
+  36% {
+    transform: rotateX(-10deg) rotateY(1350deg) rotateZ(3deg) scale(.99);
+  }
+  48% {
+    transform: rotateX(8deg) rotateY(1530deg) rotateZ(-2deg) scale(.99);
+  }
+  60% {
+    transform: rotateX(-4deg) rotateY(1710deg) rotateZ(1deg);
   }
   67% {
-    filter: none;
     transform: rotateX(0deg) rotateY(1800deg) rotateZ(0deg) scaleX(1.07) scaleY(.88);
   }
   76% {
@@ -1486,24 +1497,27 @@ body.minigame-fullscreen-open {
     transform: rotateX(1deg) rotateY(1800deg) rotateZ(0deg) scaleX(1.02) scaleY(.97);
   }
   100% {
-    filter: none;
     transform: rotateX(0deg) rotateY(1800deg) rotateZ(0deg);
   }
 }
 
 @keyframes coin-land-tails {
   0% {
-    filter: saturate(.15) contrast(.82) brightness(1.1) blur(1.8px);
     transform: rotateX(19deg) rotateY(810deg) rotateZ(-4deg) scale(.98);
   }
-  43% {
-    filter: saturate(.15) contrast(.82) brightness(1.1) blur(1.8px);
-    transform: rotateX(-10deg) rotateY(1530deg) rotateZ(3deg) scale(.99);
+  15% {
+    transform: rotateX(-12deg) rotateY(990deg) rotateZ(2deg) scale(.97);
+  }
+  30% {
+    transform: rotateX(14deg) rotateY(1170deg) rotateZ(4deg) scale(.98);
+  }
+  45% {
+    transform: rotateX(-10deg) rotateY(1350deg) rotateZ(3deg) scale(.99);
+  }
+  60% {
+    transform: rotateX(5deg) rotateY(1530deg) rotateZ(-2deg);
   }
   67% {
-    filter: none;
-    /* 1620deg is the nearest tails-facing angle after the 1530deg edge.
-       Adding another full turn would expose the gold face just before contact. */
     transform: rotateX(0deg) rotateY(1620deg) rotateZ(0deg) scaleX(1.07) scaleY(.88);
   }
   76% {
@@ -1513,8 +1527,16 @@ body.minigame-fullscreen-open {
     transform: rotateX(1deg) rotateY(1620deg) rotateZ(0deg) scaleX(1.02) scaleY(.97);
   }
   100% {
-    filter: none;
     transform: rotateX(0deg) rotateY(1620deg) rotateZ(0deg);
+  }
+}
+
+@keyframes coin-face-reveal {
+  0%, 55% {
+    opacity: 0;
+  }
+  67%, 100% {
+    opacity: 1;
   }
 }
 
@@ -4119,8 +4141,8 @@ body.minigame-fullscreen-open {
 
   .coin-stage.is-tossing:not(.is-landing) .coin {
     animation: none;
-    filter: saturate(.25) blur(1px);
-    transform: rotateX(12deg) rotateY(90deg);
+    opacity: .65;
+    transform: scale(.96);
   }
 
   .coin-stage.is-tossing:not(.is-landing) .coin-shadow {

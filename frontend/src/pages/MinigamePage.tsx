@@ -6,6 +6,11 @@ import { useAuth } from "../auth/AuthContext";
 import { PageLoader } from "../components/Loading";
 import { Notice } from "../components/Notice";
 import type { CoinFlipResult, CoinFlipSnapshot, CoinSide } from "../types";
+import { waitForCoinAnimationEvent } from "../utils/coinAnimation";
+
+const COIN_SPIN_FALLBACK_MS = 760;
+const COIN_LANDING_FALLBACK_MS = 1_050;
+const REDUCED_MOTION_PHASE_MS = 160;
 
 const sideLabel: Record<CoinSide, string> = {
   heads: "앞면",
@@ -24,6 +29,14 @@ function minigameErrorMessage(caught: unknown, fallback: string) {
     return `${seconds}다시 시도해 주세요.`;
   }
   return caught instanceof Error ? caught.message : fallback;
+}
+
+function nextAnimationFrame() {
+  return new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+}
+
+function delay(milliseconds: number) {
+  return new Promise<void>((resolve) => window.setTimeout(resolve, milliseconds));
 }
 
 function usePrefersReducedMotion() {
@@ -51,6 +64,7 @@ export function MinigamePage() {
   >(null);
   const [isStarting, setIsStarting] = useState(false);
   const [isFlipping, setIsFlipping] = useState(false);
+  const [tossId, setTossId] = useState(0);
   const [tossPhase, setTossPhase] = useState<"idle" | "launch" | "landing">("idle");
   const [landingFace, setLandingFace] = useState<CoinSide | null>(null);
   const [isGameView, setIsGameView] = useState(false);
@@ -62,6 +76,7 @@ export function MinigamePage() {
   const firstChoiceButtonRef = useRef<HTMLButtonElement>(null);
   const exitButtonRef = useRef<HTMLButtonElement>(null);
   const fullscreenRef = useRef<HTMLDivElement>(null);
+  const coinRef = useRef<HTMLDivElement>(null);
   const isFlippingRef = useRef(false);
 
   useEffect(() => {
@@ -187,33 +202,52 @@ export function MinigamePage() {
     isFlippingRef.current = true;
     setChoice(selectedChoice);
     setIsFlipping(true);
+    setTossId((current) => current + 1);
     setTossPhase("launch");
     setLandingFace(null);
     setError("");
     setLastFlip(null);
     try {
-      const [response] = await Promise.all([
-        apiRequest<CoinFlipResult>("/minigames/coin-flip/flip", {
-          method: "POST",
-          body: jsonBody({
-            choice: selectedChoice,
-            run_id: activeState.run_id,
-            round_no: activeState.current_streak + 1,
-          }),
+      const responsePromise = apiRequest<CoinFlipResult>("/minigames/coin-flip/flip", {
+        method: "POST",
+        body: jsonBody({
+          choice: selectedChoice,
+          run_id: activeState.run_id,
+          round_no: activeState.current_streak + 1,
         }),
-        // Keep at least one complete face-obscuring spin before beginning the landing.
-        new Promise<void>((resolve) => window.setTimeout(resolve, reducedMotion ? 100 : 520)),
-      ]);
+      });
 
-      // Commit the eventual resting face before the landing animation begins.
-      // The animation keeps the coin edge-on/blurred until the reveal, while
-      // avoiding a one-frame heads-to-tails swap when the animation is removed.
-      setCoinFace(response.result);
+      // Give React one frame to mount a fresh coin while the handled request runs in parallel.
+      const [response] = await Promise.all([responsePromise, nextAnimationFrame()]);
+      if (reducedMotion) {
+        await delay(REDUCED_MOTION_PHASE_MS);
+      } else {
+        // Keep spinning while the network is pending, then land on an iteration boundary.
+        await waitForCoinAnimationEvent(
+          coinRef.current,
+          "animationiteration",
+          ["coin-air-spin"],
+          COIN_SPIN_FALLBACK_MS,
+        );
+      }
+
+      // Select the result animation without changing the resting face underneath it.
+      // The matching static face is committed only after the landing has completed.
       setLandingFace(response.result);
       setTossPhase("landing");
-      // Allow the 780ms CSS landing animation plus a small render buffer before committing.
-      await new Promise<void>((resolve) => window.setTimeout(resolve, reducedMotion ? 100 : 820));
+      await nextAnimationFrame();
+      if (reducedMotion) {
+        await delay(REDUCED_MOTION_PHASE_MS);
+      } else {
+        await waitForCoinAnimationEvent(
+          coinRef.current,
+          "animationend",
+          ["coin-land-heads", "coin-land-tails"],
+          COIN_LANDING_FALLBACK_MS,
+        );
+      }
 
+      setCoinFace(response.result);
       setData({ state: response.state, ranking: response.ranking });
       setLastFlip({
         result: response.result,
@@ -286,7 +320,7 @@ export function MinigamePage() {
         aria-hidden="true"
       >
         <div className="coin-flight">
-          <div className={`coin coin--${coinFace}`}>
+          <div className={`coin coin--${coinFace}`} key={tossId} ref={coinRef}>
             <div className="coin__face coin__face--heads">
               <span className="coin-mascot-mark" />
             </div>
