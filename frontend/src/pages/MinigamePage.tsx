@@ -7,6 +7,11 @@ import { PageLoader } from "../components/Loading";
 import { Notice } from "../components/Notice";
 import type { CoinFlipResult, CoinFlipSnapshot, CoinSide } from "../types";
 import { waitForCoinAnimationEvent } from "../utils/coinAnimation";
+import {
+  canEnterCoinFlipGame,
+  millisecondsUntilNextKoreaDay,
+  remainingCoinFlipAttempts,
+} from "../utils/minigameAttempts";
 
 const COIN_SPIN_FALLBACK_MS = 760;
 const COIN_LANDING_FALLBACK_MS = 1_050;
@@ -23,6 +28,7 @@ function fetchCoinFlipSnapshot(signal?: AbortSignal) {
 
 function minigameErrorMessage(caught: unknown, fallback: string) {
   if (caught instanceof ApiError && caught.status === 429) {
+    if (caught.retryAfter && caught.retryAfter > 60) return caught.message;
     const seconds = caught.retryAfter && caught.retryAfter > 0
       ? `${Math.ceil(caught.retryAfter)}초 후 `
       : "잠시 후 ";
@@ -78,17 +84,74 @@ export function MinigamePage() {
   const fullscreenRef = useRef<HTMLDivElement>(null);
   const coinRef = useRef<HTMLDivElement>(null);
   const isFlippingRef = useRef(false);
+  const snapshotVersionRef = useRef(0);
+  const snapshotRequestRef = useRef(0);
 
   useEffect(() => {
     const controller = new AbortController();
+    const requestId = ++snapshotRequestRef.current;
+    const requestedVersion = snapshotVersionRef.current;
     fetchCoinFlipSnapshot(controller.signal)
-      .then(setData)
+      .then((snapshot) => {
+        if (
+          requestId === snapshotRequestRef.current
+          && requestedVersion === snapshotVersionRef.current
+          && !startLock.current
+          && !flipLock.current
+        ) {
+          setData(snapshot);
+        }
+      })
       .catch((caught) => {
-        if (!controller.signal.aborted) {
+        if (!controller.signal.aborted && requestId === snapshotRequestRef.current) {
           setError(caught instanceof Error ? caught.message : "미니게임을 불러오지 못했습니다.");
         }
       });
     return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    let disposed = false;
+    let resetTimer = 0;
+
+    const refreshSnapshot = async () => {
+      const requestId = ++snapshotRequestRef.current;
+      const requestedVersion = snapshotVersionRef.current;
+      try {
+        const snapshot = await fetchCoinFlipSnapshot();
+        if (
+          !disposed
+          && requestId === snapshotRequestRef.current
+          && requestedVersion === snapshotVersionRef.current
+          && !startLock.current
+          && !flipLock.current
+        ) {
+          setData(snapshot);
+          setError("");
+        }
+      } catch {
+        // Keep the last confirmed state when a background refresh is unavailable.
+      }
+    };
+
+    const scheduleKoreaMidnightRefresh = () => {
+      resetTimer = window.setTimeout(async () => {
+        await refreshSnapshot();
+        if (!disposed) scheduleKoreaMidnightRefresh();
+      }, millisecondsUntilNextKoreaDay() + 250);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") void refreshSnapshot();
+    };
+
+    scheduleKoreaMidnightRefresh();
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      disposed = true;
+      window.clearTimeout(resetTimer);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -162,8 +225,9 @@ export function MinigamePage() {
   };
 
   const startGame = async (closeOnError = true) => {
-    if (startLock.current) return;
+    if (startLock.current || !canEnterCoinFlipGame(data)) return;
     startLock.current = true;
+    snapshotVersionRef.current += 1;
     setIsGameView(true);
     setIsStarting(true);
     setError("");
@@ -176,14 +240,21 @@ export function MinigamePage() {
       setData(snapshot);
     } catch (caught) {
       if (closeOnError) setIsGameView(false);
+      try {
+        setData(await fetchCoinFlipSnapshot());
+      } catch {
+        // Keep the last confirmed count when synchronization is unavailable.
+      }
       setError(minigameErrorMessage(caught, "게임을 시작하지 못했습니다."));
     } finally {
+      snapshotVersionRef.current += 1;
       startLock.current = false;
       setIsStarting(false);
     }
   };
 
   const enterGame = () => {
+    if (!canEnterCoinFlipGame(data)) return;
     setError("");
     setLastFlip(null);
     setChoice(null);
@@ -200,6 +271,7 @@ export function MinigamePage() {
 
     flipLock.current = true;
     isFlippingRef.current = true;
+    snapshotVersionRef.current += 1;
     setChoice(selectedChoice);
     setIsFlipping(true);
     setTossId((current) => current + 1);
@@ -271,6 +343,7 @@ export function MinigamePage() {
           : minigameErrorMessage(caught, "동전을 던지지 못했습니다."),
       );
     } finally {
+      snapshotVersionRef.current += 1;
       flipLock.current = false;
       isFlippingRef.current = false;
       setIsFlipping(false);
@@ -282,6 +355,8 @@ export function MinigamePage() {
   if (!data && !error) return <PageLoader />;
 
   const state = data?.state;
+  const remainingAttempts = remainingCoinFlipAttempts(data);
+  const attemptsExhausted = remainingAttempts === 0;
   const statusMessage = isStarting
     ? "게임을 준비하고 있어요…"
     : isFlipping
@@ -292,7 +367,7 @@ export function MinigamePage() {
         : `${sideLabel[lastFlip.result]}! 아쉽게 틀렸어요. 이번 기록은 ${lastFlip.final_score ?? 0}회예요.`
       : state?.active
         ? "앞면 또는 뒷면을 눌러 동전을 던지세요."
-        : "게임을 시작하고 최고 연속 기록에 도전하세요.";
+        : "";
 
   const gameCard = data && state && (
     <section
@@ -332,13 +407,22 @@ export function MinigamePage() {
         <span className="coin-shadow" />
       </div>
 
-      <p
-        className={`coin-status ${lastFlip ? (lastFlip.correct ? "is-correct" : "is-wrong") : ""}`}
-        aria-live="polite"
-        aria-atomic="true"
-      >
-        {statusMessage}
-      </p>
+      {isGameView ? (
+        <p
+          className={`coin-status ${lastFlip ? (lastFlip.correct ? "is-correct" : "is-wrong") : ""}`}
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {statusMessage}
+        </p>
+      ) : (
+        <p
+          className={`coin-attempt-status ${attemptsExhausted && !state.active ? "is-exhausted" : ""}`}
+          role="status"
+        >
+          오늘 남은 시도 <strong>{remainingAttempts}회</strong>
+        </p>
+      )}
 
       {isGameView && state.active ? (
         <div className="coin-controls">
@@ -391,22 +475,26 @@ export function MinigamePage() {
           <button
             type="button"
             className="primary-button coin-game-restart-button"
-            disabled={isStarting}
+            disabled={isStarting || attemptsExhausted}
             onClick={() => void startGame(false)}
           >
             <RotateCcw size={19} aria-hidden="true" />
-            {isStarting ? "준비하는 중…" : "다시 도전하기"}
+            {isStarting ? "준비하는 중…" : attemptsExhausted ? "오늘 시도 완료" : "다시 도전하기"}
           </button>
         </div>
       ) : isGameView ? null : (
         <button
           type="button"
           className="primary-button primary-button--large coin-start-button"
-          disabled={isStarting || isFlipping}
+          disabled={isStarting || isFlipping || (!state.active && attemptsExhausted)}
           ref={entryButtonRef}
           onClick={enterGame}
         >
-          {isStarting ? "준비하는 중…" : "게임 시작"}
+          {isStarting
+            ? "준비하는 중…"
+            : !state.active && attemptsExhausted
+              ? "오늘 시도 완료"
+              : "게임 시작"}
         </button>
       )}
     </section>

@@ -147,6 +147,15 @@ class CoinFlipState(Base):
         CheckConstraint("current_streak <= best_streak", name="current_not_above_best"),
         CheckConstraint("active OR current_streak = 0", name="inactive_streak_zero"),
         CheckConstraint(
+            "daily_attempts_used >= 0 AND daily_attempts_used <= 20",
+            name="daily_attempts_range",
+        ),
+        CheckConstraint(
+            "(daily_attempt_date IS NULL AND daily_attempts_used = 0) OR "
+            "(daily_attempt_date IS NOT NULL AND daily_attempts_used > 0)",
+            name="daily_attempts_date_consistency",
+        ),
+        CheckConstraint(
             "(best_streak = 0 AND best_achieved_at IS NULL) OR "
             "(best_streak > 0 AND best_achieved_at IS NOT NULL)",
             name="best_achievement_time",
@@ -164,6 +173,8 @@ class CoinFlipState(Base):
         DateTime(timezone=True), nullable=True
     )
     last_flip_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    daily_attempt_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    daily_attempts_used: Mapped[int] = mapped_column(SmallInteger, default=0, nullable=False)
 
     user: Mapped[User] = relationship(back_populates="coin_flip_state")
 

@@ -87,6 +87,8 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
                 "best_streak",
                 "best_achieved_at",
                 "last_flip_at",
+                "daily_attempt_date",
+                "daily_attempts_used",
             } == {
                 column["name"] for column in schema.get_columns("coin_flip_states")
             }
@@ -99,6 +101,8 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
                 "ck_coin_flip_states_best_streak_nonnegative",
                 "ck_coin_flip_states_current_not_above_best",
                 "ck_coin_flip_states_current_streak_nonnegative",
+                "ck_coin_flip_states_daily_attempts_date_consistency",
+                "ck_coin_flip_states_daily_attempts_range",
                 "ck_coin_flip_states_inactive_streak_zero",
                 "ck_coin_flip_states_run_id_positive",
             } <= {

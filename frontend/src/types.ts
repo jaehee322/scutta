@@ -83,6 +83,7 @@ export interface CoinFlipState {
   run_id: number;
   current_streak: number;
   best_streak: number;
+  remaining_attempts: number;
 }
 
 export interface CoinFlipRankingEntry {

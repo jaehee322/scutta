@@ -1594,6 +1594,25 @@ body.minigame-fullscreen-open {
   color: var(--red);
 }
 
+.coin-attempt-status {
+  min-height: 24px;
+  color: var(--muted);
+  margin: 5px 0 17px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.coin-attempt-status strong {
+  color: var(--blue-dark);
+  font-variant-numeric: tabular-nums;
+  font-size: 16px;
+}
+
+.coin-attempt-status.is-exhausted,
+.coin-attempt-status.is-exhausted strong {
+  color: var(--red);
+}
+
 .coin-controls {
   gap: 12px;
   max-width: 420px;

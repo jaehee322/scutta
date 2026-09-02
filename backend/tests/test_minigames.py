@@ -11,7 +11,7 @@ from app.core.database import Base
 from app.core.security import hash_password
 from app.models import CoinFlipState, Gender, User, UserRole
 from app.schemas.minigames import CoinSide
-from app.services.minigames import CoinFlipRoundConflictError, flip_coin
+from app.services.minigames import CoinFlipRoundConflictError, flip_coin, start_coin_flip
 
 
 def _create_player(admin, username: str) -> dict:
@@ -62,6 +62,7 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
             "run_id": 0,
             "current_streak": 0,
             "best_streak": 0,
+            "remaining_attempts": 20,
         },
         "ranking": [],
     }
@@ -80,6 +81,7 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
         "run_id": 1,
         "current_streak": 0,
         "best_streak": 0,
+        "remaining_attempts": 19,
     }
     assert started.json()["ranking"] == [
         {
@@ -109,6 +111,7 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
             "run_id": 1,
             "current_streak": 1,
             "best_streak": 1,
+            "remaining_attempts": 19,
         },
         "ranking": [
             {
@@ -160,11 +163,13 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
         "run_id": 1,
         "current_streak": 0,
         "best_streak": 1,
+        "remaining_attempts": 19,
     }
 
     restarted = client.post(f"{path}/start")
     assert restarted.status_code == 200
     assert restarted.json()["state"]["run_id"] == 2
+    assert restarted.json()["state"]["remaining_attempts"] == 18
 
     # A delayed retry from the previous run cannot consume run 2 round 1.
     stale = client.post(
@@ -177,6 +182,7 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
         "run_id": 2,
         "current_streak": 0,
         "best_streak": 1,
+        "remaining_attempts": 18,
     }
 
     # Restarting does not bypass the per-player interval from the previous run.
@@ -196,6 +202,47 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
     )
     assert accepted.status_code == 200
     assert accepted.json()["state"]["current_streak"] == 1
+
+
+def test_coin_flip_allows_twenty_new_runs_per_korea_day(api, monkeypatch) -> None:
+    _, player, client = _setup_player(api, "일일시도선수")
+    path = "/api/v1/minigames/coin-flip"
+    just_before_midnight = datetime(2026, 9, 2, 14, 59, tzinfo=UTC)
+    monkeypatch.setattr(
+        "app.services.minigames.utc_now", lambda: just_before_midnight
+    )
+
+    for attempt in range(1, 21):
+        started = client.post(f"{path}/start")
+        assert started.status_code == 200, started.text
+        assert started.json()["state"]["remaining_attempts"] == 20 - attempt
+
+        # Reopening the current game resumes it and never spends another attempt.
+        resumed = client.post(f"{path}/start")
+        assert resumed.status_code == 200, resumed.text
+        assert resumed.json()["state"]["remaining_attempts"] == 20 - attempt
+
+        with api.session_factory() as db:
+            state = db.get(CoinFlipState, player["id"])
+            assert state is not None
+            state.active = False
+            state.current_streak = 0
+            db.commit()
+
+    exhausted = client.post(f"{path}/start")
+    assert exhausted.status_code == 429
+    assert exhausted.json()["detail"] == "오늘의 동전 던지기 시도 20회를 모두 사용했습니다."
+    assert exhausted.headers["Retry-After"] == "60"
+    assert client.get(path).json()["state"]["remaining_attempts"] == 0
+
+    # The quota resets at midnight in Korea, regardless of the server time zone.
+    next_korea_day = just_before_midnight + timedelta(minutes=1)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: next_korea_day)
+    assert client.get(path).json()["state"]["remaining_attempts"] == 20
+    next_day = client.post(f"{path}/start")
+    assert next_day.status_code == 200, next_day.text
+    assert next_day.json()["state"]["remaining_attempts"] == 19
+    assert next_day.json()["state"]["run_id"] == 21
 
 
 def test_coin_flip_ranking_uses_dense_rank_and_first_achievement_order(api) -> None:
@@ -358,6 +405,71 @@ def test_same_round_concurrent_flips_are_consumed_once(tmp_path, monkeypatch) ->
             assert state is not None
             assert state.current_streak == 1
             assert state.best_streak == 1
+    finally:
+        Base.metadata.drop_all(engine)
+        engine.dispose()
+
+
+def test_concurrent_new_run_starts_spend_one_daily_attempt(tmp_path, monkeypatch) -> None:
+    database_path = tmp_path / "concurrent-coin-start.db"
+    engine = create_engine(
+        f"sqlite:///{database_path.as_posix()}",
+        connect_args={"check_same_thread": False, "timeout": 10},
+    )
+
+    @event.listens_for(engine, "connect")
+    def enable_foreign_keys(dbapi_connection: object, _: object) -> None:
+        cursor = dbapi_connection.cursor()  # type: ignore[attr-defined]
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
+    Base.metadata.create_all(engine)
+    factory = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
+    with factory() as db:
+        player = User(
+            username="동시시작선수",
+            password_hash=hash_password("20260000"),
+            role=UserRole.PLAYER,
+            gender=Gender.MALE,
+            is_freshman=False,
+            club_rank=4,
+        )
+        db.add(player)
+        db.flush()
+        player_id = player.id
+        db.add(
+            CoinFlipState(
+                user_id=player_id,
+                active=False,
+                run_id=1,
+                current_streak=0,
+                best_streak=0,
+            )
+        )
+        db.commit()
+
+    fixed_now = datetime(2026, 9, 2, 3, 0, tzinfo=UTC)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: fixed_now)
+    barrier = Barrier(2)
+
+    def start() -> tuple[int, int]:
+        with factory() as db:
+            barrier.wait()
+            state = start_coin_flip(db, user_id=player_id)
+            return state.run_id, state.daily_attempts_used
+
+    try:
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            results = list(executor.map(lambda _: start(), range(2)))
+
+        assert results == [(2, 1), (2, 1)]
+        with factory() as db:
+            state = db.get(CoinFlipState, player_id)
+            assert state is not None
+            assert state.active is True
+            assert state.run_id == 2
+            assert state.daily_attempts_used == 1
+            assert state.daily_attempt_date.isoformat() == "2026-09-02"
     finally:
         Base.metadata.drop_all(engine)
         engine.dispose()

@@ -12,9 +12,11 @@ from app.schemas.minigames import (
     CoinFlipStateRead,
 )
 from app.services.minigames import (
+    CoinFlipDailyLimitError,
     CoinFlipNotActiveError,
     CoinFlipRateLimitError,
     CoinFlipRoundConflictError,
+    coin_flip_attempts_remaining,
     flip_coin,
     get_coin_flip_state,
     list_coin_flip_rankings,
@@ -26,12 +28,19 @@ router = APIRouter(prefix="/minigames/coin-flip", tags=["minigames"])
 
 def _state_read(state: CoinFlipState | None) -> CoinFlipStateRead:
     if state is None:
-        return CoinFlipStateRead(active=False, run_id=0, current_streak=0, best_streak=0)
+        return CoinFlipStateRead(
+            active=False,
+            run_id=0,
+            current_streak=0,
+            best_streak=0,
+            remaining_attempts=coin_flip_attempts_remaining(None),
+        )
     return CoinFlipStateRead(
         active=state.active,
         run_id=state.run_id,
         current_streak=state.current_streak,
         best_streak=state.best_streak,
+        remaining_attempts=coin_flip_attempts_remaining(state),
     )
 
 
@@ -57,7 +66,14 @@ def get_coin_flip(db: DbSession, current_player: CurrentPlayer) -> CoinFlipOverv
 
 @router.post("/start", response_model=CoinFlipOverview)
 def start_coin_flip_game(db: DbSession, current_player: CurrentPlayer) -> CoinFlipOverview:
-    state = start_coin_flip(db, user_id=current_player.id)
+    try:
+        state = start_coin_flip(db, user_id=current_player.id)
+    except CoinFlipDailyLimitError as error:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=str(error),
+            headers={"Retry-After": str(error.retry_after)},
+        ) from error
     return CoinFlipOverview(state=_state_read(state), ranking=_ranking_read(db))
 
 

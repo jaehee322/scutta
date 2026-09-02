@@ -15,6 +15,7 @@ class CoinFlipStateRead(BaseModel):
     run_id: int = Field(ge=0)
     current_streak: int = Field(ge=0)
     best_streak: int = Field(ge=0)
+    remaining_attempts: int = Field(ge=0, le=20)
 
 
 class CoinFlipRankingEntry(BaseModel):

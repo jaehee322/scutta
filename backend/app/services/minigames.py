@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import secrets
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import date, datetime, time, timedelta
+from math import ceil
+from zoneinfo import ZoneInfo
 
 from sqlalchemy import case, or_, select, update
 from sqlalchemy.exc import IntegrityError
@@ -25,6 +27,16 @@ class CoinFlipRateLimitError(Exception):
     pass
 
 
+class CoinFlipDailyLimitError(Exception):
+    def __init__(self, message: str, *, retry_after: int) -> None:
+        super().__init__(message)
+        self.retry_after = retry_after
+
+
+COIN_FLIP_DAILY_ATTEMPT_LIMIT = 20
+KOREA_TIME_ZONE = ZoneInfo("Asia/Seoul")
+
+
 @dataclass(frozen=True, slots=True)
 class CoinFlipRankingRow:
     rank: int
@@ -43,6 +55,15 @@ class CoinFlipOutcome:
 
 def get_coin_flip_state(db: Session, *, user_id: int) -> CoinFlipState | None:
     return db.get(CoinFlipState, user_id)
+
+
+def coin_flip_attempts_remaining(
+    state: CoinFlipState | None, *, now: datetime | None = None
+) -> int:
+    today = _korea_today(now or utc_now())
+    if state is None or state.daily_attempt_date != today:
+        return COIN_FLIP_DAILY_ATTEMPT_LIMIT
+    return max(0, COIN_FLIP_DAILY_ATTEMPT_LIMIT - state.daily_attempts_used)
 
 
 def list_coin_flip_rankings(db: Session) -> list[CoinFlipRankingRow]:
@@ -84,9 +105,20 @@ def list_coin_flip_rankings(db: Session) -> list[CoinFlipRankingRow]:
 
 def start_coin_flip(db: Session, *, user_id: int) -> CoinFlipState:
     """Start a run, or resume the currently active run without resetting it."""
+    now = utc_now()
+    today = _korea_today(now)
+    same_attempt_day = CoinFlipState.daily_attempt_date == today
     statement = (
         update(CoinFlipState)
-        .where(CoinFlipState.user_id == user_id)
+        .where(
+            CoinFlipState.user_id == user_id,
+            or_(
+                CoinFlipState.active.is_(True),
+                CoinFlipState.daily_attempt_date.is_(None),
+                CoinFlipState.daily_attempt_date != today,
+                CoinFlipState.daily_attempts_used < COIN_FLIP_DAILY_ATTEMPT_LIMIT,
+            ),
+        )
         .values(
             active=True,
             run_id=case(
@@ -97,6 +129,20 @@ def start_coin_flip(db: Session, *, user_id: int) -> CoinFlipState:
                 (CoinFlipState.active.is_(False), 0),
                 else_=CoinFlipState.current_streak,
             ),
+            daily_attempt_date=case(
+                (CoinFlipState.active.is_(False), today),
+                else_=CoinFlipState.daily_attempt_date,
+            ),
+            daily_attempts_used=case(
+                (
+                    CoinFlipState.active.is_(False),
+                    case(
+                        (same_attempt_day, CoinFlipState.daily_attempts_used + 1),
+                        else_=1,
+                    ),
+                ),
+                else_=CoinFlipState.daily_attempts_used,
+            ),
         )
         .returning(CoinFlipState)
         .execution_options(synchronize_session=False)
@@ -106,6 +152,19 @@ def start_coin_flip(db: Session, *, user_id: int) -> CoinFlipState:
         db.commit()
         return state
 
+    db.rollback()
+    state = db.get(CoinFlipState, user_id)
+    if (
+        state is not None
+        and not state.active
+        and state.daily_attempt_date == today
+        and state.daily_attempts_used >= COIN_FLIP_DAILY_ATTEMPT_LIMIT
+    ):
+        raise CoinFlipDailyLimitError(
+            "오늘의 동전 던지기 시도 20회를 모두 사용했습니다.",
+            retry_after=_seconds_until_next_korea_day(now),
+        )
+
     state = CoinFlipState(
         user_id=user_id,
         active=True,
@@ -114,6 +173,8 @@ def start_coin_flip(db: Session, *, user_id: int) -> CoinFlipState:
         best_streak=0,
         best_achieved_at=None,
         last_flip_at=None,
+        daily_attempt_date=today,
+        daily_attempts_used=1,
     )
     db.add(state)
     try:
@@ -125,7 +186,21 @@ def start_coin_flip(db: Session, *, user_id: int) -> CoinFlipState:
         state = db.get(CoinFlipState, user_id)
         if state is None:
             raise
+        if not state.active:
+            return start_coin_flip(db, user_id=user_id)
     return state
+
+
+def _korea_today(now: datetime) -> date:
+    return now.astimezone(KOREA_TIME_ZONE).date()
+
+
+def _seconds_until_next_korea_day(now: datetime) -> int:
+    korea_now = now.astimezone(KOREA_TIME_ZONE)
+    next_midnight = datetime.combine(
+        korea_now.date() + timedelta(days=1), time.min, tzinfo=KOREA_TIME_ZONE
+    )
+    return max(1, ceil((next_midnight - korea_now).total_seconds()))
 
 
 def flip_coin(
