@@ -85,16 +85,11 @@ def list_coin_flip_rankings(db: Session) -> list[CoinFlipRankingRow]:
     ).all()
 
     ranking: list[CoinFlipRankingRow] = []
-    previous_score: int | None = None
-    dense_rank = 0
-    for row in rows:
+    for rank, row in enumerate(rows, start=1):
         score = int(row.best_streak)
-        if previous_score is None or score != previous_score:
-            dense_rank += 1
-            previous_score = score
         ranking.append(
             CoinFlipRankingRow(
-                rank=dense_rank,
+                rank=rank,
                 user_id=row.user_id,
                 username=row.username,
                 best_streak=score,

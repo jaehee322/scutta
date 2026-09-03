@@ -245,7 +245,7 @@ def test_coin_flip_allows_twenty_new_runs_per_korea_day(api, monkeypatch) -> Non
     assert next_day.json()["state"]["run_id"] == 21
 
 
-def test_coin_flip_ranking_uses_dense_rank_and_first_achievement_order(api) -> None:
+def test_coin_flip_ranking_uses_unique_rank_and_first_achievement_order(api) -> None:
     api.create_admin()
     admin = api.client()
     api.login(admin, "admin", "admin-password")
@@ -284,8 +284,8 @@ def test_coin_flip_ranking_uses_dense_rank_and_first_achievement_order(api) -> N
         (entry["username"], entry["rank"], entry["best_streak"]) for entry in ranking
     ] == [
         (early["username"], 1, 3),
-        (late["username"], 1, 3),
-        (lower["username"], 2, 1),
+        (late["username"], 2, 3),
+        (lower["username"], 3, 1),
     ]
     assert excluded["username"] not in {entry["username"] for entry in ranking}
 

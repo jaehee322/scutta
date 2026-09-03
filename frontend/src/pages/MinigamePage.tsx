@@ -560,7 +560,7 @@ export function MinigamePage() {
             ) : (
               <p className="coin-ranking-empty">아직 기록이 없어요. 첫 기록을 만들어 보세요.</p>
             )}
-            <p className="coin-ranking-note">동점자는 같은 순위이며 다음 기록은 한 단계만 내려가요.</p>
+            <p className="coin-ranking-note">동점이면 최고 기록을 먼저 달성한 순서대로 순위가 정해져요.</p>
           </section>
         </>
       )}
