@@ -11,8 +11,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.core.security import utc_now
-from app.models import CoinFlipState, User, UserRole
-from app.schemas.minigames import CoinSide
+from app.models import CoinFlipState, PaddleFlightScore, User, UserRole
+from app.schemas.minigames import PADDLE_FLIGHT_MAX_SCORE, CoinSide
 
 
 class CoinFlipNotActiveError(Exception):
@@ -35,6 +35,7 @@ class CoinFlipDailyLimitError(Exception):
 
 COIN_FLIP_DAILY_ATTEMPT_LIMIT = 20
 KOREA_TIME_ZONE = ZoneInfo("Asia/Seoul")
+PADDLE_FLIGHT_SUBMISSION_INTERVAL = timedelta(milliseconds=700)
 
 
 @dataclass(frozen=True, slots=True)
@@ -51,6 +52,14 @@ class CoinFlipOutcome:
     result: CoinSide
     correct: bool
     final_score: int | None
+
+
+@dataclass(frozen=True, slots=True)
+class PaddleFlightRankingRow:
+    rank: int
+    user_id: int
+    username: str
+    best_score: int
 
 
 def get_coin_flip_state(db: Session, *, user_id: int) -> CoinFlipState | None:
@@ -96,6 +105,118 @@ def list_coin_flip_rankings(db: Session) -> list[CoinFlipRankingRow]:
             )
         )
     return ranking
+
+
+def get_paddle_flight_score(db: Session, *, user_id: int) -> PaddleFlightScore | None:
+    return db.get(PaddleFlightScore, user_id)
+
+
+def list_paddle_flight_rankings(db: Session) -> list[PaddleFlightRankingRow]:
+    rows = db.execute(
+        select(
+            PaddleFlightScore.user_id,
+            User.username,
+            PaddleFlightScore.best_score,
+        )
+        .join(User, User.id == PaddleFlightScore.user_id)
+        .where(User.role == UserRole.PLAYER)
+        .order_by(
+            PaddleFlightScore.best_score.desc(),
+            case((PaddleFlightScore.best_achieved_at.is_(None), 1), else_=0),
+            PaddleFlightScore.best_achieved_at.asc(),
+            User.username.asc(),
+            User.id.asc(),
+        )
+    ).all()
+
+    return [
+        PaddleFlightRankingRow(
+            rank=rank,
+            user_id=row.user_id,
+            username=row.username,
+            best_score=int(row.best_score),
+        )
+        for rank, row in enumerate(rows, start=1)
+    ]
+
+
+def submit_paddle_flight_score(
+    db: Session,
+    *,
+    user_id: int,
+    score: int,
+) -> PaddleFlightScore:
+    if not 0 <= score <= PADDLE_FLIGHT_MAX_SCORE:
+        raise ValueError("score is outside the accepted range")
+
+    now = utc_now()
+    rate_limit_cutoff = now - PADDLE_FLIGHT_SUBMISSION_INTERVAL
+    statement = (
+        update(PaddleFlightScore)
+        .where(
+            PaddleFlightScore.user_id == user_id,
+            or_(
+                PaddleFlightScore.last_submitted_at.is_(None),
+                PaddleFlightScore.last_submitted_at <= rate_limit_cutoff,
+                # Never discard a newly achieved high score merely because a
+                # duplicate/lower submission consumed the short spam window.
+                score > PaddleFlightScore.best_score,
+            ),
+        )
+        .values(
+            best_score=case(
+                (score > PaddleFlightScore.best_score, score),
+                else_=PaddleFlightScore.best_score,
+            ),
+            best_achieved_at=case(
+                (score > PaddleFlightScore.best_score, now),
+                else_=PaddleFlightScore.best_achieved_at,
+            ),
+            last_submitted_at=now,
+        )
+        .returning(PaddleFlightScore)
+        .execution_options(synchronize_session=False)
+    )
+    state = db.execute(statement).scalar_one_or_none()
+    if state is not None:
+        db.commit()
+        return state
+
+    db.rollback()
+    existing = db.get(PaddleFlightScore, user_id)
+    if existing is not None:
+        # Coalesce rapid duplicate/lower submissions without turning an
+        # unlimited quick retry into a visible client error.
+        return existing
+    # Release the read transaction before attempting the first insert. This
+    # avoids a SQLite shared-to-write lock upgrade when two first scores arrive
+    # together; the primary key still resolves the cross-database race below.
+    db.rollback()
+
+    state = PaddleFlightScore(
+        user_id=user_id,
+        best_score=score,
+        best_achieved_at=now if score > 0 else None,
+        last_submitted_at=now,
+    )
+    db.add(state)
+    try:
+        db.commit()
+    except IntegrityError:
+        # Concurrent first submissions race on the user primary key. Retry the
+        # atomic path so a higher concurrent score is never lost; equal/lower
+        # submissions are coalesced after the interval blocks their write.
+        db.rollback()
+        concurrent = db.execute(statement).scalar_one_or_none()
+        if concurrent is not None:
+            db.commit()
+            return concurrent
+        db.rollback()
+        existing = db.get(PaddleFlightScore, user_id)
+        if existing is None:
+            raise
+        return existing
+    return state
 
 
 def start_coin_flip(db: Session, *, user_id: int) -> CoinFlipState:

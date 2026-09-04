@@ -105,6 +105,18 @@ export interface CoinFlipResult extends CoinFlipSnapshot {
   final_score: number | null;
 }
 
+export interface PaddleFlightRankingEntry {
+  rank: number;
+  user_id: number;
+  username: string;
+  best_score: number;
+}
+
+export interface PaddleFlightOverview {
+  best_score: number;
+  ranking: PaddleFlightRankingEntry[];
+}
+
 export interface SettlementCategory {
   category: SettlementCategoryKey;
   prize: string;

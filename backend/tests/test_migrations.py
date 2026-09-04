@@ -39,6 +39,7 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
                 "team_doubles_games",
                 "settlement_settings",
                 "coin_flip_states",
+                "paddle_flight_scores",
             } <= set(schema.get_table_names())
             assert any(
                 constraint["column_names"] == ["username"]
@@ -109,6 +110,20 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
                 constraint["name"]
                 for constraint in schema.get_check_constraints("coin_flip_states")
             }
+            assert {"user_id", "best_score", "best_achieved_at", "last_submitted_at"} == {
+                column["name"] for column in schema.get_columns("paddle_flight_scores")
+            }
+            paddle_foreign_keys = schema.get_foreign_keys("paddle_flight_scores")
+            assert len(paddle_foreign_keys) == 1
+            assert paddle_foreign_keys[0]["referred_table"] == "users"
+            assert paddle_foreign_keys[0]["options"].get("ondelete") == "CASCADE"
+            assert {
+                "ck_paddle_flight_scores_best_achievement_time",
+                "ck_paddle_flight_scores_best_score_range",
+            } <= {
+                constraint["name"]
+                for constraint in schema.get_check_constraints("paddle_flight_scores")
+            }
         finally:
             engine.dispose()
 
@@ -132,6 +147,7 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
                 "team_doubles_games",
                 "settlement_settings",
                 "coin_flip_states",
+                "paddle_flight_scores",
             }
         finally:
             engine.dispose()

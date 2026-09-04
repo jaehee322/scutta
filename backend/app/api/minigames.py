@@ -10,6 +10,9 @@ from app.schemas.minigames import (
     CoinFlipRequest,
     CoinFlipResponse,
     CoinFlipStateRead,
+    PaddleFlightOverview,
+    PaddleFlightRankingEntry,
+    PaddleFlightScoreRequest,
 )
 from app.services.minigames import (
     CoinFlipDailyLimitError,
@@ -19,11 +22,15 @@ from app.services.minigames import (
     coin_flip_attempts_remaining,
     flip_coin,
     get_coin_flip_state,
+    get_paddle_flight_score,
     list_coin_flip_rankings,
+    list_paddle_flight_rankings,
     start_coin_flip,
+    submit_paddle_flight_score,
 )
 
 router = APIRouter(prefix="/minigames/coin-flip", tags=["minigames"])
+paddle_flight_router = APIRouter(prefix="/minigames/paddle-flight", tags=["minigames"])
 
 
 def _state_read(state: CoinFlipState | None) -> CoinFlipStateRead:
@@ -110,3 +117,38 @@ def submit_coin_flip(
         state=_state_read(outcome.state),
         ranking=_ranking_read(db),
     )
+
+
+def _paddle_flight_ranking_read(db: DbSession) -> list[PaddleFlightRankingEntry]:
+    return [
+        PaddleFlightRankingEntry(
+            rank=row.rank,
+            user_id=row.user_id,
+            username=row.username,
+            best_score=row.best_score,
+        )
+        for row in list_paddle_flight_rankings(db)
+    ]
+
+
+def _paddle_flight_overview(db: DbSession, *, user_id: int) -> PaddleFlightOverview:
+    state = get_paddle_flight_score(db, user_id=user_id)
+    return PaddleFlightOverview(
+        best_score=state.best_score if state is not None else 0,
+        ranking=_paddle_flight_ranking_read(db),
+    )
+
+
+@paddle_flight_router.get("", response_model=PaddleFlightOverview)
+def get_paddle_flight(db: DbSession, current_player: CurrentPlayer) -> PaddleFlightOverview:
+    return _paddle_flight_overview(db, user_id=current_player.id)
+
+
+@paddle_flight_router.post("/score", response_model=PaddleFlightOverview)
+def submit_paddle_flight_game_score(
+    payload: PaddleFlightScoreRequest,
+    db: DbSession,
+    current_player: CurrentPlayer,
+) -> PaddleFlightOverview:
+    submit_paddle_flight_score(db, user_id=current_player.id, score=payload.score)
+    return _paddle_flight_overview(db, user_id=current_player.id)

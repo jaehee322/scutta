@@ -16,6 +16,7 @@ from app.models import (
     CompetitionTeamMember,
     LeagueFixture,
     Match,
+    PaddleFlightScore,
     TeamDoublesGame,
     TeamEncounter,
     TeamSingleGame,
@@ -241,7 +242,8 @@ def reset_database(
                 "LOCK TABLE competitions, competition_members, competition_teams, "
                 "competition_team_members, "
                 "league_fixtures, team_encounters, team_single_games, "
-                "team_doubles_games, matches, coin_flip_states, users, auth_sessions "
+                "team_doubles_games, matches, coin_flip_states, paddle_flight_scores, "
+                "users, auth_sessions "
                 "IN ACCESS EXCLUSIVE MODE"
             )
         )
@@ -271,6 +273,7 @@ def reset_database(
     )
 
     player_ids = select(User.id).where(User.role == UserRole.PLAYER)
+    db.execute(delete(PaddleFlightScore))
     db.execute(delete(CoinFlipState))
     db.execute(delete(TeamDoublesGame))
     db.execute(delete(TeamSingleGame))

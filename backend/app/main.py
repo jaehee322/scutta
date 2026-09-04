@@ -165,6 +165,7 @@ def create_app(frontend_dist: Path | None = None) -> FastAPI:
     application.include_router(matches.router, prefix=api_prefix)
     application.include_router(rankings.router, prefix=api_prefix)
     application.include_router(minigames.router, prefix=api_prefix)
+    application.include_router(minigames.paddle_flight_router, prefix=api_prefix)
     application.include_router(settlements.router, prefix=api_prefix)
     application.include_router(settlements.admin_router, prefix=api_prefix)
     application.include_router(competitions.router, prefix=api_prefix)

@@ -9,9 +9,14 @@ from sqlalchemy.orm import sessionmaker
 
 from app.core.database import Base
 from app.core.security import hash_password
-from app.models import CoinFlipState, Gender, User, UserRole
+from app.models import CoinFlipState, Gender, PaddleFlightScore, User, UserRole
 from app.schemas.minigames import CoinSide
-from app.services.minigames import CoinFlipRoundConflictError, flip_coin, start_coin_flip
+from app.services.minigames import (
+    CoinFlipRoundConflictError,
+    flip_coin,
+    start_coin_flip,
+    submit_paddle_flight_score,
+)
 
 
 def _create_player(admin, username: str) -> dict:
@@ -337,6 +342,215 @@ def test_coin_flip_contract_rejects_unknown_or_invalid_fields(api) -> None:
         ).status_code
         == 422
     )
+
+
+def test_paddle_flight_is_player_only_and_persists_account_best(api, monkeypatch) -> None:
+    admin, player, client = _setup_player(api, "날리기선수")
+    path = "/api/v1/minigames/paddle-flight"
+
+    assert api.client().get(path).status_code == 401
+    assert api.client().post(f"{path}/score", json={"score": 1}).status_code == 401
+    assert admin.get(path).status_code == 403
+    assert admin.post(f"{path}/score", json={"score": 1}).status_code == 403
+
+    initial = client.get(path)
+    assert initial.status_code == 200
+    assert initial.json() == {"best_score": 0, "ranking": []}
+
+    first_achievement = datetime(2026, 9, 4, 1, 0, tzinfo=UTC)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: first_achievement)
+    submitted = client.post(f"{path}/score", json={"score": 7})
+    assert submitted.status_code == 200, submitted.text
+    assert submitted.json() == {
+        "best_score": 7,
+        "ranking": [
+            {
+                "rank": 1,
+                "user_id": player["id"],
+                "username": player["username"],
+                "best_score": 7,
+            }
+        ],
+    }
+
+    # A repeated non-improving submission is coalesced during the write-rate
+    # limit without making an unlimited quick retry look like a client error.
+    limited = client.post(f"{path}/score", json={"score": 7})
+    assert limited.status_code == 200
+    assert limited.json() == submitted.json()
+
+    # A genuine higher result is always recorded so overlapping requests can
+    # never lose a newly achieved account best.
+    next_achievement = first_achievement + timedelta(milliseconds=100)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: next_achievement)
+    improved = client.post(f"{path}/score", json={"score": 8})
+    assert improved.status_code == 200, improved.text
+    assert improved.json()["best_score"] == 8
+
+    later = next_achievement + timedelta(seconds=1)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: later)
+    lower = client.post(f"{path}/score", json={"score": 3})
+    assert lower.status_code == 200, lower.text
+    assert lower.json()["best_score"] == 8
+    with api.session_factory() as db:
+        state = db.get(PaddleFlightScore, player["id"])
+        assert state is not None
+        assert state.best_score == 8
+        assert state.best_achieved_at == next_achievement.replace(tzinfo=None)
+        assert state.last_submitted_at == later.replace(tzinfo=None)
+
+    assert client.get(path).json() == lower.json()
+
+
+def test_paddle_flight_ranking_uses_first_achievement_order(api) -> None:
+    api.create_admin()
+    admin = api.client()
+    api.login(admin, "admin", "admin-password")
+    late = _create_player(admin, "가나다")
+    early = _create_player(admin, "하늘")
+    lower = _create_player(admin, "중간")
+    excluded = _create_player(admin, "미참여")
+
+    base = datetime(2026, 9, 4, 1, 0, tzinfo=UTC)
+    with api.session_factory() as db:
+        db.add_all(
+            [
+                PaddleFlightScore(
+                    user_id=late["id"],
+                    best_score=3,
+                    best_achieved_at=base + timedelta(minutes=1),
+                    last_submitted_at=base + timedelta(minutes=1),
+                ),
+                PaddleFlightScore(
+                    user_id=early["id"],
+                    best_score=3,
+                    best_achieved_at=base,
+                    last_submitted_at=base,
+                ),
+                PaddleFlightScore(
+                    user_id=lower["id"],
+                    best_score=1,
+                    best_achieved_at=base,
+                    last_submitted_at=base,
+                ),
+            ]
+        )
+        db.commit()
+
+    client = api.client()
+    api.login(client, late["username"], "20260000")
+    overview = client.get("/api/v1/minigames/paddle-flight").json()
+    assert overview["best_score"] == 3
+    assert [
+        (entry["username"], entry["rank"], entry["best_score"])
+        for entry in overview["ranking"]
+    ] == [
+        (early["username"], 1, 3),
+        (late["username"], 2, 3),
+        (lower["username"], 3, 1),
+    ]
+    assert excluded["username"] not in {
+        entry["username"] for entry in overview["ranking"]
+    }
+
+
+def test_paddle_flight_score_cascades_on_player_delete_and_database_reset(api) -> None:
+    admin, player, client = _setup_player(api, "삭제될날리기선수")
+    path = "/api/v1/minigames/paddle-flight/score"
+    assert client.post(path, json={"score": 4}).status_code == 200
+
+    deleted = admin.delete(f"/api/v1/admin/players/{player['id']}")
+    assert deleted.status_code == 204, deleted.text
+    with api.session_factory() as db:
+        assert db.get(PaddleFlightScore, player["id"]) is None
+
+    reset_player = _create_player(admin, "초기화날리기선수")
+    reset_client = api.client()
+    api.login(reset_client, reset_player["username"], "20260000")
+    assert reset_client.post(path, json={"score": 9}).status_code == 200
+
+    reset = admin.post(
+        "/api/v1/admin/database/reset",
+        json={
+            "confirmation": "모든 경기, 대회와 선수 데이터를 삭제합니다",
+            "admin_password": "admin-password",
+        },
+    )
+    assert reset.status_code == 200, reset.text
+    with api.session_factory() as db:
+        assert db.scalar(select(func.count()).select_from(PaddleFlightScore)) == 0
+
+
+def test_paddle_flight_score_contract_rejects_invalid_fields(api) -> None:
+    _, _, client = _setup_player(api, "검증날리기선수")
+    path = "/api/v1/minigames/paddle-flight/score"
+
+    for payload in (
+        {},
+        {"score": -1},
+        {"score": 1_000_001},
+        {"score": 1, "extra": True},
+        {"score": 1.5},
+        {"score": True},
+        {"score": "1"},
+    ):
+        assert client.post(path, json=payload).status_code == 422
+
+
+def test_concurrent_first_paddle_flight_scores_preserve_highest(tmp_path, monkeypatch) -> None:
+    database_path = tmp_path / "concurrent-paddle-flight.db"
+    engine = create_engine(
+        f"sqlite:///{database_path.as_posix()}",
+        connect_args={"check_same_thread": False, "timeout": 10},
+    )
+
+    @event.listens_for(engine, "connect")
+    def enable_foreign_keys(dbapi_connection: object, _: object) -> None:
+        cursor = dbapi_connection.cursor()  # type: ignore[attr-defined]
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
+    Base.metadata.create_all(engine)
+    factory = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
+    with factory() as db:
+        player = User(
+            username="동시날리기선수",
+            password_hash=hash_password("20260000"),
+            role=UserRole.PLAYER,
+            gender=Gender.MALE,
+            is_freshman=False,
+            club_rank=4,
+        )
+        db.add(player)
+        db.commit()
+        player_id = player.id
+
+    fixed_now = datetime(2026, 9, 4, 1, 0, tzinfo=UTC)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: fixed_now)
+    barrier = Barrier(2)
+
+    def submit(score: int) -> int:
+        with factory() as db:
+            barrier.wait()
+            return submit_paddle_flight_score(
+                db,
+                user_id=player_id,
+                score=score,
+            ).best_score
+
+    try:
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            results = list(executor.map(submit, (5, 10)))
+
+        assert max(results) == 10
+        with factory() as db:
+            state = db.get(PaddleFlightScore, player_id)
+            assert state is not None
+            assert state.best_score == 10
+            assert state.best_achieved_at == fixed_now.replace(tzinfo=None)
+    finally:
+        Base.metadata.drop_all(engine)
+        engine.dispose()
 
 
 def test_same_round_concurrent_flips_are_consumed_once(tmp_path, monkeypatch) -> None:

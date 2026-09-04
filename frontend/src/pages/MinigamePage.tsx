@@ -1,10 +1,11 @@
-import { RotateCcw, Trophy } from "lucide-react";
+import { Coins, RotateCcw, Trophy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { ApiError, apiRequest, jsonBody } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { PageLoader } from "../components/Loading";
 import { Notice } from "../components/Notice";
+import { PaddleFlightGame, PaddleFlightIcon } from "../components/PaddleFlightGame";
 import type { CoinFlipResult, CoinFlipSnapshot, CoinSide } from "../types";
 import { waitForCoinAnimationEvent } from "../utils/coinAnimation";
 import {
@@ -62,6 +63,7 @@ function usePrefersReducedMotion() {
 export function MinigamePage() {
   const { user } = useAuth();
   const reducedMotion = usePrefersReducedMotion();
+  const [selectedGame, setSelectedGame] = useState<"coin" | "paddle-flight">("coin");
   const [data, setData] = useState<CoinFlipSnapshot | null>(null);
   const [choice, setChoice] = useState<CoinSide | null>(null);
   const [coinFace, setCoinFace] = useState<CoinSide>("heads");
@@ -352,6 +354,40 @@ export function MinigamePage() {
     }
   };
 
+  const isPaddleFlight = selectedGame === "paddle-flight";
+  const heading = (
+    <header className="page-heading minigame-heading">
+      <div className="minigame-heading__topline">
+        <div>
+          <h1>{isPaddleFlight ? "탁구공 날리기" : "동전 던지기"}</h1>
+          <p>
+            {isPaddleFlight
+              ? "탁구채 손잡이를 피해 오래 날아가세요."
+              : "앞면과 뒷면을 맞히고 연속 기록을 이어가세요."}
+          </p>
+        </div>
+        <button
+          type="button"
+          className="icon-button minigame-switch-button"
+          aria-label={isPaddleFlight ? "동전 던지기로 전환" : "탁구공 날리기로 전환"}
+          title={isPaddleFlight ? "동전 던지기" : "탁구공 날리기"}
+          onClick={() => setSelectedGame(isPaddleFlight ? "coin" : "paddle-flight")}
+        >
+          {isPaddleFlight ? <Coins size={22} aria-hidden="true" /> : <PaddleFlightIcon />}
+        </button>
+      </div>
+    </header>
+  );
+
+  if (isPaddleFlight) {
+    return (
+      <div className="page minigame-page">
+        {heading}
+        <PaddleFlightGame userId={user?.id} />
+      </div>
+    );
+  }
+
   if (!data && !error) return <PageLoader />;
 
   const state = data?.state;
@@ -502,10 +538,7 @@ export function MinigamePage() {
 
   return (
     <div className="page minigame-page">
-      <header className="page-heading minigame-heading">
-        <h1>동전 던지기</h1>
-        <p>앞면과 뒷면을 맞히고 연속 기록을 이어가세요.</p>
-      </header>
+      {heading}
 
       {error && !isGameView && <Notice>{error}</Notice>}
 

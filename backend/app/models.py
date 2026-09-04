@@ -105,6 +105,12 @@ class User(TimestampMixin, Base):
         passive_deletes=True,
         uselist=False,
     )
+    paddle_flight_score: Mapped[PaddleFlightScore | None] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        uselist=False,
+    )
 
 
 class AuthSession(Base):
@@ -177,6 +183,32 @@ class CoinFlipState(Base):
     daily_attempts_used: Mapped[int] = mapped_column(SmallInteger, default=0, nullable=False)
 
     user: Mapped[User] = relationship(back_populates="coin_flip_state")
+
+
+class PaddleFlightScore(Base):
+    __tablename__ = "paddle_flight_scores"
+    __table_args__ = (
+        CheckConstraint(
+            "best_score >= 0 AND best_score <= 1000000",
+            name="best_score_range",
+        ),
+        CheckConstraint(
+            "(best_score = 0 AND best_achieved_at IS NULL) OR "
+            "(best_score > 0 AND best_achieved_at IS NOT NULL)",
+            name="best_achievement_time",
+        ),
+    )
+
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+    best_score: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    best_achieved_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    last_submitted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    user: Mapped[User] = relationship(back_populates="paddle_flight_score")
 
 
 class Competition(TimestampMixin, Base):
