@@ -154,6 +154,20 @@ export interface DatabaseResetResponse {
   deleted: DatabaseResetCounts;
 }
 
+export type MinigameResetGame = "coin-flip" | "paddle-flight";
+
+export interface MinigameResetPreview {
+  game: MinigameResetGame;
+  record_count: number;
+  confirmation_required: string;
+}
+
+export interface MinigameResetResponse {
+  game: MinigameResetGame;
+  deleted_records: number;
+  message: string;
+}
+
 export interface CompetitionSummary {
   id: number;
   name: string;

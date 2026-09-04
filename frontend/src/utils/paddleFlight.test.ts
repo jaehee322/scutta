@@ -34,7 +34,7 @@ function obstacle(
     x: 400,
     width: PADDLE_FLIGHT_PHYSICS.obstacleWidth,
     gapTop: 180,
-    gapBottom: 330,
+    gapBottom: 180 + PADDLE_FLIGHT_PHYSICS.obstacleGap,
     scored: false,
     ...overrides,
   };
@@ -122,10 +122,17 @@ describe("paddle flight physics", () => {
 
 describe("paddle flight scoring and obstacles", () => {
   it("increases speed and narrows new gaps gradually with a safe cap", () => {
+    expect(PADDLE_FLIGHT_PHYSICS.obstacleSpacing).toBe(171);
+    expect(PADDLE_FLIGHT_PHYSICS.obstacleGap).toBe(90);
+    expect(PADDLE_FLIGHT_PHYSICS.minimumObstacleGap).toBe(84);
     expect(getPaddleFlightDifficulty(0)).toEqual({
       obstacleSpeed: PADDLE_FLIGHT_PHYSICS.obstacleSpeed,
       obstacleGap: PADDLE_FLIGHT_PHYSICS.obstacleGap,
     });
+
+    expect(getPaddleFlightDifficulty(5).obstacleSpeed).toBe(145);
+    expect(getPaddleFlightDifficulty(10).obstacleSpeed).toBe(170);
+    expect(getPaddleFlightDifficulty(22).obstacleSpeed).toBe(230);
 
     const progressed = getPaddleFlightDifficulty(20);
     expect(progressed.obstacleSpeed).toBeGreaterThan(
@@ -167,8 +174,11 @@ describe("paddle flight scoring and obstacles", () => {
     const initial = playingState({ obstacles: [passing] });
 
     const afterPass = stepPaddleFlight(initial, 0.01);
+    const firstStep = PADDLE_FLIGHT_PHYSICS.simulationStepSeconds;
     expect(afterPass.obstacles[0]?.x).toBeCloseTo(
-      passingX - PADDLE_FLIGHT_PHYSICS.obstacleSpeed * 0.01,
+      passingX
+        - PADDLE_FLIGHT_PHYSICS.obstacleSpeed * firstStep
+        - getPaddleFlightDifficulty(1).obstacleSpeed * (0.01 - firstStep),
     );
     expect(afterPass.obstacles[0]?.scored).toBe(true);
     expect(afterPass.score).toBe(1);

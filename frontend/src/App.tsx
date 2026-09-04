@@ -80,7 +80,7 @@ function ScrollToTop() {
         : pathname.startsWith("/admin/settlements")
           ? "정산 설정"
         : pathname.startsWith("/admin/reset")
-          ? "학기 초기화"
+          ? "데이터 초기화"
             : pathname.startsWith("/admin/competitions")
               ? "리그전 관리"
               : pathname.startsWith("/competitions")

@@ -60,8 +60,8 @@ export function AdminHomePage() {
           />
           <AdminFeatureCard
             icon={<DatabaseZap size={22} />}
-            title="학기 초기화"
-            description="모든 선수·대회·경기 제거"
+            title="데이터 초기화"
+            description="미니게임 기록·학기 데이터 초기화"
             href="/admin/reset"
             danger
           />

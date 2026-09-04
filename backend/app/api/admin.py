@@ -24,11 +24,17 @@ from app.models import (
     UserRole,
 )
 from app.schemas.admin import (
+    COIN_FLIP_RESET_CONFIRMATION,
     DATABASE_RESET_CONFIRMATION,
+    PADDLE_FLIGHT_RESET_CONFIRMATION,
     DatabaseResetCounts,
     DatabaseResetPreview,
     DatabaseResetRequest,
     DatabaseResetResponse,
+    MinigameResetGame,
+    MinigameResetPreview,
+    MinigameResetRequest,
+    MinigameResetResponse,
     PasswordResetRequest,
     PasswordResetResponse,
 )
@@ -185,6 +191,128 @@ def _count(db: Session, model: type[object], *conditions: object) -> int:
     if conditions:
         statement = statement.where(*conditions)
     return int(db.scalar(statement) or 0)
+
+
+def _minigame_reset_details(
+    game: MinigameResetGame,
+) -> tuple[type[CoinFlipState] | type[PaddleFlightScore], str, str, str]:
+    if game == MinigameResetGame.COIN_FLIP:
+        return (
+            CoinFlipState,
+            "coin_flip_states",
+            COIN_FLIP_RESET_CONFIRMATION,
+            "동전 던지기",
+        )
+    return (
+        PaddleFlightScore,
+        "paddle_flight_scores",
+        PADDLE_FLIGHT_RESET_CONFIRMATION,
+        "탁구공 날리기",
+    )
+
+
+def _require_admin_password(
+    db: Session,
+    *,
+    admin_id: int,
+    password: str,
+    for_update: bool = False,
+) -> User:
+    statement = (
+        select(User)
+        .where(User.id == admin_id, User.role == UserRole.ADMIN)
+        .execution_options(populate_existing=True)
+    )
+    if for_update:
+        statement = statement.with_for_update()
+    checked_admin = db.scalar(statement)
+    if checked_admin is None or not verify_password(password, checked_admin.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="관리자 비밀번호가 올바르지 않습니다.",
+        )
+    return checked_admin
+
+
+def _lock_minigame_for_reset(
+    db: Session,
+    *,
+    table_name: str,
+) -> None:
+    if db.get_bind().dialect.name == "postgresql":
+        # Game submissions modify only one game table at a time. Taking its
+        # strongest table lock establishes a clear reset point: earlier writes
+        # finish before deletion and later writes resume only after commit.
+        db.execute(text(f"LOCK TABLE {table_name} IN ACCESS EXCLUSIVE MODE"))
+
+
+def get_minigame_reset_preview(
+    db: Session,
+    *,
+    game: MinigameResetGame,
+) -> MinigameResetPreview:
+    model, _, confirmation, _ = _minigame_reset_details(game)
+    return MinigameResetPreview(
+        game=game,
+        record_count=_count(db, model),
+        confirmation_required=confirmation,
+    )
+
+
+@router.get(
+    "/minigames/{game}/reset-preview",
+    response_model=MinigameResetPreview,
+)
+def preview_minigame_reset(
+    game: MinigameResetGame,
+    db: DbSession,
+    _: CurrentAdmin,
+) -> MinigameResetPreview:
+    return get_minigame_reset_preview(db, game=game)
+
+
+@router.post(
+    "/minigames/{game}/reset",
+    response_model=MinigameResetResponse,
+)
+def reset_minigame(
+    game: MinigameResetGame,
+    payload: MinigameResetRequest,
+    db: DbSession,
+    admin: CurrentAdmin,
+) -> MinigameResetResponse:
+    model, table_name, confirmation, label = _minigame_reset_details(game)
+    if payload.confirmation != confirmation:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="확인 문구가 일치하지 않습니다.",
+        )
+
+    # Fail fast before requesting an exclusive maintenance lock.
+    _require_admin_password(
+        db,
+        admin_id=admin.id,
+        password=payload.admin_password,
+    )
+    _lock_minigame_for_reset(db, table_name=table_name)
+
+    # Serialize with a concurrent password change and recheck after the game
+    # table lock so stale credentials cannot authorize a delayed reset.
+    _require_admin_password(
+        db,
+        admin_id=admin.id,
+        password=payload.admin_password,
+        for_update=True,
+    )
+
+    deleted_records = len(db.scalars(delete(model).returning(model.user_id)).all())
+    db.commit()
+
+    return MinigameResetResponse(
+        game=game,
+        deleted_records=deleted_records,
+        message=f"{label} 기록을 초기화했습니다.",
+    )
 
 
 def get_database_reset_preview(db: Session) -> DatabaseResetPreview:
