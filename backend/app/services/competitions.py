@@ -929,13 +929,17 @@ def list_competitions(
     participating_ids: set[int] = set()
     if actor_id is not None and competitions:
         competition_ids = [competition.id for competition in competitions]
-        membership_statement = select(CompetitionMember.competition_id).where(
-            CompetitionMember.user_id == actor_id,
-            CompetitionMember.competition_id.in_(competition_ids),
-        ).union(
-            select(CompetitionTeamMember.competition_id).where(
-                CompetitionTeamMember.user_id == actor_id,
-                CompetitionTeamMember.competition_id.in_(competition_ids),
+        membership_statement = (
+            select(CompetitionMember.competition_id)
+            .where(
+                CompetitionMember.user_id == actor_id,
+                CompetitionMember.competition_id.in_(competition_ids),
+            )
+            .union(
+                select(CompetitionTeamMember.competition_id).where(
+                    CompetitionTeamMember.user_id == actor_id,
+                    CompetitionTeamMember.competition_id.in_(competition_ids),
+                )
             )
         )
         participating_ids = set(db.scalars(membership_statement))

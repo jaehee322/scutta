@@ -43,8 +43,6 @@ def downgrade() -> None:
         batch_op.drop_constraint(
             op.f("ck_coin_flip_states_daily_attempts_date_consistency"), type_="check"
         )
-        batch_op.drop_constraint(
-            op.f("ck_coin_flip_states_daily_attempts_range"), type_="check"
-        )
+        batch_op.drop_constraint(op.f("ck_coin_flip_states_daily_attempts_range"), type_="check")
         batch_op.drop_column("daily_attempts_used")
         batch_op.drop_column("daily_attempt_date")

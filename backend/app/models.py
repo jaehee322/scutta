@@ -505,6 +505,4 @@ class Match(Base):
     # Migration 0006 preserves historical submission times by renaming created_at.
     # SQLite stores UTC values without tzinfo; the service layer interprets those
     # naive values as UTC before exposing them.
-    played_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
+    played_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)

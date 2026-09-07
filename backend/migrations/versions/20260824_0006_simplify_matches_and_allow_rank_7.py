@@ -79,10 +79,7 @@ def downgrade() -> None:
 
     # The historical creation timestamp survived as played_at. Only the removed
     # actor/update audit values need structurally valid rollback fallbacks.
-    op.execute(
-        "UPDATE matches SET submitted_by_id = player1_id, "
-        "updated_at = CURRENT_TIMESTAMP"
-    )
+    op.execute("UPDATE matches SET submitted_by_id = player1_id, updated_at = CURRENT_TIMESTAMP")
 
     with op.batch_alter_table("matches") as batch_op:
         batch_op.alter_column(

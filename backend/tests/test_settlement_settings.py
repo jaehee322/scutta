@@ -63,9 +63,7 @@ def test_admin_can_persist_settlement_settings_and_players_receive_them(api) -> 
         "losses",
     ]
     wins = next(
-        category
-        for category in settlement.json()["categories"]
-        if category["category"] == "wins"
+        category for category in settlement.json()["categories"] if category["category"] == "wins"
     )
     assert wins["prize"] == "우승 상품권"
     assert player_client.get("/api/v1/admin/settlements/settings").status_code == 403

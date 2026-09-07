@@ -90,9 +90,7 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
                 "last_flip_at",
                 "daily_attempt_date",
                 "daily_attempts_used",
-            } == {
-                column["name"] for column in schema.get_columns("coin_flip_states")
-            }
+            } == {column["name"] for column in schema.get_columns("coin_flip_states")}
             coin_foreign_keys = schema.get_foreign_keys("coin_flip_states")
             assert len(coin_foreign_keys) == 1
             assert coin_foreign_keys[0]["referred_table"] == "users"
@@ -294,9 +292,7 @@ def test_played_at_migrations_preserve_match_time_and_leave_doubles_unknown(
                 assert connection.scalar(
                     text("SELECT CAST(played_at AS TEXT) FROM matches")
                 ).startswith("2026-08-20 07:35:00")
-                assert connection.scalar(
-                    text("SELECT played_at FROM team_doubles_games")
-                ) is None
+                assert connection.scalar(text("SELECT played_at FROM team_doubles_games")) is None
         finally:
             engine.dispose()
 
@@ -359,9 +355,7 @@ def test_played_at_migration_supports_earlier_untracked_0006(tmp_path, monkeypat
         try:
             schema = inspect(engine)
             played_at_column = next(
-                column
-                for column in schema.get_columns("matches")
-                if column["name"] == "played_at"
+                column for column in schema.get_columns("matches") if column["name"] == "played_at"
             )
             assert played_at_column["nullable"] is True
             with engine.connect() as connection:

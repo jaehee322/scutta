@@ -151,9 +151,7 @@ def test_coin_flip_reset_requires_confirmation_and_password_then_preserves_other
         "deleted_records": 2,
         "message": "동전 던지기 기록을 초기화했습니다.",
     }
-    assert admin.get("/api/v1/admin/minigames/coin-flip/reset-preview").json()[
-        "record_count"
-    ] == 0
+    assert admin.get("/api/v1/admin/minigames/coin-flip/reset-preview").json()["record_count"] == 0
 
     with api.session_factory() as db:
         assert _record_count(db, CoinFlipState) == 0

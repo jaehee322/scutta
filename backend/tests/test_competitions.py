@@ -153,28 +153,22 @@ def test_competition_list_marks_current_user_participation(api) -> None:
     team = _create_team_competition(admin, players[4:12])
 
     league_member = _login(api, players[0]["username"])
-    league_items = {
-        item["id"]: item for item in league_member.get("/api/v1/competitions").json()
-    }
+    league_items = {item["id"]: item for item in league_member.get("/api/v1/competitions").json()}
     assert league_items[league.json()["id"]]["is_participant"] is True
     assert league_items[team["id"]]["is_participant"] is False
 
     team_member = _login(api, players[4]["username"])
-    team_items = {
-        item["id"]: item for item in team_member.get("/api/v1/competitions").json()
-    }
+    team_items = {item["id"]: item for item in team_member.get("/api/v1/competitions").json()}
     assert team_items[league.json()["id"]]["is_participant"] is False
     assert team_items[team["id"]]["is_participant"] is True
 
     outsider = _login(api, players[12]["username"])
     assert all(
-        item["is_participant"] is False
-        for item in outsider.get("/api/v1/competitions").json()
+        item["is_participant"] is False for item in outsider.get("/api/v1/competitions").json()
     )
 
     assert all(
-        item["is_participant"] is False
-        for item in admin.get("/api/v1/admin/competitions").json()
+        item["is_participant"] is False for item in admin.get("/api/v1/admin/competitions").json()
     )
 
 
@@ -411,8 +405,7 @@ def test_league_standings_daily_rule_completion_and_admin_isolation(api) -> None
     dated_fixture = detail["fixtures"][0]
     original_at = datetime.fromisoformat(dated_fixture["played_at"])
     redated = admin.put(
-        f"/api/v1/admin/competitions/{competition_id}/league-fixtures/"
-        f"{dated_fixture['id']}/result",
+        f"/api/v1/admin/competitions/{competition_id}/league-fixtures/{dated_fixture['id']}/result",
         json={
             "score1": dated_fixture["score1"],
             "score2": dated_fixture["score2"],

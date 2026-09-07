@@ -380,9 +380,7 @@ def flip_coin(
             raise CoinFlipNotActiveError("진행 중인 동전 던지기 게임이 없습니다.")
         if current.run_id == run_id and current.current_streak == round_no - 1:
             raise CoinFlipRateLimitError("동전은 0.7초에 한 번만 던질 수 있습니다.")
-        raise CoinFlipRoundConflictError(
-            "이미 처리되었거나 현재 순서와 맞지 않는 라운드입니다."
-        )
+        raise CoinFlipRoundConflictError("이미 처리되었거나 현재 순서와 맞지 않는 라운드입니다.")
 
     db.commit()
     return CoinFlipOutcome(

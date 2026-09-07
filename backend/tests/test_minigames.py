@@ -213,9 +213,7 @@ def test_coin_flip_allows_twenty_new_runs_per_korea_day(api, monkeypatch) -> Non
     _, player, client = _setup_player(api, "일일시도선수")
     path = "/api/v1/minigames/coin-flip"
     just_before_midnight = datetime(2026, 9, 2, 14, 59, tzinfo=UTC)
-    monkeypatch.setattr(
-        "app.services.minigames.utc_now", lambda: just_before_midnight
-    )
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: just_before_midnight)
 
     for attempt in range(1, 21):
         started = client.post(f"{path}/start")
@@ -285,9 +283,7 @@ def test_coin_flip_ranking_uses_unique_rank_and_first_achievement_order(api) -> 
         db.commit()
 
     ranking = clients[0].get("/api/v1/minigames/coin-flip").json()["ranking"]
-    assert [
-        (entry["username"], entry["rank"], entry["best_streak"]) for entry in ranking
-    ] == [
+    assert [(entry["username"], entry["rank"], entry["best_streak"]) for entry in ranking] == [
         (early["username"], 1, 3),
         (late["username"], 2, 3),
         (lower["username"], 3, 1),
@@ -327,13 +323,9 @@ def test_coin_flip_contract_rejects_unknown_or_invalid_fields(api) -> None:
     path = "/api/v1/minigames/coin-flip/flip"
 
     assert client.post(path, json={"choice": "edge", "run_id": 1, "round_no": 1}).status_code == 422
-    invalid_run = client.post(
-        path, json={"choice": "heads", "run_id": 0, "round_no": 1}
-    )
+    invalid_run = client.post(path, json={"choice": "heads", "run_id": 0, "round_no": 1})
     assert invalid_run.status_code == 422
-    invalid_round = client.post(
-        path, json={"choice": "heads", "run_id": 1, "round_no": 0}
-    )
+    invalid_round = client.post(path, json={"choice": "heads", "run_id": 1, "round_no": 0})
     assert invalid_round.status_code == 422
     assert (
         client.post(
@@ -442,16 +434,13 @@ def test_paddle_flight_ranking_uses_first_achievement_order(api) -> None:
     overview = client.get("/api/v1/minigames/paddle-flight").json()
     assert overview["best_score"] == 3
     assert [
-        (entry["username"], entry["rank"], entry["best_score"])
-        for entry in overview["ranking"]
+        (entry["username"], entry["rank"], entry["best_score"]) for entry in overview["ranking"]
     ] == [
         (early["username"], 1, 3),
         (late["username"], 2, 3),
         (lower["username"], 3, 1),
     ]
-    assert excluded["username"] not in {
-        entry["username"] for entry in overview["ranking"]
-    }
+    assert excluded["username"] not in {entry["username"] for entry in overview["ranking"]}
 
 
 def test_paddle_flight_score_cascades_on_player_delete_and_database_reset(api) -> None:

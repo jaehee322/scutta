@@ -44,9 +44,7 @@ def update_settlement_settings(
     payload: SettlementSettingsUpdate,
 ) -> SettlementSettingsRead:
     stored = db.scalar(
-        select(SettlementSettings)
-        .where(SettlementSettings.id == SETTINGS_ID)
-        .with_for_update()
+        select(SettlementSettings).where(SettlementSettings.id == SETTINGS_ID).with_for_update()
     )
     if stored is None:
         stored = SettlementSettings(id=SETTINGS_ID)
