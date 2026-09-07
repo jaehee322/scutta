@@ -12,6 +12,7 @@ import {
 import { AUTH_EXPIRED_EVENT, apiRequest, jsonBody } from "../api/client";
 import type { UserRead } from "../types";
 import { classifyAuthCheckFailure } from "./authFailure";
+import { getAuthSessionVersion, invalidateAuthSession } from "./authSession";
 
 interface AuthContextValue {
   user: UserRead | null;
@@ -29,17 +30,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [booting, setBooting] = useState(true);
   const [connectionError, setConnectionError] = useState("");
   const authRequestId = useRef(0);
+  const authCheck = useRef<AbortController | null>(null);
 
   const refreshUser = useCallback(async () => {
     const requestId = ++authRequestId.current;
+    authCheck.current?.abort();
+    const controller = new AbortController();
+    authCheck.current = controller;
+    const sessionVersion = getAuthSessionVersion();
+    const isCurrent = () => requestId === authRequestId.current
+      && sessionVersion === getAuthSessionVersion()
+      && !controller.signal.aborted;
     setBooting(true);
     setConnectionError("");
     try {
-      const current = await apiRequest<UserRead>("/auth/me");
-      if (requestId !== authRequestId.current) return;
+      // A sleeping server may need longer for the first connection. This is a
+      // single read, so writes retain their normal deadline and are not retried.
+      const current = await apiRequest<UserRead>("/auth/me", {
+        signal: controller.signal,
+        timeoutMs: 60_000,
+      });
+      if (!isCurrent()) return;
       setUser(current);
     } catch (error) {
-      if (requestId !== authRequestId.current) return;
+      if (!isCurrent()) return;
       const failure = classifyAuthCheckFailure(error);
       if (failure.kind === "unauthenticated") {
         setUser(null);
@@ -55,12 +69,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void refreshUser();
     return () => {
       authRequestId.current += 1;
+      authCheck.current?.abort();
     };
   }, [refreshUser]);
 
   useEffect(() => {
     const clearExpiredSession = () => {
+      authCheck.current?.abort();
       setUser(null);
+      setBooting(false);
       setConnectionError("");
     };
     window.addEventListener(AUTH_EXPIRED_EVENT, clearExpiredSession);
@@ -68,17 +85,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(async (username: string, password: string) => {
+    const requestId = ++authRequestId.current;
+    authCheck.current?.abort();
+    invalidateAuthSession();
+    setBooting(false);
     const response = await apiRequest<{ user: UserRead }>("/auth/login", {
       method: "POST",
       body: jsonBody({ username, password }),
     });
+    if (requestId !== authRequestId.current) return;
+    // Requests started while login was in progress still used the old cookie.
+    invalidateAuthSession();
     setConnectionError("");
     setUser(response.user);
   }, []);
 
   const logout = useCallback(async () => {
+    const requestId = ++authRequestId.current;
+    authCheck.current?.abort();
+    invalidateAuthSession();
+    setBooting(false);
     await apiRequest<{ message: string }>("/auth/logout", { method: "POST" });
+    if (requestId !== authRequestId.current) return;
+    invalidateAuthSession();
     setUser(null);
+    setConnectionError("");
   }, []);
 
   const value = useMemo(

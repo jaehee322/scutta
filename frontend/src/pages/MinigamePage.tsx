@@ -1,4 +1,4 @@
-import { Coins, RotateCcw, Trophy } from "lucide-react";
+import { Coins, RotateCcw, Trophy, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { ApiError, apiRequest, jsonBody } from "../api/client";
@@ -66,6 +66,7 @@ export function MinigamePage() {
   const [selectedGame, setSelectedGame] = useState<"coin" | "paddle-flight">("coin");
   const [data, setData] = useState<CoinFlipSnapshot | null>(null);
   const [choice, setChoice] = useState<CoinSide | null>(null);
+  const [chosenRunId, setChosenRunId] = useState<number | null>(null);
   const [coinFace, setCoinFace] = useState<CoinSide>("heads");
   const [lastFlip, setLastFlip] = useState<
     Pick<CoinFlipResult, "result" | "correct" | "final_score"> | null
@@ -173,6 +174,13 @@ export function MinigamePage() {
       document.body.classList.add("minigame-fullscreen-open");
     }
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !startLock.current && !flipLock.current) {
+        event.preventDefault();
+        setIsGameView(false);
+        setChoice(null);
+        window.requestAnimationFrame(() => entryButtonRef.current?.focus());
+        return;
+      }
       if (event.key !== "Tab") return;
 
       const focusable = Array.from(
@@ -220,7 +228,7 @@ export function MinigamePage() {
   }, [data?.state.active, isFlipping, isGameView, isStarting]);
 
   const closeGameView = () => {
-    if (isFlippingRef.current) return;
+    if (startLock.current || isFlippingRef.current) return;
     setIsGameView(false);
     setChoice(null);
     window.requestAnimationFrame(() => entryButtonRef.current?.focus());
@@ -269,11 +277,12 @@ export function MinigamePage() {
 
   const flipCoin = async (selectedChoice: CoinSide) => {
     const activeState = data?.state;
-    if (!activeState?.active || retrySeconds > 0 || flipLock.current) return;
+    if (!activeState?.active || retrySeconds > 0 || flipLock.current || startLock.current) return;
 
     flipLock.current = true;
     isFlippingRef.current = true;
     snapshotVersionRef.current += 1;
+    setChosenRunId(activeState.run_id);
     setChoice(selectedChoice);
     setIsFlipping(true);
     setTossId((current) => current + 1);
@@ -351,6 +360,56 @@ export function MinigamePage() {
       setIsFlipping(false);
       setTossPhase("idle");
       setLandingFace(null);
+    }
+  };
+
+  const startAtFive = async () => {
+    const activeState = data?.state;
+    if (
+      !activeState?.active
+      || !activeState.can_start_at_five
+      || activeState.current_streak !== 0
+      || chosenRunId === activeState.run_id
+      || retrySeconds > 0
+      || startLock.current
+      || flipLock.current
+    ) return;
+
+    startLock.current = true;
+    snapshotVersionRef.current += 1;
+    setIsStarting(true);
+    setError("");
+    setLastFlip(null);
+    try {
+      const snapshot = await apiRequest<CoinFlipSnapshot>("/minigames/coin-flip/start-at-five", {
+        method: "POST",
+        body: jsonBody({ run_id: activeState.run_id }),
+      });
+      setData(snapshot);
+    } catch (caught) {
+      let confirmedApplied = false;
+      let refreshed = false;
+      try {
+        const snapshot = await fetchCoinFlipSnapshot();
+        setData(snapshot);
+        refreshed = true;
+        // The write may have succeeded even if its response was lost.
+        confirmedApplied = snapshot.state.run_id === activeState.run_id
+          && snapshot.state.active
+          && snapshot.state.current_streak >= 5
+          && snapshot.state.remaining_attempts === 0;
+      } catch {
+        // A manual retry is safe: the server applies this once to an untouched run.
+      }
+      if (!confirmedApplied) {
+        setError(refreshed
+          ? minigameErrorMessage(caught, "5회부터 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.")
+          : "처리 결과를 확인하지 못했어요. 연결이 돌아오면 다시 시도해 주세요.");
+      }
+    } finally {
+      snapshotVersionRef.current += 1;
+      startLock.current = false;
+      setIsStarting(false);
     }
   };
 
@@ -465,7 +524,7 @@ export function MinigamePage() {
           <div
             className="coin-choice"
             role="group"
-            aria-busy={isFlipping}
+            aria-busy={isFlipping || isStarting}
             aria-label="누르면 바로 던져지는 동전 면 선택"
           >
             {(["heads", "tails"] as const).map((side) => (
@@ -474,7 +533,7 @@ export function MinigamePage() {
                 key={side}
                 className={choice === side ? "is-selected" : ""}
                 aria-label={`${sideLabel[side]}을 선택하고 동전 던지기`}
-                disabled={isFlipping || retrySeconds > 0}
+                disabled={isFlipping || isStarting || retrySeconds > 0}
                 onClick={() => void flipCoin(side)}
                 ref={side === "heads" ? firstChoiceButtonRef : undefined}
               >
@@ -492,6 +551,16 @@ export function MinigamePage() {
               </button>
             ))}
           </div>
+          {state.can_start_at_five && state.current_streak === 0 && chosenRunId !== state.run_id && (
+            <button
+              type="button"
+              className="secondary-button coin-start-at-five-button"
+              disabled={isStarting || isFlipping || retrySeconds > 0}
+              onClick={() => void startAtFive()}
+            >
+              {isStarting ? "5회부터 준비하는 중…" : "시도 횟수 20회로 5회부터 시작하기"}
+            </button>
+          )}
           {retrySeconds > 0 && (
             <p className="coin-retry-message" role="status">
               {retrySeconds}초 후 다시 던질 수 있어요.
@@ -552,12 +621,26 @@ export function MinigamePage() {
               aria-modal="true"
               ref={fullscreenRef}
               tabIndex={-1}
+              onContextMenu={(event) => event.preventDefault()}
+              onDragStart={(event) => event.preventDefault()}
+              onKeyDown={(event) => {
+                if (event.repeat && event.key === "Enter") event.preventDefault();
+              }}
             >
               <header className="coin-game-fullscreen__header">
                 <div>
                   <span>MINI GAME</span>
                   <strong>동전 던지기</strong>
                 </div>
+                <button
+                  type="button"
+                  className="icon-button coin-game-fullscreen__exit"
+                  aria-label="게임 나가기"
+                  disabled={isStarting || isFlipping}
+                  onClick={closeGameView}
+                >
+                  <X size={22} aria-hidden="true" />
+                </button>
               </header>
               <div className="coin-game-fullscreen__content">{gameCard}</div>
             </div>

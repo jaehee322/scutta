@@ -13,6 +13,8 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
+import { getSelectMenuPosition, type MenuPosition } from "./selectMenuPosition";
+
 export type CustomSelectValue = string | number;
 
 export type CustomSelectOption<T extends CustomSelectValue> = Readonly<{
@@ -35,19 +37,6 @@ export type CustomSelectProps<T extends CustomSelectValue> = {
   name?: string;
   className?: string;
 };
-
-type MenuPosition = {
-  placement: "up" | "down";
-  left: number;
-  width: number;
-  maxHeight: number;
-  top?: number;
-  bottom?: number;
-};
-
-const VIEWPORT_MARGIN = 12;
-const MENU_GAP = 6;
-const MENU_MAX_HEIGHT = 288;
 
 function findEnabledIndex<T extends CustomSelectValue>(
   options: readonly CustomSelectOption<T>[],
@@ -137,41 +126,17 @@ export function CustomSelect<T extends CustomSelectValue>({
     const trigger = triggerRef.current;
     if (!trigger) return;
 
-    const rect = trigger.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    if (rect.bottom < 0 || rect.top > viewportHeight) {
+    const position = getSelectMenuPosition(
+      trigger.getBoundingClientRect(),
+      { width: window.innerWidth, height: window.innerHeight },
+      options.length,
+      window.visualViewport,
+    );
+    if (!position) {
       closeMenu(false);
       return;
     }
-
-    const availableBelow = Math.max(
-      0,
-      viewportHeight - rect.bottom - MENU_GAP - VIEWPORT_MARGIN,
-    );
-    const availableAbove = Math.max(0, rect.top - MENU_GAP - VIEWPORT_MARGIN);
-    const estimatedHeight = Math.min(options.length * 46 + 12, MENU_MAX_HEIGHT);
-    const placement = availableBelow < Math.min(estimatedHeight, 160)
-      && availableAbove > availableBelow
-      ? "up"
-      : "down";
-    const availableHeight = placement === "up" ? availableAbove : availableBelow;
-    const availableWidth = Math.max(0, viewportWidth - VIEWPORT_MARGIN * 2);
-    const width = Math.min(Math.max(rect.width, 180), availableWidth);
-    const left = Math.min(
-      Math.max(rect.left, VIEWPORT_MARGIN),
-      Math.max(VIEWPORT_MARGIN, viewportWidth - VIEWPORT_MARGIN - width),
-    );
-
-    setMenuPosition({
-      placement,
-      left,
-      width,
-      maxHeight: Math.min(MENU_MAX_HEIGHT, availableHeight),
-      ...(placement === "up"
-        ? { bottom: viewportHeight - rect.top + MENU_GAP }
-        : { top: rect.bottom + MENU_GAP }),
-    });
+    setMenuPosition(position);
   }, [closeMenu, options.length]);
 
   useLayoutEffect(() => {

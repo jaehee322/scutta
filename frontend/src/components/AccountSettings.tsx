@@ -5,7 +5,7 @@ import { apiRequest, jsonBody } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { Modal } from "./Modal";
 import { Notice } from "./Notice";
-import { PwaInstallButton } from "./PwaManager";
+import { PwaInstallButton, PwaUpdateButton } from "./PwaManager";
 
 export function AccountSettings() {
   const { logout } = useAuth();
@@ -50,6 +50,7 @@ export function AccountSettings() {
 
       <section className="settings-list" aria-label="계정 설정">
         <PwaInstallButton className="settings-list__install" />
+        <PwaUpdateButton />
         <button type="button" onClick={() => setPasswordOpen(true)}>
           <span className="settings-list__icon"><KeyRound size={20} /></span>
           <div><strong>비밀번호 변경</strong></div>

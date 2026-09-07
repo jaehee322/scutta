@@ -27,6 +27,10 @@ class CoinFlipRateLimitError(Exception):
     pass
 
 
+class CoinFlipStartAtFiveError(Exception):
+    pass
+
+
 class CoinFlipDailyLimitError(Exception):
     def __init__(self, message: str, *, retry_after: int) -> None:
         super().__init__(message)
@@ -73,6 +77,17 @@ def coin_flip_attempts_remaining(
     if state is None or state.daily_attempt_date != today:
         return COIN_FLIP_DAILY_ATTEMPT_LIMIT
     return max(0, COIN_FLIP_DAILY_ATTEMPT_LIMIT - state.daily_attempts_used)
+
+
+def coin_flip_can_start_at_five(
+    state: CoinFlipState | None, *, now: datetime | None = None
+) -> bool:
+    if state is None or not state.active or state.current_streak != 0:
+        return False
+    today = _korea_today(now or utc_now())
+    # A new first run has already spent one of today's 20 attempts. An unplayed
+    # run carried over from a previous day still has all 20 available today.
+    return state.daily_attempt_date != today or state.daily_attempts_used == 1
 
 
 def list_coin_flip_rankings(db: Session) -> list[CoinFlipRankingRow]:
@@ -309,6 +324,49 @@ def start_coin_flip(db: Session, *, user_id: int) -> CoinFlipState:
 
 def _korea_today(now: datetime) -> date:
     return now.astimezone(KOREA_TIME_ZONE).date()
+
+
+def start_coin_flip_at_five(db: Session, *, user_id: int, run_id: int) -> CoinFlipState:
+    now = utc_now()
+    today = _korea_today(now)
+    # Keep eligibility and the quota charge in the same write as the streak
+    # change so another boost or round-one flip can never consume this run too.
+    state = db.execute(
+        update(CoinFlipState)
+        .where(
+            CoinFlipState.user_id == user_id,
+            CoinFlipState.run_id == run_id,
+            CoinFlipState.active.is_(True),
+            CoinFlipState.current_streak == 0,
+            or_(
+                CoinFlipState.daily_attempt_date.is_(None),
+                CoinFlipState.daily_attempt_date != today,
+                CoinFlipState.daily_attempts_used == 1,
+            ),
+        )
+        .values(
+            current_streak=5,
+            daily_attempt_date=today,
+            daily_attempts_used=COIN_FLIP_DAILY_ATTEMPT_LIMIT,
+            best_streak=case(
+                (CoinFlipState.best_streak < 5, 5),
+                else_=CoinFlipState.best_streak,
+            ),
+            best_achieved_at=case(
+                (CoinFlipState.best_streak < 5, now),
+                else_=CoinFlipState.best_achieved_at,
+            ),
+        )
+        .returning(CoinFlipState)
+        .execution_options(synchronize_session=False, populate_existing=True)
+    ).scalar_one_or_none()
+    if state is None:
+        db.rollback()
+        raise CoinFlipStartAtFiveError(
+            "시도 20회가 남아 시작한 게임에서 동전을 고르기 전에만 5회부터 시작할 수 있습니다."
+        )
+    db.commit()
+    return state
 
 
 def _seconds_until_next_korea_day(now: datetime) -> int:

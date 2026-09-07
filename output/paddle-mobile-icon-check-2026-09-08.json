@@ -1,0 +1,30 @@
+[
+  {
+    "File": "apple-touch-icon-180x180.png",
+    "Unchanged": true
+  },
+  {
+    "File": "maskable-icon-512x512.png",
+    "Unchanged": true
+  },
+  {
+    "File": "pwa-192x192.png",
+    "Unchanged": true
+  },
+  {
+    "File": "pwa-512x512.png",
+    "Unchanged": true
+  },
+  {
+    "File": "pwa-64x64.png",
+    "Unchanged": true
+  },
+  {
+    "File": "favicon.ico",
+    "Unchanged": true
+  },
+  {
+    "File": "manifest.webmanifest",
+    "Unchanged": true
+  }
+]

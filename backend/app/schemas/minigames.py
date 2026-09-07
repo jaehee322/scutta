@@ -18,6 +18,7 @@ class CoinFlipStateRead(BaseModel):
     current_streak: int = Field(ge=0)
     best_streak: int = Field(ge=0)
     remaining_attempts: int = Field(ge=0, le=20)
+    can_start_at_five: bool = False
 
 
 class CoinFlipRankingEntry(BaseModel):
@@ -38,6 +39,12 @@ class CoinFlipRequest(BaseModel):
     choice: CoinSide
     run_id: int = Field(ge=1)
     round_no: int = Field(ge=1, le=1_000_000)
+
+
+class CoinFlipStartAtFiveRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    run_id: int = Field(ge=1)
 
 
 class CoinFlipResponse(CoinFlipOverview):

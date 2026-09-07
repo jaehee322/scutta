@@ -1,0 +1,128 @@
+{
+  "browser": "152.0.7977.82",
+  "platform": "Windows headless Chromium; synthetic moving state, not actual iOS gameplay",
+  "counts": {
+    "counts": {
+      "clearRect": 1,
+      "createLinearGradient": 13,
+      "stroke": 49,
+      "fill": 30,
+      "createRadialGradient": 7
+    },
+    "canvas": [
+      720,
+      1080
+    ],
+    "obstacles": [
+      430,
+      601,
+      772
+    ]
+  },
+  "results": [
+    {
+      "variant": "original",
+      "rate": 1,
+      "frames": 120,
+      "estimatedFPS": 58.530875036581804,
+      "frameGapP95": 16.90000000000009,
+      "jsDrawP50": 0.6000000238418579,
+      "jsDrawP95": 1.800000011920929,
+      "over25ms": 1
+    },
+    {
+      "variant": "cull",
+      "rate": 1,
+      "frames": 120,
+      "estimatedFPS": 59.99999999999999,
+      "frameGapP95": 17,
+      "jsDrawP50": 1.100000023841858,
+      "jsDrawP95": 2.700000047683716,
+      "over25ms": 0
+    },
+    {
+      "variant": "noCanvasBlur",
+      "rate": 1,
+      "frames": 120,
+      "estimatedFPS": 59.99400059994001,
+      "frameGapP95": 16.900000000000546,
+      "jsDrawP50": 1.4000000357627869,
+      "jsDrawP95": 2.600000023841858,
+      "over25ms": 0
+    },
+    {
+      "variant": "noHudBlur",
+      "rate": 1,
+      "frames": 120,
+      "estimatedFPS": 60.00900135020253,
+      "frameGapP95": 16.900000000001455,
+      "jsDrawP50": 0.5,
+      "jsDrawP95": 1.800000011920929,
+      "over25ms": 0
+    },
+    {
+      "variant": "dpr1.5",
+      "rate": 1,
+      "frames": 120,
+      "estimatedFPS": 59.99700014999249,
+      "frameGapP95": 17,
+      "jsDrawP50": 1.399999976158142,
+      "jsDrawP95": 2.899999976158142,
+      "over25ms": 0
+    },
+    {
+      "variant": "original",
+      "rate": 4,
+      "frames": 120,
+      "estimatedFPS": 59.99999999999999,
+      "frameGapP95": 16.80000000000109,
+      "jsDrawP50": 1.399999976158142,
+      "jsDrawP95": 7.799999952316284,
+      "over25ms": 0
+    },
+    {
+      "variant": "cull",
+      "rate": 4,
+      "frames": 120,
+      "estimatedFPS": 60.00300015000745,
+      "frameGapP95": 16.900000000001455,
+      "jsDrawP50": 1.100000023841858,
+      "jsDrawP95": 7.5,
+      "over25ms": 0
+    },
+    {
+      "variant": "noCanvasBlur",
+      "rate": 4,
+      "frames": 120,
+      "estimatedFPS": 59.99999999999999,
+      "frameGapP95": 16.80000000000291,
+      "jsDrawP50": 1,
+      "jsDrawP95": 7.5,
+      "over25ms": 0
+    },
+    {
+      "variant": "noHudBlur",
+      "rate": 4,
+      "frames": 120,
+      "estimatedFPS": 59.99999999999999,
+      "frameGapP95": 16.900000000001455,
+      "jsDrawP50": 1.100000023841858,
+      "jsDrawP95": 7.5,
+      "over25ms": 0
+    },
+    {
+      "variant": "dpr1.5",
+      "rate": 4,
+      "frames": 120,
+      "estimatedFPS": 59.99999999999999,
+      "frameGapP95": 16.80000000000291,
+      "jsDrawP50": 1.4000000357627869,
+      "jsDrawP95": 9.699999988079071,
+      "over25ms": 0
+    }
+  ],
+  "physics": {
+    "runs": 20000,
+    "averageMsPerStep": 0.0014100000023841857
+  }
+}

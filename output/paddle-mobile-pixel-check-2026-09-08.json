@@ -1,0 +1,37 @@
+{
+  "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+  "comparisons": 114,
+  "differentChannels": 0,
+  "mismatches": [],
+  "initial": {
+    "before": {
+      "createLinearGradient": 13,
+      "stroke": 49,
+      "fill": 27,
+      "clip": 6,
+      "createRadialGradient": 7
+    },
+    "after": {
+      "createLinearGradient": 1,
+      "stroke": 13,
+      "fill": 3,
+      "createRadialGradient": 1
+    }
+  },
+  "oneVisible": {
+    "before": {
+      "createLinearGradient": 13,
+      "stroke": 49,
+      "fill": 27,
+      "clip": 6,
+      "createRadialGradient": 7
+    },
+    "after": {
+      "createLinearGradient": 5,
+      "stroke": 25,
+      "fill": 11,
+      "clip": 2,
+      "createRadialGradient": 3
+    }
+  }
+}

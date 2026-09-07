@@ -1,0 +1,1209 @@
+{
+  "label": "extended",
+  "url": "http://127.0.0.1:56735/browser-check.html",
+  "sourceBefore": {
+    "frontend/src/components/PaddleFlightGame.tsx": "863effb610761fada97d50c91e3e453fd5e22753902544b6de837f8d25320cc4",
+    "frontend/src/styles.css": "dbdd9cacefbc907cc061361343c6bec548af1e6418e53bd0387abfa5f6b16552"
+  },
+  "mode": "real Chromium canvas/events; virtual performance.now and controlled rAF; isolated API mock",
+  "scenarios": [
+    {
+      "name": "native_mouse_down_hold_release",
+      "clock": 1001,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 1,
+      "draws": [
+        {
+          "time": 1001,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [
+        {
+          "type": "pointerdown",
+          "time": 1001,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "mouse",
+          "pointerId": 1,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1001,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "mouse",
+          "pointerId": 1,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "time": 1001,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "mouse",
+          "pointerId": 1,
+          "isPrimary": false,
+          "button": 0,
+          "detail": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      },
+      "afterDown": 1,
+      "phaseAfterDown": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+      "beforeUp": 1,
+      "realHoldMilliseconds": 600
+    },
+    {
+      "name": "native_mouse_playing",
+      "clock": 1002,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 1,
+      "draws": [
+        {
+          "time": 1002,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [
+        {
+          "type": "pointerdown",
+          "time": 1002,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "mouse",
+          "pointerId": 1,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1002,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "mouse",
+          "pointerId": 1,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "time": 1002,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "mouse",
+          "pointerId": 1,
+          "isPrimary": false,
+          "button": 0,
+          "detail": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "native_touch_playing",
+      "clock": 1003,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 1,
+      "draws": [
+        {
+          "time": 1003,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [
+        {
+          "type": "pointerdown",
+          "time": 1003,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 2,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1003,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 2,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "time": 1003,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 2,
+          "isPrimary": false,
+          "button": 0,
+          "detail": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "keyboard_space",
+      "clock": 1004,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 1,
+      "draws": [
+        {
+          "time": 1004,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [
+        {
+          "type": "keydown",
+          "time": 1004,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "code": "Space",
+          "repeat": false
+        },
+        {
+          "type": "keyup",
+          "time": 1004,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "code": "Space",
+          "repeat": false
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "keyboard_repeat",
+      "clock": 1005,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 1,
+      "draws": [
+        {
+          "time": 1005,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [
+        {
+          "type": "keydown",
+          "time": 1005,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "code": "Space",
+          "repeat": false
+        },
+        {
+          "type": "keydown",
+          "time": 1005,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "code": "Space",
+          "repeat": true
+        },
+        {
+          "type": "keyup",
+          "time": 1005,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "code": "Space",
+          "repeat": false
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      },
+      "beforeRepeat": 1
+    },
+    {
+      "name": "right_click",
+      "clock": 1006,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 0,
+      "draws": [],
+      "events": [
+        {
+          "type": "pointerdown",
+          "time": 1006,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "mouse",
+          "pointerId": 1,
+          "isPrimary": true,
+          "button": 2,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1006,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "mouse",
+          "pointerId": 1,
+          "isPrimary": true,
+          "button": 2,
+          "detail": 0
+        },
+        {
+          "type": "contextmenu",
+          "time": 1006,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "mouse",
+          "pointerId": 1,
+          "isPrimary": false,
+          "button": 2,
+          "detail": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "synthetic_contextmenu",
+      "clock": 1007,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 0,
+      "draws": [],
+      "events": [
+        {
+          "type": "contextmenu",
+          "time": 1007,
+          "trusted": false,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "button": 2,
+          "detail": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      },
+      "contextmenu": {
+        "allowed": false,
+        "defaultPrevented": true
+      }
+    },
+    {
+      "name": "accessibility_click_detail_zero",
+      "clock": 1008,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 1,
+      "draws": [
+        {
+          "time": 1008,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [
+        {
+          "type": "click",
+          "time": 1008,
+          "trusted": false,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "button": 0,
+          "detail": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "non_primary_touch_and_pen_barrel",
+      "clock": 1009,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 0,
+      "draws": [],
+      "events": [
+        {
+          "type": "pointerdown",
+          "time": 1009,
+          "trusted": false,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 82,
+          "isPrimary": false,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerdown",
+          "time": 1009,
+          "trusted": false,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "pen",
+          "pointerId": 83,
+          "isPrimary": true,
+          "button": 2,
+          "detail": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "cancel_late_physical_click_next_tap",
+      "clock": 1010,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 2,
+      "draws": [
+        {
+          "time": 1010,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        },
+        {
+          "time": 1010,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [
+        {
+          "type": "pointerdown",
+          "time": 1010,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 3,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointercancel",
+          "time": 1010,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 3,
+          "isPrimary": true,
+          "button": -1,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "time": 1010,
+          "trusted": false,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 0,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 1
+        },
+        {
+          "type": "pointerdown",
+          "time": 1010,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 4,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1010,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 4,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "time": 1010,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 4,
+          "isPrimary": false,
+          "button": 0,
+          "detail": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      },
+      "afterDown": 1,
+      "beforeLateClick": 1,
+      "afterLateClick": 1
+    },
+    {
+      "name": "two_rapid_native_taps",
+      "clock": 1011,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 2,
+      "draws": [
+        {
+          "time": 1011,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        },
+        {
+          "time": 1011,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [
+        {
+          "type": "pointerdown",
+          "time": 1011,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 5,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1011,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 5,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "time": 1011,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 5,
+          "isPrimary": false,
+          "button": 0,
+          "detail": 2
+        },
+        {
+          "type": "pointerdown",
+          "time": 1011,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 6,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1011,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 6,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "time": 1011,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 6,
+          "isPrimary": false,
+          "button": 0,
+          "detail": 3
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "touch_move_and_pinch",
+      "clock": 1012,
+      "frameNumber": 1,
+      "queuedFrames": 1,
+      "drawCount": 2,
+      "draws": [
+        {
+          "time": 1012,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        },
+        {
+          "time": 1012,
+          "frame": 1,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [
+        {
+          "type": "pointerdown",
+          "time": 1012,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 7,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1012,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 7,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerdown",
+          "time": 1012,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 8,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerdown",
+          "time": 1012,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 9,
+          "isPrimary": false,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1012,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 8,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1012,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 9,
+          "isPrimary": false,
+          "button": 0,
+          "detail": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      },
+      "viewportBefore": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      },
+      "viewportAfterMove": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      },
+      "viewportAfterPinch": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "native_touch_hold_then_release",
+      "clock": 1013,
+      "frameNumber": 2,
+      "queuedFrames": 1,
+      "drawCount": 1,
+      "draws": [
+        {
+          "time": 1013,
+          "frame": 2,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [
+        {
+          "type": "pointerdown",
+          "time": 1013,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 10,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "time": 1013,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 10,
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "time": 1013,
+          "trusted": true,
+          "defaultPrevented": true,
+          "target": "CANVAS",
+          "pointerType": "touch",
+          "pointerId": 10,
+          "isPrimary": false,
+          "button": 0,
+          "detail": 1
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      },
+      "afterDown": 1,
+      "phaseAfterDown": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+      "beforeUp": 1,
+      "realHoldMilliseconds": 850
+    },
+    {
+      "name": "one_animation_frame",
+      "clock": 1030.6667,
+      "frameNumber": 3,
+      "queuedFrames": 1,
+      "drawCount": 1,
+      "draws": [
+        {
+          "time": 1030.6667,
+          "frame": 3,
+          "width": 360,
+          "height": 540
+        }
+      ],
+      "events": [],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": {
+        "label": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+        "role": "button",
+        "width": 720,
+        "height": 1080,
+        "touchAction": "none",
+        "userSelect": "none",
+        "webkitTouchCallout": "",
+        "active": true
+      },
+      "selection": "",
+      "bodyFullscreen": true,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "keyboard_escape_closes",
+      "clock": 1031.6667,
+      "frameNumber": 3,
+      "queuedFrames": 1,
+      "drawCount": 0,
+      "draws": [],
+      "events": [
+        {
+          "type": "keydown",
+          "time": 1031.6667,
+          "trusted": true,
+          "defaultPrevented": false,
+          "target": "CANVAS",
+          "code": "Escape",
+          "repeat": false
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": null,
+      "selection": "",
+      "bodyFullscreen": false,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "name": "outside_text_selection_after_close",
+      "clock": 1032.6667,
+      "frameNumber": 3,
+      "queuedFrames": 1,
+      "drawCount": 0,
+      "draws": [],
+      "events": [],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ],
+      "canvas": null,
+      "selection": "Outside game selection control text\n\n",
+      "bodyFullscreen": false,
+      "viewport": {
+        "scale": 1,
+        "scrollX": 0,
+        "scrollY": 0,
+        "width": 390,
+        "height": 844
+      },
+      "userSelect": "auto",
+      "contextmenu": {
+        "allowed": true,
+        "defaultPrevented": false
+      }
+    }
+  ],
+  "browser": "152.0.7977.82",
+  "screenshot": "C:\\Users\\jaehe\\scutta\\tmp\\paddle-mobile\\extended-playing.png",
+  "errors": [],
+  "sourceAfter": {
+    "frontend/src/components/PaddleFlightGame.tsx": "863effb610761fada97d50c91e3e453fd5e22753902544b6de837f8d25320cc4",
+    "frontend/src/styles.css": "dbdd9cacefbc907cc061361343c6bec548af1e6418e53bd0387abfa5f6b16552"
+  },
+  "sourceStableDuringRun": true,
+  "assertions": {
+    "noPageErrors": true,
+    "allInputScenariosPlaying": true,
+    "mouseDownStartsBeforeRelease": true,
+    "mouseHoldAndReleaseDoNotRepeat": true,
+    "touchStartStartsBeforeRelease": true,
+    "contextMenuPrevented": true,
+    "rightClickDoesNotDraw": true,
+    "keyboardRepeatDoesNotFlap": true,
+    "keyboardRepeatDefaultPrevented": true,
+    "accessibilityClickWorks": true,
+    "nonPrimaryAndPenBarrelDoNotDraw": true,
+    "cancelledLateClickIgnoredAndNextTapWorks": true,
+    "rapidTwoTapsDrawTwice": true,
+    "gameGesturesPreserveViewport": true,
+    "holdingDoesNotRepeat": true,
+    "oneFrameOneDraw": true,
+    "escapeCloses": true,
+    "outsideTextSelectionAndContextMenuPreserved": true,
+    "eachTapAtMostOneDraw": true
+  }
+}

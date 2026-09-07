@@ -7,14 +7,17 @@ import {
   useEffect,
   useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
 
-import { apiRequest, jsonBody } from "../api/client";
+import { apiRequest } from "../api/client";
+import { getAuthSessionVersion } from "../auth/authSession";
 import type { PaddleFlightOverview } from "../types";
+import { paddleFlightScores } from "../utils/paddleFlightScores";
 import { Notice } from "./Notice";
 import {
   PADDLE_FLIGHT_WORLD,
-  type PaddleFlightObstacle,
+  type PaddleFlightPaddleGeometry,
   type PaddleFlightState,
   createInitialPaddleFlightState,
   flapPaddleFlight,
@@ -24,11 +27,6 @@ import {
 
 interface PaddleFlightGameProps {
   userId?: number;
-}
-
-interface PaddleFlightSaveError {
-  readonly runNumber: number;
-  readonly message: string;
 }
 
 function roundedRectangle(
@@ -46,10 +44,9 @@ function roundedRectangle(
 
 function drawPaddleHandle(
   context: CanvasRenderingContext2D,
-  obstacle: PaddleFlightObstacle,
+  paddle: PaddleFlightPaddleGeometry,
   fromTop: boolean,
 ) {
-  const paddle = getPaddleFlightPaddleGeometry(obstacle, fromTop);
   const [neckLeft, neckRight, buttRight] = paddle.handleBody;
   if (!neckLeft || !neckRight || !buttRight) return;
   const direction = fromTop ? 1 : -1;
@@ -122,10 +119,10 @@ function drawPaddleHandle(
 
 function drawPaddleHead(
   context: CanvasRenderingContext2D,
-  obstacle: PaddleFlightObstacle,
+  paddle: PaddleFlightPaddleGeometry,
   fromTop: boolean,
 ) {
-  const { head } = getPaddleFlightPaddleGeometry(obstacle, fromTop);
+  const { head } = paddle;
   const rimGradient = context.createLinearGradient(
     head.x - head.radius,
     head.y,
@@ -298,10 +295,14 @@ function drawPaddleFlight(canvas: HTMLCanvasElement, state: PaddleFlightState) {
   context.restore();
 
   for (const obstacle of state.obstacles) {
-    drawPaddleHandle(context, obstacle, true);
-    drawPaddleHandle(context, obstacle, false);
-    drawPaddleHead(context, obstacle, true);
-    drawPaddleHead(context, obstacle, false);
+    // Keep the stroke visible until the entire paddle is outside the canvas.
+    if (obstacle.x + obstacle.width < -2 || obstacle.x > width + 2) continue;
+    const topPaddle = getPaddleFlightPaddleGeometry(obstacle, true);
+    const bottomPaddle = getPaddleFlightPaddleGeometry(obstacle, false);
+    drawPaddleHandle(context, topPaddle, true);
+    drawPaddleHandle(context, bottomPaddle, false);
+    drawPaddleHead(context, topPaddle, true);
+    drawPaddleHead(context, bottomPaddle, false);
   }
 
   drawBall(context, state);
@@ -345,7 +346,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
   const [score, setScore] = useState(0);
   const [overview, setOverview] = useState<PaddleFlightOverview | null>(null);
   const [loadError, setLoadError] = useState("");
-  const [saveError, setSaveError] = useState<PaddleFlightSaveError | null>(null);
+  const saveState = useSyncExternalStore(paddleFlightScores.subscribe, paddleFlightScores.getSnapshot);
   const [isNewBest, setIsNewBest] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fullscreenRef = useRef<HTMLDivElement>(null);
@@ -360,10 +361,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
   const submittedRunRef = useRef<number | null>(null);
   const confirmedBestScoreRef = useRef(0);
   const pendingScoresRef = useRef(new Map<number, number>());
-  const submissionQueueRef = useRef<Promise<void>>(Promise.resolve());
   const isMountedRef = useRef(true);
-  const accountGenerationRef = useRef(0);
-  const suppressNextClickRef = useRef(false);
   const bestScore = overview?.best_score ?? 0;
 
   const stopAnimation = useCallback(() => {
@@ -390,48 +388,18 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
     submittedRunRef.current = runNumber;
     pendingScoresRef.current.set(runNumber, finalScore);
     bestScoreRef.current = Math.max(bestScoreRef.current, finalScore);
-    setSaveError(null);
-    const accountGeneration = accountGenerationRef.current;
+    const sessionVersion = getAuthSessionVersion();
 
-    submissionQueueRef.current = submissionQueueRef.current.then(async () => {
-      if (
-        !isMountedRef.current
-        || accountGenerationRef.current !== accountGeneration
-      ) {
-        pendingScoresRef.current.delete(runNumber);
-        synchronizeEffectiveBestScore();
-        return;
-      }
+    void paddleFlightScores.enqueue(finalScore).then((result) => {
+      pendingScoresRef.current.delete(runNumber);
+      if (!isMountedRef.current || sessionVersion !== getAuthSessionVersion()) return;
 
-      try {
-        const response = await apiRequest<PaddleFlightOverview>(
-          "/minigames/paddle-flight/score",
-          {
-            method: "POST",
-            body: jsonBody({ score: finalScore }),
-          },
-        );
-        if (
-          !isMountedRef.current
-          || accountGenerationRef.current !== accountGeneration
-        ) {
-          pendingScoresRef.current.delete(runNumber);
-          synchronizeEffectiveBestScore();
-          return;
-        }
-
+      if (result.status === "saved") {
+        const response = result.overview;
         confirmedBestScoreRef.current = response.best_score;
-        pendingScoresRef.current.delete(runNumber);
         synchronizeEffectiveBestScore();
-        if (!isMountedRef.current) return;
-
-        // Requests are serialized, so each response is the latest authoritative
-        // account snapshot even when a semester reset lowered the saved score.
         setOverview(response);
         setLoadError("");
-        setSaveError((current) => (
-          current?.runNumber === runNumber ? null : current
-        ));
 
         if (runNumberRef.current === runNumber) {
           setIsNewBest(
@@ -445,22 +413,9 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
           runBestScoreRef.current = activeRunBaseline;
           setIsNewBest(gameStateRef.current.score > activeRunBaseline);
         }
-      } catch (error) {
-        pendingScoresRef.current.delete(runNumber);
+      } else {
         synchronizeEffectiveBestScore();
-        if (
-          !isMountedRef.current
-          || accountGenerationRef.current !== accountGeneration
-        ) return;
-
-        if (runNumberRef.current === runNumber) {
-          setSaveError({
-            runNumber,
-            message: error instanceof Error
-              ? error.message
-              : "점수를 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.",
-          });
-        } else {
+        if (runNumberRef.current !== runNumber) {
           const activeRunBaseline = synchronizeEffectiveBestScore(
             runNumberRef.current,
           );
@@ -523,8 +478,8 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
       );
       gameStateRef.current = advancedState;
       if (advancedState.score !== currentState.score) recordScore(advancedState.score);
-      if (canvasRef.current) drawPaddleFlight(canvasRef.current, advancedState);
       if (advancedState.status === "gameOver") {
+        if (canvasRef.current) drawPaddleFlight(canvasRef.current, advancedState);
         finishRun(advancedState);
         return;
       }
@@ -554,7 +509,6 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
     setPhase("ready");
     setScore(0);
     setIsNewBest(false);
-    setSaveError(null);
     if (canvasRef.current) drawPaddleFlight(canvasRef.current, nextState);
   }, [stopAnimation]);
 
@@ -578,54 +532,51 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
   const handlePlayfieldPointerDown = (
     event: ReactPointerEvent<HTMLCanvasElement>,
   ) => {
-    if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+    if (!event.isPrimary || event.button !== 0) return;
     event.preventDefault();
-    suppressNextClickRef.current = true;
     event.currentTarget.focus({ preventScroll: true });
     beginOrFlap();
   };
 
-  const handlePlayfieldPointerCancel = () => {
-    suppressNextClickRef.current = false;
-  };
-
   const handlePlayfieldClick = (event: ReactMouseEvent<HTMLCanvasElement>) => {
     event.preventDefault();
-    if (event.detail > 0 && suppressNextClickRef.current) {
-      suppressNextClickRef.current = false;
-      return;
-    }
+    // Physical input is handled on pointerdown, including a held or cancelled tap.
+    // Keep click-only activation for keyboard and assistive technology.
+    if (
+      event.detail > 0
+      || ("pointerType" in event.nativeEvent && event.nativeEvent.pointerType)
+    ) return;
     event.currentTarget.focus({ preventScroll: true });
     beginOrFlap();
   };
 
   const handlePlayfieldKeyDown = (event: ReactKeyboardEvent<HTMLCanvasElement>) => {
-    if (event.repeat || !["Space", "ArrowUp", "Enter"].includes(event.code)) return;
+    if (!["Space", "ArrowUp", "Enter"].includes(event.code)) return;
     event.preventDefault();
+    if (event.repeat) return;
     beginOrFlap();
   };
 
   useEffect(() => {
     let active = true;
     const controller = new AbortController();
-    const accountGeneration = accountGenerationRef.current + 1;
-    accountGenerationRef.current = accountGeneration;
+    const sessionVersion = getAuthSessionVersion();
+    const responseVersion = paddleFlightScores.getResponseVersion();
     bestScoreRef.current = 0;
     confirmedBestScoreRef.current = 0;
     pendingScoresRef.current.clear();
     setOverview(null);
     setLoadError("");
-    setSaveError(null);
     setIsNewBest(false);
 
     apiRequest<PaddleFlightOverview>("/minigames/paddle-flight", {
       signal: controller.signal,
     })
       .then((response) => {
-        if (!active) return;
-        confirmedBestScoreRef.current = response.best_score;
-        bestScoreRef.current = response.best_score;
-        setOverview(response);
+        if (!active || sessionVersion !== getAuthSessionVersion()) return;
+        if (responseVersion === paddleFlightScores.getResponseVersion()) {
+          paddleFlightScores.acceptOverview(response);
+        }
       })
       .catch((error) => {
         if (!active) return;
@@ -639,11 +590,16 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
     return () => {
       active = false;
       controller.abort();
-      if (accountGenerationRef.current === accountGeneration) {
-        accountGenerationRef.current += 1;
-      }
     };
   }, [userId]);
+
+  useEffect(() => {
+    if (!saveState.overview) return;
+    confirmedBestScoreRef.current = saveState.overview.best_score;
+    bestScoreRef.current = Math.max(saveState.overview.best_score, saveState.pendingBestScore);
+    setOverview(saveState.overview);
+    setLoadError("");
+  }, [saveState.overview, saveState.pendingBestScore]);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -721,9 +677,10 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
 
   return (
     <>
-      {(loadError || (!isGameView && saveError)) && (
-        <Notice>{saveError?.message || loadError}</Notice>
+      {(loadError || (!isGameView && saveState.error)) && (
+        <Notice>{saveState.error || loadError}</Notice>
       )}
+      {!isGameView && saveState.pendingCount > 0 && <Notice tone="info">점수를 저장하고 있어요.</Notice>}
 
       <section className="paddle-flight-card" aria-labelledby="paddle-flight-card-title">
         <h2 className="visually-hidden" id="paddle-flight-card-title">탁구공 날리기 게임</h2>
@@ -811,6 +768,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
           ref={fullscreenRef}
           tabIndex={-1}
           onContextMenu={(event) => event.preventDefault()}
+          onDragStart={(event) => event.preventDefault()}
         >
           <header className="paddle-flight-fullscreen__header">
             <div>
@@ -839,7 +797,6 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
                 }
                 aria-describedby="paddle-flight-controls-help"
                 onPointerDown={handlePlayfieldPointerDown}
-                onPointerCancel={handlePlayfieldPointerCancel}
                 onClick={handlePlayfieldClick}
                 onKeyDown={handlePlayfieldKeyDown}
               >
@@ -875,9 +832,11 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
                   <span>GAME OVER</span>
                   <strong>{score}<small>점</small></strong>
                   <p>
-                    {saveError
-                      ? saveError.message
-                      : isNewBest
+                    {saveState.error
+                      ? saveState.error
+                      : saveState.pendingCount > 0
+                        ? "점수를 저장하고 있어요…"
+                        : isNewBest
                         ? "새로운 최고 기록이에요!"
                         : "손잡이를 피해 다시 날아볼까요?"}
                   </p>

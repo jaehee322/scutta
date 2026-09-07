@@ -5,7 +5,7 @@ from functools import lru_cache
 from typing import Any
 from urllib.parse import urlsplit
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.engine import make_url
 
@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     app_name: str = "Scutta API"
     environment: str = "development"
     database_url: str = "sqlite:///./scutta.db"
+    # Validate only when creating the first admin so existing deployments do
+    # not need to retain a bootstrap secret after initialization.
+    bootstrap_admin_password: SecretStr | None = None
     cors_origins: list[str] = Field(
         default_factory=lambda: ["http://localhost:5173", "http://127.0.0.1:5173"]
     )

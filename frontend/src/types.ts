@@ -84,6 +84,7 @@ export interface CoinFlipState {
   current_streak: number;
   best_streak: number;
   remaining_attempts: number;
+  can_start_at_five: boolean;
 }
 
 export interface CoinFlipRankingEntry {

@@ -9,6 +9,7 @@ from app.schemas.minigames import (
     CoinFlipRankingEntry,
     CoinFlipRequest,
     CoinFlipResponse,
+    CoinFlipStartAtFiveRequest,
     CoinFlipStateRead,
     PaddleFlightOverview,
     PaddleFlightRankingEntry,
@@ -19,13 +20,16 @@ from app.services.minigames import (
     CoinFlipNotActiveError,
     CoinFlipRateLimitError,
     CoinFlipRoundConflictError,
+    CoinFlipStartAtFiveError,
     coin_flip_attempts_remaining,
+    coin_flip_can_start_at_five,
     flip_coin,
     get_coin_flip_state,
     get_paddle_flight_score,
     list_coin_flip_rankings,
     list_paddle_flight_rankings,
     start_coin_flip,
+    start_coin_flip_at_five,
     submit_paddle_flight_score,
 )
 
@@ -48,6 +52,7 @@ def _state_read(state: CoinFlipState | None) -> CoinFlipStateRead:
         current_streak=state.current_streak,
         best_streak=state.best_streak,
         remaining_attempts=coin_flip_attempts_remaining(state),
+        can_start_at_five=coin_flip_can_start_at_five(state),
     )
 
 
@@ -81,6 +86,19 @@ def start_coin_flip_game(db: DbSession, current_player: CurrentPlayer) -> CoinFl
             detail=str(error),
             headers={"Retry-After": str(error.retry_after)},
         ) from error
+    return CoinFlipOverview(state=_state_read(state), ranking=_ranking_read(db))
+
+
+@router.post("/start-at-five", response_model=CoinFlipOverview)
+def start_coin_flip_game_at_five(
+    payload: CoinFlipStartAtFiveRequest,
+    db: DbSession,
+    current_player: CurrentPlayer,
+) -> CoinFlipOverview:
+    try:
+        state = start_coin_flip_at_five(db, user_id=current_player.id, run_id=payload.run_id)
+    except CoinFlipStartAtFiveError as error:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
     return CoinFlipOverview(state=_state_read(state), ranking=_ranking_read(db))
 
 

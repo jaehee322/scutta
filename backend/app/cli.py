@@ -9,12 +9,12 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.core.config import get_settings
 from app.core.database import SessionLocal
 from app.core.security import hash_password
 from app.models import User, UserRole
 
 BOOTSTRAP_ADMIN_USERNAME = "admin"
-BOOTSTRAP_ADMIN_PASSWORD = "1234"
 
 
 def ensure_bootstrap_admin(db: Session) -> tuple[User, bool]:
@@ -25,9 +25,17 @@ def ensure_bootstrap_admin(db: Session) -> tuple[User, bool]:
     if existing_admin is not None:
         return existing_admin, False
 
+    configured_password = get_settings().bootstrap_admin_password
+    password = configured_password.get_secret_value() if configured_password is not None else ""
+    if not 8 <= len(password) <= 128 or not password.strip():
+        raise ValueError(
+            "최초 관리자 생성에는 BOOTSTRAP_ADMIN_PASSWORD를 "
+            "공백만으로 이루어지지 않은 8~128자 비밀번호로 설정해야 합니다."
+        )
+
     admin = User(
         username=BOOTSTRAP_ADMIN_USERNAME,
-        password_hash=hash_password(BOOTSTRAP_ADMIN_PASSWORD),
+        password_hash=hash_password(password),
         role=UserRole.ADMIN,
         gender=None,
         is_freshman=False,

@@ -15,6 +15,7 @@ function snapshot(active: boolean, remainingAttempts: number): CoinFlipSnapshot 
       current_streak: 0,
       best_streak: 0,
       remaining_attempts: remainingAttempts,
+      can_start_at_five: false,
     },
     ranking: [],
   };

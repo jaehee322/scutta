@@ -137,7 +137,7 @@ export default function App() {
     return () => window.clearTimeout(timer);
   }, [user]);
 
-  if (booting) return <LoadingScreen />;
+  if (booting) return <LoadingScreen connecting onRetry={() => void refreshUser()} />;
   if (connectionError) {
     return (
       <ConnectionErrorScreen

@@ -1,0 +1,100 @@
+{
+  "label": "before",
+  "sourceBefore": "039369c0c95bc992fde600a7eb88571c5b7e3d793f0bab5e4e3c767bf938b5b4",
+  "url": "http://127.0.0.1:64411/browser-check.html",
+  "browser": "152.0.7977.82",
+  "profiles": [
+    {
+      "profile": "desktop",
+      "errors": [],
+      "firstEnterCompletedBeforeRepeat": 1,
+      "heldEnterFlips": 2,
+      "repeatEvents": [
+        {
+          "type": "keydown",
+          "key": "Enter",
+          "repeat": true,
+          "detail": 0,
+          "prevented": false
+        }
+      ],
+      "normalSpaceFlips": 1,
+      "normalClickFlips": 1,
+      "mouseHoldBeforeReleaseFlips": 0,
+      "mouseHoldAfterReleaseFlips": 1,
+      "rightClickFlips": 0,
+      "gameSuppression": {
+        "contextmenu": true,
+        "dragstart": true,
+        "userSelect": "none",
+        "touchAction": "auto"
+      },
+      "outsidePreserved": {
+        "formSelection": true,
+        "userSelect": "auto",
+        "touchAction": "auto",
+        "contextmenu": true,
+        "bodyUnlocked": true
+      },
+      "assertions": {
+        "heldEnterExpected": true,
+        "nativeRepeatedKeyObserved": true,
+        "firstEnterWorks": true,
+        "spaceWorks": true,
+        "clickWorks": true,
+        "holdSingleActivation": true,
+        "rightClickNoActivation": true,
+        "gameSuppressionWorks": true,
+        "outsideUnaffected": true,
+        "noPageErrors": true
+      }
+    },
+    {
+      "profile": "mobile-touch",
+      "errors": [],
+      "firstEnterCompletedBeforeRepeat": 1,
+      "heldEnterFlips": 2,
+      "repeatEvents": [
+        {
+          "type": "keydown",
+          "key": "Enter",
+          "repeat": true,
+          "detail": 0,
+          "prevented": false
+        }
+      ],
+      "normalSpaceFlips": 1,
+      "normalClickFlips": 1,
+      "mouseHoldBeforeReleaseFlips": 0,
+      "mouseHoldAfterReleaseFlips": 1,
+      "rightClickFlips": 0,
+      "gameSuppression": {
+        "contextmenu": true,
+        "dragstart": true,
+        "userSelect": "none",
+        "touchAction": "auto"
+      },
+      "outsidePreserved": {
+        "formSelection": true,
+        "userSelect": "auto",
+        "touchAction": "auto",
+        "contextmenu": true,
+        "bodyUnlocked": true
+      },
+      "assertions": {
+        "heldEnterExpected": true,
+        "nativeRepeatedKeyObserved": true,
+        "firstEnterWorks": true,
+        "spaceWorks": true,
+        "clickWorks": true,
+        "holdSingleActivation": true,
+        "rightClickNoActivation": true,
+        "gameSuppressionWorks": true,
+        "outsideUnaffected": true,
+        "noPageErrors": true
+      }
+    }
+  ],
+  "sourceAfter": "039369c0c95bc992fde600a7eb88571c5b7e3d793f0bab5e4e3c767bf938b5b4",
+  "sourceStable": true
+}

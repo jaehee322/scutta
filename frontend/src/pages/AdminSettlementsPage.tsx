@@ -39,7 +39,7 @@ export function AdminSettlementsPage() {
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!settings) return;
+    if (!settings || saving) return;
 
     const prizes: SettlementSettings["prizes"] = {
       matches: settings.prizes.matches.trim(),
@@ -102,6 +102,7 @@ export function AdminSettlementsPage() {
                   <span>{label}</span>
                   <input
                     value={settings.prizes[category]}
+                    disabled={saving}
                     maxLength={200}
                     onChange={(event) => {
                       setSettings({

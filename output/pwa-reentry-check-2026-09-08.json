@@ -1,0 +1,449 @@
+{
+  "url": "http://127.0.0.1:59623/browser-check.html",
+  "sourceBefore": "8a469c11550a53d7bb64d87717d691e4fe87d47ebdd2f1866fb71672482bb3c3",
+  "scenarios": [
+    {
+      "name": "initial_no_update",
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": false,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": false,
+      "visibility": "visible"
+    },
+    {
+      "name": "new_update_shown",
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": true,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": true,
+      "visibility": "visible"
+    },
+    {
+      "name": "dismissed",
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": true,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": false,
+      "visibility": "visible"
+    },
+    {
+      "name": "online_check_stays_dismissed",
+      "updateChecks": 1,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": true,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": false,
+      "visibility": "visible",
+      "delivery": "synthetic online event"
+    },
+    {
+      "name": "periodic_check_stays_dismissed",
+      "updateChecks": 2,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": true,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": false,
+      "visibility": "visible",
+      "delivery": "actual registered 1-hour callback invoked without waiting 1 hour"
+    },
+    {
+      "name": "home_button_reshows",
+      "updateChecks": 2,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": true,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": true,
+      "visibility": "visible"
+    },
+    {
+      "name": "hidden_stays_dismissed",
+      "updateChecks": 2,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": true,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        },
+        {
+          "type": "visibilitychange",
+          "visibility": "hidden",
+          "trusted": false
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": false,
+      "visibility": "hidden",
+      "delivery": "synthetic visibility fallback"
+    },
+    {
+      "name": "visibility_return_reshows",
+      "updateChecks": 3,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": true,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        },
+        {
+          "type": "visibilitychange",
+          "visibility": "hidden",
+          "trusted": false
+        },
+        {
+          "type": "visibilitychange",
+          "visibility": "visible",
+          "trusted": false
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": true,
+      "visibility": "visible",
+      "delivery": "synthetic visibility fallback; native tab trial unavailable"
+    },
+    {
+      "name": "nonpersisted_pageshow_stays_dismissed",
+      "updateChecks": 3,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": true,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        },
+        {
+          "type": "visibilitychange",
+          "visibility": "hidden",
+          "trusted": false
+        },
+        {
+          "type": "visibilitychange",
+          "visibility": "visible",
+          "trusted": false
+        },
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": false,
+          "persisted": false
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": false,
+      "visibility": "visible",
+      "delivery": "synthetic PageTransitionEvent persisted=false"
+    },
+    {
+      "name": "persisted_pageshow_reshows",
+      "updateChecks": 4,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": true,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        },
+        {
+          "type": "visibilitychange",
+          "visibility": "hidden",
+          "trusted": false
+        },
+        {
+          "type": "visibilitychange",
+          "visibility": "visible",
+          "trusted": false
+        },
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": false,
+          "persisted": false
+        },
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": false,
+          "persisted": true
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": true,
+      "visibility": "visible",
+      "delivery": "synthetic PageTransitionEvent persisted=true"
+    },
+    {
+      "name": "hidden_persisted_pageshow_stays_dismissed",
+      "updateChecks": 4,
+      "messages": [],
+      "pluginUpdates": [],
+      "registered": true,
+      "waiting": true,
+      "eventLog": [
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": true,
+          "persisted": false
+        },
+        {
+          "type": "visibilitychange",
+          "visibility": "hidden",
+          "trusted": false
+        },
+        {
+          "type": "visibilitychange",
+          "visibility": "visible",
+          "trusted": false
+        },
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": false,
+          "persisted": false
+        },
+        {
+          "type": "pageshow",
+          "visibility": "visible",
+          "trusted": false,
+          "persisted": true
+        },
+        {
+          "type": "visibilitychange",
+          "visibility": "hidden",
+          "trusted": false
+        },
+        {
+          "type": "pageshow",
+          "visibility": "hidden",
+          "trusted": false,
+          "persisted": true
+        }
+      ],
+      "periodicCallbacks": 1,
+      "bootCount": 1,
+      "formValue": "저장하지 않은 경기 메모 12345",
+      "toastVisible": false,
+      "visibility": "hidden",
+      "delivery": "synthetic hidden visibility and persisted pageshow"
+    }
+  ],
+  "errors": [],
+  "browser": "152.0.7977.82",
+  "nativeTabTrial": {
+    "realVisibilityTransition": false,
+    "whileOtherTabActive": "visible",
+    "afterReturn": "visible",
+    "events": []
+  },
+  "mainNavigations": 1,
+  "pendingFinal": {
+    "updateChecks": 4,
+    "messages": [],
+    "pluginUpdates": [],
+    "registered": true,
+    "waiting": true,
+    "eventLog": [
+      {
+        "type": "pageshow",
+        "visibility": "visible",
+        "trusted": true,
+        "persisted": false
+      },
+      {
+        "type": "visibilitychange",
+        "visibility": "hidden",
+        "trusted": false
+      },
+      {
+        "type": "visibilitychange",
+        "visibility": "visible",
+        "trusted": false
+      },
+      {
+        "type": "pageshow",
+        "visibility": "visible",
+        "trusted": false,
+        "persisted": false
+      },
+      {
+        "type": "pageshow",
+        "visibility": "visible",
+        "trusted": false,
+        "persisted": true
+      },
+      {
+        "type": "visibilitychange",
+        "visibility": "hidden",
+        "trusted": false
+      },
+      {
+        "type": "pageshow",
+        "visibility": "hidden",
+        "trusted": false,
+        "persisted": true
+      }
+    ],
+    "periodicCallbacks": 1,
+    "bootCount": 1,
+    "formValue": "저장하지 않은 경기 메모 12345",
+    "toastVisible": false,
+    "visibility": "visible"
+  },
+  "noPending": {
+    "updateChecks": 4,
+    "messages": [],
+    "pluginUpdates": [],
+    "registered": true,
+    "waiting": false,
+    "eventLog": [
+      {
+        "type": "pageshow",
+        "visibility": "visible",
+        "trusted": true,
+        "persisted": false
+      },
+      {
+        "type": "visibilitychange",
+        "visibility": "hidden",
+        "trusted": false
+      },
+      {
+        "type": "visibilitychange",
+        "visibility": "visible",
+        "trusted": false
+      },
+      {
+        "type": "pageshow",
+        "visibility": "visible",
+        "trusted": false,
+        "persisted": true
+      }
+    ],
+    "periodicCallbacks": 1,
+    "bootCount": 1,
+    "formValue": "대기 업데이트 없는 입력",
+    "toastVisible": false,
+    "visibility": "visible"
+  },
+  "assertions": {
+    "initialAbsent": true,
+    "freshWaitingShown": true,
+    "dismissedHidden": true,
+    "onlineDoesNotReopen": true,
+    "periodicDoesNotReopen": true,
+    "onlineAndPeriodicStillCheck": true,
+    "homeButtonReopens": true,
+    "visibilityReopens": true,
+    "nonpersistedDoesNotReopen": true,
+    "persistedReopens": true,
+    "hiddenPersistedDoesNotReopen": true,
+    "noPendingNoPrompt": true,
+    "enteredTextPreserved": true,
+    "noAutoSkipWaiting": true,
+    "noAutoPluginUpdate": true,
+    "noReload": true,
+    "noPageErrors": true,
+    "sourceStable": true
+  },
+  "sourceAfter": "8a469c11550a53d7bb64d87717d691e4fe87d47ebdd2f1866fb71672482bb3c3"
+}

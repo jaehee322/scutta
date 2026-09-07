@@ -24,6 +24,8 @@ interface PwaContextValue {
   offerInstall: boolean;
   installButtonLabel: string;
   requestInstall: () => Promise<void>;
+  updateAvailable: boolean;
+  showUpdate: () => void;
 }
 
 const PwaContext = createContext<PwaContextValue | null>(null);
@@ -38,6 +40,7 @@ export function PwaProvider({ children }: { children: ReactNode }) {
   const [installed, setInstalled] = useState(runningStandalone);
   const [guideOpen, setGuideOpen] = useState(false);
   const [needsRefresh, setNeedsRefresh] = useState(false);
+  const [updateDismissed, setUpdateDismissed] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [updateError, setUpdateError] = useState("");
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
@@ -69,7 +72,10 @@ export function PwaProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     updateServiceWorker.current = registerSW({
       immediate: true,
-      onNeedRefresh: () => setNeedsRefresh(true),
+      onNeedRefresh: () => {
+        setNeedsRefresh(true);
+        setUpdateDismissed(false);
+      },
       onRegisteredSW: (_workerUrl, nextRegistration) => {
         setRegistration(nextRegistration ?? null);
       },
@@ -82,15 +88,25 @@ export function PwaProvider({ children }: { children: ReactNode }) {
     const checkForUpdate = () => {
       if (navigator.onLine) void registration.update().catch(() => undefined);
     };
+    const resumeApp = () => {
+      // Dismissing the notice lasts until the user returns to the app.
+      setUpdateDismissed(false);
+      checkForUpdate();
+    };
     const handleVisibility = () => {
-      if (document.visibilityState === "visible") checkForUpdate();
+      if (document.visibilityState === "visible") resumeApp();
+    };
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted && document.visibilityState === "visible") resumeApp();
     };
     const interval = window.setInterval(checkForUpdate, 60 * 60 * 1_000);
     window.addEventListener("online", checkForUpdate);
+    window.addEventListener("pageshow", handlePageShow);
     document.addEventListener("visibilitychange", handleVisibility);
     return () => {
       window.clearInterval(interval);
       window.removeEventListener("online", checkForUpdate);
+      window.removeEventListener("pageshow", handlePageShow);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [registration]);
@@ -155,15 +171,17 @@ export function PwaProvider({ children }: { children: ReactNode }) {
       offerInstall: !installed && (installPrompt !== null || environment !== "desktop"),
       installButtonLabel: installPrompt ? "SCUTTA 앱 설치하기" : "SCUTTA 앱 설치 방법 보기",
       requestInstall,
+      updateAvailable: needsRefresh,
+      showUpdate: () => setUpdateDismissed(false),
     }),
-    [environment, installPrompt, installed, requestInstall],
+    [environment, installPrompt, installed, needsRefresh, requestInstall],
   );
 
   return (
     <PwaContext.Provider value={contextValue}>
       {children}
 
-      {needsRefresh && (
+      {needsRefresh && !updateDismissed && (
         <aside className="pwa-update-toast" role="status" aria-live="polite">
           <span className="pwa-update-toast__icon"><RefreshCw size={20} /></span>
           <div>
@@ -183,7 +201,7 @@ export function PwaProvider({ children }: { children: ReactNode }) {
             className="pwa-update-toast__close"
             aria-label="업데이트 알림 닫기"
             onClick={() => {
-              setNeedsRefresh(false);
+              setUpdateDismissed(true);
               setUpdateError("");
             }}
           >
@@ -205,142 +223,77 @@ export function PwaProvider({ children }: { children: ReactNode }) {
 }
 
 function InstallGuide({ environment }: { environment: InstallEnvironment }) {
-  if (environment === "kakao-android") {
-    return (
-      <div className="pwa-install-guide">
-        <div className="pwa-install-guide__notice">
-          <ExternalLink size={20} />
-          <div>
-            <strong>Chrome으로 먼저 열어 주세요</strong>
-            <span>카카오톡에서는 설치 메뉴가 보이지 않아요.</span>
-          </div>
-        </div>
-        <InstallRoute
-          items={["카카오톡 ⋮", "다른 브라우저로 열기", "Chrome ⋮", "설치"]}
-        />
-        <InstallHint>‘설치’가 없으면 ‘홈 화면에 추가’를 선택하세요.</InstallHint>
-      </div>
-    );
-  }
-
-  if (environment === "kakao-ios") {
-    return (
-      <div className="pwa-install-guide">
-        <div className="pwa-install-guide__notice">
-          <ExternalLink size={20} />
-          <div>
-            <strong>Safari로 먼저 열어 주세요</strong>
-            <span>카카오톡에서는 홈 화면에 추가할 수 없어요.</span>
-          </div>
-        </div>
-        <InstallRoute
-          items={[
-            "카카오톡 공유/⋯",
-            "Safari로 열기",
-            { label: "공유", icon: "share" },
-            "홈 화면에 추가",
-            "추가",
-          ]}
-        />
-        <InstallHint>‘웹 앱으로 열기’가 보이면 켜 주세요.</InstallHint>
-      </div>
-    );
-  }
-
-  if (environment === "ios") {
-    return (
-      <div className="pwa-install-guide">
-        <div className="pwa-install-guide__notice">
-          <Share size={20} />
-          <div>
-            <strong>공유 버튼으로 추가하세요</strong>
-            <span>Safari 또는 Chrome에서 진행할 수 있어요.</span>
-          </div>
-        </div>
-        <InstallRoute
-          items={[
-            { label: "공유", icon: "share" },
-            "홈 화면에 추가",
-            "추가",
-          ]}
-        />
-        <InstallHint>‘웹 앱으로 열기’가 보이면 켜 주세요.</InstallHint>
-      </div>
-    );
-  }
-
-  if (environment === "kakao") {
-    return (
-      <div className="pwa-install-guide">
-        <div className="pwa-install-guide__notice">
-          <ExternalLink size={20} />
-          <div>
-            <strong>외부 브라우저로 열어 주세요</strong>
-            <span>Android는 Chrome, iPhone은 Safari를 선택하세요.</span>
-          </div>
-        </div>
-        <div className="pwa-install-platform-routes">
-          <div>
-            <strong>Android</strong>
-            <InstallRoute items={["Chrome ⋮", "설치"]} />
-          </div>
-          <div>
-            <strong>iPhone</strong>
-            <InstallRoute
-              items={[
-                "Safari",
-                { label: "공유", icon: "share" },
-                "홈 화면에 추가",
-                "추가",
-              ]}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const isIos = environment === "ios" || environment === "kakao-ios";
+  const isKakao = environment.startsWith("kakao");
+  const showBoth = environment === "kakao";
+  const isDesktop = environment === "desktop";
 
   return (
     <div className="pwa-install-guide">
       <div className="pwa-install-guide__notice">
-        <Smartphone size={20} />
+        {isKakao ? <ExternalLink size={20} /> : <Smartphone size={20} />}
         <div>
-          <strong>Chrome 메뉴에서 설치하세요</strong>
-          <span>설치 후에는 홈 화면에서 바로 열 수 있어요.</span>
+          <strong>{isKakao ? "먼저 휴대폰 브라우저로 열어 주세요" : "홈 화면에서 SCUTTA를 바로 열 수 있어요"}</strong>
+          <span>{isKakao
+            ? "카카오톡 안에서는 설치 메뉴가 보이지 않을 수 있어요. 아이폰은 Safari, 안드로이드는 Chrome에서 진행해 주세요."
+            : isDesktop
+              ? "지금 보고 있는 사이트를 컴퓨터에서도 앱처럼 열 수 있어요."
+              : "앱스토어에서 검색할 필요 없이, 지금 보고 있는 사이트를 홈 화면에 추가하면 돼요."}</span>
         </div>
       </div>
-      <InstallRoute items={["Chrome ⋮", "설치 및 바로가기 만들기", "설치"]} />
-      <InstallHint>‘설치’가 없으면 ‘홈 화면에 추가’를 선택하세요.</InstallHint>
+
+      {isKakao && (
+        <div>
+          <strong>카카오톡에서 브라우저로 이동하기</strong>
+          <ol className="pwa-install-steps">
+            <li>현재 화면의 <strong>더보기(⋯ 또는 ⋮)나 공유</strong> 메뉴를 누르세요.</li>
+            <li><strong>다른 브라우저로 열기</strong> 또는 <strong>Safari로 열기</strong>가 보이면 선택하세요.</li>
+            <li>해당 메뉴가 없으면 <strong>주소 복사</strong>를 선택한 뒤, Safari 또는 Chrome을 직접 열고 주소창에 붙여 넣으세요.</li>
+          </ol>
+        </div>
+      )}
+
+      {(isIos || showBoth) && (
+        <div>
+          <strong>아이폰 · 아이패드 — Safari</strong>
+          <ol className="pwa-install-steps">
+            <li>Safari에서 SCUTTA 페이지를 여세요.</li>
+            <li>주소창 주변의 <strong>공유 <Share size={16} aria-hidden="true" /></strong> 버튼(네모에서 위로 화살표가 나오는 모양)을 누르세요. 바로 보이지 않으면 <strong>더보기(⋯) → 공유</strong>를 누르세요.</li>
+            <li>공유 창의 메뉴 목록을 <strong>위로 쓸어 올려</strong> 아래쪽에 있는 <strong>홈 화면에 추가</strong>를 찾아 누르세요.</li>
+            <li><strong>웹 앱으로 열기</strong>가 보이면 켠 상태로 두고, <strong>추가</strong>를 누르세요.</li>
+            <li>홈 화면으로 돌아가 <strong>SCUTTA 아이콘</strong>을 눌러 실행하세요.</li>
+          </ol>
+          <p className="pwa-install-hint">‘홈 화면에 추가’가 없으면 공유 목록 맨 아래의 ‘동작 편집’에서 추가해 보세요. 다른 브라우저에서 메뉴를 찾기 어렵다면 주소를 복사해 Safari로 열어 주세요.</p>
+        </div>
+      )}
+
+      {!isDesktop && (!isIos || showBoth) && (
+        <div>
+          <strong>갤럭시 · 안드로이드 — Chrome</strong>
+          <ol className="pwa-install-steps">
+            <li>Chrome에서 SCUTTA 페이지를 여세요.</li>
+            <li>주소창 오른쪽의 <strong>더보기(⋮)</strong>를 누르세요.</li>
+            <li><strong>설치 및 바로가기 만들기 → 설치</strong>를 선택하세요. 버전에 따라 <strong>앱 설치</strong> 또는 <strong>홈 화면에 추가</strong>로 표시될 수 있어요.</li>
+            <li>확인 창에서 <strong>설치</strong> 또는 <strong>추가</strong>를 누른 뒤, 홈 화면이나 앱 목록의 <strong>SCUTTA 아이콘</strong>으로 실행하세요.</li>
+          </ol>
+          <p className="pwa-install-hint">메뉴가 보이지 않으면 페이지가 열린 뒤 잠시 기다려 주세요. 이미 설치했다면 홈 화면이나 앱 목록에서 SCUTTA를 찾아보세요. 삼성 인터넷 등에서 메뉴가 다르면 주소를 복사해 Chrome에서 진행할 수 있어요.</p>
+        </div>
+      )}
+
+      {isDesktop && (
+        <div>
+          <strong>컴퓨터 — Chrome</strong>
+          <ol className="pwa-install-steps">
+            <li>Chrome에서 SCUTTA 페이지를 여세요.</li>
+            <li>오른쪽 위 <strong>더보기(⋮) → 설치 및 바로가기 만들기 → 설치</strong>를 선택하세요. 주소창에 설치 버튼이 보이면 그 버튼을 눌러도 돼요.</li>
+            <li>확인 창에서 <strong>설치</strong>를 누르세요. 설치 메뉴가 없으면 지금처럼 브라우저에서 이용할 수 있어요.</li>
+          </ol>
+        </div>
+      )}
+
+      <p className="pwa-install-hint">설치 후 로그인이 필요하면 기존 아이디와 비밀번호를 그대로 사용하세요. 기록은 같은 계정에 연결돼요. 경기 조회와 저장에는 인터넷 연결이 필요하며, 설치하지 않고 지금처럼 브라우저로 이용해도 돼요.</p>
     </div>
   );
-}
-
-type InstallRouteItem = string | {
-  label: string;
-  icon: "share";
-};
-
-function InstallRoute({ items }: { items: InstallRouteItem[] }) {
-  const labels = items.map((item) => typeof item === "string" ? item : item.label);
-  return (
-    <div className="pwa-install-route" aria-label={`설치 순서: ${labels.join(", ")}`}>
-      {items.map((item, index) => (
-        <span key={`${labels[index]}-${index}`}>
-          {index > 0 && <b aria-hidden="true">→</b>}
-          <em>
-            {typeof item !== "string" && item.icon === "share" && (
-              <Share size={15} aria-hidden="true" />
-            )}
-            {labels[index]}
-          </em>
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function InstallHint({ children }: { children: ReactNode }) {
-  return <p className="pwa-install-hint">{children}</p>;
 }
 
 export function PwaInstallButton({ className = "" }: { className?: string }) {
@@ -358,6 +311,18 @@ export function PwaInstallButton({ className = "" }: { className?: string }) {
       )}
       <span>{context.installButtonLabel}</span>
       {settingsButton && <ExternalLink size={18} />}
+    </button>
+  );
+}
+
+export function PwaUpdateButton() {
+  const context = useContext(PwaContext);
+  if (!context?.updateAvailable) return null;
+  return (
+    <button type="button" onClick={context.showUpdate}>
+      <span className="settings-list__icon"><RefreshCw size={20} /></span>
+      <div><strong>새 버전 업데이트 안내</strong></div>
+      <ExternalLink size={18} />
     </button>
   );
 }

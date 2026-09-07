@@ -4,19 +4,34 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
 from threading import Barrier
 
+import pytest
 from sqlalchemy import create_engine, event, func, select
 from sqlalchemy.orm import sessionmaker
 
+from app.api.auth import login_rate_limiter
 from app.core.database import Base
 from app.core.security import hash_password
 from app.models import CoinFlipState, Gender, PaddleFlightScore, User, UserRole
-from app.schemas.minigames import CoinSide
+from app.schemas.minigames import CoinFlipStateRead, CoinSide
 from app.services.minigames import (
+    CoinFlipNotActiveError,
     CoinFlipRoundConflictError,
+    CoinFlipStartAtFiveError,
+    coin_flip_can_start_at_five,
     flip_coin,
     start_coin_flip,
+    start_coin_flip_at_five,
     submit_paddle_flight_score,
 )
+
+
+@pytest.fixture(autouse=True)
+def isolate_minigame_login_limits():
+    # Each API harness has a fresh database but shares the process-local limiter
+    # and TestClient IP. Keep separate tests from spending one another's quota.
+    login_rate_limiter.reset()
+    yield
+    login_rate_limiter.reset()
 
 
 def _create_player(admin, username: str) -> dict:
@@ -68,6 +83,7 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
             "current_streak": 0,
             "best_streak": 0,
             "remaining_attempts": 20,
+            "can_start_at_five": False,
         },
         "ranking": [],
     }
@@ -87,6 +103,7 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
         "current_streak": 0,
         "best_streak": 0,
         "remaining_attempts": 19,
+        "can_start_at_five": True,
     }
     assert started.json()["ranking"] == [
         {
@@ -117,6 +134,7 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
             "current_streak": 1,
             "best_streak": 1,
             "remaining_attempts": 19,
+            "can_start_at_five": False,
         },
         "ranking": [
             {
@@ -169,6 +187,7 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
         "current_streak": 0,
         "best_streak": 1,
         "remaining_attempts": 19,
+        "can_start_at_five": False,
     }
 
     restarted = client.post(f"{path}/start")
@@ -188,6 +207,7 @@ def test_coin_flip_is_player_only_and_persists_game_state(api, monkeypatch) -> N
         "current_streak": 0,
         "best_streak": 1,
         "remaining_attempts": 18,
+        "can_start_at_five": False,
     }
 
     # Restarting does not bypass the per-player interval from the previous run.
@@ -334,6 +354,192 @@ def test_coin_flip_contract_rejects_unknown_or_invalid_fields(api) -> None:
         ).status_code
         == 422
     )
+
+
+def test_coin_flip_start_at_five_spends_twenty_and_continues_round_six(api, monkeypatch) -> None:
+    admin, player, client = _setup_player(api, "다섯회선수")
+    path = "/api/v1/minigames/coin-flip"
+    boost_path = f"{path}/start-at-five"
+    now = datetime(2026, 9, 8, 1, 0, tzinfo=UTC)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: now)
+
+    assert api.client().post(boost_path, json={"run_id": 1}).status_code == 401
+    assert admin.post(boost_path, json={"run_id": 1}).status_code == 403
+    assert client.post(boost_path, json={"run_id": 1}).status_code == 409
+    assert client.get(path).json()["state"]["remaining_attempts"] == 20
+    started = client.post(f"{path}/start").json()["state"]
+    assert started["can_start_at_five"] is True
+    assert started["remaining_attempts"] == 19
+    # Resuming an unplayed first run keeps the option available.
+    assert client.post(f"{path}/start").json()["state"] == started
+    assert client.post(boost_path, json={"run_id": 2}).status_code == 409
+    assert client.get(path).json()["state"] == started
+
+    boosted = client.post(boost_path, json={"run_id": started["run_id"]})
+    assert boosted.status_code == 200, boosted.text
+    assert boosted.json()["state"] == {
+        "active": True,
+        "run_id": 1,
+        "current_streak": 5,
+        "best_streak": 5,
+        "remaining_attempts": 0,
+        "can_start_at_five": False,
+    }
+    assert boosted.json()["ranking"][0]["best_streak"] == 5
+    assert client.get(path).json() == boosted.json()
+    assert client.post(boost_path, json={"run_id": 1}).status_code == 409
+    assert client.post(f"{path}/start").json() == boosted.json()
+    with api.session_factory() as db:
+        state = db.get(CoinFlipState, player["id"])
+        assert state is not None
+        assert state.daily_attempts_used == 20
+        assert state.daily_attempt_date == now.date()
+        assert state.best_achieved_at == now.replace(tzinfo=None)
+        assert state.last_flip_at is None
+
+    monkeypatch.setattr("app.services.minigames.secrets.randbits", lambda _: 0)
+    stale_round = client.post(f"{path}/flip", json={"choice": "heads", "run_id": 1, "round_no": 1})
+    assert stale_round.status_code == 409
+    won = client.post(f"{path}/flip", json={"choice": "heads", "run_id": 1, "round_no": 6})
+    assert won.status_code == 200, won.text
+    assert won.json()["state"]["current_streak"] == 6
+    assert won.json()["state"]["best_streak"] == 6
+    now += timedelta(seconds=1)
+    lost = client.post(f"{path}/flip", json={"choice": "tails", "run_id": 1, "round_no": 7})
+    assert lost.status_code == 200, lost.text
+    assert lost.json()["final_score"] == 6
+    assert lost.json()["state"]["remaining_attempts"] == 0
+    assert client.post(f"{path}/start").status_code == 429
+
+
+@pytest.mark.parametrize("choice", ["heads", "tails"])
+def test_coin_flip_start_at_five_rejects_after_first_choice(api, monkeypatch, choice) -> None:
+    _, _, client = _setup_player(api, "선택후선수")
+    path = "/api/v1/minigames/coin-flip"
+    monkeypatch.setattr("app.services.minigames.secrets.randbits", lambda _: 0)
+    started = client.post(f"{path}/start").json()["state"]
+    flipped = client.post(
+        f"{path}/flip",
+        json={"choice": choice, "run_id": started["run_id"], "round_no": 1},
+    )
+    assert flipped.status_code == 200, flipped.text
+    assert flipped.json()["state"]["can_start_at_five"] is False
+    assert (
+        client.post(f"{path}/start-at-five", json={"run_id": started["run_id"]}).status_code == 409
+    )
+    assert client.get(path).json()["state"] == flipped.json()["state"]
+
+
+def test_coin_flip_start_at_five_rejects_run_started_with_nineteen_attempts(api) -> None:
+    _, player, client = _setup_player(api, "열아홉회선수")
+    path = "/api/v1/minigames/coin-flip"
+    client.post(f"{path}/start")
+    with api.session_factory() as db:
+        state = db.get(CoinFlipState, player["id"])
+        state.active = False
+        db.commit()
+    assert client.get(path).json()["state"]["remaining_attempts"] == 19
+    second = client.post(f"{path}/start").json()["state"]
+    assert second["remaining_attempts"] == 18
+    assert second["can_start_at_five"] is False
+    assert client.post(f"{path}/start-at-five", json={"run_id": 1}).status_code == 409
+    assert client.post(f"{path}/start-at-five", json={"run_id": 2}).status_code == 409
+    assert client.get(path).json()["state"] == second
+
+
+def test_coin_flip_start_at_five_accepts_unplayed_run_across_korea_midnight(
+    api, monkeypatch
+) -> None:
+    _, player, client = _setup_player(api, "자정선수")
+    path = "/api/v1/minigames/coin-flip"
+    now = datetime(2026, 9, 8, 14, 59, 59, tzinfo=UTC)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: now)
+    client.post(f"{path}/start")
+    # Even an unplayed later run from yesterday has today's full quota after midnight.
+    with api.session_factory() as db:
+        state = db.get(CoinFlipState, player["id"])
+        state.daily_attempts_used = 20
+        db.commit()
+    assert client.get(path).json()["state"]["can_start_at_five"] is False
+    now += timedelta(seconds=1)
+    refreshed = client.get(path).json()["state"]
+    assert refreshed["remaining_attempts"] == 20
+    assert refreshed["can_start_at_five"] is True
+    assert client.post(f"{path}/start").json()["state"] == refreshed
+    boosted = client.post(f"{path}/start-at-five", json={"run_id": 1})
+    assert boosted.status_code == 200, boosted.text
+    assert boosted.json()["state"]["remaining_attempts"] == 0
+    assert boosted.json()["state"]["current_streak"] == 5
+    with api.session_factory() as db:
+        state = db.get(CoinFlipState, player["id"])
+        assert state.daily_attempt_date.isoformat() == "2026-09-09"
+        assert state.daily_attempts_used == 20
+    now += timedelta(days=1)
+    next_day = client.get(path).json()["state"]
+    assert next_day == {
+        "active": True,
+        "run_id": 1,
+        "current_streak": 5,
+        "best_streak": 5,
+        "remaining_attempts": 20,
+        "can_start_at_five": False,
+    }
+    # Re-entering the carried-over game preserves five and costs no new attempt.
+    assert client.post(f"{path}/start").json()["state"] == next_day
+    assert client.post(f"{path}/start-at-five", json={"run_id": 1}).status_code == 409
+    assert client.get(path).json()["state"] == next_day
+    monkeypatch.setattr("app.services.minigames.secrets.randbits", lambda _: 0)
+    lost = client.post(f"{path}/flip", json={"choice": "tails", "run_id": 1, "round_no": 6})
+    assert lost.status_code == 200, lost.text
+    assert lost.json()["final_score"] == 5
+    assert lost.json()["state"]["active"] is False
+    assert lost.json()["state"]["remaining_attempts"] == 20
+    # Only a new run uses today's quota; yesterday's boost is never charged again.
+    restarted = client.post(f"{path}/start").json()["state"]
+    assert restarted["run_id"] == 2
+    assert restarted["current_streak"] == 0
+    assert restarted["remaining_attempts"] == 19
+    assert restarted["can_start_at_five"] is True
+
+
+@pytest.mark.parametrize("best", [3, 5, 9])
+def test_coin_flip_start_at_five_preserves_best_and_existing_flip_interval(
+    api, monkeypatch, best
+) -> None:
+    _, player, client = _setup_player(api, "기존기록선수")
+    path = "/api/v1/minigames/coin-flip"
+    now = datetime(2026, 9, 8, 1, 0, tzinfo=UTC)
+    achieved = now - timedelta(days=1)
+    last_flip = now - timedelta(milliseconds=100)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: now)
+    client.post(f"{path}/start")
+    with api.session_factory() as db:
+        state = db.get(CoinFlipState, player["id"])
+        state.best_streak = best
+        state.best_achieved_at = achieved
+        state.last_flip_at = last_flip
+        db.commit()
+    response = client.post(f"{path}/start-at-five", json={"run_id": 1})
+    assert response.status_code == 200, response.text
+    assert response.json()["state"]["best_streak"] == max(best, 5)
+    with api.session_factory() as db:
+        state = db.get(CoinFlipState, player["id"])
+        assert state.best_achieved_at == (now if best < 5 else achieved).replace(tzinfo=None)
+        assert state.last_flip_at == last_flip.replace(tzinfo=None)
+    limited = client.post(f"{path}/flip", json={"choice": "heads", "run_id": 1, "round_no": 6})
+    assert limited.status_code == 429
+
+
+def test_coin_flip_start_at_five_contract_and_legacy_state_default(api) -> None:
+    _, _, client = _setup_player(api, "다섯회검증선수")
+    path = "/api/v1/minigames/coin-flip/start-at-five"
+    for payload in ({}, {"run_id": 0}, {"run_id": -1}, {"run_id": 1, "score": 5}):
+        assert client.post(path, json=payload).status_code == 422
+    state = CoinFlipStateRead(
+        active=False, run_id=0, current_streak=0, best_streak=0, remaining_attempts=20
+    )
+    assert state.can_start_at_five is False
+    assert coin_flip_can_start_at_five(None) is False
 
 
 def test_paddle_flight_is_player_only_and_persists_account_best(api, monkeypatch) -> None:
@@ -673,6 +879,104 @@ def test_concurrent_new_run_starts_spend_one_daily_attempt(tmp_path, monkeypatch
             assert state.run_id == 2
             assert state.daily_attempts_used == 1
             assert state.daily_attempt_date.isoformat() == "2026-09-02"
+    finally:
+        Base.metadata.drop_all(engine)
+        engine.dispose()
+
+
+@pytest.mark.parametrize("competing_action", ["boost", "win", "lose"])
+def test_coin_flip_start_at_five_races_consume_the_unplayed_run_once(
+    tmp_path, monkeypatch, competing_action
+) -> None:
+    database_path = tmp_path / "concurrent-coin-start-at-five.db"
+    engine = create_engine(
+        f"sqlite:///{database_path.as_posix()}",
+        connect_args={"check_same_thread": False, "timeout": 10},
+    )
+
+    @event.listens_for(engine, "connect")
+    def enable_foreign_keys(dbapi_connection: object, _: object) -> None:
+        cursor = dbapi_connection.cursor()  # type: ignore[attr-defined]
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
+    Base.metadata.create_all(engine)
+    factory = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
+    now = datetime(2026, 9, 8, 1, 0, tzinfo=UTC)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: now)
+    monkeypatch.setattr("app.services.minigames.secrets.randbits", lambda _: 0)
+    with factory() as db:
+        player = User(
+            username="다섯회동시선수",
+            password_hash=hash_password("20260000"),
+            role=UserRole.PLAYER,
+            gender=Gender.MALE,
+            is_freshman=False,
+            club_rank=4,
+        )
+        db.add(player)
+        db.flush()
+        player_id = player.id
+        db.add(
+            CoinFlipState(
+                user_id=player_id,
+                active=True,
+                run_id=1,
+                current_streak=0,
+                best_streak=0,
+                daily_attempt_date=now.date(),
+                daily_attempts_used=1,
+            )
+        )
+        db.commit()
+
+    barrier = Barrier(2)
+
+    def submit(action: str) -> str:
+        with factory() as db:
+            barrier.wait(timeout=5)
+            try:
+                if action == "boost":
+                    start_coin_flip_at_five(db, user_id=player_id, run_id=1)
+                else:
+                    flip_coin(
+                        db,
+                        user_id=player_id,
+                        choice=CoinSide.HEADS if action == "win" else CoinSide.TAILS,
+                        run_id=1,
+                        round_no=1,
+                    )
+            except (
+                CoinFlipStartAtFiveError,
+                CoinFlipRoundConflictError,
+                CoinFlipNotActiveError,
+            ):
+                return "conflict"
+            return action
+
+    try:
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            results = list(executor.map(submit, ("boost", competing_action)))
+        assert results.count("conflict") == 1
+        winner = next(result for result in results if result != "conflict")
+        with factory() as db:
+            state = db.get(CoinFlipState, player_id)
+            assert state is not None
+            assert state.run_id == 1
+            assert state.daily_attempt_date == now.date()
+            if winner == "boost":
+                assert state.active is True
+                assert state.current_streak == 5
+                assert state.best_streak == 5
+                assert state.daily_attempts_used == 20
+                assert state.best_achieved_at == now.replace(tzinfo=None)
+                assert state.last_flip_at is None
+            else:
+                assert state.active is (winner == "win")
+                assert state.current_streak == (1 if winner == "win" else 0)
+                assert state.best_streak == state.current_streak
+                assert state.daily_attempts_used == 1
+                assert state.last_flip_at == now.replace(tzinfo=None)
     finally:
         Base.metadata.drop_all(engine)
         engine.dispose()

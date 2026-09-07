@@ -23,6 +23,8 @@ def test_render_blueprint_has_one_same_origin_app_and_paid_database() -> None:
     assert env["SESSION_COOKIE_SECURE"] == "true"
     assert env["SESSION_COOKIE_SAMESITE"] == "lax"
     assert "VITE_API_URL" not in env
+    bootstrap = next(item for item in app["envVars"] if item["key"] == "BOOTSTRAP_ADMIN_PASSWORD")
+    assert bootstrap == {"key": "BOOTSTRAP_ADMIN_PASSWORD", "sync": False}
 
     databases = blueprint["databases"]
     assert len(databases) == 1

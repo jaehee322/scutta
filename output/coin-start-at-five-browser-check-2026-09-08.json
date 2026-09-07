@@ -1,0 +1,87 @@
+{
+  "testedAt": "2026-09-07T16:10:01.607Z",
+  "browser": "152.0.7977.82",
+  "scope": "Real MinigamePage/AuthProvider/styles in desktop Chrome with mocked API and mobile viewport; no physical iOS/Android devices.",
+  "results": [
+    {
+      "name": "20 attempts -> eligible after start; pending lock; one POST; same run score five; re-entry/reload; round six",
+      "status": "passed",
+      "elapsedMs": 1780,
+      "layout": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "bodyWidth": 390,
+        "dialogWidth": 390,
+        "dialogClientWidth": 390,
+        "button": {
+          "x": 18,
+          "right": 372,
+          "y": 557.390625,
+          "bottom": 605.390625,
+          "width": 354,
+          "height": 48
+        },
+        "choiceBottom": 545.390625,
+        "fontSize": "13px"
+      },
+      "requestCounts": {
+        "starts": 1,
+        "boosts": 1,
+        "flips": 1
+      }
+    },
+    {
+      "name": "19 attempts at entry cannot boost",
+      "status": "passed",
+      "elapsedMs": 527
+    },
+    {
+      "name": "active played run never exposes boost even with inconsistent eligibility flag",
+      "status": "passed",
+      "elapsedMs": 546
+    },
+    {
+      "name": "choice immediately hides boost; flip failure and re-entry keep it hidden",
+      "status": "passed",
+      "elapsedMs": 693
+    },
+    {
+      "name": "server 409 refreshes snapshot and eligibility",
+      "status": "passed",
+      "elapsedMs": 652
+    },
+    {
+      "name": "lost/conflicted response with committed score five recovers without false failure",
+      "status": "passed",
+      "elapsedMs": 673
+    },
+    {
+      "name": "landscape 844x390 has no horizontal overflow and boost remains below choices",
+      "status": "passed",
+      "elapsedMs": 736,
+      "layout": {
+        "viewport": {
+          "width": 844,
+          "height": 390
+        },
+        "documentWidth": 844,
+        "bodyWidth": 844,
+        "dialogWidth": 844,
+        "dialogClientWidth": 844,
+        "button": {
+          "x": 212,
+          "right": 632,
+          "y": 330,
+          "bottom": 378,
+          "width": 420,
+          "height": 48
+        },
+        "choiceBottom": 318,
+        "fontSize": "13px"
+      }
+    }
+  ]
+}
