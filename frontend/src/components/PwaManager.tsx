@@ -13,6 +13,11 @@ import { registerSW } from "virtual:pwa-register";
 
 import { Modal } from "./Modal";
 import { detectInstallEnvironment, type InstallEnvironment } from "./pwaEnvironment";
+import {
+  PWA_DISPLAY_MODES,
+  claimDailyInstallRecommendation,
+  isPwaDisplayMode,
+} from "./pwaInstallRecommendation";
 import { applyPwaUpdateLifecycle } from "./pwaUpdate";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -32,23 +37,34 @@ const PwaContext = createContext<PwaContextValue | null>(null);
 
 function runningStandalone(): boolean {
   const iosNavigator = navigator as Navigator & { standalone?: boolean };
-  return window.matchMedia("(display-mode: standalone)").matches || iosNavigator.standalone === true;
+  return isPwaDisplayMode(
+    iosNavigator.standalone,
+    (query) => window.matchMedia(query).matches,
+  );
 }
 
 export function PwaProvider({ children }: { children: ReactNode }) {
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [installed, setInstalled] = useState(runningStandalone);
   const [guideOpen, setGuideOpen] = useState(false);
+  const [installRecommendationOpen, setInstallRecommendationOpen] = useState(false);
   const [needsRefresh, setNeedsRefresh] = useState(false);
   const [updateDismissed, setUpdateDismissed] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [updateError, setUpdateError] = useState("");
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
   const updateServiceWorker = useRef<((reloadPage?: boolean) => Promise<void>) | null>(null);
+  const installRecommendationOpenRef = useRef(false);
   const environment = useMemo(
     () => detectInstallEnvironment(navigator.userAgent, navigator.platform, navigator.maxTouchPoints),
     [],
   );
+  const showUpdateToast = needsRefresh && !updateDismissed;
+  const canRecommendInstall = environment.startsWith("kakao") && !installed;
+  const dismissInstallRecommendation = useCallback(() => {
+    installRecommendationOpenRef.current = false;
+    setInstallRecommendationOpen(false);
+  }, []);
 
   useEffect(() => {
     const handleInstallPrompt = (event: Event) => {
@@ -59,15 +75,82 @@ export function PwaProvider({ children }: { children: ReactNode }) {
       setInstalled(true);
       setInstallPrompt(null);
       setGuideOpen(false);
+      dismissInstallRecommendation();
     };
+    const detectAppMode = () => {
+      if (runningStandalone()) {
+        setInstalled(true);
+        dismissInstallRecommendation();
+      }
+    };
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") detectAppMode();
+    };
+    let displayQueries: MediaQueryList[] = [];
+    try {
+      displayQueries = PWA_DISPLAY_MODES.map((mode) => window.matchMedia(`(display-mode: ${mode})`));
+    } catch {
+      // If app mode cannot be checked, never offer an automatic install notice.
+      setInstalled(true);
+    }
+    for (const query of displayQueries) {
+      if (query.addEventListener) query.addEventListener("change", detectAppMode);
+      else query.addListener(detectAppMode);
+    }
 
     window.addEventListener("beforeinstallprompt", handleInstallPrompt);
     window.addEventListener("appinstalled", handleInstalled);
+    window.addEventListener("pageshow", detectAppMode);
+    document.addEventListener("visibilitychange", handleVisibility);
     return () => {
       window.removeEventListener("beforeinstallprompt", handleInstallPrompt);
       window.removeEventListener("appinstalled", handleInstalled);
+      window.removeEventListener("pageshow", detectAppMode);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      for (const query of displayQueries) {
+        if (query.removeEventListener) query.removeEventListener("change", detectAppMode);
+        else query.removeListener(detectAppMode);
+      }
     };
-  }, []);
+  }, [dismissInstallRecommendation]);
+
+  useEffect(() => {
+    if (!canRecommendInstall || guideOpen || showUpdateToast) {
+      dismissInstallRecommendation();
+      return;
+    }
+
+    let timer: number | undefined;
+    const showRecommendation = () => {
+      if (
+        document.visibilityState !== "visible"
+        || runningStandalone()
+        || installRecommendationOpenRef.current
+        || document.body.classList.contains("modal-open")
+        || document.body.classList.contains("minigame-fullscreen-open")
+      ) return;
+      // Persist only when ready to show, never during render or initialization.
+      if (claimDailyInstallRecommendation()) {
+        installRecommendationOpenRef.current = true;
+        setInstallRecommendationOpen(true);
+      }
+    };
+    const scheduleRecommendation = () => {
+      window.clearTimeout(timer);
+      if (document.visibilityState === "visible") {
+        // Let the page and any pending update notice settle first.
+        timer = window.setTimeout(showRecommendation, 1_500);
+      }
+    };
+    scheduleRecommendation();
+    document.addEventListener("visibilitychange", scheduleRecommendation);
+    window.addEventListener("pageshow", scheduleRecommendation);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("visibilitychange", scheduleRecommendation);
+      window.removeEventListener("pageshow", scheduleRecommendation);
+    };
+  }, [canRecommendInstall, dismissInstallRecommendation, guideOpen, showUpdateToast]);
 
   useEffect(() => {
     updateServiceWorker.current = registerSW({
@@ -181,7 +264,7 @@ export function PwaProvider({ children }: { children: ReactNode }) {
     <PwaContext.Provider value={contextValue}>
       {children}
 
-      {needsRefresh && !updateDismissed && (
+      {showUpdateToast && (
         <aside className="pwa-update-toast" role="status" aria-live="polite">
           <span className="pwa-update-toast__icon"><RefreshCw size={20} /></span>
           <div>
@@ -204,6 +287,34 @@ export function PwaProvider({ children }: { children: ReactNode }) {
               setUpdateDismissed(true);
               setUpdateError("");
             }}
+          >
+            <X size={18} />
+          </button>
+        </aside>
+      )}
+
+      {installRecommendationOpen && canRecommendInstall && !runningStandalone() && !showUpdateToast && !guideOpen && (
+        <aside className="pwa-update-toast pwa-install-recommendation" role="status" aria-live="polite">
+          <span className="pwa-update-toast__icon"><Smartphone size={20} /></span>
+          <div>
+            <strong>SCUTTA 앱으로 더 편하게 이용하세요</strong>
+            <span>카카오톡 밖에서 설치하면 홈 화면에서 바로 열 수 있어요.</span>
+          </div>
+          <button
+            type="button"
+            className="pwa-update-toast__apply"
+            onClick={() => {
+              dismissInstallRecommendation();
+              setGuideOpen(true);
+            }}
+          >
+            설치 방법
+          </button>
+          <button
+            type="button"
+            className="pwa-update-toast__close"
+            aria-label="앱 설치 추천 알림 닫기"
+            onClick={dismissInstallRecommendation}
           >
             <X size={18} />
           </button>

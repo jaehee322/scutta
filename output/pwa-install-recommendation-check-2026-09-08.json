@@ -1,0 +1,1551 @@
+{
+  "checkedAt": "2026-09-08T01:46:02.6417838+09:00",
+  "scope": "Actual React components in Chromium with simulated Kakao user agents, PWA display signals, storage and service worker. Not a native iOS/Android device test.",
+  "cases": [
+    {
+      "name": "strict_mode_first_display",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [
+        "scutta.pwa.install-recommendation.day"
+      ],
+      "writes": [
+        {
+          "key": "scutta.pwa.install-recommendation.day",
+          "value": "2026-09-08",
+          "failed": false
+        }
+      ],
+      "storedDay": "2026-09-08",
+      "insertedRecommendations": 1,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "유지해야 하는 입력 내용",
+      "recommendation": true,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "visibleOnce": true,
+        "correctKoreaDay": true,
+        "strictModeActive": true
+      }
+    },
+    {
+      "name": "dismiss_refresh_same_korea_day",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [
+        "scutta.pwa.install-recommendation.day"
+      ],
+      "writes": [],
+      "storedDay": "2026-09-08",
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noSecondDayWrite": true
+      }
+    },
+    {
+      "name": "next_korea_day_new_page",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [
+        "scutta.pwa.install-recommendation.day"
+      ],
+      "writes": [
+        {
+          "key": "scutta.pwa.install-recommendation.day",
+          "value": "2026-09-09",
+          "failed": false
+        }
+      ],
+      "storedDay": "2026-09-09",
+      "insertedRecommendations": 1,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": true,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "visibleOnce": true,
+        "newDayStored": true
+      }
+    },
+    {
+      "name": "kakao_ios_guide_and_320px",
+      "initial": {
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "입력 유지 ios",
+        "recommendation": true,
+        "updateToast": false,
+        "guideOpen": false
+      },
+      "afterGuide": {
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "입력 유지 ios",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": true
+      },
+      "layout": {
+        "left": 16,
+        "right": 304,
+        "viewport": 320,
+        "clientWidth": 286,
+        "scrollWidth": 286,
+        "documentWidth": 320
+      },
+      "assertions": {
+        "recommendationPresent": true,
+        "noHorizontalOverflow": true,
+        "guideOpenedAndRecommendationClosed": true,
+        "kakaoGuide": true,
+        "correctPlatform": true,
+        "inputPreserved": true
+      }
+    },
+    {
+      "name": "kakao_android_guide_and_320px",
+      "initial": {
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "입력 유지 android",
+        "recommendation": true,
+        "updateToast": false,
+        "guideOpen": false
+      },
+      "afterGuide": {
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "입력 유지 android",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": true
+      },
+      "layout": {
+        "left": 16,
+        "right": 304,
+        "viewport": 320,
+        "clientWidth": 286,
+        "scrollWidth": 286,
+        "documentWidth": 320
+      },
+      "assertions": {
+        "recommendationPresent": true,
+        "noHorizontalOverflow": true,
+        "guideOpenedAndRecommendationClosed": true,
+        "kakaoGuide": true,
+        "correctPlatform": true,
+        "inputPreserved": true
+      }
+    },
+    {
+      "name": "kakao_generic_guide_and_320px",
+      "initial": {
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "입력 유지 generic",
+        "recommendation": true,
+        "updateToast": false,
+        "guideOpen": false
+      },
+      "afterGuide": {
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "입력 유지 generic",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": true
+      },
+      "layout": {
+        "left": 16,
+        "right": 304,
+        "viewport": 320,
+        "clientWidth": 286,
+        "scrollWidth": 286,
+        "documentWidth": 320
+      },
+      "assertions": {
+        "recommendationPresent": true,
+        "noHorizontalOverflow": true,
+        "guideOpenedAndRecommendationClosed": true,
+        "kakaoGuide": true,
+        "correctPlatform": true,
+        "inputPreserved": true
+      }
+    },
+    {
+      "name": "ordinary_safari",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [],
+      "writes": [],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noDayConsumed": true
+      }
+    },
+    {
+      "name": "ordinary_chrome",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [],
+      "writes": [],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noDayConsumed": true
+      }
+    },
+    {
+      "name": "standalone_display_mode",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [],
+      "writes": [],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "standalone",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noDayConsumed": true
+      }
+    },
+    {
+      "name": "minimal_ui_display_mode",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [],
+      "writes": [],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "minimal-ui",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noDayConsumed": true
+      }
+    },
+    {
+      "name": "fullscreen_display_mode",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [],
+      "writes": [],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "fullscreen",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noDayConsumed": true
+      }
+    },
+    {
+      "name": "window_controls_overlay_mode",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [],
+      "writes": [],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "window-controls-overlay",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noDayConsumed": true
+      }
+    },
+    {
+      "name": "ios_navigator_standalone",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [],
+      "writes": [],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": true,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noDayConsumed": true
+      }
+    },
+    {
+      "name": "storage_read_failure",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [
+        "scutta.pwa.install-recommendation.day"
+      ],
+      "writes": [],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noDayConsumed": true
+      }
+    },
+    {
+      "name": "storage_write_failure",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [
+        "scutta.pwa.install-recommendation.day"
+      ],
+      "writes": [
+        {
+          "key": "scutta.pwa.install-recommendation.day",
+          "value": "2026-09-08",
+          "failed": true
+        }
+      ],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noDayConsumed": true
+      }
+    },
+    {
+      "name": "storage_accessor_failure",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [],
+      "writes": [],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "neverInserted": true,
+        "noDayConsumed": true
+      }
+    },
+    {
+      "name": "display_mode_change",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [
+        "scutta.pwa.install-recommendation.day"
+      ],
+      "writes": [
+        {
+          "key": "scutta.pwa.install-recommendation.day",
+          "value": "2026-09-08",
+          "failed": false
+        }
+      ],
+      "storedDay": "2026-09-08",
+      "insertedRecommendations": 1,
+      "simultaneousToasts": 0,
+      "displayMode": "standalone",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "보존 display_mode_change",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "hiddenAfterEvent": true,
+        "inputPreserved": true
+      }
+    },
+    {
+      "name": "appinstalled",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [
+        "scutta.pwa.install-recommendation.day"
+      ],
+      "writes": [
+        {
+          "key": "scutta.pwa.install-recommendation.day",
+          "value": "2026-09-08",
+          "failed": false
+        }
+      ],
+      "storedDay": "2026-09-08",
+      "insertedRecommendations": 1,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "보존 appinstalled",
+      "recommendation": false,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "hiddenAfterEvent": true,
+        "inputPreserved": true
+      }
+    },
+    {
+      "name": "update_priority_initial",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": true,
+      "reads": [],
+      "writes": [],
+      "storedDay": null,
+      "insertedRecommendations": 0,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "업데이트 우선 입력",
+      "recommendation": false,
+      "updateToast": true,
+      "guideOpen": false,
+      "assertions": {
+        "updateOnly": true,
+        "recommendationNeverInserted": true,
+        "noDayConsumedWhileHidden": true,
+        "neverStacked": true
+      }
+    },
+    {
+      "name": "after_update_dismiss",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": true,
+      "reads": [
+        "scutta.pwa.install-recommendation.day"
+      ],
+      "writes": [
+        {
+          "key": "scutta.pwa.install-recommendation.day",
+          "value": "2026-09-08",
+          "failed": false
+        }
+      ],
+      "storedDay": "2026-09-08",
+      "insertedRecommendations": 1,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "업데이트 우선 입력",
+      "recommendation": true,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "recommendationNowShown": true,
+        "dateConsumedOnlyWhenShown": true,
+        "neverStacked": true,
+        "inputPreserved": true,
+        "noAutomaticApply": true
+      }
+    },
+    {
+      "name": "already_open_modal-open",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [
+        "scutta.pwa.install-recommendation.day"
+      ],
+      "writes": [
+        {
+          "key": "scutta.pwa.install-recommendation.day",
+          "value": "2026-09-08",
+          "failed": false
+        }
+      ],
+      "storedDay": "2026-09-08",
+      "insertedRecommendations": 1,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "모달 전후 입력 유지",
+      "recommendation": true,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "hiddenWhileModal": true,
+        "restoredWhenClosed": true,
+        "inputPreserved": true,
+        "dayClaimOnlyOnce": true
+      }
+    },
+    {
+      "name": "already_open_minigame-fullscreen-open",
+      "registerCalls": 2,
+      "updateChecks": 0,
+      "messages": [],
+      "pluginUpdates": [],
+      "waiting": false,
+      "reads": [
+        "scutta.pwa.install-recommendation.day"
+      ],
+      "writes": [
+        {
+          "key": "scutta.pwa.install-recommendation.day",
+          "value": "2026-09-08",
+          "failed": false
+        }
+      ],
+      "storedDay": "2026-09-08",
+      "insertedRecommendations": 1,
+      "simultaneousToasts": 0,
+      "displayMode": "browser",
+      "navigatorStandalone": false,
+      "storageKey": "scutta.pwa.install-recommendation.day",
+      "formValue": "모달 전후 입력 유지",
+      "recommendation": true,
+      "updateToast": false,
+      "guideOpen": false,
+      "assertions": {
+        "hiddenWhileModal": true,
+        "restoredWhenClosed": true,
+        "inputPreserved": true,
+        "dayClaimOnlyOnce": true
+      }
+    }
+  ],
+  "mainRun": {
+    "url": "http://127.0.0.1:62274/browser-check.html",
+    "sourceBefore": {
+      "PwaManager.tsx": "f7a32f47de00a083b3896804a66d1f8d3c2e9695281d291a6c5e12699b4ebcac",
+      "pwaInstallRecommendation.ts": "cb5ee0d5efff5be63928e5ab703dfc0fe2d132118c9d66396f2ef02140b2bd42"
+    },
+    "cases": [
+      {
+        "name": "strict_mode_first_display",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "유지해야 하는 입력 내용",
+        "recommendation": true,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "visibleOnce": true,
+          "correctKoreaDay": true,
+          "strictModeActive": true
+        }
+      },
+      {
+        "name": "dismiss_refresh_same_korea_day",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noSecondDayWrite": true
+        }
+      },
+      {
+        "name": "next_korea_day_new_page",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-09",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-09",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": true,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "visibleOnce": true,
+          "newDayStored": true
+        }
+      },
+      {
+        "name": "kakao_ios_guide_and_320px",
+        "initial": {
+          "registerCalls": 2,
+          "updateChecks": 0,
+          "messages": [],
+          "pluginUpdates": [],
+          "waiting": false,
+          "reads": [
+            "scutta.pwa.install-recommendation.day"
+          ],
+          "writes": [
+            {
+              "key": "scutta.pwa.install-recommendation.day",
+              "value": "2026-09-08",
+              "failed": false
+            }
+          ],
+          "storedDay": "2026-09-08",
+          "insertedRecommendations": 1,
+          "simultaneousToasts": 0,
+          "displayMode": "browser",
+          "navigatorStandalone": false,
+          "storageKey": "scutta.pwa.install-recommendation.day",
+          "formValue": "입력 유지 ios",
+          "recommendation": true,
+          "updateToast": false,
+          "guideOpen": false
+        },
+        "afterGuide": {
+          "registerCalls": 2,
+          "updateChecks": 0,
+          "messages": [],
+          "pluginUpdates": [],
+          "waiting": false,
+          "reads": [
+            "scutta.pwa.install-recommendation.day"
+          ],
+          "writes": [
+            {
+              "key": "scutta.pwa.install-recommendation.day",
+              "value": "2026-09-08",
+              "failed": false
+            }
+          ],
+          "storedDay": "2026-09-08",
+          "insertedRecommendations": 1,
+          "simultaneousToasts": 0,
+          "displayMode": "browser",
+          "navigatorStandalone": false,
+          "storageKey": "scutta.pwa.install-recommendation.day",
+          "formValue": "입력 유지 ios",
+          "recommendation": false,
+          "updateToast": false,
+          "guideOpen": true
+        },
+        "layout": {
+          "left": 16,
+          "right": 304,
+          "viewport": 320,
+          "clientWidth": 286,
+          "scrollWidth": 286,
+          "documentWidth": 320
+        },
+        "assertions": {
+          "recommendationPresent": true,
+          "noHorizontalOverflow": true,
+          "guideOpenedAndRecommendationClosed": true,
+          "kakaoGuide": true,
+          "correctPlatform": true,
+          "inputPreserved": true
+        }
+      },
+      {
+        "name": "kakao_android_guide_and_320px",
+        "initial": {
+          "registerCalls": 2,
+          "updateChecks": 0,
+          "messages": [],
+          "pluginUpdates": [],
+          "waiting": false,
+          "reads": [
+            "scutta.pwa.install-recommendation.day"
+          ],
+          "writes": [
+            {
+              "key": "scutta.pwa.install-recommendation.day",
+              "value": "2026-09-08",
+              "failed": false
+            }
+          ],
+          "storedDay": "2026-09-08",
+          "insertedRecommendations": 1,
+          "simultaneousToasts": 0,
+          "displayMode": "browser",
+          "navigatorStandalone": false,
+          "storageKey": "scutta.pwa.install-recommendation.day",
+          "formValue": "입력 유지 android",
+          "recommendation": true,
+          "updateToast": false,
+          "guideOpen": false
+        },
+        "afterGuide": {
+          "registerCalls": 2,
+          "updateChecks": 0,
+          "messages": [],
+          "pluginUpdates": [],
+          "waiting": false,
+          "reads": [
+            "scutta.pwa.install-recommendation.day"
+          ],
+          "writes": [
+            {
+              "key": "scutta.pwa.install-recommendation.day",
+              "value": "2026-09-08",
+              "failed": false
+            }
+          ],
+          "storedDay": "2026-09-08",
+          "insertedRecommendations": 1,
+          "simultaneousToasts": 0,
+          "displayMode": "browser",
+          "navigatorStandalone": false,
+          "storageKey": "scutta.pwa.install-recommendation.day",
+          "formValue": "입력 유지 android",
+          "recommendation": false,
+          "updateToast": false,
+          "guideOpen": true
+        },
+        "layout": {
+          "left": 16,
+          "right": 304,
+          "viewport": 320,
+          "clientWidth": 286,
+          "scrollWidth": 286,
+          "documentWidth": 320
+        },
+        "assertions": {
+          "recommendationPresent": true,
+          "noHorizontalOverflow": true,
+          "guideOpenedAndRecommendationClosed": true,
+          "kakaoGuide": true,
+          "correctPlatform": true,
+          "inputPreserved": true
+        }
+      },
+      {
+        "name": "kakao_generic_guide_and_320px",
+        "initial": {
+          "registerCalls": 2,
+          "updateChecks": 0,
+          "messages": [],
+          "pluginUpdates": [],
+          "waiting": false,
+          "reads": [
+            "scutta.pwa.install-recommendation.day"
+          ],
+          "writes": [
+            {
+              "key": "scutta.pwa.install-recommendation.day",
+              "value": "2026-09-08",
+              "failed": false
+            }
+          ],
+          "storedDay": "2026-09-08",
+          "insertedRecommendations": 1,
+          "simultaneousToasts": 0,
+          "displayMode": "browser",
+          "navigatorStandalone": false,
+          "storageKey": "scutta.pwa.install-recommendation.day",
+          "formValue": "입력 유지 generic",
+          "recommendation": true,
+          "updateToast": false,
+          "guideOpen": false
+        },
+        "afterGuide": {
+          "registerCalls": 2,
+          "updateChecks": 0,
+          "messages": [],
+          "pluginUpdates": [],
+          "waiting": false,
+          "reads": [
+            "scutta.pwa.install-recommendation.day"
+          ],
+          "writes": [
+            {
+              "key": "scutta.pwa.install-recommendation.day",
+              "value": "2026-09-08",
+              "failed": false
+            }
+          ],
+          "storedDay": "2026-09-08",
+          "insertedRecommendations": 1,
+          "simultaneousToasts": 0,
+          "displayMode": "browser",
+          "navigatorStandalone": false,
+          "storageKey": "scutta.pwa.install-recommendation.day",
+          "formValue": "입력 유지 generic",
+          "recommendation": false,
+          "updateToast": false,
+          "guideOpen": true
+        },
+        "layout": {
+          "left": 16,
+          "right": 304,
+          "viewport": 320,
+          "clientWidth": 286,
+          "scrollWidth": 286,
+          "documentWidth": 320
+        },
+        "assertions": {
+          "recommendationPresent": true,
+          "noHorizontalOverflow": true,
+          "guideOpenedAndRecommendationClosed": true,
+          "kakaoGuide": true,
+          "correctPlatform": true,
+          "inputPreserved": true
+        }
+      },
+      {
+        "name": "ordinary_safari",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [],
+        "writes": [],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noDayConsumed": true
+        }
+      },
+      {
+        "name": "ordinary_chrome",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [],
+        "writes": [],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noDayConsumed": true
+        }
+      },
+      {
+        "name": "standalone_display_mode",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [],
+        "writes": [],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "standalone",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noDayConsumed": true
+        }
+      },
+      {
+        "name": "minimal_ui_display_mode",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [],
+        "writes": [],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "minimal-ui",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noDayConsumed": true
+        }
+      },
+      {
+        "name": "fullscreen_display_mode",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [],
+        "writes": [],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "fullscreen",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noDayConsumed": true
+        }
+      },
+      {
+        "name": "window_controls_overlay_mode",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [],
+        "writes": [],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "window-controls-overlay",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noDayConsumed": true
+        }
+      },
+      {
+        "name": "ios_navigator_standalone",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [],
+        "writes": [],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": true,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noDayConsumed": true
+        }
+      },
+      {
+        "name": "storage_read_failure",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noDayConsumed": true
+        }
+      },
+      {
+        "name": "storage_write_failure",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": true
+          }
+        ],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noDayConsumed": true
+        }
+      },
+      {
+        "name": "storage_accessor_failure",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [],
+        "writes": [],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "neverInserted": true,
+          "noDayConsumed": true
+        }
+      },
+      {
+        "name": "display_mode_change",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "standalone",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "보존 display_mode_change",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "hiddenAfterEvent": true,
+          "inputPreserved": true
+        }
+      },
+      {
+        "name": "appinstalled",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "보존 appinstalled",
+        "recommendation": false,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "hiddenAfterEvent": true,
+          "inputPreserved": true
+        }
+      },
+      {
+        "name": "update_priority_initial",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": true,
+        "reads": [],
+        "writes": [],
+        "storedDay": null,
+        "insertedRecommendations": 0,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "업데이트 우선 입력",
+        "recommendation": false,
+        "updateToast": true,
+        "guideOpen": false,
+        "assertions": {
+          "updateOnly": true,
+          "recommendationNeverInserted": true,
+          "noDayConsumedWhileHidden": true,
+          "neverStacked": true
+        }
+      },
+      {
+        "name": "after_update_dismiss",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": true,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "업데이트 우선 입력",
+        "recommendation": true,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "recommendationNowShown": true,
+          "dateConsumedOnlyWhenShown": true,
+          "neverStacked": true,
+          "inputPreserved": true,
+          "noAutomaticApply": true
+        }
+      }
+    ],
+    "errors": [],
+    "browser": "152.0.7977.82",
+    "sourceAfter": {
+      "PwaManager.tsx": "f7a32f47de00a083b3896804a66d1f8d3c2e9695281d291a6c5e12699b4ebcac",
+      "pwaInstallRecommendation.ts": "cb5ee0d5efff5be63928e5ab703dfc0fe2d132118c9d66396f2ef02140b2bd42"
+    },
+    "globalAssertions": {
+      "noPageErrors": true,
+      "productSourceStable": true
+    }
+  },
+  "modalRun": {
+    "url": "http://127.0.0.1:54461/browser-check.html",
+    "sourceBefore": {
+      "PwaManager.tsx": "f7a32f47de00a083b3896804a66d1f8d3c2e9695281d291a6c5e12699b4ebcac",
+      "pwaInstallRecommendation.ts": "cb5ee0d5efff5be63928e5ab703dfc0fe2d132118c9d66396f2ef02140b2bd42"
+    },
+    "cases": [
+      {
+        "name": "already_open_modal-open",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "모달 전후 입력 유지",
+        "recommendation": true,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "hiddenWhileModal": true,
+          "restoredWhenClosed": true,
+          "inputPreserved": true,
+          "dayClaimOnlyOnce": true
+        }
+      },
+      {
+        "name": "already_open_minigame-fullscreen-open",
+        "registerCalls": 2,
+        "updateChecks": 0,
+        "messages": [],
+        "pluginUpdates": [],
+        "waiting": false,
+        "reads": [
+          "scutta.pwa.install-recommendation.day"
+        ],
+        "writes": [
+          {
+            "key": "scutta.pwa.install-recommendation.day",
+            "value": "2026-09-08",
+            "failed": false
+          }
+        ],
+        "storedDay": "2026-09-08",
+        "insertedRecommendations": 1,
+        "simultaneousToasts": 0,
+        "displayMode": "browser",
+        "navigatorStandalone": false,
+        "storageKey": "scutta.pwa.install-recommendation.day",
+        "formValue": "모달 전후 입력 유지",
+        "recommendation": true,
+        "updateToast": false,
+        "guideOpen": false,
+        "assertions": {
+          "hiddenWhileModal": true,
+          "restoredWhenClosed": true,
+          "inputPreserved": true,
+          "dayClaimOnlyOnce": true
+        }
+      }
+    ],
+    "errors": [],
+    "browser": "152.0.7977.82",
+    "stylesHash": "3f922f4188f76e508aa30d4cd59ce13d10108ed2009d3744605fe3d39b388945",
+    "sourceAfter": {
+      "PwaManager.tsx": "f7a32f47de00a083b3896804a66d1f8d3c2e9695281d291a6c5e12699b4ebcac",
+      "pwaInstallRecommendation.ts": "cb5ee0d5efff5be63928e5ab703dfc0fe2d132118c9d66396f2ef02140b2bd42"
+    },
+    "globalAssertions": {
+      "noPageErrors": true,
+      "productSourceStable": true
+    }
+  }
+}

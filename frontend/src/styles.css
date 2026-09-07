@@ -1815,6 +1815,8 @@ body.minigame-fullscreen-open {
 }
 
 .coin-start-at-five-button {
+  color: #422006;
+  background: #ff9f2f;
   width: 100%;
   min-height: 48px;
   padding: 12px;
@@ -3374,6 +3376,11 @@ body.minigame-fullscreen-open {
   width: 40px;
   height: 40px;
   display: grid;
+}
+
+body.modal-open .pwa-install-recommendation,
+body.minigame-fullscreen-open .pwa-install-recommendation {
+  display: none;
 }
 
 .icon-button {
