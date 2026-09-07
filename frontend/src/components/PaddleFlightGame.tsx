@@ -810,6 +810,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
           aria-modal="true"
           ref={fullscreenRef}
           tabIndex={-1}
+          onContextMenu={(event) => event.preventDefault()}
         >
           <header className="paddle-flight-fullscreen__header">
             <div>
@@ -826,6 +827,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
               <canvas
                 ref={canvasRef}
                 className="paddle-flight-canvas"
+                draggable={false}
                 role={phase === "gameOver" ? "img" : "button"}
                 tabIndex={phase === "gameOver" ? -1 : 0}
                 aria-label={

@@ -2167,6 +2167,14 @@ body.minigame-fullscreen-open {
   overflow: hidden;
 }
 
+.paddle-flight-fullscreen,
+.paddle-flight-fullscreen * {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .paddle-flight-fullscreen__header {
   background: #fff;
   border-bottom: 1px solid #edf0f3;
