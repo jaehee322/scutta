@@ -356,8 +356,8 @@ def test_coin_flip_contract_rejects_unknown_or_invalid_fields(api) -> None:
     )
 
 
-def test_coin_flip_start_at_five_spends_twenty_and_continues_round_six(api, monkeypatch) -> None:
-    admin, player, client = _setup_player(api, "다섯회선수")
+def test_coin_flip_start_at_four_spends_twenty_and_continues_round_five(api, monkeypatch) -> None:
+    admin, player, client = _setup_player(api, "네회선수")
     path = "/api/v1/minigames/coin-flip"
     boost_path = f"{path}/start-at-five"
     now = datetime(2026, 9, 8, 1, 0, tzinfo=UTC)
@@ -380,12 +380,12 @@ def test_coin_flip_start_at_five_spends_twenty_and_continues_round_six(api, monk
     assert boosted.json()["state"] == {
         "active": True,
         "run_id": 1,
-        "current_streak": 5,
-        "best_streak": 5,
+        "current_streak": 4,
+        "best_streak": 4,
         "remaining_attempts": 0,
         "can_start_at_five": False,
     }
-    assert boosted.json()["ranking"][0]["best_streak"] == 5
+    assert boosted.json()["ranking"][0]["best_streak"] == 4
     assert client.get(path).json() == boosted.json()
     assert client.post(boost_path, json={"run_id": 1}).status_code == 409
     assert client.post(f"{path}/start").json() == boosted.json()
@@ -400,20 +400,20 @@ def test_coin_flip_start_at_five_spends_twenty_and_continues_round_six(api, monk
     monkeypatch.setattr("app.services.minigames.secrets.randbits", lambda _: 0)
     stale_round = client.post(f"{path}/flip", json={"choice": "heads", "run_id": 1, "round_no": 1})
     assert stale_round.status_code == 409
-    won = client.post(f"{path}/flip", json={"choice": "heads", "run_id": 1, "round_no": 6})
+    won = client.post(f"{path}/flip", json={"choice": "heads", "run_id": 1, "round_no": 5})
     assert won.status_code == 200, won.text
-    assert won.json()["state"]["current_streak"] == 6
-    assert won.json()["state"]["best_streak"] == 6
+    assert won.json()["state"]["current_streak"] == 5
+    assert won.json()["state"]["best_streak"] == 5
     now += timedelta(seconds=1)
-    lost = client.post(f"{path}/flip", json={"choice": "tails", "run_id": 1, "round_no": 7})
+    lost = client.post(f"{path}/flip", json={"choice": "tails", "run_id": 1, "round_no": 6})
     assert lost.status_code == 200, lost.text
-    assert lost.json()["final_score"] == 6
+    assert lost.json()["final_score"] == 5
     assert lost.json()["state"]["remaining_attempts"] == 0
     assert client.post(f"{path}/start").status_code == 429
 
 
 @pytest.mark.parametrize("choice", ["heads", "tails"])
-def test_coin_flip_start_at_five_rejects_after_first_choice(api, monkeypatch, choice) -> None:
+def test_coin_flip_start_at_four_rejects_after_first_choice(api, monkeypatch, choice) -> None:
     _, _, client = _setup_player(api, "선택후선수")
     path = "/api/v1/minigames/coin-flip"
     monkeypatch.setattr("app.services.minigames.secrets.randbits", lambda _: 0)
@@ -430,7 +430,7 @@ def test_coin_flip_start_at_five_rejects_after_first_choice(api, monkeypatch, ch
     assert client.get(path).json()["state"] == flipped.json()["state"]
 
 
-def test_coin_flip_start_at_five_rejects_run_started_with_nineteen_attempts(api) -> None:
+def test_coin_flip_start_at_four_rejects_run_started_with_nineteen_attempts(api) -> None:
     _, player, client = _setup_player(api, "열아홉회선수")
     path = "/api/v1/minigames/coin-flip"
     client.post(f"{path}/start")
@@ -447,7 +447,7 @@ def test_coin_flip_start_at_five_rejects_run_started_with_nineteen_attempts(api)
     assert client.get(path).json()["state"] == second
 
 
-def test_coin_flip_start_at_five_accepts_unplayed_run_across_korea_midnight(
+def test_coin_flip_start_at_four_accepts_unplayed_run_across_korea_midnight(
     api, monkeypatch
 ) -> None:
     _, player, client = _setup_player(api, "자정선수")
@@ -469,7 +469,7 @@ def test_coin_flip_start_at_five_accepts_unplayed_run_across_korea_midnight(
     boosted = client.post(f"{path}/start-at-five", json={"run_id": 1})
     assert boosted.status_code == 200, boosted.text
     assert boosted.json()["state"]["remaining_attempts"] == 0
-    assert boosted.json()["state"]["current_streak"] == 5
+    assert boosted.json()["state"]["current_streak"] == 4
     with api.session_factory() as db:
         state = db.get(CoinFlipState, player["id"])
         assert state.daily_attempt_date.isoformat() == "2026-09-09"
@@ -479,19 +479,19 @@ def test_coin_flip_start_at_five_accepts_unplayed_run_across_korea_midnight(
     assert next_day == {
         "active": True,
         "run_id": 1,
-        "current_streak": 5,
-        "best_streak": 5,
+        "current_streak": 4,
+        "best_streak": 4,
         "remaining_attempts": 20,
         "can_start_at_five": False,
     }
-    # Re-entering the carried-over game preserves five and costs no new attempt.
+    # Re-entering the carried-over game preserves four and costs no new attempt.
     assert client.post(f"{path}/start").json()["state"] == next_day
     assert client.post(f"{path}/start-at-five", json={"run_id": 1}).status_code == 409
     assert client.get(path).json()["state"] == next_day
     monkeypatch.setattr("app.services.minigames.secrets.randbits", lambda _: 0)
-    lost = client.post(f"{path}/flip", json={"choice": "tails", "run_id": 1, "round_no": 6})
+    lost = client.post(f"{path}/flip", json={"choice": "tails", "run_id": 1, "round_no": 5})
     assert lost.status_code == 200, lost.text
-    assert lost.json()["final_score"] == 5
+    assert lost.json()["final_score"] == 4
     assert lost.json()["state"]["active"] is False
     assert lost.json()["state"]["remaining_attempts"] == 20
     # Only a new run uses today's quota; yesterday's boost is never charged again.
@@ -502,8 +502,8 @@ def test_coin_flip_start_at_five_accepts_unplayed_run_across_korea_midnight(
     assert restarted["can_start_at_five"] is True
 
 
-@pytest.mark.parametrize("best", [3, 5, 9])
-def test_coin_flip_start_at_five_preserves_best_and_existing_flip_interval(
+@pytest.mark.parametrize("best", [3, 4, 5, 9])
+def test_coin_flip_start_at_four_preserves_best_and_existing_flip_interval(
     api, monkeypatch, best
 ) -> None:
     _, player, client = _setup_player(api, "기존기록선수")
@@ -521,25 +521,54 @@ def test_coin_flip_start_at_five_preserves_best_and_existing_flip_interval(
         db.commit()
     response = client.post(f"{path}/start-at-five", json={"run_id": 1})
     assert response.status_code == 200, response.text
-    assert response.json()["state"]["best_streak"] == max(best, 5)
+    assert response.json()["state"]["best_streak"] == max(best, 4)
     with api.session_factory() as db:
         state = db.get(CoinFlipState, player["id"])
-        assert state.best_achieved_at == (now if best < 5 else achieved).replace(tzinfo=None)
+        assert state.best_achieved_at == (now if best < 4 else achieved).replace(tzinfo=None)
         assert state.last_flip_at == last_flip.replace(tzinfo=None)
-    limited = client.post(f"{path}/flip", json={"choice": "heads", "run_id": 1, "round_no": 6})
+    limited = client.post(f"{path}/flip", json={"choice": "heads", "run_id": 1, "round_no": 5})
     assert limited.status_code == 429
 
 
-def test_coin_flip_start_at_five_contract_and_legacy_state_default(api) -> None:
-    _, _, client = _setup_player(api, "다섯회검증선수")
+def test_coin_flip_start_at_four_contract_and_legacy_state_default(api) -> None:
+    _, _, client = _setup_player(api, "네회검증선수")
     path = "/api/v1/minigames/coin-flip/start-at-five"
-    for payload in ({}, {"run_id": 0}, {"run_id": -1}, {"run_id": 1, "score": 5}):
+    for payload in ({}, {"run_id": 0}, {"run_id": -1}, {"run_id": 1, "score": 4}):
         assert client.post(path, json=payload).status_code == 422
     state = CoinFlipStateRead(
         active=False, run_id=0, current_streak=0, best_streak=0, remaining_attempts=20
     )
     assert state.can_start_at_five is False
     assert coin_flip_can_start_at_five(None) is False
+
+
+def test_coin_flip_start_at_four_preserves_legacy_five_run_after_midnight(api, monkeypatch) -> None:
+    _, player, client = _setup_player(api, "기존다섯회선수")
+    path = "/api/v1/minigames/coin-flip"
+    now = datetime(2026, 9, 8, 14, 59, 59, tzinfo=UTC)
+    monkeypatch.setattr("app.services.minigames.utc_now", lambda: now)
+    client.post(f"{path}/start")
+    with api.session_factory() as db:
+        state = db.get(CoinFlipState, player["id"])
+        state.current_streak = 5
+        state.best_streak = 5
+        state.best_achieved_at = now
+        state.daily_attempts_used = 20
+        db.commit()
+
+    now += timedelta(seconds=1)
+    resumed = client.post(f"{path}/start").json()["state"]
+    assert resumed["current_streak"] == 5
+    assert resumed["best_streak"] == 5
+    assert resumed["remaining_attempts"] == 20
+    assert resumed["can_start_at_five"] is False
+    assert client.post(f"{path}/start-at-five", json={"run_id": 1}).status_code == 409
+    assert client.get(path).json()["state"] == resumed
+    monkeypatch.setattr("app.services.minigames.secrets.randbits", lambda _: 0)
+    won = client.post(f"{path}/flip", json={"choice": "heads", "run_id": 1, "round_no": 6})
+    assert won.status_code == 200, won.text
+    assert won.json()["state"]["current_streak"] == 6
+    assert won.json()["state"]["remaining_attempts"] == 20
 
 
 def test_paddle_flight_is_player_only_and_persists_account_best(api, monkeypatch) -> None:
@@ -885,10 +914,10 @@ def test_concurrent_new_run_starts_spend_one_daily_attempt(tmp_path, monkeypatch
 
 
 @pytest.mark.parametrize("competing_action", ["boost", "win", "lose"])
-def test_coin_flip_start_at_five_races_consume_the_unplayed_run_once(
+def test_coin_flip_start_at_four_races_consume_the_unplayed_run_once(
     tmp_path, monkeypatch, competing_action
 ) -> None:
-    database_path = tmp_path / "concurrent-coin-start-at-five.db"
+    database_path = tmp_path / "concurrent-coin-start-at-four.db"
     engine = create_engine(
         f"sqlite:///{database_path.as_posix()}",
         connect_args={"check_same_thread": False, "timeout": 10},
@@ -907,7 +936,7 @@ def test_coin_flip_start_at_five_races_consume_the_unplayed_run_once(
     monkeypatch.setattr("app.services.minigames.secrets.randbits", lambda _: 0)
     with factory() as db:
         player = User(
-            username="다섯회동시선수",
+            username="네회동시선수",
             password_hash=hash_password("20260000"),
             role=UserRole.PLAYER,
             gender=Gender.MALE,
@@ -966,8 +995,8 @@ def test_coin_flip_start_at_five_races_consume_the_unplayed_run_once(
             assert state.daily_attempt_date == now.date()
             if winner == "boost":
                 assert state.active is True
-                assert state.current_streak == 5
-                assert state.best_streak == 5
+                assert state.current_streak == 4
+                assert state.best_streak == 4
                 assert state.daily_attempts_used == 20
                 assert state.best_achieved_at == now.replace(tzinfo=None)
                 assert state.last_flip_at is None

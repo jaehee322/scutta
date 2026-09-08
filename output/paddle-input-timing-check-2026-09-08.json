@@ -1,0 +1,581 @@
+{
+  "platform": "Windows Chromium with mobile touch emulation; controlled frame/input clocks, isolated API fixtures",
+  "results": [
+    {
+      "variant": "before",
+      "timing": {
+        "pressed": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 270,
+              "radius": 12,
+              "velocityY": -330
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 430,
+                "width": 78,
+                "gapTop": 108.07991881389171,
+                "gapBottom": 198.0799188138917,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 601,
+                "width": 78,
+                "gapTop": 283.9921425250359,
+                "gapBottom": 373.9921425250359,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 772,
+                "width": 78,
+                "gapTop": 258.1649347897619,
+                "gapBottom": 348.1649347897619,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0,
+            "rngState": 2736088236,
+            "nextObstacleId": 3
+          },
+          "clock": 1001,
+          "draws": 1,
+          "queued": 1,
+          "focusCalls": 1
+        },
+        "released": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 270,
+              "radius": 12,
+              "velocityY": -330
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 430,
+                "width": 78,
+                "gapTop": 108.07991881389171,
+                "gapBottom": 198.0799188138917,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 601,
+                "width": 78,
+                "gapTop": 283.9921425250359,
+                "gapBottom": 373.9921425250359,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 772,
+                "width": 78,
+                "gapTop": 258.1649347897619,
+                "gapBottom": 348.1649347897619,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0,
+            "rngState": 2736088236,
+            "nextObstacleId": 3
+          },
+          "clock": 1001,
+          "draws": 1,
+          "queued": 1,
+          "focusCalls": 1
+        },
+        "firstFrame": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 264.9502677672896,
+              "radius": 12,
+              "velocityY": -314.64666663400004
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 428.119999996,
+                "width": 78,
+                "gapTop": 108.07991881389171,
+                "gapBottom": 198.0799188138917,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 599.119999996,
+                "width": 78,
+                "gapTop": 283.9921425250359,
+                "gapBottom": 373.9921425250359,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 770.119999996,
+                "width": 78,
+                "gapTop": 258.1649347897619,
+                "gapBottom": 348.1649347897619,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0.01566666669999995,
+            "rngState": 2736088236,
+            "nextObstacleId": 3
+          },
+          "clock": 1016.6666667,
+          "draws": 2,
+          "queued": 1,
+          "focusCalls": 1
+        },
+        "secondPress": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 259.05025,
+              "radius": 12,
+              "velocityY": -330
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 425.8,
+                "width": 78,
+                "gapTop": 108.07991881389171,
+                "gapBottom": 198.0799188138917,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 596.8000000000001,
+                "width": 78,
+                "gapTop": 283.9921425250359,
+                "gapBottom": 373.9921425250359,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 767.8000000000001,
+                "width": 78,
+                "gapTop": 258.1649347897619,
+                "gapBottom": 348.1649347897619,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0.034999999999999996,
+            "rngState": 2736088236,
+            "nextObstacleId": 3
+          },
+          "clock": 1036,
+          "draws": 3,
+          "queued": 1,
+          "focusCalls": 2
+        },
+        "olderFrame": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 259.05025,
+              "radius": 12,
+              "velocityY": -330
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 425.8,
+                "width": 78,
+                "gapTop": 108.07991881389171,
+                "gapBottom": 198.0799188138917,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 596.8000000000001,
+                "width": 78,
+                "gapTop": 283.9921425250359,
+                "gapBottom": 373.9921425250359,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 767.8000000000001,
+                "width": 78,
+                "gapTop": 258.1649347897619,
+                "gapBottom": 348.1649347897619,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0.034999999999999996,
+            "rngState": 2736088236,
+            "nextObstacleId": 3
+          },
+          "clock": 1033.3333333,
+          "draws": 4,
+          "queued": 1,
+          "focusCalls": 2
+        },
+        "nextFrame": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 253.68636110065557,
+              "radius": 12,
+              "velocityY": -313.666666634
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 423.799999996,
+                "width": 78,
+                "gapTop": 108.07991881389171,
+                "gapBottom": 198.0799188138917,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 594.7999999960001,
+                "width": 78,
+                "gapTop": 283.9921425250359,
+                "gapBottom": 373.9921425250359,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 765.7999999960001,
+                "width": 78,
+                "gapTop": 258.1649347897619,
+                "gapBottom": 348.1649347897619,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0.05166666669999995,
+            "rngState": 2736088236,
+            "nextObstacleId": 3
+          },
+          "clock": 1050,
+          "draws": 5,
+          "queued": 1,
+          "focusCalls": 2
+        }
+      },
+      "errors": [],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight/cosmetics"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        }
+      ]
+    },
+    {
+      "variant": "after",
+      "timing": {
+        "pressed": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 270,
+              "radius": 12,
+              "velocityY": -330
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 430,
+                "width": 78,
+                "gapTop": 180.7653765217401,
+                "gapBottom": 270.7653765217401,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 601,
+                "width": 78,
+                "gapTop": 113.48329888284206,
+                "gapBottom": 203.48329888284206,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 772,
+                "width": 78,
+                "gapTop": 173.2014121147804,
+                "gapBottom": 263.2014121147804,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0,
+            "rngState": 1228172735,
+            "nextObstacleId": 3
+          },
+          "clock": 1001,
+          "draws": 0,
+          "queued": 1,
+          "focusCalls": 0
+        },
+        "released": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 270,
+              "radius": 12,
+              "velocityY": -330
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 430,
+                "width": 78,
+                "gapTop": 180.7653765217401,
+                "gapBottom": 270.7653765217401,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 601,
+                "width": 78,
+                "gapTop": 113.48329888284206,
+                "gapBottom": 203.48329888284206,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 772,
+                "width": 78,
+                "gapTop": 173.2014121147804,
+                "gapBottom": 263.2014121147804,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0,
+            "rngState": 1228172735,
+            "nextObstacleId": 3
+          },
+          "clock": 1001,
+          "draws": 0,
+          "queued": 1,
+          "focusCalls": 0
+        },
+        "firstFrame": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 264.9502677672896,
+              "radius": 12,
+              "velocityY": -314.64666663400004
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 428.119999996,
+                "width": 78,
+                "gapTop": 180.7653765217401,
+                "gapBottom": 270.7653765217401,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 599.119999996,
+                "width": 78,
+                "gapTop": 113.48329888284206,
+                "gapBottom": 203.48329888284206,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 770.119999996,
+                "width": 78,
+                "gapTop": 173.2014121147804,
+                "gapBottom": 263.2014121147804,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0.01566666669999995,
+            "rngState": 1228172735,
+            "nextObstacleId": 3
+          },
+          "clock": 1016.6666667,
+          "draws": 1,
+          "queued": 1,
+          "focusCalls": 0
+        },
+        "secondPress": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 259.05025,
+              "radius": 12,
+              "velocityY": -330
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 425.8,
+                "width": 78,
+                "gapTop": 180.7653765217401,
+                "gapBottom": 270.7653765217401,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 596.8000000000001,
+                "width": 78,
+                "gapTop": 113.48329888284206,
+                "gapBottom": 203.48329888284206,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 767.8000000000001,
+                "width": 78,
+                "gapTop": 173.2014121147804,
+                "gapBottom": 263.2014121147804,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0.034999999999999996,
+            "rngState": 1228172735,
+            "nextObstacleId": 3
+          },
+          "clock": 1036,
+          "draws": 1,
+          "queued": 1,
+          "focusCalls": 0
+        },
+        "olderFrame": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 259.05025,
+              "radius": 12,
+              "velocityY": -330
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 425.8,
+                "width": 78,
+                "gapTop": 180.7653765217401,
+                "gapBottom": 270.7653765217401,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 596.8000000000001,
+                "width": 78,
+                "gapTop": 113.48329888284206,
+                "gapBottom": 203.48329888284206,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 767.8000000000001,
+                "width": 78,
+                "gapTop": 173.2014121147804,
+                "gapBottom": 263.2014121147804,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0.034999999999999996,
+            "rngState": 1228172735,
+            "nextObstacleId": 3
+          },
+          "clock": 1036,
+          "draws": 2,
+          "queued": 1,
+          "focusCalls": 0
+        },
+        "nextFrame": {
+          "state": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 254.52629000000002,
+              "radius": 12,
+              "velocityY": -316.28
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 424.12,
+                "width": 78,
+                "gapTop": 180.7653765217401,
+                "gapBottom": 270.7653765217401,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 595.1200000000001,
+                "width": 78,
+                "gapTop": 113.48329888284206,
+                "gapBottom": 203.48329888284206,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 766.1200000000001,
+                "width": 78,
+                "gapTop": 173.2014121147804,
+                "gapBottom": 263.2014121147804,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0.048999999999999995,
+            "rngState": 1228172735,
+            "nextObstacleId": 3
+          },
+          "clock": 1050,
+          "draws": 3,
+          "queued": 1,
+          "focusCalls": 0
+        }
+      },
+      "errors": [],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight/cosmetics"
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/minigames/paddle-flight/score"
+        }
+      ]
+    }
+  ]
+}

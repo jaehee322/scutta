@@ -363,7 +363,7 @@ export function MinigamePage() {
     }
   };
 
-  const startAtFive = async () => {
+  const startAtFour = async () => {
     const activeState = data?.state;
     if (
       !activeState?.active
@@ -396,14 +396,14 @@ export function MinigamePage() {
         // The write may have succeeded even if its response was lost.
         confirmedApplied = snapshot.state.run_id === activeState.run_id
           && snapshot.state.active
-          && snapshot.state.current_streak >= 5
+          && snapshot.state.current_streak >= 4
           && snapshot.state.remaining_attempts === 0;
       } catch {
         // A manual retry is safe: the server applies this once to an untouched run.
       }
       if (!confirmedApplied) {
         setError(refreshed
-          ? minigameErrorMessage(caught, "5회부터 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.")
+          ? minigameErrorMessage(caught, "4회부터 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.")
           : "처리 결과를 확인하지 못했어요. 연결이 돌아오면 다시 시도해 주세요.");
       }
     } finally {
@@ -556,9 +556,9 @@ export function MinigamePage() {
               type="button"
               className="secondary-button coin-start-at-five-button"
               disabled={isStarting || isFlipping || retrySeconds > 0}
-              onClick={() => void startAtFive()}
+              onClick={() => void startAtFour()}
             >
-              {isStarting ? "5회부터 준비하는 중…" : "시도 횟수 20회로 5회부터 시작하기"}
+              {isStarting ? "4회부터 준비하는 중…" : "시도 횟수 20회로 4회부터 시작하기"}
             </button>
           )}
           {retrySeconds > 0 && (

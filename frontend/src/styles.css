@@ -2393,6 +2393,12 @@ body.minigame-fullscreen-open {
 .paddle-skin-option:disabled { cursor: default; }
 .paddle-skin-option.is-locked .paddle-skin-option__name { color: var(--muted); }
 .paddle-skin-thumbnail { width: 100%; aspect-ratio: 4 / 3; display: block; }
+.paddle-skin-thumbnail--locked {
+  display: grid;
+  place-items: center;
+  background: #111;
+  color: #9aa1ab;
+}
 .paddle-skin-option__name { padding: 3px 5px 0; font-size: 11px; font-weight: 700; overflow-wrap: anywhere; }
 .paddle-skin-rarity { color: #617082; font-size: 10px; }
 .paddle-skin-rarity--rare { color: #7754c6; }

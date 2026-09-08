@@ -228,11 +228,14 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
     }
 
     const previousTimestamp = lastFrameTimeRef.current;
-    lastFrameTimeRef.current = timestamp;
+    // A pointer event can run after this frame's timestamp but before its callback.
+    // Never rewind the simulation clock and count that time a second time.
+    const frameTimestamp = Math.max(timestamp, previousTimestamp ?? timestamp);
+    lastFrameTimeRef.current = frameTimestamp;
     if (previousTimestamp !== null) {
       const nextState = stepPaddleFlight(
         currentState,
-        (timestamp - previousTimestamp) / 1_000,
+        (frameTimestamp - previousTimestamp) / 1_000,
       );
       gameStateRef.current = nextState;
       advanceTreasure(currentState, nextState);
@@ -272,8 +275,9 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
 
     const nextState = flapPaddleFlight(currentState);
     gameStateRef.current = nextState;
-    setPhase(nextState.status);
-    drawCurrentFrame(nextState);
+    if (nextState.status !== currentState.status) setPhase(nextState.status);
+    // Apply the flap on press, but paint only in the animation frame. Painting
+    // here as well duplicates the full canvas work during touch handling.
     if (nextState.status === "playing") {
       lastFrameTimeRef.current = inputTimestamp;
       if (animationFrameRef.current === null) {
@@ -321,7 +325,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
   ) => {
     if (!event.isPrimary || event.button !== 0) return;
     event.preventDefault();
-    event.currentTarget.focus({ preventScroll: true });
+    if (document.activeElement !== event.currentTarget) event.currentTarget.focus({ preventScroll: true });
     beginOrFlap();
   };
 
@@ -333,7 +337,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
       event.detail > 0
       || ("pointerType" in event.nativeEvent && event.nativeEvent.pointerType)
     ) return;
-    event.currentTarget.focus({ preventScroll: true });
+    if (document.activeElement !== event.currentTarget) event.currentTarget.focus({ preventScroll: true });
     beginOrFlap();
   };
 

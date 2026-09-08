@@ -6,9 +6,9 @@ import { drawSkinPreview } from "../utils/paddleFlightRender";
 import { DEFAULT_PADDLE_FLIGHT_EQUIPPED, PADDLE_FLIGHT_SKINS } from "../utils/paddleFlightSkins";
 
 const categories = [
-  { id: "background", name: "배경" },
-  { id: "paddle", name: "탁구채" },
   { id: "ball", name: "탁구공" },
+  { id: "paddle", name: "탁구채" },
+  { id: "background", name: "배경" },
 ] as const;
 const rarityNames = { default: "기본", common: "일반", rare: "희귀", legendary: "전설" };
 const collectibleSkins = PADDLE_FLIGHT_SKINS.filter((skin) => skin.rarity !== "default");
@@ -30,7 +30,7 @@ export function PaddleFlightSkinPicker({ inventory, loading, saving, onEquip, on
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const contentId = useId();
-  const [category, setCategory] = useState<keyof PaddleFlightEquipped>("background");
+  const [category, setCategory] = useState<keyof PaddleFlightEquipped>("ball");
   const equipped = inventory?.equipped ?? DEFAULT_PADDLE_FLIGHT_EQUIPPED;
   const owned = new Set(inventory?.owned ?? Object.values(DEFAULT_PADDLE_FLIGHT_EQUIPPED));
   const collected = collectibleSkins.filter((skin) => owned.has(skin.id)).length;
@@ -65,7 +65,7 @@ export function PaddleFlightSkinPicker({ inventory, loading, saving, onEquip, on
             <div className="paddle-skin-grid">
               {PADDLE_FLIGHT_SKINS.filter((skin) => skin.category === category).map((skin) => {
                 const unlocked = owned.has(skin.id);
-                const selected = equipped[skin.category] === skin.id;
+                const selected = unlocked && equipped[skin.category] === skin.id;
                 return (
                   <button
                     key={skin.id}
@@ -73,14 +73,18 @@ export function PaddleFlightSkinPicker({ inventory, loading, saving, onEquip, on
                     className={`paddle-skin-option ${selected ? "is-selected" : ""} ${!unlocked ? "is-locked" : ""}`}
                     disabled={!unlocked || !inventory || saving}
                     aria-pressed={selected}
-                    aria-label={`${skin.name}, ${rarityNames[skin.rarity]}${unlocked ? selected ? ", 선택됨" : ", 선택" : ", 아직 미보유"}`}
+                    aria-label={unlocked ? `${skin.name}, ${rarityNames[skin.rarity]}${selected ? ", 선택됨" : ", 선택"}` : "미획득 스킨, 보물상자에서 획득하면 공개"}
                     onClick={() => {
                       if (!selected) onEquip({ ...equipped, [skin.category]: skin.id });
                     }}
                   >
-                    <PaddleSkinThumbnail skinId={skin.id} />
-                    <span className="paddle-skin-option__name">{skin.name}</span>
-                    <span className={`paddle-skin-rarity paddle-skin-rarity--${skin.rarity}`}>{rarityNames[skin.rarity]}</span>
+                    {unlocked ? <PaddleSkinThumbnail skinId={skin.id} /> : (
+                      <span className="paddle-skin-thumbnail paddle-skin-thumbnail--locked" aria-hidden="true">
+                        <LockKeyhole size={24} />
+                      </span>
+                    )}
+                    <span className="paddle-skin-option__name">{unlocked ? skin.name : "미획득 스킨"}</span>
+                    <span className={`paddle-skin-rarity${unlocked ? ` paddle-skin-rarity--${skin.rarity}` : ""}`}>{unlocked ? rarityNames[skin.rarity] : "비공개"}</span>
                     <span className="paddle-skin-option__status">
                       {selected ? <><Check size={12} /> 사용 중</> : unlocked ? "보유" : <><LockKeyhole size={12} /> 미보유</>}
                     </span>

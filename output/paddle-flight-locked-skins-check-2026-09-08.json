@@ -1,0 +1,199 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "category": "배경",
+      "cards": 9,
+      "canvases": 1,
+      "locked": [
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        }
+      ],
+      "noOverflow": true
+    },
+    {
+      "category": "탁구채",
+      "cards": 9,
+      "canvases": 1,
+      "locked": [
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        }
+      ],
+      "noOverflow": true
+    },
+    {
+      "category": "탁구공",
+      "cards": 9,
+      "canvases": 1,
+      "locked": [
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        },
+        {
+          "text": "미획득 스킨비공개 미보유",
+          "label": "미획득 스킨, 보물상자에서 획득하면 공개",
+          "disabled": true,
+          "color": "rgb(17, 17, 17)",
+          "rarityClasses": "paddle-skin-rarity"
+        }
+      ],
+      "noOverflow": true
+    }
+  ],
+  "acquisitionAndSelection": true,
+  "errors": []
+}

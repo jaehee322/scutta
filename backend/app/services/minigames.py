@@ -38,6 +38,7 @@ class CoinFlipDailyLimitError(Exception):
 
 
 COIN_FLIP_DAILY_ATTEMPT_LIMIT = 20
+COIN_FLIP_BOOST_STREAK = 4
 KOREA_TIME_ZONE = ZoneInfo("Asia/Seoul")
 PADDLE_FLIGHT_SUBMISSION_INTERVAL = timedelta(milliseconds=700)
 
@@ -327,6 +328,8 @@ def _korea_today(now: datetime) -> date:
 
 
 def start_coin_flip_at_five(db: Session, *, user_id: int, run_id: int) -> CoinFlipState:
+    # Keep the existing API/service name compatible with cached PWA clients.
+    # New boosts start at four; existing runs and earned records stay untouched.
     now = utc_now()
     today = _korea_today(now)
     # Keep eligibility and the quota charge in the same write as the streak
@@ -345,15 +348,15 @@ def start_coin_flip_at_five(db: Session, *, user_id: int, run_id: int) -> CoinFl
             ),
         )
         .values(
-            current_streak=5,
+            current_streak=COIN_FLIP_BOOST_STREAK,
             daily_attempt_date=today,
             daily_attempts_used=COIN_FLIP_DAILY_ATTEMPT_LIMIT,
             best_streak=case(
-                (CoinFlipState.best_streak < 5, 5),
+                (CoinFlipState.best_streak < COIN_FLIP_BOOST_STREAK, COIN_FLIP_BOOST_STREAK),
                 else_=CoinFlipState.best_streak,
             ),
             best_achieved_at=case(
-                (CoinFlipState.best_streak < 5, now),
+                (CoinFlipState.best_streak < COIN_FLIP_BOOST_STREAK, now),
                 else_=CoinFlipState.best_achieved_at,
             ),
         )
@@ -363,7 +366,7 @@ def start_coin_flip_at_five(db: Session, *, user_id: int, run_id: int) -> CoinFl
     if state is None:
         db.rollback()
         raise CoinFlipStartAtFiveError(
-            "시도 20회가 남아 시작한 게임에서 동전을 고르기 전에만 5회부터 시작할 수 있습니다."
+            "시도 20회가 남아 시작한 게임에서 동전을 고르기 전에만 4회부터 시작할 수 있습니다."
         )
     db.commit()
     return state
