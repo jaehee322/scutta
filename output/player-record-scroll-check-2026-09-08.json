@@ -1,0 +1,370 @@
+{
+  "environment": "Windows Chromium mobile emulation and desktop; isolated mocked API; no physical iOS/Android elastic scrolling tested",
+  "results": [
+    {
+      "viewport": {
+        "width": 320,
+        "height": 640
+      },
+      "longName": true,
+      "passed": true,
+      "initial": {
+        "header": {
+          "x": 20,
+          "y": 75.203125,
+          "w": 280,
+          "h": 105
+        },
+        "close": {
+          "x": 256,
+          "y": 75.203125,
+          "w": 44,
+          "h": 44
+        },
+        "body": {
+          "x": 20,
+          "y": 192.203125,
+          "w": 280,
+          "h": 423.796875
+        },
+        "sheet": {
+          "x": 0,
+          "y": 51.203125,
+          "w": 320,
+          "h": 588.796875
+        },
+        "sheetScroll": 0,
+        "bodyScroll": 0,
+        "bodyMax": 852,
+        "overflow": "auto",
+        "overscroll": "none",
+        "docX": 320,
+        "windowX": 320,
+        "windowY": 0
+      },
+      "bottom": {
+        "header": {
+          "x": 20,
+          "y": 75.203125,
+          "w": 280,
+          "h": 105
+        },
+        "close": {
+          "x": 256,
+          "y": 75.203125,
+          "w": 44,
+          "h": 44
+        },
+        "body": {
+          "x": 20,
+          "y": 192.203125,
+          "w": 280,
+          "h": 423.796875
+        },
+        "sheet": {
+          "x": 0,
+          "y": 51.203125,
+          "w": 320,
+          "h": 588.796875
+        },
+        "sheetScroll": 0,
+        "bodyScroll": 1667,
+        "bodyMax": 1667,
+        "overflow": "auto",
+        "overscroll": "none",
+        "docX": 320,
+        "windowX": 320,
+        "windowY": 0
+      },
+      "top": {
+        "header": {
+          "x": 20,
+          "y": 75.203125,
+          "w": 280,
+          "h": 105
+        },
+        "close": {
+          "x": 256,
+          "y": 75.203125,
+          "w": 44,
+          "h": 44
+        },
+        "body": {
+          "x": 20,
+          "y": 192.203125,
+          "w": 280,
+          "h": 423.796875
+        },
+        "sheet": {
+          "x": 0,
+          "y": 51.203125,
+          "w": 320,
+          "h": 588.796875
+        },
+        "sheetScroll": 0,
+        "bodyScroll": 0,
+        "bodyMax": 1667,
+        "overflow": "auto",
+        "overscroll": "none",
+        "docX": 320,
+        "windowX": 320,
+        "windowY": 0
+      },
+      "checks": [
+        "two sections expand 5 to 10",
+        "last expanded row reachable",
+        "header/close stationary",
+        "no horizontal overflow",
+        "top/bottom wheel contained",
+        "touch pull contained in Chromium",
+        "Tab/ShiftTab trap",
+        "Escape/focus restore",
+        "reopen scroll/pages reset"
+      ],
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "longName": false,
+      "passed": true,
+      "initial": {
+        "header": {
+          "x": 20,
+          "y": 91.53125,
+          "w": 350,
+          "h": 56
+        },
+        "close": {
+          "x": 326,
+          "y": 91.53125,
+          "w": 44,
+          "h": 44
+        },
+        "body": {
+          "x": 20,
+          "y": 159.53125,
+          "w": 350,
+          "h": 660.46875
+        },
+        "sheet": {
+          "x": 0,
+          "y": 67.53125,
+          "w": 390,
+          "h": 776.46875
+        },
+        "sheetScroll": 0,
+        "bodyScroll": 0,
+        "bodyMax": 491,
+        "overflow": "auto",
+        "overscroll": "none",
+        "docX": 390,
+        "windowX": 390,
+        "windowY": 0
+      },
+      "bottom": {
+        "header": {
+          "x": 20,
+          "y": 91.53125,
+          "w": 350,
+          "h": 56
+        },
+        "close": {
+          "x": 326,
+          "y": 91.53125,
+          "w": 44,
+          "h": 44
+        },
+        "body": {
+          "x": 20,
+          "y": 159.53125,
+          "w": 350,
+          "h": 660.46875
+        },
+        "sheet": {
+          "x": 0,
+          "y": 67.53125,
+          "w": 390,
+          "h": 776.46875
+        },
+        "sheetScroll": 0,
+        "bodyScroll": 1201,
+        "bodyMax": 1201,
+        "overflow": "auto",
+        "overscroll": "none",
+        "docX": 390,
+        "windowX": 390,
+        "windowY": 0
+      },
+      "top": {
+        "header": {
+          "x": 20,
+          "y": 91.53125,
+          "w": 350,
+          "h": 56
+        },
+        "close": {
+          "x": 326,
+          "y": 91.53125,
+          "w": 44,
+          "h": 44
+        },
+        "body": {
+          "x": 20,
+          "y": 159.53125,
+          "w": 350,
+          "h": 660.46875
+        },
+        "sheet": {
+          "x": 0,
+          "y": 67.53125,
+          "w": 390,
+          "h": 776.46875
+        },
+        "sheetScroll": 0,
+        "bodyScroll": 0,
+        "bodyMax": 1201,
+        "overflow": "auto",
+        "overscroll": "none",
+        "docX": 390,
+        "windowX": 390,
+        "windowY": 0
+      },
+      "checks": [
+        "two sections expand 5 to 10",
+        "last expanded row reachable",
+        "header/close stationary",
+        "no horizontal overflow",
+        "top/bottom wheel contained",
+        "touch pull contained in Chromium",
+        "Tab/ShiftTab trap",
+        "Escape/focus restore",
+        "reopen scroll/pages reset"
+      ],
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "longName": true,
+      "passed": true,
+      "initial": {
+        "header": {
+          "x": 428,
+          "y": 48,
+          "w": 424,
+          "h": 74
+        },
+        "close": {
+          "x": 812,
+          "y": 48,
+          "w": 40,
+          "h": 40
+        },
+        "body": {
+          "x": 428,
+          "y": 134,
+          "w": 424,
+          "h": 718
+        },
+        "sheet": {
+          "x": 400,
+          "y": 20,
+          "w": 480,
+          "h": 860
+        },
+        "sheetScroll": 0,
+        "bodyScroll": 0,
+        "bodyMax": 433,
+        "overflow": "auto",
+        "overscroll": "none",
+        "docX": 1280,
+        "windowX": 1280,
+        "windowY": 0
+      },
+      "bottom": {
+        "header": {
+          "x": 428,
+          "y": 48,
+          "w": 424,
+          "h": 74
+        },
+        "close": {
+          "x": 812,
+          "y": 48,
+          "w": 40,
+          "h": 40
+        },
+        "body": {
+          "x": 428,
+          "y": 134,
+          "w": 424,
+          "h": 718
+        },
+        "sheet": {
+          "x": 400,
+          "y": 20,
+          "w": 480,
+          "h": 860
+        },
+        "sheetScroll": 0,
+        "bodyScroll": 1143,
+        "bodyMax": 1143,
+        "overflow": "auto",
+        "overscroll": "none",
+        "docX": 1280,
+        "windowX": 1280,
+        "windowY": 0
+      },
+      "top": {
+        "header": {
+          "x": 428,
+          "y": 48,
+          "w": 424,
+          "h": 74
+        },
+        "close": {
+          "x": 812,
+          "y": 48,
+          "w": 40,
+          "h": 40
+        },
+        "body": {
+          "x": 428,
+          "y": 134,
+          "w": 424,
+          "h": 718
+        },
+        "sheet": {
+          "x": 400,
+          "y": 20,
+          "w": 480,
+          "h": 860
+        },
+        "sheetScroll": 0,
+        "bodyScroll": 0,
+        "bodyMax": 1143,
+        "overflow": "auto",
+        "overscroll": "none",
+        "docX": 1280,
+        "windowX": 1280,
+        "windowY": 0
+      },
+      "checks": [
+        "two sections expand 5 to 10",
+        "last expanded row reachable",
+        "header/close stationary",
+        "no horizontal overflow",
+        "top/bottom wheel contained",
+        "Tab/ShiftTab trap",
+        "Escape/focus restore",
+        "reopen scroll/pages reset"
+      ],
+      "errors": []
+    }
+  ]
+}

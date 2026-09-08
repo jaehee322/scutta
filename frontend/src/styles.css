@@ -1104,15 +1104,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: inherit;
 }
 
+.player-record-dialog .modal-sheet {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .player-record-dialog .modal-sheet__header > div {
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
 .player-record-dialog .modal-sheet__header {
-  position: sticky;
-  top: 0;
-  z-index: 1;
+  flex: none;
   background: #fff;
   margin-bottom: 12px;
   padding-bottom: 12px;
@@ -1125,6 +1129,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .player-record-sections {
   display: grid;
   gap: 28px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: none;
+  scrollbar-width: none;
+}
+
+.player-record-sections::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .player-match-section + .player-match-section {
