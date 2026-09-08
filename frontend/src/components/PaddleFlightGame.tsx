@@ -12,307 +12,23 @@ import {
 
 import { apiRequest } from "../api/client";
 import { getAuthSessionVersion } from "../auth/authSession";
-import type { PaddleFlightOverview } from "../types";
+import type { PaddleFlightChestReward, PaddleFlightEquipped, PaddleFlightOverview } from "../types";
+import { createPaddleFlightClaimId, paddleFlightCosmetics } from "../utils/paddleFlightCosmetics";
+import { drawPaddleFlight, drawPaddleFlightEntryPreview } from "../utils/paddleFlightRender";
+import { DEFAULT_PADDLE_FLIGHT_EQUIPPED, PADDLE_FLIGHT_SKINS } from "../utils/paddleFlightSkins";
+import { createPaddleFlightTreasureState, stepPaddleFlightTreasure } from "../utils/paddleFlightTreasure";
 import { paddleFlightScores } from "../utils/paddleFlightScores";
+import { PaddleFlightSkinPicker, PaddleSkinThumbnail } from "./PaddleFlightSkinPicker";
 import { Notice } from "./Notice";
 import {
-  PADDLE_FLIGHT_WORLD,
-  type PaddleFlightPaddleGeometry,
   type PaddleFlightState,
   createInitialPaddleFlightState,
   flapPaddleFlight,
-  getPaddleFlightPaddleGeometry,
   stepPaddleFlight,
 } from "../utils/paddleFlight";
 
 interface PaddleFlightGameProps {
   userId?: number;
-}
-
-function roundedRectangle(
-  context: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radius: number,
-) {
-  const safeRadius = Math.min(radius, Math.abs(width) / 2, Math.abs(height) / 2);
-  context.beginPath();
-  context.roundRect(x, y, width, height, safeRadius);
-}
-
-function drawPaddleHandle(
-  context: CanvasRenderingContext2D,
-  paddle: PaddleFlightPaddleGeometry,
-  fromTop: boolean,
-) {
-  const [neckLeft, neckRight, buttRight] = paddle.handleBody;
-  if (!neckLeft || !neckRight || !buttRight) return;
-  const direction = fromTop ? 1 : -1;
-  const handleGradient = context.createLinearGradient(
-    paddle.handleButt.x - paddle.handleButt.radius,
-    0,
-    paddle.handleButt.x + paddle.handleButt.radius,
-    0,
-  );
-  handleGradient.addColorStop(0, "#65351f");
-  handleGradient.addColorStop(0.16, "#a85e35");
-  handleGradient.addColorStop(0.43, "#e1a069");
-  handleGradient.addColorStop(0.62, "#f0bd82");
-  handleGradient.addColorStop(0.84, "#a95d34");
-  handleGradient.addColorStop(1, "#5f311d");
-
-  context.save();
-  context.beginPath();
-  context.moveTo(neckLeft.x, neckLeft.y);
-  context.lineTo(neckRight.x, neckRight.y);
-  context.lineTo(buttRight.x, buttRight.y);
-  context.arc(
-    paddle.handleButt.x,
-    paddle.handleButt.y,
-    paddle.handleButt.radius,
-    0,
-    fromTop ? Math.PI : -Math.PI,
-    !fromTop,
-  );
-  context.closePath();
-  context.fillStyle = handleGradient;
-  context.fill();
-  context.lineWidth = 2;
-  context.strokeStyle = "#5d321f";
-  context.stroke();
-
-  context.save();
-  context.clip();
-  const neckY = neckLeft.y;
-  const buttY = paddle.handleButt.y;
-  const middleY = (neckY + buttY) / 2;
-  context.globalAlpha = 0.34;
-  context.strokeStyle = "#fff0cf";
-  context.lineWidth = 2;
-  context.beginPath();
-  context.moveTo(paddle.handleButt.x - 4, neckY + direction * 5);
-  context.quadraticCurveTo(
-    paddle.handleButt.x - 6,
-    middleY,
-    paddle.handleButt.x - 5,
-    buttY + direction * (paddle.handleButt.radius - 3),
-  );
-  context.stroke();
-
-  context.globalAlpha = 0.3;
-  context.strokeStyle = "#67351f";
-  context.lineWidth = 1;
-  context.beginPath();
-  context.moveTo(paddle.handleButt.x + 4, neckY + direction * 8);
-  context.quadraticCurveTo(
-    paddle.handleButt.x + 6,
-    middleY,
-    paddle.handleButt.x + 7,
-    buttY + direction * (paddle.handleButt.radius - 5),
-  );
-  context.stroke();
-  context.restore();
-  context.restore();
-}
-
-function drawPaddleHead(
-  context: CanvasRenderingContext2D,
-  paddle: PaddleFlightPaddleGeometry,
-  fromTop: boolean,
-) {
-  const { head } = paddle;
-  const rimGradient = context.createLinearGradient(
-    head.x - head.radius,
-    head.y,
-    head.x + head.radius,
-    head.y,
-  );
-  rimGradient.addColorStop(0, "#6a351e");
-  rimGradient.addColorStop(0.3, "#d68e54");
-  rimGradient.addColorStop(0.52, "#f1bf7e");
-  rimGradient.addColorStop(0.78, "#b56538");
-  rimGradient.addColorStop(1, "#5d2e1b");
-  const faceGradient = context.createRadialGradient(
-    head.x - 12,
-    head.y - 12,
-    4,
-    head.x,
-    head.y,
-    head.radius,
-  );
-  if (fromTop) {
-    faceGradient.addColorStop(0, "#ff747a");
-    faceGradient.addColorStop(0.56, "#d93442");
-    faceGradient.addColorStop(1, "#921b28");
-  } else {
-    faceGradient.addColorStop(0, "#555b63");
-    faceGradient.addColorStop(0.5, "#1d2025");
-    faceGradient.addColorStop(1, "#050607");
-  }
-
-  context.save();
-  context.beginPath();
-  context.arc(head.x, head.y, head.radius, 0, Math.PI * 2);
-  context.fillStyle = rimGradient;
-  context.fill();
-  context.lineWidth = 1.5;
-  context.strokeStyle = "#552c1c";
-  context.stroke();
-
-  context.beginPath();
-  context.arc(head.x, head.y, head.radius - 4.5, 0, Math.PI * 2);
-  context.fillStyle = faceGradient;
-  context.fill();
-  context.lineWidth = 1.5;
-  context.strokeStyle = fromTop ? "#781722" : "#020304";
-  context.stroke();
-
-  context.beginPath();
-  context.arc(
-    head.x,
-    head.y,
-    head.radius - 10,
-    Math.PI * 1.08,
-    Math.PI * 1.68,
-  );
-  context.strokeStyle = fromTop ? "#ffffff45" : "#ffffff30";
-  context.lineWidth = 2;
-  context.stroke();
-
-  context.beginPath();
-  context.arc(head.x + 13, head.y + 19, 2.1, 0, Math.PI * 2);
-  context.fillStyle = fromTop ? "#ffd7d84f" : "#ffffff35";
-  context.fill();
-  context.restore();
-}
-
-function drawBall(context: CanvasRenderingContext2D, state: PaddleFlightState) {
-  const { ball } = state;
-  const velocityRatio = Math.max(-0.55, Math.min(0.85, ball.velocityY / 520));
-
-  if (state.status === "playing") {
-    context.save();
-    for (let index = 3; index >= 1; index -= 1) {
-      context.beginPath();
-      context.arc(
-        ball.x - index * 8,
-        ball.y - velocityRatio * index * 5,
-        Math.max(2, ball.radius - index * 2.7),
-        0,
-        Math.PI * 2,
-      );
-      context.globalAlpha = 0.08 * (4 - index);
-      context.fillStyle = "#69809b";
-      context.fill();
-    }
-    context.restore();
-  }
-
-  context.save();
-  context.translate(ball.x, ball.y);
-  context.rotate(velocityRatio * 0.42);
-
-  context.beginPath();
-  context.arc(2, 3, ball.radius + 1, 0, Math.PI * 2);
-  context.fillStyle = "#17202c24";
-  context.filter = "blur(3px)";
-  context.fill();
-  context.filter = "none";
-
-  const ballGradient = context.createRadialGradient(
-    -ball.radius * 0.42,
-    -ball.radius * 0.48,
-    1,
-    0,
-    0,
-    ball.radius * 1.25,
-  );
-  ballGradient.addColorStop(0, "#ffffff");
-  ballGradient.addColorStop(0.62, "#f8f7f1");
-  ballGradient.addColorStop(1, "#d8d8d2");
-  context.beginPath();
-  context.arc(0, 0, ball.radius, 0, Math.PI * 2);
-  context.fillStyle = ballGradient;
-  context.fill();
-  context.lineWidth = 1.5;
-  context.strokeStyle = "#aeb4ba";
-  context.stroke();
-
-  context.beginPath();
-  context.arc(-2, 1, ball.radius * 0.36, -0.65, 0.92);
-  context.strokeStyle = "#e66c45";
-  context.lineWidth = 1.3;
-  context.stroke();
-  context.beginPath();
-  context.arc(3.8, -3.2, 1.25, 0, Math.PI * 2);
-  context.fillStyle = "#e66c45";
-  context.fill();
-  context.restore();
-}
-
-function drawPaddleFlight(canvas: HTMLCanvasElement, state: PaddleFlightState) {
-  const context = canvas.getContext("2d");
-  if (!context) return;
-
-  const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-  const { width, height } = PADDLE_FLIGHT_WORLD;
-  const backingWidth = Math.round(width * pixelRatio);
-  const backingHeight = Math.round(height * pixelRatio);
-  if (canvas.width !== backingWidth || canvas.height !== backingHeight) {
-    canvas.width = backingWidth;
-    canvas.height = backingHeight;
-  }
-  context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-  context.clearRect(0, 0, width, height);
-
-  const background = context.createLinearGradient(0, 0, 0, height);
-  background.addColorStop(0, "#e8f7ff");
-  background.addColorStop(0.58, "#f5fbff");
-  background.addColorStop(1, "#eef8f5");
-  context.fillStyle = background;
-  context.fillRect(0, 0, width, height);
-
-  context.save();
-  context.globalAlpha = 0.34;
-  context.strokeStyle = "#9fc9df";
-  context.lineWidth = 1;
-  const drift = (state.elapsedSeconds * 26) % 56;
-  for (let x = -56 - drift; x < width + 56; x += 56) {
-    context.beginPath();
-    context.moveTo(x, 0);
-    context.lineTo(x + 90, height);
-    context.stroke();
-  }
-  context.globalAlpha = 0.22;
-  context.strokeStyle = "#5cbca4";
-  context.setLineDash([8, 12]);
-  context.beginPath();
-  context.moveTo(0, height / 2);
-  context.lineTo(width, height / 2);
-  context.stroke();
-  context.restore();
-
-  for (const obstacle of state.obstacles) {
-    // Keep the stroke visible until the entire paddle is outside the canvas.
-    if (obstacle.x + obstacle.width < -2 || obstacle.x > width + 2) continue;
-    const topPaddle = getPaddleFlightPaddleGeometry(obstacle, true);
-    const bottomPaddle = getPaddleFlightPaddleGeometry(obstacle, false);
-    drawPaddleHandle(context, topPaddle, true);
-    drawPaddleHandle(context, bottomPaddle, false);
-    drawPaddleHead(context, topPaddle, true);
-    drawPaddleHead(context, bottomPaddle, false);
-  }
-
-  drawBall(context, state);
-
-  context.save();
-  context.strokeStyle = "#ffffffb8";
-  context.lineWidth = 2;
-  roundedRectangle(context, 1, 1, width - 2, height - 2, 20);
-  context.stroke();
-  context.restore();
 }
 
 function nextRunSeed(runNumber: number) {
@@ -347,12 +63,21 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
   const [overview, setOverview] = useState<PaddleFlightOverview | null>(null);
   const [loadError, setLoadError] = useState("");
   const saveState = useSyncExternalStore(paddleFlightScores.subscribe, paddleFlightScores.getSnapshot);
+  const cosmetics = useSyncExternalStore(paddleFlightCosmetics.subscribe, paddleFlightCosmetics.getSnapshot);
+  const equipped = cosmetics.inventory?.equipped ?? DEFAULT_PADDLE_FLIGHT_EQUIPPED;
+  const [rewardNotice, setRewardNotice] = useState<PaddleFlightChestReward | null>(null);
+  const [runChestCount, setRunChestCount] = useState(0);
   const [isNewBest, setIsNewBest] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null);
+  const previewBallCanvasRef = useRef<HTMLCanvasElement>(null);
   const fullscreenRef = useRef<HTMLDivElement>(null);
   const entryButtonRef = useRef<HTMLButtonElement>(null);
   const restartButtonRef = useRef<HTMLButtonElement>(null);
   const gameStateRef = useRef(createInitialPaddleFlightState({ seed: nextRunSeed(0) }));
+  const treasureStateRef = useRef(createPaddleFlightTreasureState());
+  const equippedRef = useRef<PaddleFlightEquipped>(equipped);
+  const runEquippedRef = useRef<PaddleFlightEquipped>(equipped);
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number | null>(null);
   const runNumberRef = useRef(0);
@@ -363,6 +88,63 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
   const pendingScoresRef = useRef(new Map<number, number>());
   const isMountedRef = useRef(true);
   const bestScore = overview?.best_score ?? 0;
+  const rewardName = rewardNotice ? PADDLE_FLIGHT_SKINS.find((skin) => skin.id === rewardNotice.skin_id)?.name ?? "스킨" : "";
+  const rewardMessage = rewardNotice ? `${rewardName} · ${rewardNotice.duplicate ? "이미 보유한 스킨이에요" : "새 스킨 획득!"}` : "";
+
+  useEffect(() => {
+    equippedRef.current = equipped;
+    if (isGameView) return;
+    const ballCanvas = previewBallCanvasRef.current;
+    let active = true;
+    let inView = true;
+    const updateAnimation = () => {
+      if (!active) return;
+      if (ballCanvas) ballCanvas.style.animationPlayState = inView && document.visibilityState === "visible" ? "running" : "paused";
+    };
+    const drawPreview = () => {
+      if (previewCanvasRef.current) drawPaddleFlightEntryPreview(previewCanvasRef.current, equipped, ballCanvas ?? undefined);
+    };
+    drawPreview();
+    updateAnimation();
+    const observer = typeof IntersectionObserver === "function" ? new IntersectionObserver(([entry]) => {
+      inView = entry?.isIntersecting ?? false;
+      updateAnimation();
+    }) : null;
+    if (previewCanvasRef.current) observer?.observe(previewCanvasRef.current);
+    window.addEventListener("resize", drawPreview);
+    document.addEventListener("visibilitychange", updateAnimation);
+    return () => {
+      active = false;
+      window.removeEventListener("resize", drawPreview);
+      document.removeEventListener("visibilitychange", updateAnimation);
+      observer?.disconnect();
+      if (ballCanvas) ballCanvas.style.animationPlayState = "paused";
+    };
+  }, [equipped, isGameView]);
+
+  useEffect(() => {
+    if (userId !== undefined) void paddleFlightCosmetics.load(userId);
+  }, [userId]);
+
+  useEffect(() => {
+    if (!cosmetics.lastReward) return;
+    setRewardNotice(cosmetics.lastReward);
+    const timer = window.setTimeout(() => setRewardNotice(null), 4_000);
+    return () => window.clearTimeout(timer);
+  }, [cosmetics.lastReward]);
+
+  const drawCurrentFrame = useCallback((state: PaddleFlightState) => {
+    if (canvasRef.current) drawPaddleFlight(canvasRef.current, state, runEquippedRef.current, treasureStateRef.current.chests);
+  }, []);
+
+  const advanceTreasure = useCallback((previous: PaddleFlightState, next: PaddleFlightState) => {
+    const treasure = stepPaddleFlightTreasure(treasureStateRef.current, previous, next);
+    treasureStateRef.current = treasure;
+    if (treasure.collected.length) {
+      setRunChestCount((count) => count + treasure.collected.length);
+      for (const _id of treasure.collected) paddleFlightCosmetics.collect(createPaddleFlightClaimId());
+    }
+  }, []);
 
   const stopAnimation = useCallback(() => {
     if (animationFrameRef.current !== null) {
@@ -453,8 +235,9 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
         (timestamp - previousTimestamp) / 1_000,
       );
       gameStateRef.current = nextState;
+      advanceTreasure(currentState, nextState);
       if (nextState.score !== currentState.score) recordScore(nextState.score);
-      if (canvasRef.current) drawPaddleFlight(canvasRef.current, nextState);
+      drawCurrentFrame(nextState);
 
       if (nextState.status === "gameOver") {
         finishRun(nextState);
@@ -463,7 +246,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
     }
 
     animationFrameRef.current = window.requestAnimationFrame(animateFrame);
-  }, [finishRun, recordScore]);
+  }, [advanceTreasure, drawCurrentFrame, finishRun, recordScore]);
 
   const beginOrFlap = useCallback(() => {
     let currentState = gameStateRef.current;
@@ -477,9 +260,10 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
         (inputTimestamp - previousTimestamp) / 1_000,
       );
       gameStateRef.current = advancedState;
+      advanceTreasure(currentState, advancedState);
       if (advancedState.score !== currentState.score) recordScore(advancedState.score);
       if (advancedState.status === "gameOver") {
-        if (canvasRef.current) drawPaddleFlight(canvasRef.current, advancedState);
+        drawCurrentFrame(advancedState);
         finishRun(advancedState);
         return;
       }
@@ -489,28 +273,31 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
     const nextState = flapPaddleFlight(currentState);
     gameStateRef.current = nextState;
     setPhase(nextState.status);
-    if (canvasRef.current) drawPaddleFlight(canvasRef.current, nextState);
+    drawCurrentFrame(nextState);
     if (nextState.status === "playing") {
       lastFrameTimeRef.current = inputTimestamp;
       if (animationFrameRef.current === null) {
         animationFrameRef.current = window.requestAnimationFrame(animate);
       }
     }
-  }, [animate, finishRun, recordScore]);
+  }, [advanceTreasure, animate, drawCurrentFrame, finishRun, recordScore]);
 
   const prepareRun = useCallback(() => {
     stopAnimation();
     runNumberRef.current += 1;
-    const nextState = createInitialPaddleFlightState({
-      seed: nextRunSeed(runNumberRef.current),
-    });
+    const seed = nextRunSeed(runNumberRef.current);
+    const nextState = createInitialPaddleFlightState({ seed });
+    treasureStateRef.current = createPaddleFlightTreasureState(seed ^ 0x74726561);
+    runEquippedRef.current = { ...equippedRef.current };
     gameStateRef.current = nextState;
     runBestScoreRef.current = bestScoreRef.current;
     setPhase("ready");
     setScore(0);
     setIsNewBest(false);
-    if (canvasRef.current) drawPaddleFlight(canvasRef.current, nextState);
-  }, [stopAnimation]);
+    setRunChestCount(0);
+    setRewardNotice(null);
+    drawCurrentFrame(nextState);
+  }, [drawCurrentFrame, stopAnimation]);
 
   const enterGame = () => {
     prepareRun();
@@ -620,11 +407,11 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
     if (!isGameView) return;
 
     const canvas = canvasRef.current;
-    if (canvas) drawPaddleFlight(canvas, gameStateRef.current);
+    drawCurrentFrame(gameStateRef.current);
     const focusFrame = window.requestAnimationFrame(() => canvas?.focus({ preventScroll: true }));
     const handleViewportChange = () => {
       if (document.visibilityState === "visible") lastFrameTimeRef.current = null;
-      if (canvasRef.current) drawPaddleFlight(canvasRef.current, gameStateRef.current);
+      drawCurrentFrame(gameStateRef.current);
     };
     window.addEventListener("resize", handleViewportChange);
     document.addEventListener("visibilitychange", handleViewportChange);
@@ -633,7 +420,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
       window.removeEventListener("resize", handleViewportChange);
       document.removeEventListener("visibilitychange", handleViewportChange);
     };
-  }, [isGameView]);
+  }, [drawCurrentFrame, isGameView]);
 
   useEffect(() => {
     if (!isGameView) return;
@@ -681,6 +468,14 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
         <Notice>{saveState.error || loadError}</Notice>
       )}
       {!isGameView && saveState.pendingCount > 0 && <Notice tone="info">점수를 저장하고 있어요.</Notice>}
+      {!isGameView && cosmetics.error && <Notice>{cosmetics.error}</Notice>}
+      {!isGameView && rewardNotice && <Notice tone="success">{rewardMessage}</Notice>}
+      {!isGameView && cosmetics.pendingCount > 0 && (
+        <div className="paddle-treasure-pending">
+          <Notice tone="info">{`보물상자 ${cosmetics.pendingCount}개의 보상을 저장${cosmetics.processingCount ? "하고 있어요." : "하지 못했어요. 연결 후 다시 저장해 주세요."}`}</Notice>
+          {!cosmetics.processingCount && <button type="button" className="secondary-button" onClick={() => paddleFlightCosmetics.retryClaims()}>상자 보상 다시 저장</button>}
+        </div>
+      )}
 
       <section className="paddle-flight-card" aria-labelledby="paddle-flight-card-title">
         <h2 className="visually-hidden" id="paddle-flight-card-title">탁구공 날리기 게임</h2>
@@ -698,12 +493,9 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
           </div>
         </div>
 
-        <div className="paddle-flight-preview" aria-hidden="true">
-          <span className="paddle-flight-preview__speed-line paddle-flight-preview__speed-line--one" />
-          <span className="paddle-flight-preview__speed-line paddle-flight-preview__speed-line--two" />
-          <span className="paddle-flight-preview__handle paddle-flight-preview__handle--top" />
-          <span className="paddle-flight-preview__handle paddle-flight-preview__handle--bottom" />
-          <span className="paddle-flight-preview__ball" />
+        <div className="paddle-flight-preview paddle-flight-preview--skinned" aria-label="선택한 스킨 미리보기">
+          <canvas ref={previewCanvasRef} className="paddle-flight-preview__canvas" role="img" aria-label="현재 선택한 배경, 탁구채와 탁구공" draggable={false} onContextMenu={(event) => event.preventDefault()} />
+          <canvas ref={previewBallCanvasRef} className="paddle-flight-preview__ball-canvas" aria-hidden="true" draggable={false} onContextMenu={(event) => event.preventDefault()} />
         </div>
 
         <p className="paddle-flight-entry-copy">화면을 누르면 탁구공이 위로 튀어 올라요.</p>
@@ -718,6 +510,13 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
         >
           {!overview && !loadError ? "기록 불러오는 중..." : "게임 시작"}
         </button>
+        <PaddleFlightSkinPicker
+          inventory={cosmetics.inventory}
+          loading={cosmetics.loading}
+          saving={cosmetics.savingEquipment}
+          onEquip={(selection) => paddleFlightCosmetics.equip(selection)}
+          onReload={() => { if (userId !== undefined) void paddleFlightCosmetics.load(userId); }}
+        />
       </section>
 
       <section className="coin-ranking-card" aria-labelledby="paddle-flight-ranking-title">
@@ -816,7 +615,9 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
 
               {phase === "ready" && (
                 <div className="paddle-flight-ready-overlay" aria-hidden="true">
-                  <span className="paddle-flight-ready-ball" />
+                  {runEquippedRef.current.ball === "ball_classic"
+                    ? <span className="paddle-flight-ready-ball" />
+                    : <PaddleSkinThumbnail skinId={runEquippedRef.current.ball} />}
                   <strong>탭해서 날기</strong>
                   <span>화면을 눌러 탁구공을 띄우세요</span>
                 </div>
@@ -831,6 +632,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
                 >
                   <span>GAME OVER</span>
                   <strong>{score}<small>점</small></strong>
+                  {runChestCount > 0 && <small className="paddle-treasure-run-count">{`이번 게임 보물상자 ${runChestCount}개${cosmetics.pendingCount ? " · 보상 저장 대기 중" : ""}`}</small>}
                   <p>
                     {saveState.error
                       ? saveState.error
@@ -862,7 +664,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
               현재 점수 {score}점
             </p>
             <p id="paddle-flight-controls-help" className="paddle-flight-controls-help">
-              화면을 누르면 공이 바로 올라가요.
+              {rewardNotice ? <span role="status" aria-live="polite">{rewardMessage}</span> : "화면을 누르면 공이 바로 올라가요."}
             </p>
           </div>
         </div>

@@ -1,0 +1,169 @@
+{
+  "generatedAt": "2026-09-08T02:22:41.268Z",
+  "picker": {
+    "layout": {
+      "width": 320,
+      "scrollWidth": 320,
+      "cards": 7,
+      "canvasCount": 7
+    },
+    "border": {
+      "borderTop": "1px",
+      "borderRight": "1px",
+      "borderBottom": "1px",
+      "borderLeft": "1px",
+      "color": "rgb(27, 100, 218)",
+      "boxShadow": "none",
+      "canvasInsetLeft": 1,
+      "canvasInsetRight": 1,
+      "canvasTop": 1,
+      "width": 90.65625,
+      "height": 135.5
+    },
+    "bounds": {
+      "x": 16,
+      "y": 270.1875,
+      "width": 90.65625,
+      "height": 135.5
+    },
+    "errors": [],
+    "unexpectedRequests": []
+  },
+  "gallery": {
+    "width": 1440,
+    "height": 2048,
+    "scrollWidth": 1440,
+    "cards": 21,
+    "images": 29,
+    "allImagesLoaded": true,
+    "externalLinks": 0
+  },
+  "changedGalleryImages": 2,
+  "unchangedGalleryImages": 27,
+  "imageChecks": [
+    {
+      "alt": "맑은 코트 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "클래식 러버 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "클래식 탁구공 실제 게임 재질 미리보기",
+      "changed": true
+    },
+    {
+      "alt": "살구빛 새벽 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "민트 정원 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "푸른 해안 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "코발트 스트라이프 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "비취 물결 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "산호 도트 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "귤빛 스핀 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "민트 리본 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "하늘 구름 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "오로라 베일 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "달빛 코트 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "카본 위브 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "자수정 컷 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "오팔 진주 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "흑요석 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "별의 궤도 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "황금 왕관 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "태양 코어 실제 게임 재질 미리보기",
+      "changed": false
+    },
+    {
+      "alt": "새벽의 산호빛 실제 게임 화면",
+      "changed": false
+    },
+    {
+      "alt": "새벽의 산호빛 시작 전 배너",
+      "changed": false
+    },
+    {
+      "alt": "달빛과 진주 실제 게임 화면",
+      "changed": false
+    },
+    {
+      "alt": "달빛과 진주 시작 전 배너",
+      "changed": false
+    },
+    {
+      "alt": "태양의 왕관 실제 게임 화면",
+      "changed": false
+    },
+    {
+      "alt": "태양의 왕관 시작 전 배너",
+      "changed": false
+    },
+    {
+      "alt": "동일 배율로 비교한 지름 24 공과 32×28 상자",
+      "changed": true
+    },
+    {
+      "alt": "실제 보물상자 재질을 확대한 모습",
+      "changed": false
+    }
+  ],
+  "preservedFilesSha256": {
+    "frontend/src/utils/paddleFlightRender.ts": "b23eea8f2decac4c287bd7e631c0f500853e1438906ea1937fd105b0ab69906b",
+    "frontend/src/styles.css": "3c53de5226c21f78f73a701ec4d96d6a1309f25398cb85dcd817474c5061f305",
+    "frontend/src/components/PaddleFlightSkinPicker.tsx": "0f48498f803ff081bf5892ae84fa588858ccd990a4216b3b5a4ca2c46f3e5495",
+    "output/paddle-flight-ball-eyes.png": "13bbd8635fa31e9faa47160f627a54420aedc5b279801f7956c579e66bd550e2",
+    "output/paddle-flight-ball-face-comparison.html": "70f0b53be33efb1c81b8d5bd6b85b11c148195eb94fd6fae04f025868ea2c986",
+    "output/paddle-flight-ball-face-comparison.png": "8351ce1de278ef21e489e43e7d216b1926919f91b46105988d5c6ad66b33a237"
+  }
+}

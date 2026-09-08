@@ -1,0 +1,525 @@
+{
+  "url": "http://127.0.0.1:57309/browser-check.html",
+  "sourceBefore": {
+    "src/components/PaddleFlightGame.tsx": "3ad9e38649fbde6b03213bb3e8a954e8dc43dcc205eb104b10de3c729b3fe0dc",
+    "src/components/PaddleFlightSkinPicker.tsx": "0f48498f803ff081bf5892ae84fa588858ccd990a4216b3b5a4ca2c46f3e5495",
+    "src/utils/paddleFlight.ts": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+    "src/utils/paddleFlightRender.ts": "88599717255bea2ba99524b4b1c622bc9a094e0ed84831e43224f2f7652efa52",
+    "src/utils/paddleFlightTreasure.ts": "a91933080c9a3f9a63472d63f8310bb5d0858189aa237226b7e14ba17c8d848f",
+    "src/utils/paddleFlightCosmetics.ts": "3fe4fde0a166b01bb52f9bacaa2d2633f997ee7d5fedc7ec013e15bfff0652ae",
+    "src/styles.css": "3f897c27474587d1a0fb3d20d5286974ff78a4acf21feb3e6908aa7444455752"
+  },
+  "cases": [
+    {
+      "name": "picker_position_categories_and_locks",
+      "details": {},
+      "assertions": {
+        "belowStart": true,
+        "threeCategories": true,
+        "sevenBackgrounds": true,
+        "lockedDisabled": true,
+        "lockedNoWrite": true
+      }
+    },
+    {
+      "name": "optimistic_selection_changes_preview_before_response",
+      "details": {},
+      "assertions": {
+        "selectionImmediate": true,
+        "previewChanged": true,
+        "saveStillPending": true,
+        "choicesDisabledWhileSaving": true
+      }
+    },
+    {
+      "name": "all_three_equipment_saved_and_reload_restored",
+      "details": {
+        "equipped": {
+          "background": "bg_dawn",
+          "paddle": "paddle_cobalt",
+          "ball": "ball_mint"
+        }
+      },
+      "assertions": {
+        "savedAllCategories": true,
+        "restored": true,
+        "iconUnchanged": true
+      }
+    },
+    {
+      "name": "ready_game_uses_selected_ball",
+      "details": {},
+      "assertions": {
+        "skinnedReadyThumbnail": true,
+        "defaultReadyBallAbsent": true
+      }
+    },
+    {
+      "name": "run_equipment_frozen_and_next_run_uses_latest",
+      "details": {},
+      "assertions": {
+        "currentCanvasUnchanged": true,
+        "nextRunChanged": true,
+        "nextRunClassicReadyBall": true
+      }
+    },
+    {
+      "name": "pointerdown_immediate_release_not_second_jump",
+      "details": {
+        "firstFrame": {
+          "x": 78,
+          "y": 264.84544,
+          "radius": 12,
+          "velocityY": -314.32
+        },
+        "beforeRelease": {
+          "x": 78,
+          "y": 238.31343999999996,
+          "radius": 12,
+          "velocityY": -216.3199999999999
+        },
+        "afterRelease": {
+          "x": 78,
+          "y": 236.19923999999995,
+          "radius": 12,
+          "velocityY": -206.51999999999992
+        }
+      },
+      "assertions": {
+        "rightIgnored": true,
+        "downImmediate": true,
+        "firstVelocityIsFlap": true,
+        "ballMovesUp": true,
+        "releaseDoesNotResetVelocity": true
+      }
+    },
+    {
+      "name": "playfield_longpress_and_drag_policies",
+      "details": {
+        "contextPrevented": true,
+        "dragPrevented": true,
+        "touchAction": "none",
+        "userSelect": "none",
+        "draggable": false
+      },
+      "assertions": {
+        "contextPrevented": true,
+        "dragPrevented": true,
+        "touchActionNone": true,
+        "selectionDisabled": true,
+        "dragDisabled": true
+      }
+    },
+    {
+      "name": "keyboard_flap_and_repeat",
+      "details": {
+        "enterFirst": {
+          "x": 78,
+          "y": 231.04467999999994,
+          "radius": 12,
+          "velocityY": -314.32
+        },
+        "enterRepeat": {
+          "x": 78,
+          "y": 226.14099999999996,
+          "radius": 12,
+          "velocityY": -298.64
+        }
+      },
+      "assertions": {
+        "enterFlaps": true,
+        "repeatIgnored": true,
+        "spaceAndArrowWork": true
+      }
+    },
+    {
+      "name": "escape_restores_entry_focus",
+      "details": {},
+      "assertions": {
+        "focusReturned": true,
+        "bodyUnlocked": true
+      }
+    },
+    {
+      "name": "real_world_contact_saves_before_game_ends",
+      "details": {
+        "contact": {
+          "previous": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 270,
+              "radius": 12,
+              "velocityY": -330
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 430,
+                "width": 78,
+                "gapTop": 167.69194294558838,
+                "gapBottom": 257.6919429455884,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 601,
+                "width": 78,
+                "gapTop": 180.4599549267441,
+                "gapBottom": 270.4599549267441,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 772,
+                "width": 78,
+                "gapTop": 173.60288815712556,
+                "gapBottom": 263.60288815712556,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0,
+            "rngState": 1235298051,
+            "nextObstacleId": 3
+          },
+          "next": {
+            "status": "playing",
+            "ball": {
+              "x": 78,
+              "y": 264.84544,
+              "radius": 12,
+              "velocityY": -314.32
+            },
+            "obstacles": [
+              {
+                "id": 0,
+                "x": 428.08,
+                "width": 78,
+                "gapTop": 167.69194294558838,
+                "gapBottom": 257.6919429455884,
+                "scored": false
+              },
+              {
+                "id": 1,
+                "x": 599.08,
+                "width": 78,
+                "gapTop": 180.4599549267441,
+                "gapBottom": 270.4599549267441,
+                "scored": false
+              },
+              {
+                "id": 2,
+                "x": 770.08,
+                "width": 78,
+                "gapTop": 173.60288815712556,
+                "gapBottom": 263.60288815712556,
+                "scored": false
+              }
+            ],
+            "score": 0,
+            "elapsedSeconds": 0.016,
+            "rngState": 1235298051,
+            "nextObstacleId": 3
+          },
+          "inputChests": [
+            {
+              "id": 9001,
+              "x": 80,
+              "y": 270,
+              "width": 32,
+              "height": 28
+            }
+          ],
+          "collected": [
+            9001
+          ]
+        },
+        "claimId": "bfa7ec93-6538-4eef-87a4-b00d0b94de1a"
+      },
+      "assertions": {
+        "actualContactCollected": true,
+        "oneClaim": true,
+        "validUuid": true,
+        "savedWhilePlaying": true,
+        "unlockedOwnedSkin": true,
+        "belowBoardFeedback": true,
+        "noBlockingRewardDialog": true,
+        "newRewardMessage": true
+      }
+    },
+    {
+      "name": "restart_resets_chest_and_reports_duplicate",
+      "details": {
+        "claimIds": [
+          "bfa7ec93-6538-4eef-87a4-b00d0b94de1a",
+          "97818136-68bf-4593-a56d-0f7b0297e563"
+        ]
+      },
+      "assertions": {
+        "noRepeatedCollection": true,
+        "resetReady": true,
+        "newRunNewUuid": true,
+        "duplicateText": true,
+        "stillPlaying": true
+      }
+    },
+    {
+      "name": "uncertain_response_retry_same_receipt",
+      "details": {
+        "claimIds": [
+          "81122300-6de9-4da7-93d5-c47d028ac8d1",
+          "81122300-6de9-4da7-93d5-c47d028ac8d1"
+        ]
+      },
+      "assertions": {
+        "persistedBeforeResponse": true,
+        "sameUuid": true,
+        "serverOpenedOnlyOnce": true,
+        "originalNewRewardNotDuplicate": true,
+        "pendingCleared": true
+      }
+    },
+    {
+      "name": "new_page_recovers_same_account_pending_uuid",
+      "details": {
+        "newPendingId": "bbb3b2b3-859e-4967-99a0-bdba65d0f7b1"
+      },
+      "assertions": {
+        "sameRecoveredUuid": true,
+        "recoveredOwned": true,
+        "pendingRemoved": true
+      }
+    },
+    {
+      "name": "account_switch_rejects_old_reward",
+      "details": {
+        "accountSnapshot": {
+          "inventory": {
+            "owned": [
+              "bg_classic",
+              "paddle_classic",
+              "ball_classic"
+            ],
+            "equipped": {
+              "background": "bg_classic",
+              "paddle": "paddle_classic",
+              "ball": "ball_classic"
+            },
+            "opened_chests": 0
+          },
+          "loading": false,
+          "savingEquipment": false,
+          "pendingCount": 0,
+          "processingCount": 0,
+          "error": "",
+          "lastReward": null
+        },
+        "claims": [
+          {
+            "pathname": "/minigames/paddle-flight/cosmetics/chests",
+            "method": "POST",
+            "userId": 7,
+            "body": {
+              "claim_id": "2e66f6a7-c3a2-46a7-a214-e64593878a6c"
+            }
+          }
+        ]
+      },
+      "assertions": {
+        "secondAccountDefaultsOnly": true,
+        "noOldRewardNotice": true,
+        "noReplayForOtherUser": true,
+        "oldPendingPreserved": true
+      }
+    },
+    {
+      "name": "cosmetic_read_failure_does_not_block_game",
+      "details": {},
+      "assertions": {
+        "gameStillPlays": true,
+        "defaultPhysics": true,
+        "noInventoryNeeded": true
+      }
+    },
+    {
+      "name": "entry_preview_resize_and_image_policies",
+      "details": {
+        "beforeResize": {
+          "width": 244,
+          "height": 188,
+          "cssWidth": 244,
+          "cssHeight": 188,
+          "ratio": 1
+        },
+        "afterResize": {
+          "width": 418,
+          "height": 188,
+          "cssWidth": 418,
+          "cssHeight": 188,
+          "ratio": 1
+        },
+        "imagePolicies": [
+          {
+            "draggable": false,
+            "contextPrevented": true
+          },
+          {
+            "draggable": false,
+            "contextPrevented": true
+          },
+          {
+            "draggable": false,
+            "contextPrevented": true
+          },
+          {
+            "draggable": false,
+            "contextPrevented": true
+          },
+          {
+            "draggable": false,
+            "contextPrevented": true
+          },
+          {
+            "draggable": false,
+            "contextPrevented": true
+          },
+          {
+            "draggable": false,
+            "contextPrevented": true
+          },
+          {
+            "draggable": false,
+            "contextPrevented": true
+          }
+        ]
+      },
+      "assertions": {
+        "backingWidthUpdated": true,
+        "backingHeightMatches": true,
+        "allPreviewDraggingDisabled": true,
+        "allPreviewContextMenusPrevented": true
+      }
+    },
+    {
+      "name": "mobile_picker_scroll_and_width",
+      "details": {
+        "viewport": 320,
+        "width": 320,
+        "overflow": 0,
+        "bottom": 1202.046875
+      },
+      "assertions": {
+        "noPageOverflow": true,
+        "noSkinOverflow": true,
+        "pageScrollable": true,
+        "categoriesStillUsable": true
+      }
+    },
+    {
+      "name": "native_mobile_touch_hold_release_once",
+      "details": {
+        "touchStart": {
+          "x": 78,
+          "y": 264.84544,
+          "radius": 12,
+          "velocityY": -314.32
+        },
+        "touchEnd": {
+          "x": 78,
+          "y": 259.94176,
+          "radius": 12,
+          "velocityY": -298.64
+        }
+      },
+      "assertions": {
+        "startedOnTouchDown": true,
+        "noSecondJumpOnRelease": true,
+        "noSelection": true,
+        "stillPlaying": true
+      }
+    },
+    {
+      "name": "portrait_and_landscape_board_geometry",
+      "details": {
+        "portrait": {
+          "x": 12,
+          "y": 184.5,
+          "width": 296,
+          "height": 444
+        },
+        "landscape": {
+          "x": 312.328125,
+          "y": 60,
+          "width": 155.328125,
+          "height": 232.984375
+        }
+      },
+      "assertions": {
+        "ratioUnchanged": true,
+        "portraitFits": true,
+        "landscapeFits": true,
+        "exitAlwaysVisible": true
+      }
+    }
+  ],
+  "errors": [],
+  "unexpected": [],
+  "browser": "152.0.7977.82",
+  "sourceAfter": {
+    "src/components/PaddleFlightGame.tsx": "3ad9e38649fbde6b03213bb3e8a954e8dc43dcc205eb104b10de3c729b3fe0dc",
+    "src/components/PaddleFlightSkinPicker.tsx": "0f48498f803ff081bf5892ae84fa588858ccd990a4216b3b5a4ca2c46f3e5495",
+    "src/utils/paddleFlight.ts": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+    "src/utils/paddleFlightRender.ts": "88599717255bea2ba99524b4b1c622bc9a094e0ed84831e43224f2f7652efa52",
+    "src/utils/paddleFlightTreasure.ts": "a91933080c9a3f9a63472d63f8310bb5d0858189aa237226b7e14ba17c8d848f",
+    "src/utils/paddleFlightCosmetics.ts": "3fe4fde0a166b01bb52f9bacaa2d2633f997ee7d5fedc7ec013e15bfff0652ae",
+    "src/styles.css": "3f897c27474587d1a0fb3d20d5286974ff78a4acf21feb3e6908aa7444455752"
+  },
+  "globalAssertions": {
+    "noPageErrors": true,
+    "noUnexpectedRequests": true,
+    "productSourcesStable": true
+  },
+  "playingEquipmentCheck": {
+    "url": "http://127.0.0.1:63761/browser-check.html",
+    "sourceBefore": {
+      "src/components/PaddleFlightGame.tsx": "3ad9e38649fbde6b03213bb3e8a954e8dc43dcc205eb104b10de3c729b3fe0dc",
+      "src/components/PaddleFlightSkinPicker.tsx": "0f48498f803ff081bf5892ae84fa588858ccd990a4216b3b5a4ca2c46f3e5495",
+      "src/utils/paddleFlight.ts": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+      "src/utils/paddleFlightRender.ts": "88599717255bea2ba99524b4b1c622bc9a094e0ed84831e43224f2f7652efa52",
+      "src/utils/paddleFlightTreasure.ts": "a91933080c9a3f9a63472d63f8310bb5d0858189aa237226b7e14ba17c8d848f",
+      "src/utils/paddleFlightCosmetics.ts": "3fe4fde0a166b01bb52f9bacaa2d2633f997ee7d5fedc7ec013e15bfff0652ae",
+      "src/styles.css": "3f897c27474587d1a0fb3d20d5286974ff78a4acf21feb3e6908aa7444455752"
+    },
+    "cases": [
+      {
+        "name": "playing_equipment_frozen_then_restart_applies_choice",
+        "details": {},
+        "assertions": {
+          "remainedPlayingDuringEquip": true,
+          "activeRunPixelsUnchanged": true,
+          "selectedDefaultPersisted": true,
+          "restartedClassicBall": true,
+          "restartedReadyState": true
+        }
+      }
+    ],
+    "errors": [],
+    "unexpected": [],
+    "browser": "152.0.7977.82",
+    "sourceAfter": {
+      "src/components/PaddleFlightGame.tsx": "3ad9e38649fbde6b03213bb3e8a954e8dc43dcc205eb104b10de3c729b3fe0dc",
+      "src/components/PaddleFlightSkinPicker.tsx": "0f48498f803ff081bf5892ae84fa588858ccd990a4216b3b5a4ca2c46f3e5495",
+      "src/utils/paddleFlight.ts": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+      "src/utils/paddleFlightRender.ts": "88599717255bea2ba99524b4b1c622bc9a094e0ed84831e43224f2f7652efa52",
+      "src/utils/paddleFlightTreasure.ts": "a91933080c9a3f9a63472d63f8310bb5d0858189aa237226b7e14ba17c8d848f",
+      "src/utils/paddleFlightCosmetics.ts": "3fe4fde0a166b01bb52f9bacaa2d2633f997ee7d5fedc7ec013e15bfff0652ae",
+      "src/styles.css": "3f897c27474587d1a0fb3d20d5286974ff78a4acf21feb3e6908aa7444455752"
+    },
+    "globalAssertions": {
+      "noPageErrors": true,
+      "noUnexpectedRequests": true,
+      "productSourcesStable": true
+    }
+  }
+}

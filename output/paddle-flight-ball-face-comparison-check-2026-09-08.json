@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-09-08T02:13:33.856Z",
+  "layout": {
+    "width": 1360,
+    "height": 1560,
+    "scrollWidth": 1360,
+    "skinCards": 6,
+    "images": 24,
+    "allImagesLoaded": true,
+    "externalLinks": 0
+  },
+  "preservedFilesSha256": {
+    "frontend/src/utils/paddleFlightRender.ts": "ef99af7c069ab0a8cd0017d2d76774100b58f117872e02827e99e25f8689284d",
+    "output/paddle-flight-skins.html": "9fb7f777423f7da05afc63c6a2917934dc1192ffce32a4e5744e3b7282a37495",
+    "output/paddle-flight-skins.png": "286e4f839117183b1728dde8eac267ce27d4b922c2c907c337c1b6f106918c06",
+    "output/paddle-flight-ball-eyes.png": "e72329a06baaea05c1e58baa0a948b5021ce6017203e5b387652f5987a68c778"
+  },
+  "sourceSha256": {
+    "paddleFlight": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+    "paddleFlightSkins": "d088d925ef724c75bd6ef639990c097c4a2dbd679b994274620b880b1addb27a",
+    "paddleFlightRender": "ef99af7c069ab0a8cd0017d2d76774100b58f117872e02827e99e25f8689284d",
+    "paddleFlightRenderNoMouth": "98c999bf5b4b135ade5ed673b3733504b66e3a636a9d79cc77a93e995e5a8500"
+  },
+  "newBallSkins": [
+    {
+      "id": "ball_tangerine",
+      "name": "귤빛 스핀"
+    },
+    {
+      "id": "ball_mint",
+      "name": "민트 리본"
+    },
+    {
+      "id": "ball_sky",
+      "name": "하늘 구름"
+    },
+    {
+      "id": "ball_pearl",
+      "name": "오팔 진주"
+    },
+    {
+      "id": "ball_obsidian",
+      "name": "흑요석"
+    },
+    {
+      "id": "ball_solar",
+      "name": "태양 코어"
+    }
+  ],
+  "actualDiameterCssPx": 24,
+  "identicalAngleVelocityY": -140,
+  "currentA": "eye and mouth curve",
+  "comparisonB": "eye only; mouth removed",
+  "productionAndExistingGalleryUnchanged": true
+}

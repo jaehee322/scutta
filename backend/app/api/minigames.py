@@ -15,6 +15,12 @@ from app.schemas.minigames import (
     PaddleFlightRankingEntry,
     PaddleFlightScoreRequest,
 )
+from app.schemas.paddle_cosmetics import (
+    PaddleFlightChestRequest,
+    PaddleFlightChestResponse,
+    PaddleFlightCosmeticsRead,
+    PaddleFlightEquipment,
+)
 from app.services.minigames import (
     CoinFlipDailyLimitError,
     CoinFlipNotActiveError,
@@ -31,6 +37,13 @@ from app.services.minigames import (
     start_coin_flip,
     start_coin_flip_at_five,
     submit_paddle_flight_score,
+)
+from app.services.paddle_cosmetics import (
+    CosmeticsPlayerUnavailableError,
+    InvalidPaddleEquipmentError,
+    equip_paddle_cosmetics,
+    get_paddle_cosmetics,
+    open_paddle_chest,
 )
 
 router = APIRouter(prefix="/minigames/coin-flip", tags=["minigames"])
@@ -170,3 +183,34 @@ def submit_paddle_flight_game_score(
 ) -> PaddleFlightOverview:
     submit_paddle_flight_score(db, user_id=current_player.id, score=payload.score)
     return _paddle_flight_overview(db, user_id=current_player.id)
+
+
+@paddle_flight_router.get("/cosmetics", response_model=PaddleFlightCosmeticsRead)
+def get_paddle_flight_cosmetics(
+    db: DbSession, current_player: CurrentPlayer
+) -> PaddleFlightCosmeticsRead:
+    return get_paddle_cosmetics(db, user_id=current_player.id)
+
+
+@paddle_flight_router.patch("/cosmetics", response_model=PaddleFlightCosmeticsRead)
+def equip_paddle_flight_cosmetics(
+    payload: PaddleFlightEquipment, db: DbSession, current_player: CurrentPlayer
+) -> PaddleFlightCosmeticsRead:
+    try:
+        return equip_paddle_cosmetics(db, user_id=current_player.id, equipment=payload)
+    except InvalidPaddleEquipmentError as error:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(error)
+        ) from error
+    except CosmeticsPlayerUnavailableError as error:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error
+
+
+@paddle_flight_router.post("/cosmetics/chests", response_model=PaddleFlightChestResponse)
+def open_paddle_flight_chest(
+    payload: PaddleFlightChestRequest, db: DbSession, current_player: CurrentPlayer
+) -> PaddleFlightChestResponse:
+    try:
+        return open_paddle_chest(db, user_id=current_player.id, claim_id=payload.claim_id)
+    except CosmeticsPlayerUnavailableError as error:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(error)) from error

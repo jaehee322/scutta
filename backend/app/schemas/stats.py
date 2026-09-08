@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.models import Gender
 
@@ -61,6 +61,19 @@ class SettlementCategory(BaseModel):
     tickets: int
     total_tickets: int
     probability_percent: float
+
+
+class SettlementDistributionEntry(BaseModel):
+    player_id: int
+    username: str
+    tickets: int = Field(ge=1)
+    probability_percent: float = Field(ge=0, le=100)
+    rank: int = Field(ge=1)
+
+
+class SettlementDistribution(SettlementCategory):
+    holder_count: int = Field(ge=0)
+    entries: list[SettlementDistributionEntry]
 
 
 class SettlementResponse(BaseModel):

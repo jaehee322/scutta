@@ -1,0 +1,7 @@
+{
+  "revision": "20260909_0012",
+  "existing_tables_compared": 17,
+  "all_existing_rows_identical": true,
+  "foreign_key_check": "ok",
+  "integrity_check": "ok"
+}

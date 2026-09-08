@@ -30,7 +30,7 @@ router = APIRouter(prefix="/matches", tags=["matches"])
 admin_router = APIRouter(prefix="/admin/matches", tags=["admin:matches"])
 
 
-def _match_read(record: MatchRecord) -> MatchRead:
+def match_read(record: MatchRecord) -> MatchRead:
     match = record.match
     winner_id = match.player1_id if match.score1 > match.score2 else match.player2_id
     loser_id = match.player2_id if winner_id == match.player1_id else match.player1_id
@@ -79,7 +79,7 @@ def submit_match(
         )
     except (DailyMatchConflictError, InvalidMatchError, PlayerNotFoundError) as error:
         _raise_match_error(error)
-    return _match_read(record)
+    return match_read(record)
 
 
 @router.get("", response_model=MatchListResponse)
@@ -96,7 +96,7 @@ def list_my_matches(
         offset=offset,
     )
     return MatchListResponse(
-        items=[_match_read(record) for record in records],
+        items=[match_read(record) for record in records],
         total=total,
         limit=limit,
         offset=offset,
@@ -117,7 +117,7 @@ def list_all_matches(
         casual_only=True,
     )
     return MatchListResponse(
-        items=[_match_read(record) for record in records],
+        items=[match_read(record) for record in records],
         total=total,
         limit=limit,
         offset=offset,
@@ -145,7 +145,7 @@ def patch_match(
         PlayerNotFoundError,
     ) as error:
         _raise_match_error(error)
-    return _match_read(record)
+    return match_read(record)
 
 
 @admin_router.delete("/{match_id}", status_code=status.HTTP_204_NO_CONTENT)

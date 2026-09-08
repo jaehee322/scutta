@@ -1,0 +1,3350 @@
+{
+  "summary": {
+    "status": "passed",
+    "uniqueCases": 12,
+    "successfulChecksAcrossFinalUniqueCases": 65,
+    "cases": [
+      {
+        "name": "27 skins: 9 cards in each 3 by 3 grid, collectible denominator 24 at 320px",
+        "status": "passed",
+        "details": [
+          {
+            "category": "배경",
+            "columns": "78px 78px 78px",
+            "rects": [
+              {
+                "x": 35,
+                "y": 669.59375,
+                "width": 78,
+                "height": 126,
+                "name": "맑은 코트, 기본, 선택됨"
+              },
+              {
+                "x": 121,
+                "y": 669.59375,
+                "width": 78,
+                "height": 126,
+                "name": "살구빛 새벽, 일반, 아직 미보유"
+              },
+              {
+                "x": 207,
+                "y": 669.59375,
+                "width": 78,
+                "height": 126,
+                "name": "민트 정원, 일반, 아직 미보유"
+              },
+              {
+                "x": 35,
+                "y": 803.59375,
+                "width": 78,
+                "height": 126,
+                "name": "푸른 해안, 일반, 아직 미보유"
+              },
+              {
+                "x": 121,
+                "y": 803.59375,
+                "width": 78,
+                "height": 126,
+                "name": "벚꽃 바람, 일반, 선택"
+              },
+              {
+                "x": 207,
+                "y": 803.59375,
+                "width": 78,
+                "height": 126,
+                "name": "오로라 베일, 희귀, 아직 미보유"
+              },
+              {
+                "x": 35,
+                "y": 937.59375,
+                "width": 78,
+                "height": 126,
+                "name": "달빛 코트, 희귀, 아직 미보유"
+              },
+              {
+                "x": 121,
+                "y": 937.59375,
+                "width": 78,
+                "height": 126,
+                "name": "빙하 호수, 희귀, 선택"
+              },
+              {
+                "x": 207,
+                "y": 937.59375,
+                "width": 78,
+                "height": 126,
+                "name": "별의 궤도, 전설, 아직 미보유"
+              }
+            ],
+            "scrollWidth": 320,
+            "innerWidth": 320
+          },
+          {
+            "category": "탁구채",
+            "columns": "78px 78px 78px",
+            "rects": [
+              {
+                "x": 35,
+                "y": 669.59375,
+                "width": 78,
+                "height": 141,
+                "name": "클래식 러버, 기본, 선택됨"
+              },
+              {
+                "x": 121,
+                "y": 669.59375,
+                "width": 78,
+                "height": 141,
+                "name": "코발트 스트라이프, 일반, 아직 미보유"
+              },
+              {
+                "x": 207,
+                "y": 669.59375,
+                "width": 78,
+                "height": 141,
+                "name": "비취 물결, 일반, 아직 미보유"
+              },
+              {
+                "x": 35,
+                "y": 818.59375,
+                "width": 78,
+                "height": 126,
+                "name": "산호 도트, 일반, 아직 미보유"
+              },
+              {
+                "x": 121,
+                "y": 818.59375,
+                "width": 78,
+                "height": 126,
+                "name": "단풍 러버, 일반, 선택"
+              },
+              {
+                "x": 207,
+                "y": 818.59375,
+                "width": 78,
+                "height": 126,
+                "name": "카본 위브, 희귀, 아직 미보유"
+              },
+              {
+                "x": 35,
+                "y": 952.59375,
+                "width": 78,
+                "height": 126,
+                "name": "자수정 컷, 희귀, 아직 미보유"
+              },
+              {
+                "x": 121,
+                "y": 952.59375,
+                "width": 78,
+                "height": 126,
+                "name": "티타늄 링, 희귀, 선택"
+              },
+              {
+                "x": 207,
+                "y": 952.59375,
+                "width": 78,
+                "height": 126,
+                "name": "황금 왕관, 전설, 아직 미보유"
+              }
+            ],
+            "scrollWidth": 320,
+            "innerWidth": 320
+          },
+          {
+            "category": "탁구공",
+            "columns": "78px 78px 78px",
+            "rects": [
+              {
+                "x": 35,
+                "y": 669.59375,
+                "width": 78,
+                "height": 141,
+                "name": "클래식 탁구공, 기본, 선택됨"
+              },
+              {
+                "x": 121,
+                "y": 669.59375,
+                "width": 78,
+                "height": 141,
+                "name": "귤빛 스핀, 일반, 아직 미보유"
+              },
+              {
+                "x": 207,
+                "y": 669.59375,
+                "width": 78,
+                "height": 141,
+                "name": "민트 리본, 일반, 아직 미보유"
+              },
+              {
+                "x": 35,
+                "y": 818.59375,
+                "width": 78,
+                "height": 126,
+                "name": "하늘 구름, 일반, 아직 미보유"
+              },
+              {
+                "x": 121,
+                "y": 818.59375,
+                "width": 78,
+                "height": 126,
+                "name": "베리 소다, 일반, 선택"
+              },
+              {
+                "x": 207,
+                "y": 818.59375,
+                "width": 78,
+                "height": 126,
+                "name": "오팔 진주, 희귀, 아직 미보유"
+              },
+              {
+                "x": 35,
+                "y": 952.59375,
+                "width": 78,
+                "height": 126,
+                "name": "흑요석, 희귀, 아직 미보유"
+              },
+              {
+                "x": 121,
+                "y": 952.59375,
+                "width": 78,
+                "height": 126,
+                "name": "라군 물결, 희귀, 선택"
+              },
+              {
+                "x": 207,
+                "y": 952.59375,
+                "width": 78,
+                "height": 126,
+                "name": "태양 코어, 전설, 아직 미보유"
+              }
+            ],
+            "scrollWidth": 320,
+            "innerWidth": 320
+          }
+        ],
+        "verificationRun": "animation-focused-run.json"
+      },
+      {
+        "name": "New ball selection updates only ball canvas immediately before server response",
+        "status": "passed",
+        "details": {
+          "before": {
+            "background": "9714604b",
+            "ball": "b5b4bedf",
+            "transform": "matrix(0.997502, -0.0706429, 0.0706429, 0.997502, 0, 6.59599)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "scrollY": 0,
+            "previewTop": 130,
+            "animation": [
+              {
+                "currentTime": 1900.077999934204,
+                "playState": "running",
+                "pending": false
+              }
+            ],
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "during": {
+            "background": "9714604b",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.999176, -0.0405899, 0.0405899, 0.999176, 0, 4.23594)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "scrollY": 0,
+            "previewTop": 130,
+            "animation": [
+              {
+                "currentTime": 1950.015999934204,
+                "playState": "running",
+                "pending": true
+              }
+            ],
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "after": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.981642, 0.190735, -0.190735, 0.981642, 0, -13.9941)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "scrollY": 0,
+            "previewTop": 130,
+            "animation": [
+              {
+                "currentTime": 2433.331999934204,
+                "playState": "running",
+                "pending": true
+              }
+            ],
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          }
+        },
+        "verificationRun": "animation-focused-run.json"
+      },
+      {
+        "name": "Entry preview animates with CSS transform; both canvas bitmaps stay stable",
+        "status": "passed",
+        "details": [
+          {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.98357, 0.180529, -0.180529, 0.98357, 0, -13.1797)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "scrollY": 0,
+            "previewTop": 130,
+            "animation": [
+              {
+                "currentTime": 2549.979999934204,
+                "playState": "running",
+                "pending": false
+              }
+            ],
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.998692, 0.0511304, -0.0511304, 0.998692, 0, -2.95798)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "scrollY": 0,
+            "previewTop": 130,
+            "animation": [
+              {
+                "currentTime": 2833.339999934204,
+                "playState": "running",
+                "pending": false
+              }
+            ],
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.994746, -0.102374, 0.102374, 0.994746, 0, 9.09334)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "scrollY": 0,
+            "previewTop": 130,
+            "animation": [
+              {
+                "currentTime": 3100.073999934204,
+                "playState": "running",
+                "pending": false
+              }
+            ],
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          }
+        ],
+        "verificationRun": "animation-focused-run.json"
+      },
+      {
+        "name": "Locked new/legendary cards stay disabled and do not send writes",
+        "status": "passed",
+        "verificationRun": "second-run.json"
+      },
+      {
+        "name": "Real IntersectionObserver pauses offscreen preview and resumes when scrolled back",
+        "status": "passed",
+        "details": {
+          "first": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.990268, -0.139173, 0.139173, 0.990268, 0, 12)",
+            "playState": "paused",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "second": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.990268, -0.139173, 0.139173, 0.990268, 0, 12)",
+            "playState": "paused",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "resumed": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.997088, 0.0762534, -0.0762534, 0.997088, 0, -4.93181)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "moved": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.982733, 0.185032, -0.185032, 0.982733, 0, -13.5388)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          }
+        },
+        "verificationRun": "second-run.json"
+      },
+      {
+        "name": "Visibility lifecycle pauses and resumes; document state simulation explicitly recorded",
+        "status": "passed",
+        "details": {
+          "nativeStateAfterTabSwitch": "visible",
+          "verifiedLifecycle": "Synthetic visibilityState + visibilitychange, actual handler",
+          "hidden": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.989535, 0.14429, -0.14429, 0.989535, 0, -10.3)",
+            "playState": "paused",
+            "name": "paddle-preview-ball",
+            "visibility": "hidden",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "hiddenLater": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.989535, 0.14429, -0.14429, 0.989535, 0, -10.3)",
+            "playState": "paused",
+            "name": "paddle-preview-ball",
+            "visibility": "hidden",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "visible": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.99058, 0.136933, -0.136933, 0.99058, 0, -9.7174)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "visibleLater": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.999674, -0.0255197, 0.0255197, 0.999674, 0, 3.05371)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          }
+        },
+        "verificationRun": "second-run.json"
+      },
+      {
+        "name": "Reduced motion removes preview animation and restoring preference resumes it",
+        "status": "passed",
+        "details": {
+          "first": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "none",
+            "playState": "running",
+            "name": "none",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "second": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "none",
+            "playState": "running",
+            "name": "none",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "resumed": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.991251, -0.131988, 0.131988, 0.991251, 0, 11.4314)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "moved": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.99956, -0.0296494, 0.0296494, 0.99956, 0, 3.37763)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          }
+        },
+        "verificationRun": "second-run.json"
+      },
+      {
+        "name": "Resize redraws matching bitmap dimensions and keeps circular ball geometry",
+        "status": "passed",
+        "details": [
+          {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.991893, 0.127076, -0.127076, 0.991893, 0, -8.93775)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          {
+            "background": "930fb899",
+            "ball": "777790c9",
+            "transform": "matrix(0.981642, 0.190735, -0.190735, 0.981642, 0, -13.9941)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 836,
+            "bgHeight": 376,
+            "ballWidth": 836,
+            "ballHeight": 376,
+            "bgClientWidth": 418,
+            "bgClientHeight": 188,
+            "ballClientWidth": 418,
+            "ballClientHeight": 188,
+            "scrollWidth": 780,
+            "innerWidth": 780,
+            "dpr": 2
+          },
+          {
+            "background": "9b25a24",
+            "ball": "34c22489",
+            "transform": "matrix(0.990572, 0.136994, -0.136994, 0.990572, 0, -9.7222)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 636,
+            "bgHeight": 376,
+            "ballWidth": 636,
+            "ballHeight": 376,
+            "bgClientWidth": 318,
+            "bgClientHeight": 188,
+            "ballClientWidth": 318,
+            "ballClientHeight": 188,
+            "scrollWidth": 390,
+            "innerWidth": 390,
+            "dpr": 2
+          },
+          {
+            "background": "9714604b",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.999889, -0.0148775, 0.0148775, 0.999889, 0, 2.21915)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          }
+        ],
+        "verificationRun": "second-run.json"
+      },
+      {
+        "name": "Entering actual fullscreen pauses mounted preview; native pointerdown starts immediately with zero release redraw",
+        "status": "passed",
+        "details": {
+          "paused": {
+            "background": "9714604b",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.995401, -0.0958008, 0.0958008, 0.995401, 0, 8.57541)",
+            "playState": "paused",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "pausedLater": {
+            "background": "9714604b",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.995401, -0.0958008, 0.0958008, 0.995401, 0, 8.57541)",
+            "playState": "paused",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "labelAtDown": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+          "draws": {
+            "before": 1,
+            "afterDown": 2,
+            "beforeUp": 4,
+            "afterUp": 4
+          },
+          "policy": {
+            "contextPrevented": true,
+            "dragPrevented": true,
+            "touchAction": "none",
+            "selection": "none"
+          },
+          "returned": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.991104, -0.133087, 0.133087, 0.991104, 0, 11.5183)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "returnedLater": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.994009, -0.109297, 0.109297, 0.994009, 0, 9.63919)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          }
+        },
+        "verificationRun": "second-run.json"
+      },
+      {
+        "name": "Preview and thumbnail prevent native context menus and dragging",
+        "status": "passed",
+        "details": [
+          {
+            "className": "paddle-flight-preview__canvas",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          },
+          {
+            "className": "paddle-flight-preview__ball-canvas",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          },
+          {
+            "className": "paddle-skin-thumbnail",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          },
+          {
+            "className": "paddle-skin-thumbnail",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          },
+          {
+            "className": "paddle-skin-thumbnail",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          },
+          {
+            "className": "paddle-skin-thumbnail",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          },
+          {
+            "className": "paddle-skin-thumbnail",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          },
+          {
+            "className": "paddle-skin-thumbnail",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          },
+          {
+            "className": "paddle-skin-thumbnail",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          },
+          {
+            "className": "paddle-skin-thumbnail",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          },
+          {
+            "className": "paddle-skin-thumbnail",
+            "draggable": false,
+            "prevented": true,
+            "userSelect": "none"
+          }
+        ],
+        "verificationRun": "second-run.json"
+      },
+      {
+        "name": "Fresh page GET restores selected new ball and 24 collectible denominator",
+        "status": "passed",
+        "details": {
+          "before": {
+            "background": "b3c85da9",
+            "ball": "9b6abb28",
+            "transform": "matrix(0.994701, -0.102806, 0.102806, 0.994701, 0, 9.12737)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "restored": {
+            "background": "9714604b",
+            "ball": "aaea16f7",
+            "transform": "matrix(0.990268, -0.139173, 0.139173, 0.990268, 0, 12)",
+            "playState": "running",
+            "name": "paddle-preview-ball",
+            "visibility": "visible",
+            "bgWidth": 496,
+            "bgHeight": 376,
+            "ballWidth": 496,
+            "ballHeight": 376,
+            "bgClientWidth": 248,
+            "bgClientHeight": 188,
+            "ballClientWidth": 248,
+            "ballClientHeight": 188,
+            "scrollWidth": 320,
+            "innerWidth": 320,
+            "dpr": 2
+          },
+          "difference": {
+            "width": 496,
+            "height": 376,
+            "previousWidth": 496,
+            "previousHeight": 376,
+            "different": 39,
+            "opaque": 2936,
+            "meanChannelDifference": 0.005023841961852861,
+            "maximum": 1
+          }
+        },
+        "verificationRun": "second-run.json"
+      },
+      {
+        "name": "No runtime errors; source files unchanged during QA",
+        "status": "passed",
+        "verificationRun": "second-run.json"
+      }
+    ],
+    "executionNotes": [
+      "Consolidated independent results, not a claim that all cases ran in one uninterrupted final pass. Original attempt logs preserved.",
+      "Exact reload bitmap hashing was narrowed to pixel comparison: same equipped ball, same dimensions and same alpha bounds, maximum channel delta 1/255. A broad hash-equality assertion overconstrained canvas readback.",
+      "The first broad run passed animation sampling. The second broad run sampled an unchanged initial transform during viewport movement. The focused run explicitly completed instantaneous scrolling to scrollY=0, recorded a non-pending running animation, and verified changing animation currentTime/transform with stable canvas bitmaps. Product source unchanged.",
+      "Actual Chromium scrolling + IntersectionObserver and native mouse down/up verified. Hidden/visible state test uses controlled document properties/events because a second headless tab leaves the first visible.",
+      "Only fixture APIs were used. Browser and Vite server closed in all attempts; existing port 8000 and real user state untouched."
+    ],
+    "sourceHashesBefore": {
+      "components/PaddleFlightGame.tsx": "5616a863f357b48ce0a557d89c530bfc8ee17d43d16ae6e6747b5177e44cf872",
+      "components/PaddleFlightSkinPicker.tsx": "1045f73d461f3495e284f8f23cb9715f2b9532b01865ecb01757bcd9f688ebd4",
+      "utils/paddleFlightSkins.ts": "907dc60265fae559f64cf6dd5b27fd21527215473bae28c96b620ba3d7f873f3",
+      "utils/paddleFlightRender.ts": "8d270d2f894aca3a9558821eaa1e1f8510677676f638b72978bdb405f4490bbd",
+      "utils/paddleFlight.ts": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+      "utils/paddleFlightTreasure.ts": "5789e5aa55e3c66698f9fb620244ec2e72bbe7a4e019620366eeb8c9a8b1d749",
+      "utils/paddleFlightCosmetics.ts": "3fe4fde0a166b01bb52f9bacaa2d2633f997ee7d5fedc7ec013e15bfff0652ae",
+      "styles.css": "b1f089f18237f014a8362a16c32ad021de727198ae2877ca54254f17f11834d5"
+    },
+    "sourceHashesStable": false,
+    "reloadPixelComparison": {
+      "width": 496,
+      "height": 376,
+      "beforeAlphaBounds": {
+        "left": 137,
+        "right": 196,
+        "top": 162,
+        "bottom": 224
+      },
+      "afterAlphaBounds": {
+        "left": 137,
+        "right": 196,
+        "top": 162,
+        "bottom": 224
+      },
+      "differentPixels": 39,
+      "maximumChannelDifference": 1,
+      "differentBounds": {
+        "left": 137,
+        "right": 196,
+        "top": 165,
+        "bottom": 223
+      }
+    },
+    "browserClosed": true,
+    "serverClosed": true,
+    "screenshots": [
+      "moving-preview-320.png",
+      "background-grid-320.png",
+      "paddle-grid-320.png",
+      "ball-grid-320.png",
+      "selected-berry-3x3-320.png"
+    ]
+  },
+  "supportingRuns": {
+    "animation-focused-run.json": {
+      "startedAt": "2026-09-08T02:38:52.221Z",
+      "sourceHashesBefore": {
+        "components/PaddleFlightGame.tsx": "5616a863f357b48ce0a557d89c530bfc8ee17d43d16ae6e6747b5177e44cf872",
+        "components/PaddleFlightSkinPicker.tsx": "1045f73d461f3495e284f8f23cb9715f2b9532b01865ecb01757bcd9f688ebd4",
+        "utils/paddleFlightSkins.ts": "907dc60265fae559f64cf6dd5b27fd21527215473bae28c96b620ba3d7f873f3",
+        "utils/paddleFlightRender.ts": "8d270d2f894aca3a9558821eaa1e1f8510677676f638b72978bdb405f4490bbd",
+        "utils/paddleFlight.ts": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+        "utils/paddleFlightTreasure.ts": "5789e5aa55e3c66698f9fb620244ec2e72bbe7a4e019620366eeb8c9a8b1d749",
+        "utils/paddleFlightCosmetics.ts": "3fe4fde0a166b01bb52f9bacaa2d2633f997ee7d5fedc7ec013e15bfff0652ae",
+        "styles.css": "b1f089f18237f014a8362a16c32ad021de727198ae2877ca54254f17f11834d5"
+      },
+      "cases": [
+        {
+          "name": "27 skins: 9 cards in each 3 by 3 grid, collectible denominator 24 at 320px",
+          "status": "passed",
+          "details": [
+            {
+              "category": "배경",
+              "columns": "78px 78px 78px",
+              "rects": [
+                {
+                  "x": 35,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "맑은 코트, 기본, 선택됨"
+                },
+                {
+                  "x": 121,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "살구빛 새벽, 일반, 아직 미보유"
+                },
+                {
+                  "x": 207,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "민트 정원, 일반, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 803.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "푸른 해안, 일반, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 803.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "벚꽃 바람, 일반, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 803.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "오로라 베일, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 937.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "달빛 코트, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 937.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "빙하 호수, 희귀, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 937.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "별의 궤도, 전설, 아직 미보유"
+                }
+              ],
+              "scrollWidth": 320,
+              "innerWidth": 320
+            },
+            {
+              "category": "탁구채",
+              "columns": "78px 78px 78px",
+              "rects": [
+                {
+                  "x": 35,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "클래식 러버, 기본, 선택됨"
+                },
+                {
+                  "x": 121,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "코발트 스트라이프, 일반, 아직 미보유"
+                },
+                {
+                  "x": 207,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "비취 물결, 일반, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "산호 도트, 일반, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "단풍 러버, 일반, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "카본 위브, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "자수정 컷, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "티타늄 링, 희귀, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "황금 왕관, 전설, 아직 미보유"
+                }
+              ],
+              "scrollWidth": 320,
+              "innerWidth": 320
+            },
+            {
+              "category": "탁구공",
+              "columns": "78px 78px 78px",
+              "rects": [
+                {
+                  "x": 35,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "클래식 탁구공, 기본, 선택됨"
+                },
+                {
+                  "x": 121,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "귤빛 스핀, 일반, 아직 미보유"
+                },
+                {
+                  "x": 207,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "민트 리본, 일반, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "하늘 구름, 일반, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "베리 소다, 일반, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "오팔 진주, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "흑요석, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "라군 물결, 희귀, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "태양 코어, 전설, 아직 미보유"
+                }
+              ],
+              "scrollWidth": 320,
+              "innerWidth": 320
+            }
+          ]
+        },
+        {
+          "name": "New ball selection updates only ball canvas immediately before server response",
+          "status": "passed",
+          "details": {
+            "before": {
+              "background": "9714604b",
+              "ball": "b5b4bedf",
+              "transform": "matrix(0.997502, -0.0706429, 0.0706429, 0.997502, 0, 6.59599)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "scrollY": 0,
+              "previewTop": 130,
+              "animation": [
+                {
+                  "currentTime": 1900.077999934204,
+                  "playState": "running",
+                  "pending": false
+                }
+              ],
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "during": {
+              "background": "9714604b",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.999176, -0.0405899, 0.0405899, 0.999176, 0, 4.23594)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "scrollY": 0,
+              "previewTop": 130,
+              "animation": [
+                {
+                  "currentTime": 1950.015999934204,
+                  "playState": "running",
+                  "pending": true
+                }
+              ],
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "after": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.981642, 0.190735, -0.190735, 0.981642, 0, -13.9941)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "scrollY": 0,
+              "previewTop": 130,
+              "animation": [
+                {
+                  "currentTime": 2433.331999934204,
+                  "playState": "running",
+                  "pending": true
+                }
+              ],
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Entry preview animates with CSS transform; both canvas bitmaps stay stable",
+          "status": "passed",
+          "details": [
+            {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.98357, 0.180529, -0.180529, 0.98357, 0, -13.1797)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "scrollY": 0,
+              "previewTop": 130,
+              "animation": [
+                {
+                  "currentTime": 2549.979999934204,
+                  "playState": "running",
+                  "pending": false
+                }
+              ],
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.998692, 0.0511304, -0.0511304, 0.998692, 0, -2.95798)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "scrollY": 0,
+              "previewTop": 130,
+              "animation": [
+                {
+                  "currentTime": 2833.339999934204,
+                  "playState": "running",
+                  "pending": false
+                }
+              ],
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.994746, -0.102374, 0.102374, 0.994746, 0, 9.09334)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "scrollY": 0,
+              "previewTop": 130,
+              "animation": [
+                {
+                  "currentTime": 3100.073999934204,
+                  "playState": "running",
+                  "pending": false
+                }
+              ],
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          ]
+        }
+      ],
+      "requestLog": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight/cosmetics",
+          "body": null,
+          "time": 1788835133889
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight",
+          "body": null,
+          "time": 1788835133891
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight",
+          "body": null,
+          "time": 1788835133892
+        },
+        {
+          "method": "PATCH",
+          "path": "/api/v1/minigames/paddle-flight/cosmetics",
+          "body": "{\"background\":\"bg_classic\",\"paddle\":\"paddle_classic\",\"ball\":\"ball_berry\"}",
+          "time": 1788835135864
+        }
+      ],
+      "pageErrors": [],
+      "assertions": 23,
+      "lifecycleNotes": [
+        "All APIs intercepted; actual Game, Picker, renderer, physics, cosmetics store, CSS in React StrictMode.",
+        "Native Chromium IntersectionObserver and scroll; visibilityState event test synthetic if headless tabs stay visible.",
+        "Native mouse input with paused RAF and unchanged renderer clearRect counting isolates release-triggered redraw."
+      ],
+      "harnessPort": 65499,
+      "browserClosed": true,
+      "serverClosed": true,
+      "finishedAt": "2026-09-08T02:38:57.482Z",
+      "passed": 3,
+      "failed": 0
+    },
+    "initial-run.json": {
+      "startedAt": "2026-09-08T02:36:16.329Z",
+      "sourceHashesBefore": {
+        "components/PaddleFlightGame.tsx": "5616a863f357b48ce0a557d89c530bfc8ee17d43d16ae6e6747b5177e44cf872",
+        "components/PaddleFlightSkinPicker.tsx": "1045f73d461f3495e284f8f23cb9715f2b9532b01865ecb01757bcd9f688ebd4",
+        "utils/paddleFlightSkins.ts": "907dc60265fae559f64cf6dd5b27fd21527215473bae28c96b620ba3d7f873f3",
+        "utils/paddleFlightRender.ts": "8d270d2f894aca3a9558821eaa1e1f8510677676f638b72978bdb405f4490bbd",
+        "utils/paddleFlight.ts": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+        "utils/paddleFlightTreasure.ts": "5789e5aa55e3c66698f9fb620244ec2e72bbe7a4e019620366eeb8c9a8b1d749",
+        "utils/paddleFlightCosmetics.ts": "3fe4fde0a166b01bb52f9bacaa2d2633f997ee7d5fedc7ec013e15bfff0652ae",
+        "styles.css": "b1f089f18237f014a8362a16c32ad021de727198ae2877ca54254f17f11834d5"
+      },
+      "cases": [
+        {
+          "name": "27 skins: 9 cards in each 3 by 3 grid, collectible denominator 24 at 320px",
+          "status": "passed",
+          "details": [
+            {
+              "category": "배경",
+              "columns": "78px 78px 78px",
+              "rects": [
+                {
+                  "x": 35,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "맑은 코트, 기본, 선택됨"
+                },
+                {
+                  "x": 121,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "살구빛 새벽, 일반, 아직 미보유"
+                },
+                {
+                  "x": 207,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "민트 정원, 일반, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 803.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "푸른 해안, 일반, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 803.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "벚꽃 바람, 일반, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 803.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "오로라 베일, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 937.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "달빛 코트, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 937.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "빙하 호수, 희귀, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 937.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "별의 궤도, 전설, 아직 미보유"
+                }
+              ],
+              "scrollWidth": 320,
+              "innerWidth": 320
+            },
+            {
+              "category": "탁구채",
+              "columns": "78px 78px 78px",
+              "rects": [
+                {
+                  "x": 35,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "클래식 러버, 기본, 선택됨"
+                },
+                {
+                  "x": 121,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "코발트 스트라이프, 일반, 아직 미보유"
+                },
+                {
+                  "x": 207,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "비취 물결, 일반, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "산호 도트, 일반, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "단풍 러버, 일반, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "카본 위브, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "자수정 컷, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "티타늄 링, 희귀, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "황금 왕관, 전설, 아직 미보유"
+                }
+              ],
+              "scrollWidth": 320,
+              "innerWidth": 320
+            },
+            {
+              "category": "탁구공",
+              "columns": "78px 78px 78px",
+              "rects": [
+                {
+                  "x": 35,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "클래식 탁구공, 기본, 선택됨"
+                },
+                {
+                  "x": 121,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "귤빛 스핀, 일반, 아직 미보유"
+                },
+                {
+                  "x": 207,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "민트 리본, 일반, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "하늘 구름, 일반, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "베리 소다, 일반, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "오팔 진주, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "흑요석, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "라군 물결, 희귀, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "태양 코어, 전설, 아직 미보유"
+                }
+              ],
+              "scrollWidth": 320,
+              "innerWidth": 320
+            }
+          ]
+        },
+        {
+          "name": "New ball selection updates only ball canvas immediately before server response",
+          "status": "passed",
+          "details": {
+            "before": {
+              "background": "9714604b",
+              "ball": "b5b4bedf",
+              "transform": "matrix(0.990308, -0.138887, 0.138887, 0.990308, 0, 11.9773)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "during": {
+              "background": "9714604b",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.990625, -0.136609, 0.136609, 0.990625, 0, 11.797)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "after": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.993, 0.118117, -0.118117, 0.993, 0, -8.22996)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Entry preview animates with CSS transform; both canvas bitmaps stay stable",
+          "status": "passed",
+          "details": [
+            {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.985514, 0.169597, -0.169597, 0.985514, 0, -12.3091)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.984219, 0.176953, -0.176953, 0.984219, 0, -12.8948)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.999201, 0.0399699, -0.0399699, 0.999201, 0, -2.08203)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          ]
+        },
+        {
+          "name": "Locked new/legendary cards stay disabled and do not send writes",
+          "status": "passed"
+        },
+        {
+          "name": "Real IntersectionObserver pauses offscreen preview and resumes when scrolled back",
+          "status": "passed",
+          "details": {
+            "first": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.9904, -0.138228, 0.138228, 0.9904, 0, 11.9252)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "second": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.9904, -0.138228, 0.138228, 0.9904, 0, 11.9252)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "resumed": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.998587, 0.0531445, -0.0531445, 0.998587, 0, -3.11612)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "moved": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.983912, 0.178652, -0.178652, 0.983912, 0, -13.0301)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Visibility lifecycle pauses and resumes; document state simulation explicitly recorded",
+          "status": "passed",
+          "details": {
+            "nativeStateAfterTabSwitch": "visible",
+            "verifiedLifecycle": "Synthetic visibilityState + visibilitychange, actual handler",
+            "hidden": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.987536, 0.157393, -0.157393, 0.987536, 0, -11.3393)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "hidden",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "hiddenLater": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.987536, 0.157393, -0.157393, 0.987536, 0, -11.3393)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "hidden",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "visible": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.987536, 0.157393, -0.157393, 0.987536, 0, -11.3393)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "visibleLater": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.999992, -0.0041227, 0.0041227, 0.999992, 0, 1.37587)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Reduced motion removes preview animation and restoring preference resumes it",
+          "status": "passed",
+          "details": {
+            "first": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "none",
+              "playState": "running",
+              "name": "none",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "second": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "none",
+              "playState": "running",
+              "name": "none",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "resumed": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.991242, -0.132061, 0.132061, 0.991242, 0, 11.4372)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "moved": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.999827, -0.0186263, 0.0186263, 0.999827, 0, 2.5131)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Resize redraws matching bitmap dimensions and keeps circular ball geometry",
+          "status": "passed",
+          "details": [
+            {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.991905, 0.12698, -0.12698, 0.991905, 0, -8.93013)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            {
+              "background": "930fb899",
+              "ball": "777790c9",
+              "transform": "matrix(0.981643, 0.190729, -0.190729, 0.981643, 0, -13.9936)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 836,
+              "bgHeight": 376,
+              "ballWidth": 836,
+              "ballHeight": 376,
+              "bgClientWidth": 418,
+              "bgClientHeight": 188,
+              "ballClientWidth": 418,
+              "ballClientHeight": 188,
+              "scrollWidth": 780,
+              "innerWidth": 780,
+              "dpr": 2
+            },
+            {
+              "background": "9b25a24",
+              "ball": "34c22489",
+              "transform": "matrix(0.990546, 0.137182, -0.137182, 0.990546, 0, -9.73714)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 636,
+              "bgHeight": 376,
+              "ballWidth": 636,
+              "ballHeight": 376,
+              "bgClientWidth": 318,
+              "bgClientHeight": 188,
+              "ballClientWidth": 318,
+              "ballClientHeight": 188,
+              "scrollWidth": 390,
+              "innerWidth": 390,
+              "dpr": 2
+            },
+            {
+              "background": "9714604b",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.999993, -0.00379467, 0.00379467, 0.999993, 0, 1.35015)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          ]
+        },
+        {
+          "name": "Entering actual fullscreen pauses mounted preview; native pointerdown starts immediately with zero release redraw",
+          "status": "passed",
+          "details": {
+            "paused": {
+              "background": "9714604b",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.996079, -0.0884644, 0.0884644, 0.996079, 0, 7.99774)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "pausedLater": {
+              "background": "9714604b",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.996079, -0.0884644, 0.0884644, 0.996079, 0, 7.99774)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "labelAtDown": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+            "draws": {
+              "before": 1,
+              "afterDown": 2,
+              "beforeUp": 4,
+              "afterUp": 4
+            },
+            "policy": {
+              "contextPrevented": true,
+              "dragPrevented": true,
+              "touchAction": "none",
+              "selection": "none"
+            },
+            "returned": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.991905, -0.126979, 0.126979, 0.991905, 0, 11.0353)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "returnedLater": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.993346, -0.115166, 0.115166, 0.993346, 0, 10.1023)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Preview and thumbnail prevent native context menus and dragging",
+          "status": "passed",
+          "details": [
+            {
+              "className": "paddle-flight-preview__canvas",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-flight-preview__ball-canvas",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            }
+          ]
+        },
+        {
+          "name": "Fresh page GET restores selected new ball and 24 collectible denominator",
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: selected ball pixels restored from GET\n    at check (C:\\Users\\jaehe\\scutta\\tmp\\paddle-preview-27\\run.cjs:16:78)\n    at C:\\Users\\jaehe\\scutta\\tmp\\paddle-preview-27\\run.cjs:197:7\n    at async caseRun (C:\\Users\\jaehe\\scutta\\tmp\\paddle-preview-27\\run.cjs:22:131)\n    at async C:\\Users\\jaehe\\scutta\\tmp\\paddle-preview-27\\run.cjs:194:5"
+        },
+        {
+          "name": "No runtime errors; source files unchanged during QA",
+          "status": "passed"
+        }
+      ],
+      "requestLog": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight/cosmetics",
+          "body": null,
+          "time": 1788834977706
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight",
+          "body": null,
+          "time": 1788834977723
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight",
+          "body": null,
+          "time": 1788834977724
+        },
+        {
+          "method": "PATCH",
+          "path": "/api/v1/minigames/paddle-flight/cosmetics",
+          "body": "{\"background\":\"bg_classic\",\"paddle\":\"paddle_classic\",\"ball\":\"ball_berry\"}",
+          "time": 1788834979390
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight/cosmetics",
+          "body": null,
+          "time": 1788834986537
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight",
+          "body": null,
+          "time": 1788834986538
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight",
+          "body": null,
+          "time": 1788834986543
+        }
+      ],
+      "pageErrors": [],
+      "assertions": 62,
+      "lifecycleNotes": [
+        "All APIs intercepted; actual Game, Picker, renderer, physics, cosmetics store, CSS in React StrictMode.",
+        "Native Chromium IntersectionObserver and scroll; visibilityState event test synthetic if headless tabs stay visible.",
+        "Native mouse input with paused RAF and unchanged renderer clearRect counting isolates release-triggered redraw."
+      ],
+      "harnessPort": 52861,
+      "sourceHashesAfter": {
+        "components/PaddleFlightGame.tsx": "5616a863f357b48ce0a557d89c530bfc8ee17d43d16ae6e6747b5177e44cf872",
+        "components/PaddleFlightSkinPicker.tsx": "1045f73d461f3495e284f8f23cb9715f2b9532b01865ecb01757bcd9f688ebd4",
+        "utils/paddleFlightSkins.ts": "907dc60265fae559f64cf6dd5b27fd21527215473bae28c96b620ba3d7f873f3",
+        "utils/paddleFlightRender.ts": "8d270d2f894aca3a9558821eaa1e1f8510677676f638b72978bdb405f4490bbd",
+        "utils/paddleFlight.ts": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+        "utils/paddleFlightTreasure.ts": "5789e5aa55e3c66698f9fb620244ec2e72bbe7a4e019620366eeb8c9a8b1d749",
+        "utils/paddleFlightCosmetics.ts": "3fe4fde0a166b01bb52f9bacaa2d2633f997ee7d5fedc7ec013e15bfff0652ae",
+        "styles.css": "b1f089f18237f014a8362a16c32ad021de727198ae2877ca54254f17f11834d5"
+      },
+      "browserClosed": true,
+      "serverClosed": true,
+      "finishedAt": "2026-09-08T02:36:27.95Z",
+      "passed": 11,
+      "failed": 1
+    },
+    "second-run.json": {
+      "startedAt": "2026-09-08T02:37:26.785Z",
+      "sourceHashesBefore": {
+        "components/PaddleFlightGame.tsx": "5616a863f357b48ce0a557d89c530bfc8ee17d43d16ae6e6747b5177e44cf872",
+        "components/PaddleFlightSkinPicker.tsx": "1045f73d461f3495e284f8f23cb9715f2b9532b01865ecb01757bcd9f688ebd4",
+        "utils/paddleFlightSkins.ts": "907dc60265fae559f64cf6dd5b27fd21527215473bae28c96b620ba3d7f873f3",
+        "utils/paddleFlightRender.ts": "8d270d2f894aca3a9558821eaa1e1f8510677676f638b72978bdb405f4490bbd",
+        "utils/paddleFlight.ts": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+        "utils/paddleFlightTreasure.ts": "5789e5aa55e3c66698f9fb620244ec2e72bbe7a4e019620366eeb8c9a8b1d749",
+        "utils/paddleFlightCosmetics.ts": "3fe4fde0a166b01bb52f9bacaa2d2633f997ee7d5fedc7ec013e15bfff0652ae",
+        "styles.css": "b1f089f18237f014a8362a16c32ad021de727198ae2877ca54254f17f11834d5"
+      },
+      "cases": [
+        {
+          "name": "27 skins: 9 cards in each 3 by 3 grid, collectible denominator 24 at 320px",
+          "status": "passed",
+          "details": [
+            {
+              "category": "배경",
+              "columns": "78px 78px 78px",
+              "rects": [
+                {
+                  "x": 35,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "맑은 코트, 기본, 선택됨"
+                },
+                {
+                  "x": 121,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "살구빛 새벽, 일반, 아직 미보유"
+                },
+                {
+                  "x": 207,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "민트 정원, 일반, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 803.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "푸른 해안, 일반, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 803.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "벚꽃 바람, 일반, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 803.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "오로라 베일, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 937.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "달빛 코트, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 937.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "빙하 호수, 희귀, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 937.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "별의 궤도, 전설, 아직 미보유"
+                }
+              ],
+              "scrollWidth": 320,
+              "innerWidth": 320
+            },
+            {
+              "category": "탁구채",
+              "columns": "78px 78px 78px",
+              "rects": [
+                {
+                  "x": 35,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "클래식 러버, 기본, 선택됨"
+                },
+                {
+                  "x": 121,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "코발트 스트라이프, 일반, 아직 미보유"
+                },
+                {
+                  "x": 207,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "비취 물결, 일반, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "산호 도트, 일반, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "단풍 러버, 일반, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "카본 위브, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "자수정 컷, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "티타늄 링, 희귀, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "황금 왕관, 전설, 아직 미보유"
+                }
+              ],
+              "scrollWidth": 320,
+              "innerWidth": 320
+            },
+            {
+              "category": "탁구공",
+              "columns": "78px 78px 78px",
+              "rects": [
+                {
+                  "x": 35,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "클래식 탁구공, 기본, 선택됨"
+                },
+                {
+                  "x": 121,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "귤빛 스핀, 일반, 아직 미보유"
+                },
+                {
+                  "x": 207,
+                  "y": 669.59375,
+                  "width": 78,
+                  "height": 141,
+                  "name": "민트 리본, 일반, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "하늘 구름, 일반, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "베리 소다, 일반, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 818.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "오팔 진주, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 35,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "흑요석, 희귀, 아직 미보유"
+                },
+                {
+                  "x": 121,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "라군 물결, 희귀, 선택"
+                },
+                {
+                  "x": 207,
+                  "y": 952.59375,
+                  "width": 78,
+                  "height": 126,
+                  "name": "태양 코어, 전설, 아직 미보유"
+                }
+              ],
+              "scrollWidth": 320,
+              "innerWidth": 320
+            }
+          ]
+        },
+        {
+          "name": "New ball selection updates only ball canvas immediately before server response",
+          "status": "passed",
+          "details": {
+            "before": {
+              "background": "9714604b",
+              "ball": "b5b4bedf",
+              "transform": "matrix(0.990268, -0.139173, 0.139173, 0.990268, 0, 12)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "during": {
+              "background": "9714604b",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.990268, -0.139173, 0.139173, 0.990268, 0, 12)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "after": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.990268, -0.139173, 0.139173, 0.990268, 0, 12)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Entry preview animates with CSS transform; both canvas bitmaps stay stable",
+          "status": "failed",
+          "error": "AssertionError [ERR_ASSERTION]: transform moves over time\n    at check (C:\\Users\\jaehe\\scutta\\tmp\\paddle-preview-27\\run.cjs:16:78)\n    at C:\\Users\\jaehe\\scutta\\tmp\\paddle-preview-27\\run.cjs:106:7\n    at async caseRun (C:\\Users\\jaehe\\scutta\\tmp\\paddle-preview-27\\run.cjs:22:131)\n    at async C:\\Users\\jaehe\\scutta\\tmp\\paddle-preview-27\\run.cjs:104:5"
+        },
+        {
+          "name": "Locked new/legendary cards stay disabled and do not send writes",
+          "status": "passed"
+        },
+        {
+          "name": "Real IntersectionObserver pauses offscreen preview and resumes when scrolled back",
+          "status": "passed",
+          "details": {
+            "first": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.990268, -0.139173, 0.139173, 0.990268, 0, 12)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "second": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.990268, -0.139173, 0.139173, 0.990268, 0, 12)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "resumed": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.997088, 0.0762534, -0.0762534, 0.997088, 0, -4.93181)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "moved": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.982733, 0.185032, -0.185032, 0.982733, 0, -13.5388)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Visibility lifecycle pauses and resumes; document state simulation explicitly recorded",
+          "status": "passed",
+          "details": {
+            "nativeStateAfterTabSwitch": "visible",
+            "verifiedLifecycle": "Synthetic visibilityState + visibilitychange, actual handler",
+            "hidden": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.989535, 0.14429, -0.14429, 0.989535, 0, -10.3)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "hidden",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "hiddenLater": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.989535, 0.14429, -0.14429, 0.989535, 0, -10.3)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "hidden",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "visible": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.99058, 0.136933, -0.136933, 0.99058, 0, -9.7174)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "visibleLater": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.999674, -0.0255197, 0.0255197, 0.999674, 0, 3.05371)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Reduced motion removes preview animation and restoring preference resumes it",
+          "status": "passed",
+          "details": {
+            "first": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "none",
+              "playState": "running",
+              "name": "none",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "second": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "none",
+              "playState": "running",
+              "name": "none",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "resumed": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.991251, -0.131988, 0.131988, 0.991251, 0, 11.4314)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "moved": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.99956, -0.0296494, 0.0296494, 0.99956, 0, 3.37763)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Resize redraws matching bitmap dimensions and keeps circular ball geometry",
+          "status": "passed",
+          "details": [
+            {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.991893, 0.127076, -0.127076, 0.991893, 0, -8.93775)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            {
+              "background": "930fb899",
+              "ball": "777790c9",
+              "transform": "matrix(0.981642, 0.190735, -0.190735, 0.981642, 0, -13.9941)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 836,
+              "bgHeight": 376,
+              "ballWidth": 836,
+              "ballHeight": 376,
+              "bgClientWidth": 418,
+              "bgClientHeight": 188,
+              "ballClientWidth": 418,
+              "ballClientHeight": 188,
+              "scrollWidth": 780,
+              "innerWidth": 780,
+              "dpr": 2
+            },
+            {
+              "background": "9b25a24",
+              "ball": "34c22489",
+              "transform": "matrix(0.990572, 0.136994, -0.136994, 0.990572, 0, -9.7222)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 636,
+              "bgHeight": 376,
+              "ballWidth": 636,
+              "ballHeight": 376,
+              "bgClientWidth": 318,
+              "bgClientHeight": 188,
+              "ballClientWidth": 318,
+              "ballClientHeight": 188,
+              "scrollWidth": 390,
+              "innerWidth": 390,
+              "dpr": 2
+            },
+            {
+              "background": "9714604b",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.999889, -0.0148775, 0.0148775, 0.999889, 0, 2.21915)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          ]
+        },
+        {
+          "name": "Entering actual fullscreen pauses mounted preview; native pointerdown starts immediately with zero release redraw",
+          "status": "passed",
+          "details": {
+            "paused": {
+              "background": "9714604b",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.995401, -0.0958008, 0.0958008, 0.995401, 0, 8.57541)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "pausedLater": {
+              "background": "9714604b",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.995401, -0.0958008, 0.0958008, 0.995401, 0, 8.57541)",
+              "playState": "paused",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "labelAtDown": "탁구공 날리기 진행 중. 현재 0점. 누르면 공이 올라갑니다.",
+            "draws": {
+              "before": 1,
+              "afterDown": 2,
+              "beforeUp": 4,
+              "afterUp": 4
+            },
+            "policy": {
+              "contextPrevented": true,
+              "dragPrevented": true,
+              "touchAction": "none",
+              "selection": "none"
+            },
+            "returned": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.991104, -0.133087, 0.133087, 0.991104, 0, 11.5183)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "returnedLater": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.994009, -0.109297, 0.109297, 0.994009, 0, 9.63919)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            }
+          }
+        },
+        {
+          "name": "Preview and thumbnail prevent native context menus and dragging",
+          "status": "passed",
+          "details": [
+            {
+              "className": "paddle-flight-preview__canvas",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-flight-preview__ball-canvas",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            },
+            {
+              "className": "paddle-skin-thumbnail",
+              "draggable": false,
+              "prevented": true,
+              "userSelect": "none"
+            }
+          ]
+        },
+        {
+          "name": "Fresh page GET restores selected new ball and 24 collectible denominator",
+          "status": "passed",
+          "details": {
+            "before": {
+              "background": "b3c85da9",
+              "ball": "9b6abb28",
+              "transform": "matrix(0.994701, -0.102806, 0.102806, 0.994701, 0, 9.12737)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "restored": {
+              "background": "9714604b",
+              "ball": "aaea16f7",
+              "transform": "matrix(0.990268, -0.139173, 0.139173, 0.990268, 0, 12)",
+              "playState": "running",
+              "name": "paddle-preview-ball",
+              "visibility": "visible",
+              "bgWidth": 496,
+              "bgHeight": 376,
+              "ballWidth": 496,
+              "ballHeight": 376,
+              "bgClientWidth": 248,
+              "bgClientHeight": 188,
+              "ballClientWidth": 248,
+              "ballClientHeight": 188,
+              "scrollWidth": 320,
+              "innerWidth": 320,
+              "dpr": 2
+            },
+            "difference": {
+              "width": 496,
+              "height": 376,
+              "previousWidth": 496,
+              "previousHeight": 376,
+              "different": 39,
+              "opaque": 2936,
+              "meanChannelDifference": 0.005023841961852861,
+              "maximum": 1
+            }
+          }
+        },
+        {
+          "name": "No runtime errors; source files unchanged during QA",
+          "status": "passed"
+        }
+      ],
+      "requestLog": [
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight/cosmetics",
+          "body": null,
+          "time": 1788835048942
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight",
+          "body": null,
+          "time": 1788835048946
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight",
+          "body": null,
+          "time": 1788835048947
+        },
+        {
+          "method": "PATCH",
+          "path": "/api/v1/minigames/paddle-flight/cosmetics",
+          "body": "{\"background\":\"bg_classic\",\"paddle\":\"paddle_classic\",\"ball\":\"ball_berry\"}",
+          "time": 1788835050988
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight/cosmetics",
+          "body": null,
+          "time": 1788835058220
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight",
+          "body": null,
+          "time": 1788835058221
+        },
+        {
+          "method": "GET",
+          "path": "/api/v1/minigames/paddle-flight",
+          "body": null,
+          "time": 1788835058230
+        }
+      ],
+      "pageErrors": [],
+      "assertions": 62,
+      "lifecycleNotes": [
+        "All APIs intercepted; actual Game, Picker, renderer, physics, cosmetics store, CSS in React StrictMode.",
+        "Native Chromium IntersectionObserver and scroll; visibilityState event test synthetic if headless tabs stay visible.",
+        "Native mouse input with paused RAF and unchanged renderer clearRect counting isolates release-triggered redraw."
+      ],
+      "harnessPort": 58059,
+      "sourceHashesAfter": {
+        "components/PaddleFlightGame.tsx": "5616a863f357b48ce0a557d89c530bfc8ee17d43d16ae6e6747b5177e44cf872",
+        "components/PaddleFlightSkinPicker.tsx": "1045f73d461f3495e284f8f23cb9715f2b9532b01865ecb01757bcd9f688ebd4",
+        "utils/paddleFlightSkins.ts": "907dc60265fae559f64cf6dd5b27fd21527215473bae28c96b620ba3d7f873f3",
+        "utils/paddleFlightRender.ts": "8d270d2f894aca3a9558821eaa1e1f8510677676f638b72978bdb405f4490bbd",
+        "utils/paddleFlight.ts": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+        "utils/paddleFlightTreasure.ts": "5789e5aa55e3c66698f9fb620244ec2e72bbe7a4e019620366eeb8c9a8b1d749",
+        "utils/paddleFlightCosmetics.ts": "3fe4fde0a166b01bb52f9bacaa2d2633f997ee7d5fedc7ec013e15bfff0652ae",
+        "styles.css": "b1f089f18237f014a8362a16c32ad021de727198ae2877ca54254f17f11834d5"
+      },
+      "browserClosed": true,
+      "serverClosed": true,
+      "finishedAt": "2026-09-08T02:37:39.677Z",
+      "passed": 11,
+      "failed": 1
+    }
+  }
+}

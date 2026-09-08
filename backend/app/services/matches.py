@@ -5,10 +5,11 @@ from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from zoneinfo import ZoneInfo
 
-from sqlalchemy import func, or_, select
+from sqlalchemy import and_, case, func, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, aliased
 from sqlalchemy.orm.exc import StaleDataError
+from sqlalchemy.sql.elements import ColumnElement
 
 from app.models import Match, MatchKind, User, UserRole
 
@@ -53,6 +54,14 @@ class MatchRecord:
     match: Match
     player1_username: str
     player2_username: str
+
+
+@dataclass(frozen=True, slots=True)
+class PlayerMatchHistory:
+    records: list[MatchRecord]
+    total: int
+    wins: int
+    losses: int
 
 
 def seoul_now() -> datetime:
@@ -272,21 +281,21 @@ def create_player_match(
     return get_match_record(db, match.id)
 
 
-def list_match_records(
-    db: Session,
-    *,
-    participant_id: int | None = None,
-    limit: int,
-    offset: int,
-    casual_only: bool = False,
-) -> tuple[list[MatchRecord], int]:
-    filters = []
+def _match_record_filters(
+    *, participant_id: int | None = None, casual_only: bool = False
+) -> list[ColumnElement[bool]]:
+    filters: list[ColumnElement[bool]] = []
     if casual_only:
         filters.append(Match.competition_id.is_(None))
     if participant_id is not None:
         filters.append(or_(Match.player1_id == participant_id, Match.player2_id == participant_id))
 
-    total = int(db.scalar(select(func.count(Match.id)).where(*filters)) or 0)
+    return filters
+
+
+def _list_match_records_page(
+    db: Session, *, filters: list[ColumnElement[bool]], limit: int, offset: int
+) -> list[MatchRecord]:
     rows = db.execute(
         _record_select()
         .where(*filters)
@@ -298,10 +307,56 @@ def list_match_records(
         .limit(limit)
         .offset(offset)
     ).all()
-    records = [
+    return [
         MatchRecord(match=row[0], player1_username=row[1], player2_username=row[2]) for row in rows
     ]
+
+
+def list_match_records(
+    db: Session,
+    *,
+    participant_id: int | None = None,
+    limit: int,
+    offset: int,
+    casual_only: bool = False,
+) -> tuple[list[MatchRecord], int]:
+    filters = _match_record_filters(participant_id=participant_id, casual_only=casual_only)
+    total = int(db.scalar(select(func.count(Match.id)).where(*filters)) or 0)
+    records = _list_match_records_page(db, filters=filters, limit=limit, offset=offset)
     return records, total
+
+
+def list_player_match_history(
+    db: Session,
+    *,
+    player_id: int,
+    viewer_id: int,
+    head_to_head: bool,
+    limit: int,
+    offset: int,
+) -> PlayerMatchHistory:
+    if db.scalar(select(User.id).where(User.id == player_id, User.role == UserRole.PLAYER)) is None:
+        raise PlayerNotFoundError("player not found")
+    if head_to_head and player_id == viewer_id:
+        return PlayerMatchHistory(records=[], total=0, wins=0, losses=0)
+
+    filters = _match_record_filters(participant_id=player_id)
+    if head_to_head:
+        filters.append(or_(Match.player1_id == viewer_id, Match.player2_id == viewer_id))
+    perspective_id = viewer_id if head_to_head else player_id
+    won = or_(
+        and_(Match.player1_id == perspective_id, Match.score1 > Match.score2),
+        and_(Match.player2_id == perspective_id, Match.score2 > Match.score1),
+    )
+    # Aggregate the complete filtered history, independently of the requested page.
+    total_value, wins_value = db.execute(
+        select(func.count(Match.id), func.coalesce(func.sum(case((won, 1), else_=0)), 0)).where(
+            *filters
+        )
+    ).one()
+    total, wins = int(total_value), int(wins_value)
+    records = _list_match_records_page(db, filters=filters, limit=limit, offset=offset)
+    return PlayerMatchHistory(records=records, total=total, wins=wins, losses=total - wins)
 
 
 def update_match(

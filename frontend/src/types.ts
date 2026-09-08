@@ -61,6 +61,11 @@ export interface MatchListResponse {
   offset: number;
 }
 
+export interface PlayerMatchHistoryResponse extends MatchListResponse {
+  wins: number;
+  losses: number;
+}
+
 export interface RankingEntry {
   rank: number;
   player: PlayerSummary;
@@ -118,6 +123,24 @@ export interface PaddleFlightOverview {
   ranking: PaddleFlightRankingEntry[];
 }
 
+export interface PaddleFlightEquipped {
+  background: string;
+  paddle: string;
+  ball: string;
+}
+
+export interface PaddleFlightCosmetics {
+  owned: string[];
+  equipped: PaddleFlightEquipped;
+  opened_chests: number;
+}
+
+export interface PaddleFlightChestReward {
+  cosmetics: PaddleFlightCosmetics;
+  skin_id: string;
+  duplicate: boolean;
+}
+
 export interface SettlementCategory {
   category: SettlementCategoryKey;
   prize: string;
@@ -130,6 +153,19 @@ export interface SettlementCategory {
 export interface SettlementResponse {
   draws: string[];
   categories: SettlementCategory[];
+}
+
+export interface SettlementTicketEntry {
+  player_id: number;
+  username: string;
+  tickets: number;
+  probability_percent: number;
+  rank: number;
+}
+
+export interface SettlementDistributionResponse extends SettlementCategory {
+  holder_count: number;
+  entries: SettlementTicketEntry[];
 }
 
 export interface SettlementSettings {

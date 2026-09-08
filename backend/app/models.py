@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import enum
 from datetime import date, datetime
+from uuid import UUID
 
 from sqlalchemy import (
     Boolean,
@@ -16,11 +17,13 @@ from sqlalchemy import (
     SmallInteger,
     String,
     UniqueConstraint,
+    Uuid,
     func,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
+from app.core.paddle_cosmetics import DEFAULT_PADDLE_EQUIPMENT, PADDLE_CHEST_SKINS
 
 
 class UserRole(enum.StrEnum):
@@ -111,6 +114,79 @@ class User(TimestampMixin, Base):
         passive_deletes=True,
         uselist=False,
     )
+    paddle_flight_cosmetics: Mapped[PaddleFlightCosmetics | None] = relationship(
+        back_populates="user", cascade="all, delete-orphan", passive_deletes=True, uselist=False
+    )
+
+
+class PaddleFlightCosmetics(Base):
+    __tablename__ = "paddle_flight_cosmetics"
+    __table_args__ = (
+        CheckConstraint("opened_chests >= 0", name="opened_chests_nonnegative"),
+        *(
+            CheckConstraint(
+                f"{category} IN ("
+                + ", ".join(
+                    repr(skin_id)
+                    for skin_id in (
+                        default,
+                        *(skin for skin, group, _ in PADDLE_CHEST_SKINS if group == category),
+                    )
+                )
+                + ")",
+                name=f"{category}_skin",
+            )
+            for category, default in DEFAULT_PADDLE_EQUIPMENT.items()
+        ),
+    )
+
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+    background: Mapped[str] = mapped_column(String(32), server_default="bg_classic", nullable=False)
+    paddle: Mapped[str] = mapped_column(String(32), server_default="paddle_classic", nullable=False)
+    ball: Mapped[str] = mapped_column(String(32), server_default="ball_classic", nullable=False)
+    opened_chests: Mapped[int] = mapped_column(Integer, server_default="0", nullable=False)
+
+    user: Mapped[User] = relationship(back_populates="paddle_flight_cosmetics")
+    skins: Mapped[list[PaddleFlightOwnedSkin]] = relationship(
+        cascade="all, delete-orphan", passive_deletes=True
+    )
+    claims: Mapped[list[PaddleFlightChestClaim]] = relationship(
+        cascade="all, delete-orphan", passive_deletes=True
+    )
+
+
+class PaddleFlightOwnedSkin(Base):
+    __tablename__ = "paddle_flight_owned_skins"
+    __table_args__ = (
+        CheckConstraint(
+            "skin_id IN (" + ", ".join(repr(skin) for skin, _, _ in PADDLE_CHEST_SKINS) + ")",
+            name="chest_skin",
+        ),
+    )
+
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("paddle_flight_cosmetics.user_id", ondelete="CASCADE"), primary_key=True
+    )
+    skin_id: Mapped[str] = mapped_column(String(32), primary_key=True)
+
+
+class PaddleFlightChestClaim(Base):
+    __tablename__ = "paddle_flight_chest_claims"
+    __table_args__ = (
+        CheckConstraint(
+            "skin_id IN (" + ", ".join(repr(skin) for skin, _, _ in PADDLE_CHEST_SKINS) + ")",
+            name="chest_skin",
+        ),
+    )
+
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("paddle_flight_cosmetics.user_id", ondelete="CASCADE"), primary_key=True
+    )
+    claim_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    skin_id: Mapped[str] = mapped_column(String(32), nullable=False)
+    duplicate: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
 
 class AuthSession(Base):

@@ -1,0 +1,599 @@
+{
+  "checkedAt": "2026-09-08T10:35:14.7898591+09:00",
+  "scope": "Actual React components in Chromium with API fixtures; not native Android/iOS device verification.",
+  "runs": [
+    {
+      "url": "http://127.0.0.1:56722/browser-check.html",
+      "sourceBefore": {
+        "src/pages/SettlementsPage.tsx": "74e02e172f8fe10c67db5a12e750d92738d95e3108e43f0667c738241c2347d3",
+        "src/components/SettlementDistributionModal.tsx": "a3e199e9718887177ce9a60a70dd4d33328dfbfbec56573ade44ba01fb8a3f49",
+        "src/lib/settlement.ts": "d7e5d5958b97e366a30dbdb0ca05bd8966cad29fca8c65dc8945e4fa8c953e93",
+        "src/components/Modal.tsx": "bdedf55b807757e7fc8356a1b089443de9cbe05425952e3ab563946fed997469",
+        "src/auth/AuthContext.tsx": "3d5ee64b0252d3e3c7b35e34b08597cffbf388e148002685460d34efed9c1cef",
+        "src/styles.css": "ec630b3b4446348e188ba1b7db8cb63ded67a8067674021806525f61d87e5f7b"
+      },
+      "cases": [
+        {
+          "name": "existing_overview_preserved",
+          "details": {
+            "overviewTexts": [
+              "경기 수 부문탁구 라켓내 기록317판추첨권31장당첨 확률2.4%전체 1276장 중 내 추첨권 기준추첨권 분포 보기 ",
+              "승리 수 부문탁구화내 기록154승추첨권15장당첨 확률2.4%전체 627장 중 내 추첨권 기준추첨권 분포 보기 ",
+              "패배 수 부문스포츠 수건내 기록91패추첨권9장당첨 확률2.5%전체 364장 중 내 추첨권 기준추첨권 분포 보기 "
+            ]
+          },
+          "assertions": {
+            "threeCards": true,
+            "metricsAndPrizesPreserved": true,
+            "categoryColorsPreserved": true,
+            "scheduleAndRulePreserved": true
+          }
+        },
+        {
+          "name": "card_hit_area_and_top_five_with_separate_me",
+          "details": {
+            "top": [
+              {
+                "name": "선두선수",
+                "rank": "1위",
+                "tickets": "50장",
+                "probability": "3.9%",
+                "width": 100,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수02",
+                "rank": "1위",
+                "tickets": "50장",
+                "probability": "3.9%",
+                "width": 100,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수03",
+                "rank": "3위",
+                "tickets": "48장",
+                "probability": "3.8%",
+                "width": 96,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수04",
+                "rank": "4위",
+                "tickets": "47장",
+                "probability": "3.7%",
+                "width": 94,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수05",
+                "rank": "5위",
+                "tickets": "46장",
+                "probability": "3.6%",
+                "width": 92,
+                "isMe": false,
+                "trackHidden": true
+              }
+            ],
+            "myPosition": [
+              {
+                "name": "지훈",
+                "rank": "20위",
+                "tickets": "31장",
+                "probability": "2.4%",
+                "width": 62,
+                "isMe": true,
+                "trackHidden": true
+              }
+            ],
+            "summary": "탁구 라켓\n\n내 추첨권\n31장\n당첨 확률\n2.4%\n추첨권 수 기준 20위 · 동점자는 같은 순위"
+          },
+          "assertions": {
+            "oneDialog": true,
+            "topFive": true,
+            "mineOnceOutsideTop": true,
+            "correctTieRanks": true,
+            "wholeHolderAndTicketTotals": true,
+            "ownSummaryCorrect": true
+          }
+        },
+        {
+          "name": "bar_width_probability_and_numeric_alignment",
+          "details": {
+            "initialBars": [
+              {
+                "name": "선두선수",
+                "rank": "1위",
+                "tickets": "50장",
+                "probability": "3.9%",
+                "width": 100,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수02",
+                "rank": "1위",
+                "tickets": "50장",
+                "probability": "3.9%",
+                "width": 100,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수03",
+                "rank": "3위",
+                "tickets": "48장",
+                "probability": "3.8%",
+                "width": 96,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수04",
+                "rank": "4위",
+                "tickets": "47장",
+                "probability": "3.7%",
+                "width": 94,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수05",
+                "rank": "5위",
+                "tickets": "46장",
+                "probability": "3.6%",
+                "width": 92,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "지훈",
+                "rank": "20위",
+                "tickets": "31장",
+                "probability": "2.4%",
+                "width": 62,
+                "isMe": true,
+                "trackHidden": true
+              }
+            ]
+          },
+          "assertions": {
+            "barsUseMaximumNotProbability": true,
+            "everyBarNumericallyCorrect": true,
+            "valuesAlignedRight": true,
+            "numbersUseTabularFont": true
+          }
+        },
+        {
+          "name": "expand_first_ten_snapshot",
+          "details": {
+            "firstTen": [
+              {
+                "name": "선두선수",
+                "rank": "1위",
+                "tickets": "50장",
+                "probability": "3.9%",
+                "width": 100,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수02",
+                "rank": "1위",
+                "tickets": "50장",
+                "probability": "3.9%",
+                "width": 100,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수03",
+                "rank": "3위",
+                "tickets": "48장",
+                "probability": "3.8%",
+                "width": 96,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수04",
+                "rank": "4위",
+                "tickets": "47장",
+                "probability": "3.7%",
+                "width": 94,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수05",
+                "rank": "5위",
+                "tickets": "46장",
+                "probability": "3.6%",
+                "width": 92,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수06",
+                "rank": "6위",
+                "tickets": "45장",
+                "probability": "3.5%",
+                "width": 90,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수07",
+                "rank": "7위",
+                "tickets": "44장",
+                "probability": "3.5%",
+                "width": 88,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수08",
+                "rank": "8위",
+                "tickets": "43장",
+                "probability": "3.4%",
+                "width": 86,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수09",
+                "rank": "9위",
+                "tickets": "42장",
+                "probability": "3.3%",
+                "width": 84,
+                "isMe": false,
+                "trackHidden": true
+              },
+              {
+                "name": "선수10",
+                "rank": "10위",
+                "tickets": "41장",
+                "probability": "3.2%",
+                "width": 82,
+                "isMe": false,
+                "trackHidden": true
+              }
+            ]
+          },
+          "assertions": {
+            "exactlyTen": true,
+            "noSeparateDuplicate": true,
+            "summaryKeepsMyPosition": true,
+            "noExtraApiRequest": true
+          }
+        },
+        {
+          "name": "me_in_full_list_once",
+          "details": {},
+          "assertions": {
+            "oneHighlightedMine": true,
+            "exactlyTwenty": true
+          }
+        },
+        {
+          "name": "all_fifty_in_ten_steps",
+          "details": {
+            "expansionCounts": [
+              10,
+              20,
+              30,
+              40,
+              50
+            ]
+          },
+          "assertions": {
+            "tenAtATime": true,
+            "sortedAllEntries": true,
+            "positiveHoldersOnly": true,
+            "noDuplicates": true,
+            "noExtraApiRequest": true,
+            "finishedStatusAndNoMore": true
+          }
+        },
+        {
+          "name": "reopen_resets_to_top_five",
+          "details": {},
+          "assertions": {
+            "topFiveRestored": true,
+            "mineSeparateAgain": true,
+            "noPreviousExpandedList": true
+          }
+        },
+        {
+          "name": "progress_and_category_matches",
+          "details": {
+            "filled": 7,
+            "progressText": "다음 추첨권\n7 / 10\n\n내 기록 317판 · 추첨권 31장 보유\n\n3판 누적 시 추첨권 1장이 추가돼요.",
+            "mineColor": "rgb(27, 100, 218)"
+          },
+          "assertions": {
+            "moduloNotLifetimeValue": true,
+            "tenSteps": true,
+            "countAndRemainingCorrect": true,
+            "expectedTheme": true
+          }
+        },
+        {
+          "name": "progress_and_category_wins",
+          "details": {
+            "filled": 4,
+            "progressText": "다음 추첨권\n4 / 10\n\n내 기록 154승 · 추첨권 15장 보유\n\n6승 누적 시 추첨권 1장이 추가돼요.",
+            "mineColor": "rgb(0, 140, 105)"
+          },
+          "assertions": {
+            "moduloNotLifetimeValue": true,
+            "tenSteps": true,
+            "countAndRemainingCorrect": true,
+            "expectedTheme": true
+          }
+        },
+        {
+          "name": "progress_and_category_losses",
+          "details": {
+            "filled": 1,
+            "progressText": "다음 추첨권\n1 / 10\n\n내 기록 91패 · 추첨권 9장 보유\n\n9패 누적 시 추첨권 1장이 추가돼요.",
+            "mineColor": "rgb(182, 90, 0)"
+          },
+          "assertions": {
+            "moduloNotLifetimeValue": true,
+            "tenSteps": true,
+            "countAndRemainingCorrect": true,
+            "expectedTheme": true
+          }
+        },
+        {
+          "name": "three_distinct_category_colors",
+          "details": {
+            "categoryColors": [
+              "rgb(27, 100, 218)",
+              "rgb(0, 140, 105)",
+              "rgb(182, 90, 0)"
+            ]
+          },
+          "assertions": {
+            "distinctBlueGreenOrange": true
+          }
+        },
+        {
+          "name": "me_already_top_five_not_duplicated",
+          "details": {},
+          "assertions": {
+            "onlyFiveBars": true,
+            "singleMeHighlight": true,
+            "noSeparateMe": true
+          }
+        },
+        {
+          "name": "my_zero_tickets",
+          "details": {
+            "summary": "탁구 라켓\n\n내 추첨권\n0장\n당첨 확률\n0.0%\n아직 내 추첨권이 없어요. 기록 10개마다 1장이 지급돼요."
+          },
+          "assertions": {
+            "zeroSummaryAndExplanation": true,
+            "noZeroBar": true,
+            "progressStillCorrect": true
+          }
+        },
+        {
+          "name": "all_zero_empty_state",
+          "details": {
+            "zeroText": "경기 수 부문 추첨권\n\n탁구 라켓\n\n내 추첨권\n0장\n당첨 확률\n0.0%\n아직 내 추첨권이 없어요. 기록 10개마다 1장이 지급돼요.\n선수별 추첨권\n\n추첨권 보유 0명 · 전체 0장\n\n아직 이 부문의 추첨권을 가진 선수가 없어요.\n\n다음 추첨권\n7 / 10\n\n내 기록 7판 · 추첨권 0장 보유\n\n3판 누적 시 추첨권 1장이 추가돼요."
+          },
+          "assertions": {
+            "noBarsOrExpand": true,
+            "zeroTotals": true,
+            "clearEmptyMessage": true,
+            "noInvalidNumbers": true
+          }
+        },
+        {
+          "name": "failure_retry",
+          "details": {},
+          "assertions": {
+            "recoveredTopFiveAndMe": true,
+            "errorCleared": true,
+            "noRetryLeft": true
+          }
+        },
+        {
+          "name": "late_response_after_close_and_category_change",
+          "details": {
+            "changedText": "탁구화\n\n내 추첨권\n15장\n당첨 확률\n2.4%\n추첨권 수 기준 20위 · 동점자는 같은 순위"
+          },
+          "assertions": {
+            "winsTitle": true,
+            "winsValuesOnly": true,
+            "progressFromWins": true
+          }
+        },
+        {
+          "name": "reopen_cancelled_category",
+          "details": {},
+          "assertions": {
+            "freshMatchesData": true,
+            "initialSixBars": true,
+            "correctProgress": true
+          }
+        },
+        {
+          "name": "keyboard_dialog_focus_and_return",
+          "details": {},
+          "assertions": {
+            "enterOpens": true,
+            "firstTabClose": true,
+            "focusTrapWrap": true,
+            "escapeRestoresFocus": true,
+            "spaceOpens": true,
+            "closeRestoresFocus": true,
+            "bodyScrollUnlocked": true
+          }
+        },
+        {
+          "name": "mobile_320_long_names_and_fifty",
+          "details": {
+            "initialLayout": {
+              "viewport": 320,
+              "documentWidth": 320,
+              "dialogClient": 320,
+              "dialogScroll": 320,
+              "left": 0,
+              "right": 320,
+              "overflow": []
+            },
+            "fullLayout": {
+              "viewport": 320,
+              "documentWidth": 320,
+              "dialogClient": 320,
+              "dialogScroll": 320,
+              "left": 0,
+              "right": 320,
+              "overflow": []
+            }
+          },
+          "assertions": {
+            "initialNoOverflow": true,
+            "fiftyNoOverflow": true,
+            "exactlyFifty": true,
+            "stickyCloseVisible": true,
+            "noInvalidNumbers": true
+          }
+        },
+        {
+          "name": "mobile_close_focus_return",
+          "details": {},
+          "assertions": {
+            "triggerFocused": true,
+            "bodyScrollUnlocked": true
+          }
+        }
+      ],
+      "errors": [],
+      "unmatchedRequests": [],
+      "browser": "152.0.7977.82",
+      "sourceAfter": {
+        "src/pages/SettlementsPage.tsx": "74e02e172f8fe10c67db5a12e750d92738d95e3108e43f0667c738241c2347d3",
+        "src/components/SettlementDistributionModal.tsx": "a3e199e9718887177ce9a60a70dd4d33328dfbfbec56573ade44ba01fb8a3f49",
+        "src/lib/settlement.ts": "d7e5d5958b97e366a30dbdb0ca05bd8966cad29fca8c65dc8945e4fa8c953e93",
+        "src/components/Modal.tsx": "bdedf55b807757e7fc8356a1b089443de9cbe05425952e3ab563946fed997469",
+        "src/auth/AuthContext.tsx": "3d5ee64b0252d3e3c7b35e34b08597cffbf388e148002685460d34efed9c1cef",
+        "src/styles.css": "ec630b3b4446348e188ba1b7db8cb63ded67a8067674021806525f61d87e5f7b"
+      },
+      "globalAssertions": {
+        "noPageErrors": true,
+        "onlyExpectedApiRoutes": true,
+        "productSourcesStable": true
+      }
+    },
+    {
+      "url": "http://127.0.0.1:65523/browser-check.html",
+      "sourceBefore": {
+        "src/pages/SettlementsPage.tsx": "74e02e172f8fe10c67db5a12e750d92738d95e3108e43f0667c738241c2347d3",
+        "src/components/SettlementDistributionModal.tsx": "a3e199e9718887177ce9a60a70dd4d33328dfbfbec56573ade44ba01fb8a3f49",
+        "src/lib/settlement.ts": "d7e5d5958b97e366a30dbdb0ca05bd8966cad29fca8c65dc8945e4fa8c953e93",
+        "src/components/Modal.tsx": "bdedf55b807757e7fc8356a1b089443de9cbe05425952e3ab563946fed997469",
+        "src/auth/AuthContext.tsx": "3d5ee64b0252d3e3c7b35e34b08597cffbf388e148002685460d34efed9c1cef",
+        "src/styles.css": "ec630b3b4446348e188ba1b7db8cb63ded67a8067674021806525f61d87e5f7b"
+      },
+      "cases": [
+        {
+          "name": "normal_names_390_preview",
+          "details": {},
+          "assertions": {
+            "noHorizontalOverflow": true,
+            "correctSixBars": true,
+            "mineHighlightedOnce": true
+          }
+        }
+      ],
+      "errors": [],
+      "unmatchedRequests": [],
+      "browser": "152.0.7977.82",
+      "sourceAfter": {
+        "src/pages/SettlementsPage.tsx": "74e02e172f8fe10c67db5a12e750d92738d95e3108e43f0667c738241c2347d3",
+        "src/components/SettlementDistributionModal.tsx": "a3e199e9718887177ce9a60a70dd4d33328dfbfbec56573ade44ba01fb8a3f49",
+        "src/lib/settlement.ts": "d7e5d5958b97e366a30dbdb0ca05bd8966cad29fca8c65dc8945e4fa8c953e93",
+        "src/components/Modal.tsx": "bdedf55b807757e7fc8356a1b089443de9cbe05425952e3ab563946fed997469",
+        "src/auth/AuthContext.tsx": "3d5ee64b0252d3e3c7b35e34b08597cffbf388e148002685460d34efed9c1cef",
+        "src/styles.css": "ec630b3b4446348e188ba1b7db8cb63ded67a8067674021806525f61d87e5f7b"
+      },
+      "globalAssertions": {
+        "noPageErrors": true,
+        "onlyExpectedApiRoutes": true,
+        "productSourcesStable": true
+      }
+    },
+    {
+      "url": "http://127.0.0.1:63010/browser-check.html",
+      "sourceBefore": {
+        "src/pages/SettlementsPage.tsx": "74e02e172f8fe10c67db5a12e750d92738d95e3108e43f0667c738241c2347d3",
+        "src/components/SettlementDistributionModal.tsx": "a3e199e9718887177ce9a60a70dd4d33328dfbfbec56573ade44ba01fb8a3f49",
+        "src/lib/settlement.ts": "d7e5d5958b97e366a30dbdb0ca05bd8966cad29fca8c65dc8945e4fa8c953e93",
+        "src/components/Modal.tsx": "bdedf55b807757e7fc8356a1b089443de9cbe05425952e3ab563946fed997469",
+        "src/auth/AuthContext.tsx": "3d5ee64b0252d3e3c7b35e34b08597cffbf388e148002685460d34efed9c1cef",
+        "src/styles.css": "bbdb9e4e41173a2625f8d22af382038a3ea0c5b690cec521068386240f59bc60"
+      },
+      "cases": [
+        {
+          "name": "normal_names_390_preview",
+          "details": {
+            "headerShadow": "rgb(255, 255, 255) 0px -28px 0px 0px"
+          },
+          "assertions": {
+            "noHorizontalOverflow": true,
+            "correctSixBars": true,
+            "mineHighlightedOnce": true,
+            "closeVisibleAfterScroll": true
+          }
+        },
+        {
+          "name": "sticky_header_320_fifty_after",
+          "details": {
+            "headerShadow": "rgb(255, 255, 255) 0px -28px 0px 0px"
+          },
+          "assertions": {
+            "exactlyFifty": true,
+            "closeVisibleAfterScroll": true,
+            "noHorizontalOverflow": true
+          }
+        },
+        {
+          "name": "sticky_header_close_still_works",
+          "details": {},
+          "assertions": {
+            "dialogClosed": true,
+            "bodyScrollUnlocked": true
+          }
+        }
+      ],
+      "errors": [],
+      "unmatchedRequests": [],
+      "browser": "152.0.7977.82",
+      "cssChange": {
+        "priorMainTestSha256": "ec630b3b4446348e188ba1b7db8cb63ded67a8067674021806525f61d87e5f7b",
+        "currentSha256": "bbdb9e4e41173a2625f8d22af382038a3ea0c5b690cec521068386240f59bc60"
+      },
+      "sourceAfter": {
+        "src/pages/SettlementsPage.tsx": "74e02e172f8fe10c67db5a12e750d92738d95e3108e43f0667c738241c2347d3",
+        "src/components/SettlementDistributionModal.tsx": "a3e199e9718887177ce9a60a70dd4d33328dfbfbec56573ade44ba01fb8a3f49",
+        "src/lib/settlement.ts": "d7e5d5958b97e366a30dbdb0ca05bd8966cad29fca8c65dc8945e4fa8c953e93",
+        "src/components/Modal.tsx": "bdedf55b807757e7fc8356a1b089443de9cbe05425952e3ab563946fed997469",
+        "src/auth/AuthContext.tsx": "3d5ee64b0252d3e3c7b35e34b08597cffbf388e148002685460d34efed9c1cef",
+        "src/styles.css": "bbdb9e4e41173a2625f8d22af382038a3ea0c5b690cec521068386240f59bc60"
+      },
+      "globalAssertions": {
+        "noPageErrors": true,
+        "onlyExpectedApiRoutes": true,
+        "productSourcesStable": true
+      }
+    }
+  ]
+}

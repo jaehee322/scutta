@@ -1,0 +1,381 @@
+{
+  "generatedAt": "2026-09-08T01:59:55.716Z",
+  "sourceSha256": {
+    "paddleFlight": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+    "paddleFlightSkins": "d088d925ef724c75bd6ef639990c097c4a2dbd679b994274620b880b1addb27a",
+    "paddleFlightRender": "88599717255bea2ba99524b4b1c622bc9a094e0ed84831e43224f2f7652efa52"
+  },
+  "checks": [
+    {
+      "dpr": 1,
+      "classicStates": 9,
+      "comparedPixels": 1749600,
+      "skinsTested": 21,
+      "repeatedPreviewSizeStable": true,
+      "stateUnchanged": true
+    },
+    {
+      "dpr": 2,
+      "classicStates": 9,
+      "comparedPixels": 6998400,
+      "skinsTested": 21,
+      "repeatedPreviewSizeStable": true,
+      "stateUnchanged": true
+    }
+  ],
+  "gallery": {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "height": 2048,
+    "cards": 21,
+    "images": 29,
+    "imagesLoaded": true,
+    "externalLinks": 0
+  },
+  "performance": {
+    "environment": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "dpr": 2,
+    "note": "Headless desktop Chromium, warm renderer only. Draw timings measure main-thread Canvas API calls, not GPU completion. rAF intervals reflect this desktop environment. No mobile-device FPS guarantee; no CPU throttling.",
+    "representative": [
+      {
+        "name": "legacy_classic",
+        "frames": 90,
+        "drawCallMs": {
+          "median": 0.3,
+          "p95": 0.5,
+          "max": 0.6
+        },
+        "rafIntervalMs": {
+          "median": 16.7,
+          "p95": 16.8,
+          "max": 16.8
+        }
+      },
+      {
+        "name": "new_classic",
+        "frames": 90,
+        "drawCallMs": {
+          "median": 0.5,
+          "p95": 0.6,
+          "max": 0.7
+        },
+        "rafIntervalMs": {
+          "median": 16.7,
+          "p95": 16.8,
+          "max": 17.3
+        }
+      },
+      {
+        "name": "classic_with_chest",
+        "frames": 90,
+        "drawCallMs": {
+          "median": 0.4,
+          "p95": 0.6,
+          "max": 0.7
+        },
+        "rafIntervalMs": {
+          "median": 16.7,
+          "p95": 16.8,
+          "max": 16.9
+        }
+      },
+      {
+        "name": "common_trio_with_chest",
+        "frames": 90,
+        "drawCallMs": {
+          "median": 0.3,
+          "p95": 0.4,
+          "max": 0.5
+        },
+        "rafIntervalMs": {
+          "median": 16.7,
+          "p95": 16.7,
+          "max": 17.4
+        }
+      },
+      {
+        "name": "rare_trio_with_chest",
+        "frames": 90,
+        "drawCallMs": {
+          "median": 0.3,
+          "p95": 0.8,
+          "max": 5.3
+        },
+        "rafIntervalMs": {
+          "median": 16.7,
+          "p95": 16.8,
+          "max": 16.8
+        }
+      },
+      {
+        "name": "legendary_trio_with_chest",
+        "frames": 90,
+        "drawCallMs": {
+          "median": 0.4,
+          "p95": 0.8,
+          "max": 1.2
+        },
+        "rafIntervalMs": {
+          "median": 16.7,
+          "p95": 16.7,
+          "max": 16.8
+        }
+      }
+    ],
+    "eachSkin": [
+      {
+        "id": "bg_classic",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.6,
+          "p95": 1,
+          "max": 1.1
+        }
+      },
+      {
+        "id": "paddle_classic",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.8,
+          "p95": 1.1,
+          "max": 1.2
+        }
+      },
+      {
+        "id": "ball_classic",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.8,
+          "p95": 1.3,
+          "max": 3.2
+        }
+      },
+      {
+        "id": "bg_dawn",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.7,
+          "p95": 1.2,
+          "max": 1.2
+        }
+      },
+      {
+        "id": "bg_mint",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.6,
+          "p95": 1,
+          "max": 2.3
+        }
+      },
+      {
+        "id": "bg_coast",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.7,
+          "p95": 1.9,
+          "max": 2.1
+        }
+      },
+      {
+        "id": "paddle_cobalt",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.6,
+          "p95": 1.6,
+          "max": 2.1
+        }
+      },
+      {
+        "id": "paddle_jade",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.9,
+          "p95": 2.1,
+          "max": 2.2
+        }
+      },
+      {
+        "id": "paddle_coral",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.7,
+          "p95": 1.4,
+          "max": 1.4
+        }
+      },
+      {
+        "id": "ball_tangerine",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.6,
+          "p95": 0.9,
+          "max": 0.9
+        }
+      },
+      {
+        "id": "ball_mint",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.6,
+          "p95": 1,
+          "max": 1.3
+        }
+      },
+      {
+        "id": "ball_sky",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.6,
+          "p95": 1,
+          "max": 1.1
+        }
+      },
+      {
+        "id": "bg_aurora",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.7,
+          "p95": 0.9,
+          "max": 1.2
+        }
+      },
+      {
+        "id": "bg_midnight",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.8,
+          "p95": 1.4,
+          "max": 1.8
+        }
+      },
+      {
+        "id": "paddle_carbon",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.7,
+          "p95": 1,
+          "max": 1.2
+        }
+      },
+      {
+        "id": "paddle_amethyst",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.7,
+          "p95": 2.1,
+          "max": 2.3
+        }
+      },
+      {
+        "id": "ball_pearl",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.6,
+          "p95": 0.9,
+          "max": 1.2
+        }
+      },
+      {
+        "id": "ball_obsidian",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.5,
+          "p95": 1.6,
+          "max": 1.7
+        }
+      },
+      {
+        "id": "bg_cosmos",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.7,
+          "p95": 1.5,
+          "max": 1.9
+        }
+      },
+      {
+        "id": "paddle_imperial",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 1,
+          "p95": 3,
+          "max": 3.2
+        }
+      },
+      {
+        "id": "ball_solar",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.7,
+          "p95": 1.2,
+          "max": 1.3
+        }
+      }
+    ],
+    "worstIndividualByP95": [
+      {
+        "id": "paddle_imperial",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 1,
+          "p95": 3,
+          "max": 3.2
+        }
+      },
+      {
+        "id": "paddle_jade",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.9,
+          "p95": 2.1,
+          "max": 2.2
+        }
+      },
+      {
+        "id": "paddle_amethyst",
+        "frames": 24,
+        "drawCallMs": {
+          "median": 0.7,
+          "p95": 2.1,
+          "max": 2.3
+        }
+      }
+    ]
+  },
+  "pairedPerformance": {
+    "environment": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+    "dpr": 2,
+    "note": "180 shared rAF samples per case with rotating within-frame order; separate canvases; warmed caches. Canvas API main-thread call duration only, not GPU raster time or mobile FPS.",
+    "rows": [
+      {
+        "name": "legacy_classic",
+        "frames": 180,
+        "medianMs": 0.3,
+        "p95Ms": 0.9,
+        "maxMs": 1.8
+      },
+      {
+        "name": "new_classic",
+        "frames": 180,
+        "medianMs": 0.3,
+        "p95Ms": 1,
+        "maxMs": 1.6
+      },
+      {
+        "name": "imperial_only_with_chest",
+        "frames": 180,
+        "medianMs": 0.3,
+        "p95Ms": 0.9,
+        "maxMs": 1.5
+      },
+      {
+        "name": "legendary_trio_with_chest",
+        "frames": 180,
+        "medianMs": 0.2,
+        "p95Ms": 0.7,
+        "maxMs": 1.6
+      }
+    ]
+  }
+}

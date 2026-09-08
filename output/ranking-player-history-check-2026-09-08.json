@@ -1,0 +1,578 @@
+{
+  "url": "http://127.0.0.1:62734/browser-check.html",
+  "sourceBefore": {
+    "src/pages/RankingsPage.tsx": "a9ca6215dbbd759450d6214da397eebd26804b8f67666d6679aeba8817d86671",
+    "src/components/PlayerMatchHistoryModal.tsx": "60542c2a02d363067e63c0c67fd28a2b4e9d92eecb1274682e50a0236da0d026",
+    "src/components/Modal.tsx": "bdedf55b807757e7fc8356a1b089443de9cbe05425952e3ab563946fed997469",
+    "src/auth/AuthContext.tsx": "3d5ee64b0252d3e3c7b35e34b08597cffbf388e148002685460d34efed9c1cef",
+    "src/styles.css": "f8e7501bd58e8645aad98ca683dea01dc33dc5a3b0389baa78bdd2f5f97c1315"
+  },
+  "cases": [
+    {
+      "name": "initial_five_per_section_and_perspective",
+      "details": {
+        "allView": {
+          "expected": [
+            {
+              "won": true,
+              "name": "지훈",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            },
+            {
+              "won": false,
+              "name": "서연",
+              "score": "0 : 3"
+            },
+            {
+              "won": true,
+              "name": "서연",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            }
+          ],
+          "actual": [
+            {
+              "won": true,
+              "name": "지훈",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            },
+            {
+              "won": false,
+              "name": "서연",
+              "score": "0 : 3"
+            },
+            {
+              "won": true,
+              "name": "서연",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            }
+          ],
+          "equal": true
+        },
+        "headView": {
+          "expected": [
+            {
+              "won": false,
+              "name": "민준",
+              "score": "0 : 3"
+            },
+            {
+              "won": true,
+              "name": "민준",
+              "score": "2 : 1"
+            },
+            {
+              "won": true,
+              "name": "민준",
+              "score": "2 : 1"
+            },
+            {
+              "won": false,
+              "name": "민준",
+              "score": "0 : 3"
+            },
+            {
+              "won": true,
+              "name": "민준",
+              "score": "2 : 1"
+            }
+          ],
+          "actual": [
+            {
+              "won": false,
+              "name": "민준",
+              "score": "0 : 3"
+            },
+            {
+              "won": true,
+              "name": "민준",
+              "score": "2 : 1"
+            },
+            {
+              "won": true,
+              "name": "민준",
+              "score": "2 : 1"
+            },
+            {
+              "won": false,
+              "name": "민준",
+              "score": "0 : 3"
+            },
+            {
+              "won": true,
+              "name": "민준",
+              "score": "2 : 1"
+            }
+          ],
+          "equal": true
+        },
+        "summaries": [
+          "총 13경기 · 6승 7패",
+          "총 11경기 · 6승 5패"
+        ],
+        "allTotals": {
+          "total": 13,
+          "wins": 6,
+          "losses": 7
+        },
+        "headTotals": {
+          "total": 11,
+          "wins": 6,
+          "losses": 5
+        }
+      },
+      "assertions": {
+        "oneDialog": true,
+        "playerPerspectiveCorrect": true,
+        "viewerPerspectiveCorrect": true,
+        "aggregateWholeHistory": true
+      }
+    },
+    {
+      "name": "player_more_independent_and_rapid_click",
+      "details": {
+        "requests": [
+          {
+            "pathname": "/players/2/matches",
+            "query": {
+              "head_to_head": "false",
+              "limit": "5",
+              "offset": "5"
+            },
+            "method": "GET",
+            "playerId": 2,
+            "headToHead": false,
+            "limit": 5,
+            "offset": 5,
+            "status": 200
+          }
+        ]
+      },
+      "assertions": {
+        "playerTen": true,
+        "headStillFive": true,
+        "oneNextPageRequest": true,
+        "oneAnchor": true
+      }
+    },
+    {
+      "name": "head_more_independent_and_rapid_click",
+      "details": {
+        "requests": [
+          {
+            "pathname": "/players/2/matches",
+            "query": {
+              "head_to_head": "false",
+              "limit": "5",
+              "offset": "5"
+            },
+            "method": "GET",
+            "playerId": 2,
+            "headToHead": false,
+            "limit": 5,
+            "offset": 5,
+            "status": 200
+          },
+          {
+            "pathname": "/players/2/matches",
+            "query": {
+              "head_to_head": "true",
+              "limit": "5",
+              "offset": "5"
+            },
+            "method": "GET",
+            "playerId": 2,
+            "headToHead": true,
+            "limit": 5,
+            "offset": 5,
+            "status": 200
+          }
+        ]
+      },
+      "assertions": {
+        "bothTen": true,
+        "oneNextPageRequest": true,
+        "oneAnchor": true
+      }
+    },
+    {
+      "name": "pagination_exhaustion",
+      "details": {},
+      "assertions": {
+        "fullPlayerCount": true,
+        "fullHeadCount": true,
+        "noMoreButtons": true
+      }
+    },
+    {
+      "name": "reopen_resets_pages",
+      "details": {},
+      "assertions": {
+        "bothStartAtFive": true
+      }
+    },
+    {
+      "name": "keyboard_enter_space_and_focus_return",
+      "details": {},
+      "assertions": {
+        "enterOpens": true,
+        "escapeRestoresFocus": true,
+        "spaceOpens": true,
+        "closeButtonRestoresFocus": true
+      }
+    },
+    {
+      "name": "self_player",
+      "details": {
+        "requests": [
+          {
+            "pathname": "/auth/me",
+            "query": {},
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "pathname": "/auth/me",
+            "query": {},
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "pathname": "/rankings",
+            "query": {},
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "pathname": "/rankings",
+            "query": {},
+            "method": "GET",
+            "status": 200
+          },
+          {
+            "pathname": "/players/1/matches",
+            "query": {
+              "head_to_head": "false",
+              "limit": "5",
+              "offset": "0"
+            },
+            "method": "GET",
+            "playerId": 1,
+            "headToHead": false,
+            "limit": 5,
+            "offset": 0,
+            "status": 200
+          },
+          {
+            "pathname": "/players/1/matches",
+            "query": {
+              "head_to_head": "false",
+              "limit": "5",
+              "offset": "0"
+            },
+            "method": "GET",
+            "playerId": 1,
+            "headToHead": false,
+            "limit": 5,
+            "offset": 0,
+            "status": 200
+          }
+        ],
+        "selfView": {
+          "expected": [
+            {
+              "won": false,
+              "name": "서연",
+              "score": "0 : 3"
+            },
+            {
+              "won": false,
+              "name": "민준",
+              "score": "0 : 3"
+            },
+            {
+              "won": true,
+              "name": "서연",
+              "score": "2 : 1"
+            },
+            {
+              "won": true,
+              "name": "민준",
+              "score": "2 : 1"
+            },
+            {
+              "won": true,
+              "name": "서연",
+              "score": "2 : 1"
+            }
+          ],
+          "actual": [
+            {
+              "won": false,
+              "name": "서연",
+              "score": "0 : 3"
+            },
+            {
+              "won": false,
+              "name": "민준",
+              "score": "0 : 3"
+            },
+            {
+              "won": true,
+              "name": "서연",
+              "score": "2 : 1"
+            },
+            {
+              "won": true,
+              "name": "민준",
+              "score": "2 : 1"
+            },
+            {
+              "won": true,
+              "name": "서연",
+              "score": "2 : 1"
+            }
+          ],
+          "equal": true
+        }
+      },
+      "assertions": {
+        "ownHistoryCorrect": true,
+        "selfMessage": true,
+        "noSelfHeadRequest": true,
+        "noHeadRows": true
+      }
+    },
+    {
+      "name": "empty_histories",
+      "details": {
+        "text": "기록없음 선수 기록\n경기 기록\n\n기록없음 기준 · 최신순\n\n총 0경기 · 0승 0패\n\n아직 경기 기록이 없어요.\n\n나와의 전적\n\n내 기준 · 최신순\n\n총 0경기 · 0승 0패\n\n아직 이 선수와의 경기 기록이 없어요."
+      },
+      "assertions": {
+        "emptyBoth": true,
+        "noMoreButtons": true,
+        "zeroSummaries": true
+      }
+    },
+    {
+      "name": "initial_failure_retry_independent",
+      "details": {},
+      "assertions": {
+        "retryLoadsFive": true,
+        "unaffectedHeadFive": true,
+        "errorCleared": true
+      }
+    },
+    {
+      "name": "load_more_failure_retry",
+      "details": {},
+      "assertions": {
+        "existingRowsRetained": true,
+        "retryTenWithoutDuplicates": true,
+        "otherSectionUnaffected": true
+      }
+    },
+    {
+      "name": "close_and_switch_with_previous_response_pending",
+      "details": {
+        "changedPlayerView": {
+          "expected": [
+            {
+              "won": true,
+              "name": "지훈",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            },
+            {
+              "won": true,
+              "name": "민준",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "민준",
+              "score": "0 : 3"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            }
+          ],
+          "actual": [
+            {
+              "won": true,
+              "name": "지훈",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            },
+            {
+              "won": true,
+              "name": "민준",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "민준",
+              "score": "0 : 3"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            }
+          ],
+          "equal": true
+        }
+      },
+      "assertions": {
+        "titleIsNewPlayer": true,
+        "latestRowsCorrect": true,
+        "noOldError": true
+      }
+    },
+    {
+      "name": "reopen_after_cancelled_initial_request",
+      "details": {
+        "reopenedView": {
+          "expected": [
+            {
+              "won": true,
+              "name": "지훈",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            },
+            {
+              "won": false,
+              "name": "서연",
+              "score": "0 : 3"
+            },
+            {
+              "won": true,
+              "name": "서연",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            }
+          ],
+          "actual": [
+            {
+              "won": true,
+              "name": "지훈",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            },
+            {
+              "won": false,
+              "name": "서연",
+              "score": "0 : 3"
+            },
+            {
+              "won": true,
+              "name": "서연",
+              "score": "3 : 0"
+            },
+            {
+              "won": false,
+              "name": "지훈",
+              "score": "1 : 2"
+            }
+          ],
+          "equal": true
+        }
+      },
+      "assertions": {
+        "latestPlayerRowsCorrect": true,
+        "bothFive": true
+      }
+    },
+    {
+      "name": "anchor_change_refresh",
+      "details": {},
+      "assertions": {
+        "changedPageNotAppended": true,
+        "refreshedAtFive": true,
+        "headUnaffected": true
+      }
+    },
+    {
+      "name": "mobile_320_long_names_and_close_visibility",
+      "details": {
+        "viewport": 320,
+        "documentWidth": 320,
+        "dialogClient": 320,
+        "dialogScroll": 320,
+        "left": 0,
+        "right": 320,
+        "overflow": []
+      },
+      "assertions": {
+        "noDocumentOverflow": true,
+        "noDialogOverflow": true,
+        "noContentOverflow": true,
+        "closeVisibleAfterScroll": true
+      }
+    },
+    {
+      "name": "mobile_close_focus_return",
+      "details": {},
+      "assertions": {
+        "rowFocused": true,
+        "bodyScrollUnlocked": true
+      }
+    }
+  ],
+  "errors": [],
+  "unmatchedRequests": [],
+  "browser": "152.0.7977.82",
+  "sourceAfter": {
+    "src/pages/RankingsPage.tsx": "a9ca6215dbbd759450d6214da397eebd26804b8f67666d6679aeba8817d86671",
+    "src/components/PlayerMatchHistoryModal.tsx": "60542c2a02d363067e63c0c67fd28a2b4e9d92eecb1274682e50a0236da0d026",
+    "src/components/Modal.tsx": "bdedf55b807757e7fc8356a1b089443de9cbe05425952e3ab563946fed997469",
+    "src/auth/AuthContext.tsx": "3d5ee64b0252d3e3c7b35e34b08597cffbf388e148002685460d34efed9c1cef",
+    "src/styles.css": "f8e7501bd58e8645aad98ca683dea01dc33dc5a3b0389baa78bdd2f5f97c1315"
+  },
+  "globalAssertions": {
+    "noPageErrors": true,
+    "onlyExpectedApiRoutes": true,
+    "productSourcesStable": true
+  }
+}

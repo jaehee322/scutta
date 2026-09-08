@@ -1,0 +1,191 @@
+{
+  "startedAt": "2026-09-08T03:21:47.604Z",
+  "sourceHashesBefore": {
+    "components/PaddleFlightGame.tsx": "5616a863f357b48ce0a557d89c530bfc8ee17d43d16ae6e6747b5177e44cf872",
+    "components/PaddleFlightSkinPicker.tsx": "c4f708c9b966fa76784adad5d501e1c42b2a40fde8ca6b98094723278c4b1361",
+    "utils/paddleFlightRender.ts": "8d270d2f894aca3a9558821eaa1e1f8510677676f638b72978bdb405f4490bbd",
+    "utils/paddleFlightSkins.ts": "907dc60265fae559f64cf6dd5b27fd21527215473bae28c96b620ba3d7f873f3",
+    "styles.css": "62c556cc4185b8f580340d9dffaad6520c835129b88b312461d4c2a6601c5398"
+  },
+  "cases": [
+    {
+      "name": "Default closed: visible blue text disclosure below start, no hidden canvas mount",
+      "details": {
+        "startTop": 412,
+        "startBottom": 470,
+        "toggleTop": 483,
+        "toggleBottom": 527,
+        "toggleColor": "rgb(27, 100, 218)",
+        "iconCount": 1,
+        "reachable": true,
+        "viewport": 740,
+        "scrollWidth": 320,
+        "width": 320
+      },
+      "status": "passed",
+      "assertions": 7
+    },
+    {
+      "name": "Mouse open mounts nine canvases in actual 3 by 3 grid",
+      "details": [
+        {
+          "x": 35,
+          "y": 690,
+          "canvasWidth": 152,
+          "canvasHeight": 114,
+          "cssWidth": 76,
+          "cssHeight": 57
+        },
+        {
+          "x": 121,
+          "y": 690,
+          "canvasWidth": 152,
+          "canvasHeight": 114,
+          "cssWidth": 76,
+          "cssHeight": 57
+        },
+        {
+          "x": 207,
+          "y": 690,
+          "canvasWidth": 152,
+          "canvasHeight": 114,
+          "cssWidth": 76,
+          "cssHeight": 57
+        },
+        {
+          "x": 35,
+          "y": 824,
+          "canvasWidth": 152,
+          "canvasHeight": 114,
+          "cssWidth": 76,
+          "cssHeight": 57
+        },
+        {
+          "x": 121,
+          "y": 824,
+          "canvasWidth": 152,
+          "canvasHeight": 114,
+          "cssWidth": 76,
+          "cssHeight": 57
+        },
+        {
+          "x": 207,
+          "y": 824,
+          "canvasWidth": 152,
+          "canvasHeight": 114,
+          "cssWidth": 76,
+          "cssHeight": 57
+        },
+        {
+          "x": 35,
+          "y": 958,
+          "canvasWidth": 152,
+          "canvasHeight": 114,
+          "cssWidth": 76,
+          "cssHeight": 57
+        },
+        {
+          "x": 121,
+          "y": 958,
+          "canvasWidth": 152,
+          "canvasHeight": 114,
+          "cssWidth": 76,
+          "cssHeight": 57
+        },
+        {
+          "x": 207,
+          "y": 958,
+          "canvasWidth": 152,
+          "canvasHeight": 114,
+          "cssWidth": 76,
+          "cssHeight": 57
+        }
+      ],
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "Select new ball immediately changes preview while saving; close/open retains tab and equipment",
+      "status": "passed",
+      "assertions": 7
+    },
+    {
+      "name": "Native Enter and Space toggle disclosure with matching ARIA and preserved category",
+      "status": "passed",
+      "assertions": 4
+    },
+    {
+      "name": "Preview animation survives disclosure changes; fullscreen return preserves closed state",
+      "details": {
+        "first": {
+          "transform": "matrix(0.991885, 0.127141, -0.127141, 0.991885, 0, -8.94287)",
+          "state": "running",
+          "visible": true
+        },
+        "second": {
+          "transform": "matrix(0.982558, 0.185959, -0.185959, 0.982558, 0, -13.6128)",
+          "state": "running",
+          "visible": true
+        },
+        "resumed": {
+          "transform": "matrix(0.988498, 0.151235, -0.151235, 0.988498, 0, -10.8506)",
+          "state": "running",
+          "visible": true
+        },
+        "resumedLater": {
+          "transform": "matrix(0.999681, -0.0252531, 0.0252531, 0.999681, 0, 3.03281)",
+          "state": "running",
+          "visible": true
+        }
+      },
+      "status": "passed",
+      "assertions": 6
+    },
+    {
+      "name": "Source stability and browser/API errors",
+      "status": "passed",
+      "assertions": 2
+    }
+  ],
+  "assertions": 32,
+  "requests": [
+    {
+      "path": "/api/v1/minigames/paddle-flight/cosmetics",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/v1/minigames/paddle-flight",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/v1/minigames/paddle-flight",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "path": "/api/v1/minigames/paddle-flight/cosmetics",
+      "method": "PATCH",
+      "body": "{\"background\":\"bg_classic\",\"paddle\":\"paddle_classic\",\"ball\":\"ball_berry\"}"
+    }
+  ],
+  "errors": [],
+  "notes": [
+    "Isolated React StrictMode, actual Game/Picker/store/renderer/CSS; API fixtures only.",
+    "Native Chromium mouse and keyboard. Only brief disclosure regression, no broad game retest."
+  ],
+  "port": 54931,
+  "sourceHashesAfter": {
+    "components/PaddleFlightGame.tsx": "5616a863f357b48ce0a557d89c530bfc8ee17d43d16ae6e6747b5177e44cf872",
+    "components/PaddleFlightSkinPicker.tsx": "c4f708c9b966fa76784adad5d501e1c42b2a40fde8ca6b98094723278c4b1361",
+    "utils/paddleFlightRender.ts": "8d270d2f894aca3a9558821eaa1e1f8510677676f638b72978bdb405f4490bbd",
+    "utils/paddleFlightSkins.ts": "907dc60265fae559f64cf6dd5b27fd21527215473bae28c96b620ba3d7f873f3",
+    "styles.css": "62c556cc4185b8f580340d9dffaad6520c835129b88b312461d4c2a6601c5398"
+  },
+  "browserClosed": true,
+  "serverClosed": true,
+  "finishedAt": "2026-09-08T03:21:52.564Z",
+  "passed": 6,
+  "failed": 0
+}

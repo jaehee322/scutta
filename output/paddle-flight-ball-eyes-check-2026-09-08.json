@@ -1,0 +1,193 @@
+{
+  "generatedAt": "2026-09-08T02:08:44.274Z",
+  "sourceSha256": {
+    "paddleFlight": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+    "paddleFlightSkins": "d088d925ef724c75bd6ef639990c097c4a2dbd679b994274620b880b1addb27a",
+    "paddleFlightRender": "ef99af7c069ab0a8cd0017d2d76774100b58f117872e02827e99e25f8689284d"
+  },
+  "gallery": {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "height": 2048,
+    "cards": 21,
+    "images": 29,
+    "imagesLoaded": true,
+    "externalLinks": 0
+  },
+  "changedImages": 12,
+  "unchangedImages": 17,
+  "imageChecks": [
+    {
+      "alt": "맑은 코트 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "클래식 러버 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "클래식 탁구공 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "살구빛 새벽 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "민트 정원 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "푸른 해안 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "코발트 스트라이프 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "비취 물결 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "산호 도트 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "귤빛 스핀 실제 게임 재질 미리보기",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "민트 리본 실제 게임 재질 미리보기",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "하늘 구름 실제 게임 재질 미리보기",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "오로라 베일 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "달빛 코트 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "카본 위브 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "자수정 컷 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "오팔 진주 실제 게임 재질 미리보기",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "흑요석 실제 게임 재질 미리보기",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "별의 궤도 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "황금 왕관 실제 게임 재질 미리보기",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "태양 코어 실제 게임 재질 미리보기",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "새벽의 산호빛 실제 게임 화면",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "새벽의 산호빛 시작 전 배너",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "달빛과 진주 실제 게임 화면",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "달빛과 진주 시작 전 배너",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "태양의 왕관 실제 게임 화면",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "태양의 왕관 시작 전 배너",
+      "changed": true,
+      "expectedChanged": true
+    },
+    {
+      "alt": "동일 배율로 비교한 지름 24 공과 32×28 상자",
+      "changed": false,
+      "expectedChanged": false
+    },
+    {
+      "alt": "실제 보물상자 재질을 확대한 모습",
+      "changed": false,
+      "expectedChanged": false
+    }
+  ],
+  "eyeSkins": [
+    {
+      "id": "ball_tangerine",
+      "name": "귤빛 스핀"
+    },
+    {
+      "id": "ball_mint",
+      "name": "민트 리본"
+    },
+    {
+      "id": "ball_sky",
+      "name": "하늘 구름"
+    },
+    {
+      "id": "ball_pearl",
+      "name": "오팔 진주"
+    },
+    {
+      "id": "ball_obsidian",
+      "name": "흑요석"
+    },
+    {
+      "id": "ball_solar",
+      "name": "태양 코어"
+    }
+  ],
+  "actualBallDiameterCssPx": 24
+}

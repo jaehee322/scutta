@@ -5,9 +5,11 @@ from fastapi import APIRouter
 from app.api.deps import CurrentAdmin, CurrentPlayer, DbSession
 from app.core.config import get_settings
 from app.schemas.settlements import SettlementSettingsRead, SettlementSettingsUpdate
-from app.schemas.stats import SettlementCategory, SettlementCategoryKey, SettlementResponse
+from app.schemas.stats import SettlementCategoryKey, SettlementDistribution, SettlementResponse
 from app.services.settlements import (
+    calculate_settlement_tickets,
     get_effective_settlement_settings,
+    get_settlement_distribution,
     update_settlement_settings,
 )
 from app.services.stats import list_player_stats
@@ -20,29 +22,29 @@ admin_router = APIRouter(prefix="/admin/settlements", tags=["admin-settlements"]
 def get_my_settlement(db: DbSession, current_player: CurrentPlayer) -> SettlementResponse:
     settings = get_effective_settlement_settings(db)
     rows = list_player_stats(db)
-    mine = next((row for row in rows if row.user_id == current_player.id), None)
-
-    categories = []
-    for category in SettlementCategoryKey:
-        value = getattr(mine, category.value) if mine is not None else 0
-        tickets = value // 10
-        total_tickets = sum(getattr(row, category.value) // 10 for row in rows)
-        probability = (tickets / total_tickets * 100) if total_tickets else 0.0
-        categories.append(
-            SettlementCategory(
-                category=category,
-                prize=getattr(settings.prizes, category.value),
-                value=value,
-                tickets=tickets,
-                total_tickets=total_tickets,
-                probability_percent=round(probability, 2),
-            )
-        )
+    categories = [
+        calculate_settlement_tickets(
+            rows,
+            user_id=current_player.id,
+            category=category,
+            prize=getattr(settings.prizes, category.value),
+        ).summary
+        for category in SettlementCategoryKey
+    ]
 
     return SettlementResponse(
         draws=list(get_settings().settlement_draws),
         categories=categories,
     )
+
+
+@router.get("/{category}/distribution", response_model=SettlementDistribution)
+def get_category_distribution(
+    category: SettlementCategoryKey,
+    db: DbSession,
+    current_player: CurrentPlayer,
+) -> SettlementDistribution:
+    return get_settlement_distribution(db, user_id=current_player.id, category=category)
 
 
 @admin_router.get("/settings", response_model=SettlementSettingsRead)

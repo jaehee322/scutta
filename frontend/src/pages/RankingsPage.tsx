@@ -5,7 +5,8 @@ import { apiRequest } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { PageLoader } from "../components/Loading";
 import { Notice } from "../components/Notice";
-import type { RankingCategory, RankingsResponse } from "../types";
+import { PlayerMatchHistoryModal } from "../components/PlayerMatchHistoryModal";
+import type { PlayerSummary, RankingCategory, RankingsResponse } from "../types";
 
 const categoryMeta: Record<
   RankingCategory,
@@ -24,6 +25,7 @@ export function RankingsPage() {
   const [data, setData] = useState<RankingsResponse | null>(null);
   const [category, setCategory] = useState<RankingCategory>("matches");
   const [error, setError] = useState("");
+  const [selectedPlayer, setSelectedPlayer] = useState<PlayerSummary | null>(null);
 
   useEffect(() => {
     apiRequest<RankingsResponse>("/rankings")
@@ -72,8 +74,24 @@ export function RankingsPage() {
               {table.entries.map((entry) => {
                 const isMe = entry.player.id === user?.id;
                 return (
-                  <article className={`ranking-row ${isMe ? "is-me" : ""}`} key={entry.player.id}>
-                    <div
+                  <button
+                    type="button"
+                    className={`ranking-row ${isMe ? "is-me" : ""}`}
+                    key={entry.player.id}
+                    aria-label={[
+                      `${entry.rank}위 ${entry.player.username}`,
+                      isMe ? "나" : null,
+                      entry.player.club_rank !== null ? `${entry.player.club_rank}부` : null,
+                      `${categoryMeta[category].label} ${entry.value}${categoryMeta[category].unit}`,
+                      "경기 기록 보기",
+                    ].filter(Boolean).join(", ")}
+                    aria-haspopup="dialog"
+                    onClick={(event) => {
+                      event.currentTarget.focus();
+                      setSelectedPlayer(entry.player);
+                    }}
+                  >
+                    <span
                       className={`rank-number rank-number--${entry.rank}`}
                       aria-label={`${entry.rank}위`}
                     >
@@ -82,10 +100,10 @@ export function RankingsPage() {
                       ) : (
                         entry.rank
                       )}
-                    </div>
-                    <div className="ranking-player">
+                    </span>
+                    <span className="ranking-player">
                       <span className="avatar-circle">{entry.player.username.slice(0, 1)}</span>
-                      <div>
+                      <span className="ranking-player__info">
                         <strong>
                           <span className="ranking-player__name">{entry.player.username}</span>
                           {entry.player.club_rank !== null && (
@@ -95,13 +113,13 @@ export function RankingsPage() {
                           )}
                           {isMe && <small>나</small>}
                         </strong>
-                      </div>
-                    </div>
-                    <div className="ranking-value">
+                      </span>
+                    </span>
+                    <span className="ranking-value">
                       <strong>{entry.value}</strong>
                       <span>{categoryMeta[category].unit}</span>
-                    </div>
-                  </article>
+                    </span>
+                  </button>
                 );
               })}
             </div>
@@ -112,6 +130,14 @@ export function RankingsPage() {
             <p>동점자는 같은 순위로 표시되고 다음 순위는 건너뛰어요.</p>
           </aside>
         </>
+      )}
+      {selectedPlayer && user && (
+        <PlayerMatchHistoryModal
+          key={`${selectedPlayer.id}-${user.id}`}
+          player={selectedPlayer}
+          viewerId={user.id}
+          onClose={() => setSelectedPlayer(null)}
+        />
       )}
     </div>
   );

@@ -90,3 +90,8 @@ class MatchListResponse(BaseModel):
     total: int
     limit: int
     offset: int
+
+
+class PlayerMatchListResponse(MatchListResponse):
+    wins: int = Field(ge=0)
+    losses: int = Field(ge=0)

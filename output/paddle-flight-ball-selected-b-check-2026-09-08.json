@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2026-09-08T02:17:39.936Z",
+  "selection": "B: eyes only",
+  "gallery": {
+    "width": 1440,
+    "height": 2048,
+    "scrollWidth": 1440,
+    "cards": 21,
+    "images": 29,
+    "allImagesLoaded": true,
+    "externalLinks": 0
+  },
+  "selectedMatches": [
+    {
+      "id": "ball_tangerine",
+      "enlargedMatchesPreviouslyShownB": true,
+      "actualSizeMatchesPreviouslyShownB": true
+    },
+    {
+      "id": "ball_mint",
+      "enlargedMatchesPreviouslyShownB": true,
+      "actualSizeMatchesPreviouslyShownB": true
+    },
+    {
+      "id": "ball_sky",
+      "enlargedMatchesPreviouslyShownB": true,
+      "actualSizeMatchesPreviouslyShownB": true
+    },
+    {
+      "id": "ball_pearl",
+      "enlargedMatchesPreviouslyShownB": true,
+      "actualSizeMatchesPreviouslyShownB": true
+    },
+    {
+      "id": "ball_obsidian",
+      "enlargedMatchesPreviouslyShownB": true,
+      "actualSizeMatchesPreviouslyShownB": true
+    },
+    {
+      "id": "ball_solar",
+      "enlargedMatchesPreviouslyShownB": true,
+      "actualSizeMatchesPreviouslyShownB": true
+    }
+  ],
+  "changedGalleryImages": 12,
+  "unchangedGalleryImages": 17,
+  "preservedFilesSha256": {
+    "frontend/src/utils/paddleFlightRender.ts": "0a8dda9e106bdbac9a44f767689d681a2af9489ed1140ae3d07848e6ff8df062",
+    "output/paddle-flight-ball-face-comparison.html": "70f0b53be33efb1c81b8d5bd6b85b11c148195eb94fd6fae04f025868ea2c986",
+    "output/paddle-flight-ball-face-comparison.png": "8351ce1de278ef21e489e43e7d216b1926919f91b46105988d5c6ad66b33a237"
+  },
+  "rendererSha256": "0a8dda9e106bdbac9a44f767689d681a2af9489ed1140ae3d07848e6ff8df062"
+}

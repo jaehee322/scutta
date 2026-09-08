@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-09-08T02:33:24.924Z",
+  "sourceSha256": {
+    "paddleFlight": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468",
+    "paddleFlightSkins": "907dc60265fae559f64cf6dd5b27fd21527215473bae28c96b620ba3d7f873f3",
+    "paddleFlightRender": "8d270d2f894aca3a9558821eaa1e1f8510677676f638b72978bdb405f4490bbd",
+    "baseline": "b23eea8f2decac4c287bd7e631c0f500853e1438906ea1937fd105b0ab69906b",
+    "baselineSkins": "d088d925ef724c75bd6ef639990c097c4a2dbd679b994274620b880b1addb27a"
+  },
+  "checks": {
+    "totalSkins": 27,
+    "categoryCounts": {
+      "background": 9,
+      "paddle": 9,
+      "ball": 9
+    },
+    "oldSkinsExactGameplayPreviewEntry": 21,
+    "allSkinsRendered": 27,
+    "stateUnchanged": true,
+    "newIds": [
+      "bg_sakura",
+      "bg_glacier",
+      "paddle_maple",
+      "paddle_titanium",
+      "ball_berry",
+      "ball_lagoon"
+    ],
+    "layers": [
+      {
+        "equipped": {
+          "background": "bg_classic",
+          "paddle": "paddle_classic",
+          "ball": "ball_classic"
+        },
+        "transparentOutsideBall": true,
+        "repeatedRedrawStable": true,
+        "maxComponentDifference": 1,
+        "differentComponents": 140
+      },
+      {
+        "equipped": {
+          "background": "bg_sakura",
+          "paddle": "paddle_maple",
+          "ball": "ball_berry"
+        },
+        "transparentOutsideBall": true,
+        "repeatedRedrawStable": true,
+        "maxComponentDifference": 0,
+        "differentComponents": 0
+      },
+      {
+        "equipped": {
+          "background": "bg_glacier",
+          "paddle": "paddle_titanium",
+          "ball": "ball_lagoon"
+        },
+        "transparentOutsideBall": true,
+        "repeatedRedrawStable": true,
+        "maxComponentDifference": 0,
+        "differentComponents": 0
+      },
+      {
+        "equipped": {
+          "background": "bg_cosmos",
+          "paddle": "paddle_imperial",
+          "ball": "ball_solar"
+        },
+        "transparentOutsideBall": true,
+        "repeatedRedrawStable": true,
+        "maxComponentDifference": 0,
+        "differentComponents": 0
+      }
+    ]
+  },
+  "gallery": {
+    "width": 1600,
+    "scrollWidth": 1600,
+    "height": 1747,
+    "cards": 27,
+    "externalLinks": 0
+  }
+}
