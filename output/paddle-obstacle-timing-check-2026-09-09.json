@@ -1,0 +1,1289 @@
+{
+  "environment": "Windows Chromium touch emulation; actual game/renderer with controlled callback and input clocks, mocked API; not physical iOS",
+  "scenarios": [
+    {
+      "variant": "before",
+      "skin": "classic",
+      "fps": 30,
+      "callbackLagMs": 12,
+      "minDistance": 2.680000000000007,
+      "maxDistance": 5.319999999999993,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1021.3333333333333,
+          "x": 287.44,
+          "elapsed": 0.021333333333333256
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1054.6666666666667,
+          "x": 283.44,
+          "elapsed": 0.054666666666666586
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1088,
+          "x": 278.12,
+          "elapsed": 0.09899999999999984
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1133.3333333333333,
+          "callbackTimestamp": 1121.3333333333333,
+          "x": 275.44,
+          "elapsed": 0.1213333333333331
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1166.6666666666667,
+          "callbackTimestamp": 1154.6666666666667,
+          "x": 271.44,
+          "elapsed": 0.15466666666666642
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1200,
+          "callbackTimestamp": 1188,
+          "x": 266.12,
+          "elapsed": 0.19899999999999968
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1233.3333333333333,
+          "callbackTimestamp": 1221.3333333333333,
+          "x": 263.44,
+          "elapsed": 0.22133333333333294
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1266.6666666666667,
+          "callbackTimestamp": 1254.6666666666667,
+          "x": 259.44,
+          "elapsed": 0.25466666666666626
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1300,
+          "callbackTimestamp": 1288,
+          "x": 254.12,
+          "elapsed": 0.29899999999999965
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1333.3333333333335,
+          "callbackTimestamp": 1321.3333333333335,
+          "x": 251.44,
+          "elapsed": 0.3213333333333332
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1366.6666666666667,
+          "callbackTimestamp": 1354.6666666666667,
+          "x": 247.44,
+          "elapsed": 0.3546666666666665
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1400,
+          "callbackTimestamp": 1388,
+          "x": 242.12,
+          "elapsed": 0.3989999999999999
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "before",
+      "skin": "classic",
+      "fps": 60,
+      "callbackLagMs": 10,
+      "minDistance": 0.9200000000000159,
+      "maxDistance": 3.079999999999984,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1016.6666666666666,
+          "callbackTimestamp": 1006.6666666666666,
+          "x": 289.2,
+          "elapsed": 0.006666666666666629
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1023.3333333333333,
+          "x": 287.2,
+          "elapsed": 0.023333333333333255
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1050,
+          "callbackTimestamp": 1040,
+          "x": 284.12,
+          "elapsed": 0.04899999999999999
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1056.6666666666667,
+          "x": 283.2,
+          "elapsed": 0.05666666666666673
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1083.3333333333333,
+          "callbackTimestamp": 1073.3333333333333,
+          "x": 281.2,
+          "elapsed": 0.07333333333333325
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1090,
+          "x": 278.12,
+          "elapsed": 0.09899999999999999
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1116.6666666666667,
+          "callbackTimestamp": 1106.6666666666667,
+          "x": 277.2,
+          "elapsed": 0.10666666666666673
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1133.3333333333333,
+          "callbackTimestamp": 1123.3333333333333,
+          "x": 275.2,
+          "elapsed": 0.12333333333333324
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1150,
+          "callbackTimestamp": 1140,
+          "x": 272.12,
+          "elapsed": 0.14899999999999997
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1166.6666666666667,
+          "callbackTimestamp": 1156.6666666666667,
+          "x": 271.2,
+          "elapsed": 0.1566666666666667
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1183.3333333333333,
+          "callbackTimestamp": 1173.3333333333333,
+          "x": 269.2,
+          "elapsed": 0.17333333333333323
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1200,
+          "callbackTimestamp": 1190,
+          "x": 266.12,
+          "elapsed": 0.19899999999999995
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "before",
+      "skin": "classic",
+      "fps": 120,
+      "callbackLagMs": 6,
+      "minDistance": 0.39999999999997726,
+      "maxDistance": 1.6000000000000227,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1008.3333333333334,
+          "callbackTimestamp": 1002.3333333333334,
+          "x": 289.71999999999997,
+          "elapsed": 0.0023333333333333713
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1016.6666666666666,
+          "callbackTimestamp": 1010.6666666666666,
+          "x": 288.71999999999997,
+          "elapsed": 0.010666666666666628
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1025,
+          "callbackTimestamp": 1019,
+          "x": 287.11999999999995,
+          "elapsed": 0.024
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1027.3333333333333,
+          "x": 286.71999999999997,
+          "elapsed": 0.027333333333333258
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1041.6666666666667,
+          "callbackTimestamp": 1035.6666666666667,
+          "x": 285.71999999999997,
+          "elapsed": 0.03566666666666659
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1050,
+          "callbackTimestamp": 1044,
+          "x": 284.12,
+          "elapsed": 0.04899999999999985
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1058.3333333333333,
+          "callbackTimestamp": 1052.3333333333333,
+          "x": 283.72,
+          "elapsed": 0.05233333333333311
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1060.6666666666667,
+          "x": 282.72,
+          "elapsed": 0.06066666666666644
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1075,
+          "callbackTimestamp": 1069,
+          "x": 281.12000000000006,
+          "elapsed": 0.07399999999999969
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1083.3333333333333,
+          "callbackTimestamp": 1077.3333333333333,
+          "x": 280.7200000000001,
+          "elapsed": 0.07733333333333295
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1091.6666666666667,
+          "callbackTimestamp": 1085.6666666666667,
+          "x": 279.7200000000001,
+          "elapsed": 0.08566666666666628
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1094,
+          "x": 278.1200000000001,
+          "elapsed": 0.09899999999999953
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "before",
+      "skin": "equipped",
+      "fps": 30,
+      "callbackLagMs": 12,
+      "minDistance": 2.680000000000007,
+      "maxDistance": 5.319999999999993,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1021.3333333333333,
+          "x": 287.44,
+          "elapsed": 0.021333333333333256
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1054.6666666666667,
+          "x": 283.44,
+          "elapsed": 0.054666666666666586
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1088,
+          "x": 278.12,
+          "elapsed": 0.09899999999999984
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1133.3333333333333,
+          "callbackTimestamp": 1121.3333333333333,
+          "x": 275.44,
+          "elapsed": 0.1213333333333331
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1166.6666666666667,
+          "callbackTimestamp": 1154.6666666666667,
+          "x": 271.44,
+          "elapsed": 0.15466666666666642
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1200,
+          "callbackTimestamp": 1188,
+          "x": 266.12,
+          "elapsed": 0.19899999999999968
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1233.3333333333333,
+          "callbackTimestamp": 1221.3333333333333,
+          "x": 263.44,
+          "elapsed": 0.22133333333333294
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1266.6666666666667,
+          "callbackTimestamp": 1254.6666666666667,
+          "x": 259.44,
+          "elapsed": 0.25466666666666626
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1300,
+          "callbackTimestamp": 1288,
+          "x": 254.12,
+          "elapsed": 0.29899999999999965
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1333.3333333333335,
+          "callbackTimestamp": 1321.3333333333335,
+          "x": 251.44,
+          "elapsed": 0.3213333333333332
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1366.6666666666667,
+          "callbackTimestamp": 1354.6666666666667,
+          "x": 247.44,
+          "elapsed": 0.3546666666666665
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1400,
+          "callbackTimestamp": 1388,
+          "x": 242.12,
+          "elapsed": 0.3989999999999999
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "before",
+      "skin": "equipped",
+      "fps": 60,
+      "callbackLagMs": 10,
+      "minDistance": 0.9200000000000159,
+      "maxDistance": 3.079999999999984,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1016.6666666666666,
+          "callbackTimestamp": 1006.6666666666666,
+          "x": 289.2,
+          "elapsed": 0.006666666666666629
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1023.3333333333333,
+          "x": 287.2,
+          "elapsed": 0.023333333333333255
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1050,
+          "callbackTimestamp": 1040,
+          "x": 284.12,
+          "elapsed": 0.04899999999999999
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1056.6666666666667,
+          "x": 283.2,
+          "elapsed": 0.05666666666666673
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1083.3333333333333,
+          "callbackTimestamp": 1073.3333333333333,
+          "x": 281.2,
+          "elapsed": 0.07333333333333325
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1090,
+          "x": 278.12,
+          "elapsed": 0.09899999999999999
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1116.6666666666667,
+          "callbackTimestamp": 1106.6666666666667,
+          "x": 277.2,
+          "elapsed": 0.10666666666666673
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1133.3333333333333,
+          "callbackTimestamp": 1123.3333333333333,
+          "x": 275.2,
+          "elapsed": 0.12333333333333324
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1150,
+          "callbackTimestamp": 1140,
+          "x": 272.12,
+          "elapsed": 0.14899999999999997
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1166.6666666666667,
+          "callbackTimestamp": 1156.6666666666667,
+          "x": 271.2,
+          "elapsed": 0.1566666666666667
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1183.3333333333333,
+          "callbackTimestamp": 1173.3333333333333,
+          "x": 269.2,
+          "elapsed": 0.17333333333333323
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1200,
+          "callbackTimestamp": 1190,
+          "x": 266.12,
+          "elapsed": 0.19899999999999995
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "before",
+      "skin": "equipped",
+      "fps": 120,
+      "callbackLagMs": 6,
+      "minDistance": 0.39999999999997726,
+      "maxDistance": 1.6000000000000227,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1008.3333333333334,
+          "callbackTimestamp": 1002.3333333333334,
+          "x": 289.71999999999997,
+          "elapsed": 0.0023333333333333713
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1016.6666666666666,
+          "callbackTimestamp": 1010.6666666666666,
+          "x": 288.71999999999997,
+          "elapsed": 0.010666666666666628
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1025,
+          "callbackTimestamp": 1019,
+          "x": 287.11999999999995,
+          "elapsed": 0.024
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1027.3333333333333,
+          "x": 286.71999999999997,
+          "elapsed": 0.027333333333333258
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1041.6666666666667,
+          "callbackTimestamp": 1035.6666666666667,
+          "x": 285.71999999999997,
+          "elapsed": 0.03566666666666659
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1050,
+          "callbackTimestamp": 1044,
+          "x": 284.12,
+          "elapsed": 0.04899999999999985
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1058.3333333333333,
+          "callbackTimestamp": 1052.3333333333333,
+          "x": 283.72,
+          "elapsed": 0.05233333333333311
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1060.6666666666667,
+          "x": 282.72,
+          "elapsed": 0.06066666666666644
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1075,
+          "callbackTimestamp": 1069,
+          "x": 281.12000000000006,
+          "elapsed": 0.07399999999999969
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1083.3333333333333,
+          "callbackTimestamp": 1077.3333333333333,
+          "x": 280.7200000000001,
+          "elapsed": 0.07733333333333295
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1091.6666666666667,
+          "callbackTimestamp": 1085.6666666666667,
+          "x": 279.7200000000001,
+          "elapsed": 0.08566666666666628
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1094,
+          "x": 278.1200000000001,
+          "elapsed": 0.09899999999999953
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "after",
+      "skin": "classic",
+      "fps": 30,
+      "callbackLagMs": 12,
+      "minDistance": 4,
+      "maxDistance": 4,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1021.3333333333333,
+          "x": 286,
+          "elapsed": 0.033333333333333263
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1054.6666666666667,
+          "x": 282,
+          "elapsed": 0.0666666666666666
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1088,
+          "x": 278,
+          "elapsed": 0.09999999999999985
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1133.3333333333333,
+          "callbackTimestamp": 1121.3333333333333,
+          "x": 274,
+          "elapsed": 0.1333333333333331
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1166.6666666666667,
+          "callbackTimestamp": 1154.6666666666667,
+          "x": 270,
+          "elapsed": 0.16666666666666644
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1200,
+          "callbackTimestamp": 1188,
+          "x": 266,
+          "elapsed": 0.19999999999999968
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1233.3333333333333,
+          "callbackTimestamp": 1221.3333333333333,
+          "x": 262,
+          "elapsed": 0.23333333333333292
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1266.6666666666667,
+          "callbackTimestamp": 1254.6666666666667,
+          "x": 258,
+          "elapsed": 0.2666666666666663
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1300,
+          "callbackTimestamp": 1288,
+          "x": 254,
+          "elapsed": 0.2999999999999996
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1333.3333333333335,
+          "callbackTimestamp": 1321.3333333333335,
+          "x": 250,
+          "elapsed": 0.33333333333333304
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1366.6666666666667,
+          "callbackTimestamp": 1354.6666666666667,
+          "x": 246,
+          "elapsed": 0.36666666666666636
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1400,
+          "callbackTimestamp": 1388,
+          "x": 242,
+          "elapsed": 0.3999999999999997
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "after",
+      "skin": "classic",
+      "fps": 60,
+      "callbackLagMs": 10,
+      "minDistance": 2,
+      "maxDistance": 2,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1016.6666666666666,
+          "callbackTimestamp": 1006.6666666666666,
+          "x": 288,
+          "elapsed": 0.01666666666666663
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1023.3333333333333,
+          "x": 286,
+          "elapsed": 0.03333333333333326
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1050,
+          "callbackTimestamp": 1040,
+          "x": 284,
+          "elapsed": 0.049999999999999996
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1056.6666666666667,
+          "x": 282,
+          "elapsed": 0.06666666666666667
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1083.3333333333333,
+          "callbackTimestamp": 1073.3333333333333,
+          "x": 280,
+          "elapsed": 0.08333333333333318
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1090,
+          "x": 278,
+          "elapsed": 0.09999999999999992
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1116.6666666666667,
+          "callbackTimestamp": 1106.6666666666667,
+          "x": 276,
+          "elapsed": 0.11666666666666659
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1133.3333333333333,
+          "callbackTimestamp": 1123.3333333333333,
+          "x": 274,
+          "elapsed": 0.1333333333333331
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1150,
+          "callbackTimestamp": 1140,
+          "x": 272,
+          "elapsed": 0.14999999999999986
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1166.6666666666667,
+          "callbackTimestamp": 1156.6666666666667,
+          "x": 270,
+          "elapsed": 0.16666666666666652
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1183.3333333333333,
+          "callbackTimestamp": 1173.3333333333333,
+          "x": 268,
+          "elapsed": 0.18333333333333304
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1200,
+          "callbackTimestamp": 1190,
+          "x": 266,
+          "elapsed": 0.1999999999999998
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "after",
+      "skin": "classic",
+      "fps": 120,
+      "callbackLagMs": 6,
+      "minDistance": 1,
+      "maxDistance": 1,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1008.3333333333334,
+          "callbackTimestamp": 1002.3333333333334,
+          "x": 289,
+          "elapsed": 0.008333333333333333
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1016.6666666666666,
+          "callbackTimestamp": 1010.6666666666666,
+          "x": 288,
+          "elapsed": 0.01666666666666659
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1025,
+          "callbackTimestamp": 1019,
+          "x": 287,
+          "elapsed": 0.024999999999999963
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1027.3333333333333,
+          "x": 286,
+          "elapsed": 0.03333333333333322
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1041.6666666666667,
+          "callbackTimestamp": 1035.6666666666667,
+          "x": 285,
+          "elapsed": 0.04166666666666655
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1050,
+          "callbackTimestamp": 1044,
+          "x": 284,
+          "elapsed": 0.04999999999999981
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1058.3333333333333,
+          "callbackTimestamp": 1052.3333333333333,
+          "x": 283,
+          "elapsed": 0.058333333333333064
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1060.6666666666667,
+          "x": 282,
+          "elapsed": 0.0666666666666664
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1075,
+          "callbackTimestamp": 1069,
+          "x": 281,
+          "elapsed": 0.07499999999999966
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1083.3333333333333,
+          "callbackTimestamp": 1077.3333333333333,
+          "x": 280,
+          "elapsed": 0.08333333333333293
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1091.6666666666667,
+          "callbackTimestamp": 1085.6666666666667,
+          "x": 279,
+          "elapsed": 0.09166666666666626
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1094,
+          "x": 278,
+          "elapsed": 0.09999999999999952
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "after",
+      "skin": "equipped",
+      "fps": 30,
+      "callbackLagMs": 12,
+      "minDistance": 4,
+      "maxDistance": 4,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1021.3333333333333,
+          "x": 286,
+          "elapsed": 0.033333333333333263
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1054.6666666666667,
+          "x": 282,
+          "elapsed": 0.0666666666666666
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1088,
+          "x": 278,
+          "elapsed": 0.09999999999999985
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1133.3333333333333,
+          "callbackTimestamp": 1121.3333333333333,
+          "x": 274,
+          "elapsed": 0.1333333333333331
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1166.6666666666667,
+          "callbackTimestamp": 1154.6666666666667,
+          "x": 270,
+          "elapsed": 0.16666666666666644
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1200,
+          "callbackTimestamp": 1188,
+          "x": 266,
+          "elapsed": 0.19999999999999968
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1233.3333333333333,
+          "callbackTimestamp": 1221.3333333333333,
+          "x": 262,
+          "elapsed": 0.23333333333333292
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1266.6666666666667,
+          "callbackTimestamp": 1254.6666666666667,
+          "x": 258,
+          "elapsed": 0.2666666666666663
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1300,
+          "callbackTimestamp": 1288,
+          "x": 254,
+          "elapsed": 0.2999999999999996
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1333.3333333333335,
+          "callbackTimestamp": 1321.3333333333335,
+          "x": 250,
+          "elapsed": 0.33333333333333304
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1366.6666666666667,
+          "callbackTimestamp": 1354.6666666666667,
+          "x": 246,
+          "elapsed": 0.36666666666666636
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1400,
+          "callbackTimestamp": 1388,
+          "x": 242,
+          "elapsed": 0.3999999999999997
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "after",
+      "skin": "equipped",
+      "fps": 60,
+      "callbackLagMs": 10,
+      "minDistance": 2,
+      "maxDistance": 2,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1016.6666666666666,
+          "callbackTimestamp": 1006.6666666666666,
+          "x": 288,
+          "elapsed": 0.01666666666666663
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1023.3333333333333,
+          "x": 286,
+          "elapsed": 0.03333333333333326
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1050,
+          "callbackTimestamp": 1040,
+          "x": 284,
+          "elapsed": 0.049999999999999996
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1056.6666666666667,
+          "x": 282,
+          "elapsed": 0.06666666666666667
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1083.3333333333333,
+          "callbackTimestamp": 1073.3333333333333,
+          "x": 280,
+          "elapsed": 0.08333333333333318
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1090,
+          "x": 278,
+          "elapsed": 0.09999999999999992
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1116.6666666666667,
+          "callbackTimestamp": 1106.6666666666667,
+          "x": 276,
+          "elapsed": 0.11666666666666659
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1133.3333333333333,
+          "callbackTimestamp": 1123.3333333333333,
+          "x": 274,
+          "elapsed": 0.1333333333333331
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1150,
+          "callbackTimestamp": 1140,
+          "x": 272,
+          "elapsed": 0.14999999999999986
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1166.6666666666667,
+          "callbackTimestamp": 1156.6666666666667,
+          "x": 270,
+          "elapsed": 0.16666666666666652
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1183.3333333333333,
+          "callbackTimestamp": 1173.3333333333333,
+          "x": 268,
+          "elapsed": 0.18333333333333304
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1200,
+          "callbackTimestamp": 1190,
+          "x": 266,
+          "elapsed": 0.1999999999999998
+        }
+      ],
+      "errors": []
+    },
+    {
+      "variant": "after",
+      "skin": "equipped",
+      "fps": 120,
+      "callbackLagMs": 6,
+      "minDistance": 1,
+      "maxDistance": 1,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1008.3333333333334,
+          "callbackTimestamp": 1002.3333333333334,
+          "x": 289,
+          "elapsed": 0.008333333333333333
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1016.6666666666666,
+          "callbackTimestamp": 1010.6666666666666,
+          "x": 288,
+          "elapsed": 0.01666666666666659
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1025,
+          "callbackTimestamp": 1019,
+          "x": 287,
+          "elapsed": 0.024999999999999963
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1027.3333333333333,
+          "x": 286,
+          "elapsed": 0.03333333333333322
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1041.6666666666667,
+          "callbackTimestamp": 1035.6666666666667,
+          "x": 285,
+          "elapsed": 0.04166666666666655
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1050,
+          "callbackTimestamp": 1044,
+          "x": 284,
+          "elapsed": 0.04999999999999981
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1058.3333333333333,
+          "callbackTimestamp": 1052.3333333333333,
+          "x": 283,
+          "elapsed": 0.058333333333333064
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1060.6666666666667,
+          "x": 282,
+          "elapsed": 0.0666666666666664
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1075,
+          "callbackTimestamp": 1069,
+          "x": 281,
+          "elapsed": 0.07499999999999966
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1083.3333333333333,
+          "callbackTimestamp": 1077.3333333333333,
+          "x": 280,
+          "elapsed": 0.08333333333333293
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1091.6666666666667,
+          "callbackTimestamp": 1085.6666666666667,
+          "x": 279,
+          "elapsed": 0.09166666666666626
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1094,
+          "x": 278,
+          "elapsed": 0.09999999999999952
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

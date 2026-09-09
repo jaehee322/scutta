@@ -1,0 +1,380 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "league 4 participants; empty initial list/search-add/query clear/full-width rows",
+      "payload": {
+        "path": "/api/v1/admin/competitions",
+        "method": "POST",
+        "body": {
+          "name": "개인리그 4명",
+          "type": "league",
+          "participant_ids": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      },
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflow": [],
+        "rows": [
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          }
+        ]
+      }
+    },
+    {
+      "name": "league 5 participants; empty initial list/search-add/query clear/full-width rows",
+      "payload": {
+        "path": "/api/v1/admin/competitions",
+        "method": "POST",
+        "body": {
+          "name": "개인리그 5명",
+          "type": "league",
+          "participant_ids": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflow": [],
+        "rows": [
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          }
+        ]
+      }
+    },
+    {
+      "name": "league 6 participants; empty initial list/search-add/query clear/full-width rows",
+      "payload": {
+        "path": "/api/v1/admin/competitions",
+        "method": "POST",
+        "body": {
+          "name": "개인리그 6명",
+          "type": "league",
+          "participant_ids": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        }
+      },
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflow": [],
+        "rows": [
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          },
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          }
+        ]
+      }
+    },
+    {
+      "name": "team max4/cross-team duplicate guard/remove-readd/team delete releases members",
+      "payload": {
+        "path": "/api/v1/admin/competitions",
+        "method": "POST",
+        "body": {
+          "name": "팀 검색 점검",
+          "type": "team",
+          "teams": [
+            {
+              "name": "첫 팀",
+              "member_ids": [
+                2,
+                3,
+                4,
+                9
+              ]
+            },
+            {
+              "name": "둘째 팀",
+              "member_ids": [
+                5,
+                6,
+                7,
+                8
+              ]
+            }
+          ]
+        }
+      },
+      "layout": {
+        "viewport": 390,
+        "document": 390,
+        "overflow": [],
+        "rows": [
+          {
+            "width": 318,
+            "parent": 318,
+            "height": 52
+          },
+          {
+            "width": 318,
+            "parent": 318,
+            "height": 52
+          },
+          {
+            "width": 318,
+            "parent": 318,
+            "height": 52
+          },
+          {
+            "width": 318,
+            "parent": 318,
+            "height": 52
+          },
+          {
+            "width": 318,
+            "parent": 318,
+            "height": 52
+          },
+          {
+            "width": 318,
+            "parent": 318,
+            "height": 52
+          },
+          {
+            "width": 318,
+            "parent": 318,
+            "height": 52
+          },
+          {
+            "width": 318,
+            "parent": 318,
+            "height": 52
+          }
+        ]
+      }
+    },
+    {
+      "name": "league existing roster hydration and editing",
+      "payload": {
+        "path": "/api/v1/admin/competitions/91",
+        "method": "PATCH",
+        "body": {
+          "name": "선수 선택 점검",
+          "participant_ids": [
+            2,
+            3,
+            4,
+            9
+          ]
+        }
+      }
+    },
+    {
+      "name": "team existing roster hydration and editing",
+      "payload": {
+        "path": "/api/v1/admin/competitions/91",
+        "method": "PATCH",
+        "body": {
+          "name": "선수 선택 점검",
+          "teams": [
+            {
+              "name": "첫 팀",
+              "member_ids": [
+                2,
+                3,
+                4,
+                9
+              ]
+            },
+            {
+              "name": "둘째 팀",
+              "member_ids": [
+                5,
+                6,
+                7,
+                8
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "league started roster locked; only allowed fields saved",
+      "payload": {
+        "path": "/api/v1/admin/competitions/91",
+        "method": "PATCH",
+        "body": {
+          "name": "선수 선택 점검"
+        }
+      }
+    },
+    {
+      "name": "team started roster locked; only allowed fields saved",
+      "payload": {
+        "path": "/api/v1/admin/competitions/91",
+        "method": "PATCH",
+        "body": {
+          "name": "선수 선택 점검",
+          "team_names": [
+            {
+              "id": 31,
+              "name": "수정 팀"
+            },
+            {
+              "id": 32,
+              "name": "둘째 팀"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "pending submit disabled and failure preserves selected roster",
+      "writes": [
+        {
+          "path": "/api/v1/admin/competitions",
+          "method": "POST",
+          "body": {
+            "name": "실패 복구",
+            "type": "league",
+            "participant_ids": [
+              1,
+              2,
+              3,
+              4
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "keyboard last-of-80 add/remove, internal results scroll and long name 320px",
+      "resultSize": {
+        "height": 258,
+        "scrollHeight": 4172
+      },
+      "scrolled": 3909,
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflow": [],
+        "rows": [
+          {
+            "width": 248,
+            "parent": 248,
+            "height": 52
+          }
+        ]
+      },
+      "removeRect": {
+        "x": 235,
+        "y": 530,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "name": "keyboard last-of-80 add/remove, internal results scroll and long name 390px",
+      "resultSize": {
+        "height": 258,
+        "scrollHeight": 4170
+      },
+      "scrolled": 3907,
+      "layout": {
+        "viewport": 390,
+        "document": 390,
+        "overflow": [],
+        "rows": [
+          {
+            "width": 318,
+            "parent": 318,
+            "height": 52
+          }
+        ]
+      },
+      "removeRect": {
+        "x": 305,
+        "y": 530,
+        "width": 44,
+        "height": 44
+      }
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "passed": true,
+  "scope": "Final no-wrap CSS geometry check; actual component behavior separately tested",
+  "cases": [
+    {
+      "width": 320,
+      "long": false,
+      "rects": [
+        {
+          "x": 38,
+          "right": 79,
+          "y": 94,
+          "height": 48
+        },
+        {
+          "x": 88,
+          "right": 138.34375,
+          "y": 94,
+          "height": 48
+        },
+        {
+          "x": 147.34375,
+          "right": 197.6875,
+          "y": 94,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "long": true,
+      "rects": [
+        {
+          "x": 38,
+          "right": 79,
+          "y": 325,
+          "height": 48
+        },
+        {
+          "x": 88,
+          "right": 138.34375,
+          "y": 325,
+          "height": 48
+        },
+        {
+          "x": 147.34375,
+          "right": 197.6875,
+          "y": 325,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "long": false,
+      "rects": [
+        {
+          "x": 38,
+          "right": 79,
+          "y": 94,
+          "height": 48
+        },
+        {
+          "x": 88,
+          "right": 138.34375,
+          "y": 94,
+          "height": 48
+        },
+        {
+          "x": 147.34375,
+          "right": 197.6875,
+          "y": 94,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "long": true,
+      "rects": [
+        {
+          "x": 38,
+          "right": 79,
+          "y": 259,
+          "height": 48
+        },
+        {
+          "x": 88,
+          "right": 138.34375,
+          "y": 259,
+          "height": 48
+        },
+        {
+          "x": 147.34375,
+          "right": 197.6875,
+          "y": 259,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "long": false,
+      "rects": [
+        {
+          "x": 943.65625,
+          "right": 1000.65625,
+          "y": 62,
+          "height": 48
+        },
+        {
+          "x": 1009.65625,
+          "right": 1073.328125,
+          "y": 62,
+          "height": 48
+        },
+        {
+          "x": 1082.328125,
+          "right": 1146,
+          "y": 62,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "long": true,
+      "rects": [
+        {
+          "x": 943.65625,
+          "right": 1000.65625,
+          "y": 98,
+          "height": 48
+        },
+        {
+          "x": 1009.65625,
+          "right": 1073.328125,
+          "y": 98,
+          "height": 48
+        },
+        {
+          "x": 1082.328125,
+          "right": 1146,
+          "y": 98,
+          "height": 48
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "width": 320,
+      "nameLength": 11,
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflows": []
+      },
+      "actionLayout": [
+        {
+          "text": "수정",
+          "left": 38,
+          "right": 155.5,
+          "width": 117.5,
+          "height": 48
+        },
+        {
+          "text": "삭제",
+          "left": 164.5,
+          "right": 282,
+          "width": 117.5,
+          "height": 48
+        },
+        {
+          "text": "마감",
+          "left": 38,
+          "right": 282,
+          "width": 244,
+          "height": 48
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 320,
+      "nameLength": 100,
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflows": []
+      },
+      "actionLayout": [
+        {
+          "text": "수정",
+          "left": 38,
+          "right": 155.5,
+          "width": 117.5,
+          "height": 48
+        },
+        {
+          "text": "삭제",
+          "left": 164.5,
+          "right": 282,
+          "width": 117.5,
+          "height": 48
+        },
+        {
+          "text": "마감",
+          "left": 38,
+          "right": 282,
+          "width": 244,
+          "height": 48
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "nameLength": 11,
+      "layout": {
+        "viewport": 390,
+        "document": 390,
+        "overflows": []
+      },
+      "actionLayout": [
+        {
+          "text": "수정",
+          "left": 38,
+          "right": 136.65625,
+          "width": 98.65625,
+          "height": 48
+        },
+        {
+          "text": "삭제",
+          "left": 145.65625,
+          "right": 244.328125,
+          "width": 98.671875,
+          "height": 48
+        },
+        {
+          "text": "마감",
+          "left": 253.328125,
+          "right": 352,
+          "width": 98.671875,
+          "height": 48
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "nameLength": 100,
+      "layout": {
+        "viewport": 390,
+        "document": 390,
+        "overflows": []
+      },
+      "actionLayout": [
+        {
+          "text": "수정",
+          "left": 38,
+          "right": 136.65625,
+          "width": 98.65625,
+          "height": 48
+        },
+        {
+          "text": "삭제",
+          "left": 145.65625,
+          "right": 244.328125,
+          "width": 98.671875,
+          "height": 48
+        },
+        {
+          "text": "마감",
+          "left": 253.328125,
+          "right": 352,
+          "width": 98.671875,
+          "height": 48
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "nameLength": 11,
+      "layout": {
+        "viewport": 1280,
+        "document": 1280,
+        "overflows": []
+      },
+      "actionLayout": [
+        {
+          "text": "수정",
+          "left": 837,
+          "right": 934,
+          "width": 97,
+          "height": 48
+        },
+        {
+          "text": "삭제",
+          "left": 943,
+          "right": 1040,
+          "width": 97,
+          "height": 48
+        },
+        {
+          "text": "마감",
+          "left": 1049,
+          "right": 1146,
+          "width": 97,
+          "height": 48
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "nameLength": 100,
+      "layout": {
+        "viewport": 1280,
+        "document": 1280,
+        "overflows": []
+      },
+      "actionLayout": [
+        {
+          "text": "수정",
+          "left": 837,
+          "right": 934,
+          "width": 97,
+          "height": 48
+        },
+        {
+          "text": "삭제",
+          "left": 943,
+          "right": 1040,
+          "width": 97,
+          "height": 48
+        },
+        {
+          "text": "마감",
+          "left": 1049,
+          "right": 1146,
+          "width": 97,
+          "height": 48
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

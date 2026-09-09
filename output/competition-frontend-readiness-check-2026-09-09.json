@@ -1,0 +1,247 @@
+{
+  "checks": [
+    {
+      "name": "320px admin singles input",
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflows": []
+      },
+      "writes": [
+        {
+          "path": "/api/v1/admin/competitions/1/team-encounters/1/singles",
+          "method": "POST",
+          "data": {
+            "team1_player_id": 2,
+            "team2_player_id": 5,
+            "score1": 3,
+            "score2": 0,
+            "played_on": "2026-09-09"
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "390px admin singles input",
+      "layout": {
+        "viewport": 390,
+        "document": 390,
+        "overflows": []
+      },
+      "writes": [
+        {
+          "path": "/api/v1/admin/competitions/1/team-encounters/1/singles",
+          "method": "POST",
+          "data": {
+            "team1_player_id": 2,
+            "team2_player_id": 5,
+            "score1": 3,
+            "score2": 0,
+            "played_on": "2026-09-09"
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "player failed refresh after successful save retries GET only",
+      "writes": [
+        {
+          "path": "/api/v1/competitions/1/team-encounters/1/singles",
+          "method": "POST",
+          "data": {
+            "my_team_player_id": 1,
+            "opponent_team_player_id": 5,
+            "my_team_score": 1,
+            "opponent_team_score": 2
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "80 players create team 320px and duplicate membership guard",
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflows": []
+      },
+      "writes": [
+        {
+          "path": "/api/v1/admin/competitions",
+          "method": "POST",
+          "data": {
+            "name": "모바일 생성 시험",
+            "type": "team",
+            "teams": [
+              {
+                "name": "첫 팀",
+                "member_ids": [
+                  1,
+                  2,
+                  3,
+                  4
+                ]
+              },
+              {
+                "name": "둘째 팀",
+                "member_ids": [
+                  5,
+                  6,
+                  7,
+                  8
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "20 teams 190 encounters including 760 singles and 190 doubles",
+      "elapsedIncludingNavigationMs": 1406,
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflows": []
+      },
+      "dom": {
+        "elements": 20013,
+        "height": 104597,
+        "encounters": 190
+      },
+      "errors": []
+    },
+    {
+      "name": "valid maximum-length title/team name",
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflows": [
+          {
+            "tag": "DIV",
+            "cls": "competition-detail-hero__badges",
+            "text": "단체전진행 중",
+            "right": 1695.8125
+          },
+          {
+            "tag": "DIV",
+            "cls": "competition-detail-hero__title",
+            "text": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "right": 1695.8125
+          },
+          {
+            "tag": "H1",
+            "cls": "",
+            "text": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "right": 1695.8125
+          },
+          {
+            "tag": "DIV",
+            "cls": "competition-admin-actions",
+            "text": " 수정 삭제 마감",
+            "right": 1695.8125
+          },
+          {
+            "tag": "A",
+            "cls": "secondary-button",
+            "text": " 수정",
+            "right": 584.59375
+          },
+          {
+            "tag": "BUTTON",
+            "cls": "secondary-button competition-delete-trigger",
+            "text": " 삭제",
+            "right": 1140.203125
+          },
+          {
+            "tag": "svg",
+            "cls": {},
+            "text": "",
+            "right": 855.390625
+          },
+          {
+            "tag": "path",
+            "cls": {},
+            "text": "",
+            "right": 845.4739379882812
+          }
+        ]
+      }
+    },
+    {
+      "name": "player doubles score orientation and route",
+      "writes": [
+        {
+          "path": "/api/v1/competitions/1/team-encounters/1/doubles",
+          "method": "POST",
+          "data": {
+            "my_team_score": 3,
+            "opponent_team_score": 0
+          }
+        }
+      ],
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflows": []
+      },
+      "errors": []
+    },
+    {
+      "name": "completion mutation-success refresh failure retries GET only",
+      "writes": [
+        {
+          "path": "/api/v1/admin/competitions/1/complete",
+          "method": "POST",
+          "data": null
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "league player loss orientation",
+      "writes": [
+        {
+          "path": "/api/v1/competitions/1/league-fixtures/1/result",
+          "method": "POST",
+          "data": {
+            "my_score": 0,
+            "opponent_score": 3
+          }
+        }
+      ],
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflows": []
+      },
+      "errors": []
+    },
+    {
+      "name": "started competition admin edits team names only; roster locked",
+      "writes": [
+        {
+          "path": "/api/v1/admin/competitions/1",
+          "method": "PATCH",
+          "data": {
+            "name": "출시 전 단체전 점검",
+            "team_names": [
+              {
+                "id": 1,
+                "name": "수정 팀"
+              },
+              {
+                "id": 2,
+                "name": "팀2"
+              }
+            ]
+          }
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

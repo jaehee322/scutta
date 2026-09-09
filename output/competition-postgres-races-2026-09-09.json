@@ -1,0 +1,90 @@
+{
+  "database": "PostgreSQL 17.7 on x86_64-windows, compiled by msvc-19.44.35221, 64-bit",
+  "scope": "isolated scutta_races database; unique temporary schema; actual service functions",
+  "cases": [
+    {
+      "case": "simultaneous_opposing_doubles",
+      "outcomes": [
+        {
+          "outcome": "success"
+        },
+        {
+          "outcome": "CompetitionConflictError",
+          "message": "이미 복식 결과가 제출되었습니다."
+        }
+      ],
+      "blocked_query": {
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "query": "SELECT competitions.id, competitions.name, competitions.type, competitions.status, competitions.completed_at, competitions.created_at, competitions.updated_at \nFROM competitions \nWHERE competitions.id = $1::INTEGER FOR UPDATE"
+      },
+      "final_score": [
+        3,
+        0
+      ],
+      "preserved": true
+    },
+    {
+      "case": "first_result_first",
+      "outcomes": [
+        {
+          "outcome": "success"
+        },
+        {
+          "outcome": "CompetitionConflictError",
+          "message": "첫 결과가 제출된 뒤에는 편성을 수정할 수 없습니다."
+        }
+      ],
+      "blocked_query": {
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "query": "SELECT competitions.id, competitions.name, competitions.type, competitions.status, competitions.completed_at, competitions.created_at, competitions.updated_at \nFROM competitions \nWHERE competitions.id = $1::INTEGER FOR UPDATE"
+      },
+      "members": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "match_pairs": [
+        [
+          1,
+          4
+        ]
+      ],
+      "displayed_completed_pairs": [
+        [
+          1,
+          4
+        ]
+      ],
+      "consistent": true
+    },
+    {
+      "case": "roster_first",
+      "outcomes": [
+        {
+          "outcome": "success"
+        },
+        {
+          "outcome": "CompetitionNotFoundError",
+          "message": "리그 대진을 찾을 수 없습니다."
+        }
+      ],
+      "blocked_query": {
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "query": "SELECT competitions.id, competitions.name, competitions.type, competitions.status, competitions.completed_at, competitions.created_at, competitions.updated_at \nFROM competitions \nWHERE competitions.id = $1::INTEGER FOR UPDATE"
+      },
+      "members": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "match_pairs": [],
+      "displayed_completed_pairs": [],
+      "consistent": true
+    }
+  ]
+}

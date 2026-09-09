@@ -1,0 +1,685 @@
+{
+  "passed": true,
+  "sourceHashes": {
+    "component": "9b0e2aa49a4ab3175cfc54f233a318adc7baf237edc1063f72d4cc4e64d3aefd",
+    "renderer": "8d270d2f894aca3a9558821eaa1e1f8510677676f638b72978bdb405f4490bbd",
+    "physics": "1bd0762f57f54fb2ca8dd1bf70ff7bd93eea7db603913252cf64ef776f201468"
+  },
+  "cases": 8,
+  "checks": [
+    {
+      "name": "mouse down applies before release; hold/up/click do not repeat; second down applies once",
+      "kind": "mouse",
+      "inputToApplyMs": 0.2999999523162842,
+      "firstPlayingDrawMs": 10.899999976158142,
+      "heldDraw": {
+        "t": 2805.7000000476837,
+        "status": "playing",
+        "y": 224.6750115932459,
+        "velocityY": -141.64399995326994
+      },
+      "beforeReleaseFlapCount": 1,
+      "events": [
+        {
+          "type": "pointerdown",
+          "t": 2613.2000000476837,
+          "eventTime": 2613,
+          "pointerType": "mouse",
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "t": 2831.2000000476837,
+          "eventTime": 2830.800000011921,
+          "pointerType": "mouse",
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "t": 2831.400000035763,
+          "eventTime": 2830.800000011921,
+          "pointerType": "mouse",
+          "isPrimary": false,
+          "button": 0,
+          "detail": 1
+        },
+        {
+          "type": "pointerdown",
+          "t": 2888.2000000476837,
+          "eventTime": 2887.900000035763,
+          "pointerType": "mouse",
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "t": 2901.400000035763,
+          "eventTime": 2901.100000023842,
+          "pointerType": "mouse",
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "t": 2901.400000035763,
+          "eventTime": 2901.100000023842,
+          "pointerType": "mouse",
+          "isPrimary": false,
+          "button": 0,
+          "detail": 1
+        }
+      ],
+      "flaps": [
+        {
+          "t": 2613.5,
+          "status": "ready",
+          "y": 270,
+          "velocityY": 0
+        },
+        {
+          "t": 2888.300000011921,
+          "status": "playing",
+          "y": 216.31836959927645,
+          "velocityY": -60.69599998831747
+        }
+      ],
+      "applied": [
+        {
+          "t": 2613.5,
+          "status": "playing",
+          "y": 270,
+          "velocityY": -330
+        },
+        {
+          "t": 2888.300000011921,
+          "status": "playing",
+          "y": 216.31836959927645,
+          "velocityY": -330
+        }
+      ],
+      "drawSummary": {
+        "count": 18,
+        "first": {
+          "t": 2624.100000023842,
+          "status": "playing",
+          "y": 266.94129638852775,
+          "velocityY": -320.78799996495246
+        },
+        "last": {
+          "t": 2905.900000035763,
+          "status": "playing",
+          "y": 210.69343209927644,
+          "velocityY": -312.84999999999997
+        }
+      }
+    },
+    {
+      "name": "CDP touchStart applies before touchEnd; no release/click repeat",
+      "kind": "touch",
+      "inputToApplyMs": 0.699999988079071,
+      "firstPlayingDrawMs": 16.600000023841858,
+      "heldDraw": {
+        "t": 737.2999999523163,
+        "status": "playing",
+        "y": 226.32289,
+        "velocityY": -152.62
+      },
+      "beforeReleaseFlapCount": 1,
+      "events": [
+        {
+          "type": "pointerdown",
+          "t": 555.5999999642372,
+          "eventTime": 553.3999999761581,
+          "pointerType": "touch",
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "touchstart",
+          "t": 558.7999999523163,
+          "eventTime": 553.3999999761581,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "t": 755.6999999880791,
+          "eventTime": 748.5999999642372,
+          "pointerType": "touch",
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "touchend",
+          "t": 755.8999999761581,
+          "eventTime": 748.5999999642372,
+          "detail": 0
+        },
+        {
+          "type": "click",
+          "t": 756.2999999523163,
+          "eventTime": 748.5999999642372,
+          "pointerType": "touch",
+          "isPrimary": false,
+          "button": 0,
+          "detail": 1
+        }
+      ],
+      "flaps": [
+        {
+          "t": 556.2999999523163,
+          "status": "ready",
+          "y": 270,
+          "velocityY": 0
+        }
+      ],
+      "applied": [
+        {
+          "t": 556.2999999523163,
+          "status": "playing",
+          "y": 270,
+          "velocityY": -330
+        }
+      ],
+      "drawSummary": {
+        "count": 14,
+        "first": {
+          "t": 572.1999999880791,
+          "status": "playing",
+          "y": 265.2548840849513,
+          "velocityY": -315.59399995326993
+        },
+        "last": {
+          "t": 787.2999999523163,
+          "status": "playing",
+          "y": 219.91689000000002,
+          "velocityY": -103.62000000000003
+        }
+      }
+    },
+    {
+      "name": "secondary simultaneous touch ignored",
+      "events": [
+        {
+          "type": "pointerdown",
+          "t": 431.80000001192093,
+          "eventTime": 417,
+          "pointerType": "touch",
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "touchstart",
+          "t": 434.80000001192093,
+          "eventTime": 417,
+          "detail": 0
+        },
+        {
+          "type": "pointerdown",
+          "t": 450.30000001192093,
+          "eventTime": 440.89999997615814,
+          "pointerType": "touch",
+          "isPrimary": false,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "touchstart",
+          "t": 450.39999997615814,
+          "eventTime": 440.89999997615814,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "t": 465.5,
+          "eventTime": 455.0999999642372,
+          "pointerType": "touch",
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "touchend",
+          "t": 465.69999998807907,
+          "eventTime": 455.0999999642372,
+          "detail": 0
+        },
+        {
+          "type": "pointerup",
+          "t": 465.89999997615814,
+          "eventTime": 455.0999999642372,
+          "pointerType": "touch",
+          "isPrimary": false,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "touchend",
+          "t": 465.89999997615814,
+          "eventTime": 455.0999999642372,
+          "detail": 0
+        }
+      ],
+      "flaps": [
+        {
+          "t": 432.0999999642372,
+          "status": "ready",
+          "y": 270,
+          "velocityY": 0
+        }
+      ],
+      "applied": [
+        {
+          "t": 432.0999999642372,
+          "status": "playing",
+          "y": 270,
+          "velocityY": -330
+        }
+      ],
+      "drawSummary": {
+        "count": 4,
+        "first": {
+          "t": 448.89999997615814,
+          "status": "playing",
+          "y": 265.0027225,
+          "velocityY": -314.81
+        },
+        "last": {
+          "t": 498,
+          "status": "playing",
+          "y": 250.48722249999997,
+          "velocityY": -265.80999999999995
+        }
+      }
+    },
+    {
+      "name": "right/middle mouse press ignored",
+      "events": [
+        {
+          "type": "pointerdown",
+          "t": 394.5999999642372,
+          "eventTime": 394.39999997615814,
+          "pointerType": "mouse",
+          "isPrimary": true,
+          "button": 2,
+          "detail": 0
+        },
+        {
+          "type": "mousedown",
+          "t": 394.7999999523163,
+          "eventTime": 394.39999997615814,
+          "button": 2,
+          "detail": 1
+        },
+        {
+          "type": "pointerup",
+          "t": 398.5,
+          "eventTime": 398.2999999523163,
+          "pointerType": "mouse",
+          "isPrimary": true,
+          "button": 2,
+          "detail": 0
+        },
+        {
+          "type": "mouseup",
+          "t": 398.5,
+          "eventTime": 398.2999999523163,
+          "button": 2,
+          "detail": 1
+        },
+        {
+          "type": "pointerdown",
+          "t": 401.5999999642372,
+          "eventTime": 401.19999998807907,
+          "pointerType": "mouse",
+          "isPrimary": true,
+          "button": 1,
+          "detail": 0
+        },
+        {
+          "type": "mousedown",
+          "t": 401.7999999523163,
+          "eventTime": 401.19999998807907,
+          "button": 1,
+          "detail": 1
+        },
+        {
+          "type": "pointerup",
+          "t": 403.5999999642372,
+          "eventTime": 403.39999997615814,
+          "pointerType": "mouse",
+          "isPrimary": true,
+          "button": 1,
+          "detail": 0
+        },
+        {
+          "type": "mouseup",
+          "t": 403.5999999642372,
+          "eventTime": 403.39999997615814,
+          "button": 1,
+          "detail": 1
+        }
+      ],
+      "flaps": [],
+      "applied": [],
+      "drawSummary": {
+        "count": 0
+      }
+    },
+    {
+      "name": "Space starts once; repeated keydown and keyup ignored",
+      "events": [
+        {
+          "type": "keydown",
+          "t": 393.5999999642372,
+          "eventTime": 393.0999999642372,
+          "detail": 0,
+          "code": "Space",
+          "repeat": false
+        },
+        {
+          "type": "keydown",
+          "t": 401.0999999642372,
+          "eventTime": 400.5999999642372,
+          "detail": 0,
+          "code": "Space",
+          "repeat": true
+        },
+        {
+          "type": "keydown",
+          "t": 402.7999999523163,
+          "eventTime": 402.5999999642372,
+          "detail": 0,
+          "code": "Space",
+          "repeat": true
+        },
+        {
+          "type": "keyup",
+          "t": 408.0999999642372,
+          "eventTime": 407.7999999523163,
+          "detail": 0,
+          "code": "Space",
+          "repeat": false
+        }
+      ],
+      "flaps": [
+        {
+          "t": 394.0999999642372,
+          "status": "ready",
+          "y": 270,
+          "velocityY": 0
+        }
+      ],
+      "applied": [
+        {
+          "t": 394.0999999642372,
+          "status": "playing",
+          "y": 270,
+          "velocityY": -330
+        }
+      ],
+      "drawSummary": {
+        "count": 1,
+        "first": {
+          "t": 409.39999997615814,
+          "status": "playing",
+          "y": 265.28644839247335,
+          "velocityY": -315.691999976635
+        },
+        "last": {
+          "t": 409.39999997615814,
+          "status": "playing",
+          "y": 265.28644839247335,
+          "velocityY": -315.691999976635
+        }
+      }
+    },
+    {
+      "name": "ArrowUp starts once; repeated keydown and keyup ignored",
+      "events": [
+        {
+          "type": "keydown",
+          "t": 381.89999997615814,
+          "eventTime": 381.69999998807907,
+          "detail": 0,
+          "code": "ArrowUp",
+          "repeat": false
+        },
+        {
+          "type": "keydown",
+          "t": 391.0999999642372,
+          "eventTime": 390.89999997615814,
+          "detail": 0,
+          "code": "ArrowUp",
+          "repeat": true
+        },
+        {
+          "type": "keydown",
+          "t": 392.7999999523163,
+          "eventTime": 392.5999999642372,
+          "detail": 0,
+          "code": "ArrowUp",
+          "repeat": true
+        },
+        {
+          "type": "keyup",
+          "t": 396.5,
+          "eventTime": 396.39999997615814,
+          "detail": 0,
+          "code": "ArrowUp",
+          "repeat": false
+        }
+      ],
+      "flaps": [
+        {
+          "t": 382.2999999523163,
+          "status": "ready",
+          "y": 270,
+          "velocityY": 0
+        }
+      ],
+      "applied": [
+        {
+          "t": 382.2999999523163,
+          "status": "playing",
+          "y": 270,
+          "velocityY": -330
+        }
+      ],
+      "drawSummary": {
+        "count": 2,
+        "first": {
+          "t": 385.7999999523163,
+          "status": "playing",
+          "y": 269.0471208882999,
+          "velocityY": -327.15799996495247
+        },
+        "last": {
+          "t": 399.69999998807907,
+          "status": "playing",
+          "y": 264.4063523888081,
+          "velocityY": -312.94799996495243
+        }
+      }
+    },
+    {
+      "name": "Enter starts once; repeated keydown and keyup ignored",
+      "events": [
+        {
+          "type": "keydown",
+          "t": 386,
+          "eventTime": 385.69999998807907,
+          "detail": 0,
+          "code": "Enter",
+          "repeat": false
+        },
+        {
+          "type": "keydown",
+          "t": 394.5,
+          "eventTime": 394.19999998807907,
+          "detail": 0,
+          "code": "Enter",
+          "repeat": true
+        },
+        {
+          "type": "keydown",
+          "t": 399.10000002384186,
+          "eventTime": 398.9000000357628,
+          "detail": 0,
+          "code": "Enter",
+          "repeat": true
+        },
+        {
+          "type": "keyup",
+          "t": 404.30000001192093,
+          "eventTime": 404.19999998807907,
+          "detail": 0,
+          "code": "Enter",
+          "repeat": false
+        }
+      ],
+      "flaps": [
+        {
+          "t": 386.30000001192093,
+          "status": "ready",
+          "y": 270,
+          "velocityY": 0
+        }
+      ],
+      "applied": [
+        {
+          "t": 386.30000001192093,
+          "status": "playing",
+          "y": 270,
+          "velocityY": -330
+        }
+      ],
+      "drawSummary": {
+        "count": 2,
+        "first": {
+          "t": 392,
+          "status": "playing",
+          "y": 268.39476488837,
+          "velocityY": -325.1979999649525
+        },
+        "last": {
+          "t": 407.5,
+          "status": "playing",
+          "y": 263.2551528926252,
+          "velocityY": -309.32199997663497
+        }
+      }
+    },
+    {
+      "name": "touch cancellation does not add or defer flap",
+      "events": [
+        {
+          "type": "pointerdown",
+          "t": 399.5,
+          "eventTime": 394.9000000357628,
+          "pointerType": "touch",
+          "isPrimary": true,
+          "button": 0,
+          "detail": 0
+        },
+        {
+          "type": "touchstart",
+          "t": 401.5,
+          "eventTime": 394.9000000357628,
+          "detail": 0
+        },
+        {
+          "type": "pointercancel",
+          "t": 417.4000000357628,
+          "eventTime": 403.80000001192093,
+          "pointerType": "touch",
+          "isPrimary": true,
+          "button": -1,
+          "detail": 0
+        },
+        {
+          "type": "touchcancel",
+          "t": 417.5,
+          "eventTime": 403.80000001192093,
+          "detail": 0
+        }
+      ],
+      "flaps": [
+        {
+          "t": 399.69999998807907,
+          "status": "ready",
+          "y": 270,
+          "velocityY": 0
+        }
+      ],
+      "applied": [
+        {
+          "t": 399.69999998807907,
+          "status": "playing",
+          "y": 270,
+          "velocityY": -330
+        }
+      ],
+      "drawSummary": {
+        "count": 3,
+        "first": {
+          "t": 415.80000001192093,
+          "status": "playing",
+          "y": 264.971246411255,
+          "velocityY": -314.71200003504754
+        },
+        "last": {
+          "t": 446.4000000357628,
+          "status": "playing",
+          "y": 255.6292175966128,
+          "velocityY": -284.13599998831745
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Chrome automation supplies browser mouse/pointer/touch events; it cannot reproduce a laptop touchpad driver delivering a synthetic mouse press only after a physical finger tap ends.",
+    "CDP mobile emulation is not physical iOS/Android hardware testing.",
+    "Observation-only Vite transforms record function entry, applied velocity and renderer snapshots without changing input, timing or physics; existing performance.now timing remains intact."
+  ],
+  "copyChecks": [
+    {
+      "inputMode": "desktop fine hover",
+      "ready": {
+        "fineHover": true,
+        "desktop": [
+          "클릭 또는 Space",
+          "터치패드는 눌러 클릭하세요",
+          "터치패드는 눌러 클릭 · Space·↑ 키로도 점프"
+        ],
+        "touch": []
+      },
+      "entry": [
+        "클릭 또는 Space·↑ 키로 공을 띄우세요."
+      ]
+    },
+    {
+      "inputMode": "mobile touch emulation",
+      "ready": {
+        "fineHover": false,
+        "desktop": [],
+        "touch": [
+          "탭해서 날기",
+          "화면을 눌러 탁구공을 띄우세요",
+          "화면을 누르면 공이 바로 올라가요."
+        ]
+      },
+      "entry": [
+        "화면을 누르면 탁구공이 위로 튀어 올라요."
+      ]
+    }
+  ]
+}

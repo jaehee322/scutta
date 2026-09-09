@@ -1,0 +1,173 @@
+{
+  "passed": true,
+  "cases": 5,
+  "checks": [
+    {
+      "name": "new A/B, add C/D, delete middle renumbers A/B/C preserving team state and players",
+      "payload": {
+        "path": "/api/v1/admin/competitions",
+        "method": "POST",
+        "body": {
+          "name": "자동팀명 새 대회",
+          "type": "team",
+          "teams": [
+            {
+              "name": "A",
+              "member_ids": [
+                1,
+                5,
+                6,
+                7
+              ]
+            },
+            {
+              "name": "B",
+              "member_ids": [
+                3,
+                8,
+                9,
+                10
+              ]
+            },
+            {
+              "name": "C",
+              "member_ids": [
+                4,
+                11,
+                12,
+                13
+              ]
+            }
+          ]
+        }
+      },
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflow": []
+      }
+    },
+    {
+      "name": "existing saved names read-only preserved; added team uses first unused alphabet",
+      "payload": {
+        "path": "/api/v1/admin/competitions/91",
+        "method": "PATCH",
+        "body": {
+          "name": "수정된 대회명",
+          "teams": [
+            {
+              "name": "푸른 팀",
+              "member_ids": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "name": "A",
+              "member_ids": [
+                5,
+                6,
+                7,
+                8
+              ]
+            },
+            {
+              "name": "B",
+              "member_ids": [
+                9,
+                10,
+                11,
+                12
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "started roster locked and name-only PATCH without team_names",
+      "payload": {
+        "path": "/api/v1/admin/competitions/91",
+        "method": "PATCH",
+        "body": {
+          "name": "경기중 대회명 정정"
+        }
+      }
+    },
+    {
+      "name": "long existing name remains readable at 320px without overflow",
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflow": []
+      }
+    },
+    {
+      "name": "26th Z and 27th AA automatic naming; deletion renumber preserves last team players",
+      "names": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+        "AA"
+      ],
+      "after": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z"
+      ],
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "overflow": []
+      }
+    }
+  ]
+}

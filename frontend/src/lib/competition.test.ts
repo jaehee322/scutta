@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest";
 import {
   competitionHasResults,
   competitionProgress,
-  competitionTeamNameUpdates,
   isCompetitionDeleteConfirmed,
   leagueSelectionError,
   resultScorePair,
@@ -68,18 +67,6 @@ describe("competition helpers", () => {
     expect(teamNamesError([{ name: "Ａ팀" }, { name: "a팀" }])).toContain("중복");
     expect(teamNamesError([{ name: "ß" }, { name: "SS" }])).toBe("");
     expect(teamNamesError([{ name: "A팀" }, { name: "B팀" }])).toBe("");
-  });
-
-  it("builds atomic team-name updates only from persisted team ids", () => {
-    expect(competitionTeamNameUpdates([
-      { id: 41, name: " A팀 " },
-      { id: 57, name: "B팀" },
-    ])).toEqual([
-      { id: 41, name: "A팀" },
-      { id: 57, name: "B팀" },
-    ]);
-    expect(competitionTeamNameUpdates([{ name: "A팀" }])).toBeNull();
-    expect(competitionTeamNameUpdates([{ id: 0, name: "A팀" }])).toBeNull();
   });
 
   it("detects partial team results before an encounter is complete", () => {

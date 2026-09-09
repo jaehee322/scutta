@@ -3,7 +3,6 @@ import type {
   CompetitionSummary,
   CompetitionTeam,
   CompetitionTeamInput,
-  CompetitionTeamNameInput,
   CompetitionType,
 } from "../types";
 
@@ -81,14 +80,13 @@ export function teamNamesError(teams: Array<{ name: string }>): string {
   return "";
 }
 
-export function competitionTeamNameUpdates(
-  teams: Array<{ id?: number; name: string }>,
-): CompetitionTeamNameInput[] | null {
-  const updates: CompetitionTeamNameInput[] = [];
-  for (const team of teams) {
-    const { id } = team;
-    if (id === undefined || !Number.isInteger(id) || id <= 0) return null;
-    updates.push({ id, name: team.name.trim() });
+export function competitionTeamName(index: number): string {
+  let number = index + 1;
+  let name = "";
+  while (number > 0) {
+    number -= 1;
+    name = String.fromCharCode(65 + number % 26) + name;
+    number = Math.floor(number / 26);
   }
-  return updates;
+  return name;
 }

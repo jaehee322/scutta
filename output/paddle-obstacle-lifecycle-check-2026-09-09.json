@@ -1,0 +1,140 @@
+{
+  "environment": "Windows Chromium touch emulation; actual game/renderer with controlled callback and input clocks, mocked API; not physical iOS",
+  "scenarios": [
+    {
+      "variant": "after",
+      "skin": "classic",
+      "fps": 60,
+      "callbackLagMs": 10,
+      "minDistance": 2,
+      "maxDistance": 2,
+      "frames": [
+        {
+          "frame": 1,
+          "touching": false,
+          "now": 1016.6666666666666,
+          "callbackTimestamp": 1006.6666666666666,
+          "x": 288,
+          "elapsed": 0.01666666666666663
+        },
+        {
+          "frame": 2,
+          "touching": false,
+          "now": 1033.3333333333333,
+          "callbackTimestamp": 1023.3333333333333,
+          "x": 286,
+          "elapsed": 0.03333333333333326
+        },
+        {
+          "frame": 3,
+          "touching": true,
+          "now": 1050,
+          "callbackTimestamp": 1040,
+          "x": 284,
+          "elapsed": 0.049999999999999996
+        },
+        {
+          "frame": 4,
+          "touching": false,
+          "now": 1066.6666666666667,
+          "callbackTimestamp": 1056.6666666666667,
+          "x": 282,
+          "elapsed": 0.06666666666666667
+        },
+        {
+          "frame": 5,
+          "touching": false,
+          "now": 1083.3333333333333,
+          "callbackTimestamp": 1073.3333333333333,
+          "x": 280,
+          "elapsed": 0.08333333333333318
+        },
+        {
+          "frame": 6,
+          "touching": true,
+          "now": 1100,
+          "callbackTimestamp": 1090,
+          "x": 278,
+          "elapsed": 0.09999999999999992
+        },
+        {
+          "frame": 7,
+          "touching": false,
+          "now": 1116.6666666666667,
+          "callbackTimestamp": 1106.6666666666667,
+          "x": 276,
+          "elapsed": 0.11666666666666659
+        },
+        {
+          "frame": 8,
+          "touching": false,
+          "now": 1133.3333333333333,
+          "callbackTimestamp": 1123.3333333333333,
+          "x": 274,
+          "elapsed": 0.1333333333333331
+        },
+        {
+          "frame": 9,
+          "touching": true,
+          "now": 1150,
+          "callbackTimestamp": 1140,
+          "x": 272,
+          "elapsed": 0.14999999999999986
+        },
+        {
+          "frame": 10,
+          "touching": false,
+          "now": 1166.6666666666667,
+          "callbackTimestamp": 1156.6666666666667,
+          "x": 270,
+          "elapsed": 0.16666666666666652
+        },
+        {
+          "frame": 11,
+          "touching": false,
+          "now": 1183.3333333333333,
+          "callbackTimestamp": 1173.3333333333333,
+          "x": 268,
+          "elapsed": 0.18333333333333304
+        },
+        {
+          "frame": 12,
+          "touching": true,
+          "now": 1200,
+          "callbackTimestamp": 1190,
+          "x": 266,
+          "elapsed": 0.1999999999999998
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "lifecycle": {
+    "irregular": [
+      {
+        "delta": 0,
+        "elapsedDelta": 0
+      },
+      {
+        "delta": 7,
+        "elapsedDelta": 0.007000000000000006
+      },
+      {
+        "delta": 29,
+        "elapsedDelta": 0.028999999999999998
+      },
+      {
+        "delta": 11,
+        "elapsedDelta": 0.01100000000000001
+      },
+      {
+        "delta": 180,
+        "elapsedDelta": 0.10000000000000028
+      }
+    ],
+    "collisionBeforeFlap": true,
+    "restart": true,
+    "oneScoreSave": true,
+    "errors": []
+  }
+}

@@ -220,7 +220,7 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
     if (nextScore > runBestScoreRef.current) setIsNewBest(true);
   }, []);
 
-  const animate = useCallback(function animateFrame(timestamp: number) {
+  const animate = useCallback(function animateFrame() {
     const currentState = gameStateRef.current;
     if (currentState.status !== "playing") {
       animationFrameRef.current = null;
@@ -228,9 +228,10 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
     }
 
     const previousTimestamp = lastFrameTimeRef.current;
-    // A pointer event can run after this frame's timestamp but before its callback.
-    // Never rewind the simulation clock and count that time a second time.
-    const frameTimestamp = Math.max(timestamp, previousTimestamp ?? timestamp);
+    // Sample the same clock at execution time as beginOrFlap. The rAF timestamp
+    // can precede a touch already processed here, making that frame jump ahead
+    // and the following frame slow down when the two sample times are mixed.
+    const frameTimestamp = window.performance.now();
     lastFrameTimeRef.current = frameTimestamp;
     if (previousTimestamp !== null) {
       const nextState = stepPaddleFlight(
@@ -324,6 +325,8 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
     event: ReactPointerEvent<HTMLCanvasElement>,
   ) => {
     if (!event.isPrimary || event.button !== 0) return;
+    // Direct touch arrives on contact. Trackpad tap-to-click is reported as a
+    // mouse press once the OS recognizes the tap; raw finger contact is not exposed.
     event.preventDefault();
     if (document.activeElement !== event.currentTarget) event.currentTarget.focus({ preventScroll: true });
     beginOrFlap();
@@ -502,7 +505,10 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
           <canvas ref={previewBallCanvasRef} className="paddle-flight-preview__ball-canvas" aria-hidden="true" draggable={false} onContextMenu={(event) => event.preventDefault()} />
         </div>
 
-        <p className="paddle-flight-entry-copy">화면을 누르면 탁구공이 위로 튀어 올라요.</p>
+        <p className="paddle-flight-entry-copy">
+          <span className="paddle-flight-touch-copy">화면을 누르면 탁구공이 위로 튀어 올라요.</span>
+          <span className="paddle-flight-desktop-copy">클릭 또는 Space·↑ 키로 공을 띄우세요.</span>
+        </p>
         <p className="paddle-flight-limit-copy">횟수 제한 없이 계속 도전할 수 있어요.</p>
 
         <button
@@ -622,8 +628,8 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
                   {runEquippedRef.current.ball === "ball_classic"
                     ? <span className="paddle-flight-ready-ball" />
                     : <PaddleSkinThumbnail skinId={runEquippedRef.current.ball} />}
-                  <strong>탭해서 날기</strong>
-                  <span>화면을 눌러 탁구공을 띄우세요</span>
+                  <strong><span className="paddle-flight-touch-copy">탭해서 날기</span><span className="paddle-flight-desktop-copy">클릭 또는 Space</span></strong>
+                  <span><span className="paddle-flight-touch-copy">화면을 눌러 탁구공을 띄우세요</span><span className="paddle-flight-desktop-copy">터치패드는 눌러 클릭하세요</span></span>
                 </div>
               )}
 
@@ -668,7 +674,10 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
               현재 점수 {score}점
             </p>
             <p id="paddle-flight-controls-help" className="paddle-flight-controls-help">
-              {rewardNotice ? <span role="status" aria-live="polite">{rewardMessage}</span> : "화면을 누르면 공이 바로 올라가요."}
+              {rewardNotice ? <span role="status" aria-live="polite">{rewardMessage}</span> : <>
+                <span className="paddle-flight-touch-copy">화면을 누르면 공이 바로 올라가요.</span>
+                <span className="paddle-flight-desktop-copy">터치패드는 눌러 클릭 · Space·↑ 키로도 점프</span>
+              </>}
             </p>
           </div>
         </div>
