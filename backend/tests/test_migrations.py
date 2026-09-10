@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime, timedelta
 from io import StringIO
 from pathlib import Path
 from uuid import uuid4
@@ -14,8 +14,10 @@ from sqlalchemy.orm import Session
 from app.core.config import get_settings
 from app.core.database import create_database_engine
 from app.core.paddle_cosmetics import DEFAULT_PADDLE_EQUIPMENT
-from app.models import Gender, PaddleFlightScore, User
+from app.models import Gender, PaddleFlightScore, User, UserRole
+from app.schemas.competitions import CompetitionCreate, TeamInput
 from app.schemas.paddle_cosmetics import PaddleFlightEquipment
+from app.services import competitions as competition_service
 from app.services.paddle_cosmetics import (
     equip_paddle_cosmetics,
     get_paddle_cosmetics,
@@ -23,6 +25,201 @@ from app.services.paddle_cosmetics import (
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
+def _all_rows_except_competition_state(engine):
+    with engine.connect() as connection:
+        result = {}
+        for table in inspect(engine).get_table_names():
+            if table == "alembic_version":
+                continue
+            columns = "id, name, type, created_at, updated_at" if table == "competitions" else "*"
+            result[table] = sorted(
+                (
+                    tuple(row)
+                    for row in connection.execute(text(f'SELECT {columns} FROM "{table}"'))
+                ),
+                key=repr,
+            )
+        return result
+
+
+def test_competition_status_upgrade_preserves_children_and_backfills_only_complete_events(
+    tmp_path, monkeypatch
+) -> None:
+    database_url = f"sqlite:///{(tmp_path / 'competition-status.db').as_posix()}"
+    monkeypatch.setenv("DATABASE_URL", database_url)
+    get_settings.cache_clear()
+    config = Config(str(PROJECT_ROOT / "alembic.ini"))
+    engine = create_database_engine(database_url)
+    try:
+        command.upgrade(config, "20260909_0012")
+        expected = {}
+        with Session(engine, autoflush=False, expire_on_commit=False) as db:
+            db.add_all(
+                User(
+                    username=f"migration-player-{number}",
+                    password_hash="preserved-hash",
+                    gender=Gender.MALE,
+                    club_rank=3,
+                )
+                for number in range(12)
+            )
+            admin = User(
+                username="migration-admin", password_hash="admin-hash", role=UserRole.ADMIN
+            )
+            db.add(admin)
+            db.commit()
+            ids = list(range(1, 13))
+            for index, (name, member_count, results) in enumerate(
+                (
+                    ("old-manual", 4, 6),
+                    ("full-league", 4, 6),
+                    ("partial-league", 4, 1),
+                    ("empty", 4, 0),
+                )
+            ):
+                competition_id = competition_service.create_competition(
+                    db,
+                    payload=CompetitionCreate(
+                        name=name, type="league", participant_ids=ids[:member_count]
+                    ),
+                )
+                detail = competition_service.get_competition_detail(
+                    db, competition_id, actor_id=None
+                )
+                for fixture in detail.fixtures[:results]:
+                    competition_service.put_admin_league_result(
+                        db,
+                        competition_id=competition_id,
+                        fixture_id=fixture.id,
+                        score1=3,
+                        score2=0,
+                        played_on=date(2025, 1, 1) + timedelta(days=index),
+                    )
+                expected[competition_id] = (
+                    "closed"
+                    if name == "old-manual"
+                    else "completed"
+                    if name == "full-league"
+                    else "active"
+                )
+            team_cases = (
+                ("three-singles", (True, True, True), False, 2, "active"),
+                ("four-zero", (True, True, True, True), False, 2, "completed"),
+                ("three-one", (True, False, True, True), False, 2, "completed"),
+                ("pending-doubles", (True, False, True, False), False, 2, "active"),
+                ("with-doubles", (True, False, True, False), True, 2, "completed"),
+                ("unfinished-encounters", (True, True, True, True), False, 3, "active"),
+            )
+            for index, (name, winners, doubles_done, team_count, status) in enumerate(team_cases):
+                # Reverse player IDs relative to team order to exercise canonical score orientation.
+                groups = (ids[4:8], ids[:4], ids[8:12])
+                competition_id = competition_service.create_competition(
+                    db,
+                    payload=CompetitionCreate(
+                        name=name,
+                        type="team",
+                        teams=[
+                            TeamInput(name=f"Team {i}", member_ids=groups[i])
+                            for i in range(team_count)
+                        ],
+                    ),
+                )
+                detail = competition_service.get_competition_detail(
+                    db, competition_id, actor_id=None
+                )
+                encounter = detail.encounters[0]
+                teams = {team.id: team for team in detail.teams}
+                for player_index, team1_won in enumerate(winners):
+                    competition_service.post_admin_team_single(
+                        db,
+                        competition_id=competition_id,
+                        encounter_id=encounter.id,
+                        team1_player_id=teams[encounter.team1.id].members[player_index].id,
+                        team2_player_id=teams[encounter.team2.id].members[player_index].id,
+                        score1=3 if team1_won else 0,
+                        score2=0 if team1_won else 3,
+                        played_on=date(2025, 2, 1) + timedelta(days=index),
+                    )
+                if doubles_done:
+                    competition_service.put_admin_team_doubles(
+                        db,
+                        competition_id=competition_id,
+                        encounter_id=encounter.id,
+                        admin=admin,
+                        score1=2,
+                        score2=1,
+                        played_on=date(2025, 2, 1) + timedelta(days=index),
+                    )
+                expected[competition_id] = status
+            # Reproduce the old lifecycle: full results alone never completed events.
+            db.execute(text("UPDATE competitions SET status = 'active', completed_at = NULL"))
+            db.execute(
+                text(
+                    "UPDATE competitions SET status = 'completed', "
+                    "completed_at = '2025-01-01 14:59:00' WHERE name = 'old-manual'"
+                )
+            )
+            db.commit()
+
+        before = _all_rows_except_competition_state(engine)
+        earliest = datetime.now(UTC).replace(microsecond=0)
+        command.upgrade(config, "head")
+        latest = datetime.now(UTC)
+        assert _all_rows_except_competition_state(engine) == before
+        with engine.connect() as connection:
+            assert connection.exec_driver_sql("PRAGMA foreign_keys").scalar() == 1
+            assert connection.exec_driver_sql("PRAGMA foreign_key_check").all() == []
+            assert connection.exec_driver_sql("PRAGMA integrity_check").scalar() == "ok"
+            rows = connection.execute(
+                text("SELECT id, status, completed_at FROM competitions")
+            ).all()
+            assert {row.id: row.status for row in rows} == expected
+            for row in rows:
+                if row.status == "active":
+                    assert row.completed_at is None
+                elif row.status == "closed":
+                    assert datetime.fromisoformat(row.completed_at) == datetime(2025, 1, 1, 14, 59)
+                else:
+                    instant = datetime.fromisoformat(row.completed_at).replace(tzinfo=UTC)
+                    assert earliest <= instant <= latest
+        command.check(config)
+
+        command.downgrade(config, "20260909_0012")
+        assert _all_rows_except_competition_state(engine) == before
+        with engine.connect() as connection:
+            downgraded = connection.execute(
+                text("SELECT id, status, completed_at FROM competitions")
+            ).all()
+            assert [(row.id, row.status, row.completed_at) for row in downgraded] == [
+                (row.id, "completed" if row.status == "closed" else row.status, row.completed_at)
+                for row in rows
+            ]
+            assert connection.exec_driver_sql("PRAGMA foreign_key_check").all() == []
+    finally:
+        engine.dispose()
+        get_settings.cache_clear()
+
+
+def test_competition_status_migration_compiles_for_postgres_without_connecting(monkeypatch) -> None:
+    monkeypatch.setenv("DATABASE_URL", "postgresql+psycopg://unused:unused@localhost/unused")
+    get_settings.cache_clear()
+    output = StringIO()
+    config = Config(str(PROJECT_ROOT / "alembic.ini"), output_buffer=output)
+    try:
+        command.upgrade(config, "20260909_0012:20260911_0013", sql=True)
+        sql = output.getvalue()
+        assert sql.count("DROP CONSTRAINT") == 2
+        assert "status IN ('active', 'completed', 'closed')" in sql
+        assert "UPDATE competitions SET status = 'closed' WHERE status = 'completed'" in sql
+        assert "completed_at = CURRENT_TIMESTAMP" in sql
+        assert "FROM league_fixtures" in sql
+        assert "FROM team_encounters" in sql
+        assert "FROM team_doubles_games" in sql
+        assert "DROP TABLE" not in sql
+    finally:
+        get_settings.cache_clear()
 
 
 def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
@@ -260,7 +457,7 @@ def test_cosmetics_migration_compiles_for_postgres_without_connecting(monkeypatc
     output = StringIO()
     config = Config(str(PROJECT_ROOT / "alembic.ini"), output_buffer=output)
     try:
-        command.upgrade(config, "20260904_0010:head", sql=True)
+        command.upgrade(config, "20260904_0010:20260909_0012", sql=True)
         sql = output.getvalue()
         assert "CREATE TABLE paddle_flight_cosmetics" in sql
         assert "CREATE TABLE paddle_flight_owned_skins" in sql
@@ -369,6 +566,8 @@ def test_skin_expansion_upgrade_preserves_existing_collection_and_receipts(
                 == "20260909_0012"
             )
             assert connection.execute(text("PRAGMA foreign_key_check")).all() == []
+        command.upgrade(config, "head")
+        assert saved_rows(engine) == protected_rows
         command.check(config)
     finally:
         if engine is not None:

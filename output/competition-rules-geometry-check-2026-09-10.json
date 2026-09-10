@@ -1,0 +1,162 @@
+{
+  "geometryPassed": true,
+  "knownBackdropFocusExcluded": true,
+  "checks": [
+    {
+      "name": "rules dialog dimensions, internal scrolling, fixed header, focus trap/restore and all close methods",
+      "width": 320,
+      "height": 740,
+      "before": {
+        "rect": {
+          "x": 16,
+          "y": 44.40625,
+          "width": 288,
+          "height": 651.1875,
+          "right": 304,
+          "bottom": 695.59375
+        },
+        "header": {
+          "top": 62.40625,
+          "bottom": 114.40625
+        },
+        "content": {
+          "top": 132.40625,
+          "bottom": 677.59375,
+          "height": 545,
+          "scrollHeight": 1617
+        },
+        "windowY": 0,
+        "bodyOverflow": "hidden",
+        "modalOpen": true
+      },
+      "after": {
+        "header": {
+          "top": 62.40625,
+          "bottom": 114.40625
+        },
+        "contentScroll": 1071,
+        "sheetScroll": 0,
+        "windowY": 0,
+        "headerUncovered": true
+      },
+      "scrollUnlocked": true
+    },
+    {
+      "name": "rules dialog dimensions, internal scrolling, fixed header, focus trap/restore and all close methods",
+      "width": 390,
+      "height": 844,
+      "before": {
+        "rect": {
+          "x": 19.5,
+          "y": 50.640625,
+          "width": 351,
+          "height": 742.71875,
+          "right": 370.5,
+          "bottom": 793.359375
+        },
+        "header": {
+          "top": 68.640625,
+          "bottom": 120.640625
+        },
+        "content": {
+          "top": 138.640625,
+          "bottom": 775.359375,
+          "height": 637,
+          "scrollHeight": 1449
+        },
+        "windowY": 0,
+        "bodyOverflow": "hidden",
+        "modalOpen": true
+      },
+      "after": {
+        "header": {
+          "top": 68.640625,
+          "bottom": 120.640625
+        },
+        "contentScroll": 812,
+        "sheetScroll": 0,
+        "windowY": 0,
+        "headerUncovered": true
+      },
+      "scrollUnlocked": true
+    },
+    {
+      "name": "rules dialog dimensions, internal scrolling, fixed header, focus trap/restore and all close methods",
+      "width": 1280,
+      "height": 900,
+      "before": {
+        "rect": {
+          "x": 64,
+          "y": 54,
+          "width": 1152,
+          "height": 792,
+          "right": 1216,
+          "bottom": 846
+        },
+        "header": {
+          "top": 82,
+          "bottom": 134
+        },
+        "content": {
+          "top": 152,
+          "bottom": 818,
+          "height": 666,
+          "scrollHeight": 994
+        },
+        "windowY": 0,
+        "bodyOverflow": "hidden",
+        "modalOpen": true
+      },
+      "after": {
+        "header": {
+          "top": 82,
+          "bottom": 134
+        },
+        "contentScroll": 328,
+        "sheetScroll": 0,
+        "windowY": 0,
+        "headerUncovered": true
+      },
+      "scrollUnlocked": true
+    },
+    {
+      "name": "rules dialog dimensions, internal scrolling, fixed header, focus trap/restore and all close methods",
+      "width": 844,
+      "height": 390,
+      "before": {
+        "rect": {
+          "x": 42.203125,
+          "y": 23.40625,
+          "width": 759.59375,
+          "height": 343.1875,
+          "right": 801.796875,
+          "bottom": 366.59375
+        },
+        "header": {
+          "top": 48.71875,
+          "bottom": 100.71875
+        },
+        "content": {
+          "top": 118.71875,
+          "bottom": 341.28125,
+          "height": 223,
+          "scrollHeight": 1018
+        },
+        "windowY": 0,
+        "bodyOverflow": "hidden",
+        "modalOpen": true
+      },
+      "after": {
+        "header": {
+          "top": 48.71875,
+          "bottom": 100.71875
+        },
+        "contentScroll": 795,
+        "sheetScroll": 0,
+        "windowY": 0,
+        "headerUncovered": true
+      },
+      "scrollUnlocked": true
+    }
+  ]
+}

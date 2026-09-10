@@ -312,7 +312,7 @@ def test_doubles_invalidation_and_completed_reopen(api) -> None:
     assert same_winner.status_code == 200, same_winner.text
     assert same_winner.json()["doubles"]["id"] == double_id
     assert same_winner.json()["doubles"]["completed"] is True
-    assert admin.get(f"/api/v1/admin/competitions/{competition_id}").json()["status"] == "completed"
+    assert admin.get(f"/api/v1/admin/competitions/{competition_id}").json()["status"] == "closed"
 
     changed_losers = admin.put(
         f"/api/v1/admin/competitions/{competition_id}/team-singles/{singles[0]['id']}",
@@ -326,7 +326,7 @@ def test_doubles_invalidation_and_completed_reopen(api) -> None:
     assert changed_losers.status_code == 200, changed_losers.text
     assert changed_losers.json()["doubles"] is None
     assert changed_losers.json()["completed"] is True
-    assert admin.get(f"/api/v1/admin/competitions/{competition_id}").json()["status"] == "completed"
+    assert admin.get(f"/api/v1/admin/competitions/{competition_id}").json()["status"] == "closed"
 
     # Flip a former team-2 win: the encounter becomes 2:2 with new losers and needs doubles again.
     pending_again = admin.put(

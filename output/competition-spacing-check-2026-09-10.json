@@ -1,0 +1,2761 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "player",
+      "width": 320,
+      "id": 27,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        44
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료",
+        "4/4 단식",
+        "2/4 단식",
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "D",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "B",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "A",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "E",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "2",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "5",
+              "size": 13
+            },
+            {
+              "text": "C",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "1",
+              "size": 14
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "player",
+      "width": 390,
+      "id": 27,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        44
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료",
+        "4/4 단식",
+        "2/4 단식",
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "D",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "B",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "A",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "E",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "2",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "5",
+              "size": 13
+            },
+            {
+              "text": "C",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "1",
+              "size": 14
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 390,
+        "document": 390,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "player",
+      "width": 542,
+      "id": 27,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        44
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료",
+        "4/4 단식",
+        "2/4 단식",
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "D",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "B",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "A",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "E",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "2",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "5",
+              "size": 13
+            },
+            {
+              "text": "C",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "1",
+              "size": 14
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 542,
+        "document": 542,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "player",
+      "width": 1280,
+      "id": 27,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        48
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료",
+        "4/4 단식",
+        "2/4 단식",
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "D",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 17
+            },
+            {
+              "text": "0",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "2",
+              "size": 16
+            },
+            {
+              "text": "B",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 17
+            },
+            {
+              "text": "0",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "3",
+              "size": 16
+            },
+            {
+              "text": "A",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 17
+            },
+            {
+              "text": "0",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "4",
+              "size": 16
+            },
+            {
+              "text": "E",
+              "size": 16
+            },
+            {
+              "text": "2",
+              "size": 16
+            },
+            {
+              "text": "0",
+              "size": 17
+            },
+            {
+              "text": "2",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "5",
+              "size": 16
+            },
+            {
+              "text": "C",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "0",
+              "size": 17
+            },
+            {
+              "text": "1",
+              "size": 17
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 1280,
+        "document": 1280,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "admin",
+      "width": 320,
+      "id": 27,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        44
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료",
+        "4/4 단식",
+        "2/4 단식",
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "D",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "B",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "A",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "E",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "2",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "5",
+              "size": 13
+            },
+            {
+              "text": "C",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "1",
+              "size": 14
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "admin",
+      "width": 390,
+      "id": 27,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        44
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료",
+        "4/4 단식",
+        "2/4 단식",
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "D",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "B",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "A",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "E",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "2",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "5",
+              "size": 13
+            },
+            {
+              "text": "C",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "1",
+              "size": 14
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 390,
+        "document": 390,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "admin",
+      "width": 542,
+      "id": 27,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        44
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료",
+        "4/4 단식",
+        "2/4 단식",
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "D",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "B",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "A",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "E",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "2",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "5",
+              "size": 13
+            },
+            {
+              "text": "C",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "1",
+              "size": 14
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 542,
+        "document": 542,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "admin",
+      "width": 1280,
+      "id": 27,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        48
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료",
+        "4/4 단식",
+        "2/4 단식",
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "D",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 17
+            },
+            {
+              "text": "0",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "2",
+              "size": 16
+            },
+            {
+              "text": "B",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 17
+            },
+            {
+              "text": "0",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "3",
+              "size": 16
+            },
+            {
+              "text": "A",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 17
+            },
+            {
+              "text": "0",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "4",
+              "size": 16
+            },
+            {
+              "text": "E",
+              "size": 16
+            },
+            {
+              "text": "2",
+              "size": 16
+            },
+            {
+              "text": "0",
+              "size": 17
+            },
+            {
+              "text": "2",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "5",
+              "size": 16
+            },
+            {
+              "text": "C",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "0",
+              "size": 17
+            },
+            {
+              "text": "1",
+              "size": 17
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 1280,
+        "document": 1280,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "admin",
+      "width": 320,
+      "id": 22,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        44
+      ],
+      "maxCenterDifference": 0,
+      "statuses": [
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "A",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "B",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "C",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "D",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "E",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "admin",
+      "width": 320,
+      "id": 26,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        44
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "4/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "A",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "B",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "C",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "D",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "E",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "admin",
+      "width": 320,
+      "id": 30,
+      "longNamesDisplayOnly": false,
+      "headerHeights": [
+        44
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "D",
+              "size": 13
+            },
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "4",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "A",
+              "size": 13
+            },
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "3",
+              "size": 14
+            },
+            {
+              "text": "1",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "B",
+              "size": 13
+            },
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 14
+            },
+            {
+              "text": "2",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "E",
+              "size": 13
+            },
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "3",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "5",
+              "size": 13
+            },
+            {
+              "text": "C",
+              "size": 13
+            },
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "4",
+              "size": 14
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "player",
+      "width": 320,
+      "id": 27,
+      "longNamesDisplayOnly": true,
+      "headerHeights": [
+        44
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료",
+        "4/4 단식",
+        "2/4 단식",
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "D",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "B",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "A",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "4",
+              "size": 13
+            },
+            {
+              "text": "E",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "2",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "5",
+              "size": 13
+            },
+            {
+              "text": "C",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "0",
+              "size": 14
+            },
+            {
+              "text": "1",
+              "size": 14
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 320,
+        "document": 320,
+        "items": []
+      }
+    },
+    {
+      "name": "single header row, score/player alignment and +1px win/loss values",
+      "role": "admin",
+      "width": 1280,
+      "id": 27,
+      "longNamesDisplayOnly": true,
+      "headerHeights": [
+        48
+      ],
+      "maxCenterDifference": 0.0078125,
+      "statuses": [
+        "완료",
+        "4/4 단식",
+        "2/4 단식",
+        "0/4 단식"
+      ],
+      "rowCount": 10,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "팀",
+              "size": 11
+            },
+            {
+              "text": "경기",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "D",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 17
+            },
+            {
+              "text": "0",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "2",
+              "size": 16
+            },
+            {
+              "text": "B",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 17
+            },
+            {
+              "text": "0",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "3",
+              "size": 16
+            },
+            {
+              "text": "A",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 17
+            },
+            {
+              "text": "0",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "4",
+              "size": 16
+            },
+            {
+              "text": "E",
+              "size": 16
+            },
+            {
+              "text": "2",
+              "size": 16
+            },
+            {
+              "text": "0",
+              "size": 17
+            },
+            {
+              "text": "2",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "5",
+              "size": 16
+            },
+            {
+              "text": "C",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "0",
+              "size": 17
+            },
+            {
+              "text": "1",
+              "size": 17
+            }
+          ]
+        }
+      ],
+      "layout": {
+        "viewport": 1280,
+        "document": 1280,
+        "items": []
+      }
+    },
+    {
+      "name": "league win/loss alone increased 1px",
+      "width": 320,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "선수",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "1",
+              "size": 13
+            },
+            {
+              "text": "test74부",
+              "size": 13
+            },
+            {
+              "text": "5",
+              "size": 14
+            },
+            {
+              "text": "0",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "2",
+              "size": 13
+            },
+            {
+              "text": "test117부",
+              "size": 13
+            },
+            {
+              "text": "3",
+              "size": 14
+            },
+            {
+              "text": "2",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "test104부",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 14
+            },
+            {
+              "text": "3",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "test127부",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 14
+            },
+            {
+              "text": "3",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "3",
+              "size": 13
+            },
+            {
+              "text": "test84부",
+              "size": 13
+            },
+            {
+              "text": "2",
+              "size": 14
+            },
+            {
+              "text": "3",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 13,
+          "cells": [
+            {
+              "text": "6",
+              "size": 13
+            },
+            {
+              "text": "test94부",
+              "size": 13
+            },
+            {
+              "text": "1",
+              "size": 14
+            },
+            {
+              "text": "4",
+              "size": 14
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "league win/loss alone increased 1px",
+      "width": 1280,
+      "fonts": [
+        {
+          "header": true,
+          "base": 11,
+          "cells": [
+            {
+              "text": "순위",
+              "size": 11
+            },
+            {
+              "text": "선수",
+              "size": 11
+            },
+            {
+              "text": "승",
+              "size": 11
+            },
+            {
+              "text": "패",
+              "size": 11
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "1",
+              "size": 16
+            },
+            {
+              "text": "test74부",
+              "size": 16
+            },
+            {
+              "text": "5",
+              "size": 17
+            },
+            {
+              "text": "0",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "2",
+              "size": 16
+            },
+            {
+              "text": "test117부",
+              "size": 16
+            },
+            {
+              "text": "3",
+              "size": 17
+            },
+            {
+              "text": "2",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "3",
+              "size": 16
+            },
+            {
+              "text": "test104부",
+              "size": 16
+            },
+            {
+              "text": "2",
+              "size": 17
+            },
+            {
+              "text": "3",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "3",
+              "size": 16
+            },
+            {
+              "text": "test127부",
+              "size": 16
+            },
+            {
+              "text": "2",
+              "size": 17
+            },
+            {
+              "text": "3",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "3",
+              "size": 16
+            },
+            {
+              "text": "test84부",
+              "size": 16
+            },
+            {
+              "text": "2",
+              "size": 17
+            },
+            {
+              "text": "3",
+              "size": 17
+            }
+          ]
+        },
+        {
+          "header": false,
+          "base": 16,
+          "cells": [
+            {
+              "text": "6",
+              "size": 16
+            },
+            {
+              "text": "test94부",
+              "size": 16
+            },
+            {
+              "text": "1",
+              "size": 17
+            },
+            {
+              "text": "4",
+              "size": 17
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hidden scrollbar retains wheel/keyboard internal scrolling",
+      "width": 320,
+      "before": {
+        "scrollbarWidth": "none",
+        "webkitScrollbar": "none",
+        "clientWidth": 252,
+        "offsetWidth": 252,
+        "scrollTop": 0,
+        "scrollHeight": 1617,
+        "clientHeight": 642,
+        "windowY": 0,
+        "headerY": 69
+      },
+      "wheelTop": 700,
+      "after": {
+        "scrollTop": 926,
+        "windowY": 0,
+        "headerY": 69
+      }
+    },
+    {
+      "name": "hidden scrollbar retains wheel/keyboard internal scrolling",
+      "width": 1280,
+      "before": {
+        "scrollbarWidth": "none",
+        "webkitScrollbar": "none",
+        "clientWidth": 820,
+        "offsetWidth": 820,
+        "scrollTop": 0,
+        "scrollHeight": 994,
+        "clientHeight": 622,
+        "windowY": 0,
+        "headerY": 79
+      },
+      "wheelTop": 372,
+      "after": {
+        "scrollTop": 372,
+        "windowY": 0,
+        "headerY": 79
+      }
+    },
+    {
+      "name": "score/status text fully visible and action controls do not overlap",
+      "role": "player",
+      "width": 320,
+      "displayOnlyLongNames": true,
+      "scoreChecks": 40,
+      "actionRows": 0
+    },
+    {
+      "name": "score/status text fully visible and action controls do not overlap",
+      "role": "player",
+      "width": 390,
+      "displayOnlyLongNames": false,
+      "scoreChecks": 40,
+      "actionRows": 0
+    },
+    {
+      "name": "score/status text fully visible and action controls do not overlap",
+      "role": "player",
+      "width": 1280,
+      "displayOnlyLongNames": false,
+      "scoreChecks": 40,
+      "actionRows": 0
+    },
+    {
+      "name": "score/status text fully visible and action controls do not overlap",
+      "role": "admin",
+      "width": 320,
+      "displayOnlyLongNames": true,
+      "scoreChecks": 40,
+      "actionRows": 20
+    },
+    {
+      "name": "score/status text fully visible and action controls do not overlap",
+      "role": "admin",
+      "width": 390,
+      "displayOnlyLongNames": false,
+      "scoreChecks": 40,
+      "actionRows": 20
+    },
+    {
+      "name": "score/status text fully visible and action controls do not overlap",
+      "role": "admin",
+      "width": 1280,
+      "displayOnlyLongNames": false,
+      "scoreChecks": 40,
+      "actionRows": 20
+    }
+  ],
+  "blockedWrites": [],
+  "errors": []
+}

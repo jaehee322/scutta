@@ -1,0 +1,26 @@
+[
+  {
+    "method": "X",
+    "restored": true,
+    "focused": {
+      "tag": "BUTTON",
+      "label": "리그전 진행 방식과 순위 안내"
+    }
+  },
+  {
+    "method": "Escape",
+    "restored": true,
+    "focused": {
+      "tag": "BUTTON",
+      "label": "리그전 진행 방식과 순위 안내"
+    }
+  },
+  {
+    "method": "backdrop",
+    "restored": false,
+    "focused": {
+      "tag": "BODY",
+      "label": null
+    }
+  }
+]

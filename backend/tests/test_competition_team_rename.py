@@ -210,7 +210,7 @@ def test_team_names_can_be_swapped_after_completion_without_rebuilding_data(api)
     )
     assert renamed.status_code == 200, renamed.text
     detail = renamed.json()
-    assert detail["status"] == "completed"
+    assert detail["status"] == "closed"
     assert {team["id"]: team["name"] for team in detail["teams"]} == {
         team1["id"]: "B",
         team2["id"]: "A",

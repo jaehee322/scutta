@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "current_status_counts": {
+    "active": 16,
+    "completed": 3,
+    "closed": 4
+  },
+  "next_day_status_counts": {
+    "active": 16,
+    "closed": 7
+  },
+  "writes": 0,
+  "method": "Read-only service checks against local data; next day simulated only inside this Python process"
+}

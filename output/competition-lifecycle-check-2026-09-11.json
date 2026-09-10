@@ -1,0 +1,463 @@
+{
+  "scope": "Actual final local production bundle and CSS, with all API responses mocked in isolated Chrome contexts. No real login, cookies, API data or writes.",
+  "checks": [
+    {
+      "name": "list-player-320",
+      "passed": true,
+      "groups": [
+        {
+          "title": "진행 중",
+          "ids": [
+            901,
+            907,
+            902
+          ]
+        },
+        {
+          "title": "완료",
+          "ids": [
+            903,
+            905
+          ]
+        },
+        {
+          "title": "종료",
+          "ids": [
+            904,
+            906
+          ]
+        }
+      ],
+      "colors": {
+        "active": {
+          "text": "진행 중",
+          "color": "rgb(0, 141, 104)",
+          "background": "rgb(233, 251, 245)"
+        },
+        "completed": {
+          "text": "완료",
+          "color": "rgb(27, 100, 218)",
+          "background": "rgb(234, 243, 255)"
+        },
+        "closed": {
+          "text": "종료",
+          "color": "rgb(89, 100, 115)",
+          "background": "rgb(225, 229, 234)"
+        },
+        "closedCard": {
+          "text": "개인 리그종료종료 · 개인 리그경기6 / 6",
+          "color": "rgb(78, 89, 104)",
+          "background": "rgb(238, 240, 243)"
+        }
+      },
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "list-admin-320",
+      "passed": true,
+      "groups": [
+        {
+          "title": "진행 중",
+          "ids": [
+            902,
+            901,
+            907
+          ]
+        },
+        {
+          "title": "완료",
+          "ids": [
+            903,
+            905
+          ]
+        },
+        {
+          "title": "종료",
+          "ids": [
+            904,
+            906
+          ]
+        }
+      ],
+      "colors": {
+        "active": {
+          "text": "진행 중",
+          "color": "rgb(0, 141, 104)",
+          "background": "rgb(233, 251, 245)"
+        },
+        "completed": {
+          "text": "완료",
+          "color": "rgb(27, 100, 218)",
+          "background": "rgb(234, 243, 255)"
+        },
+        "closed": {
+          "text": "종료",
+          "color": "rgb(89, 100, 115)",
+          "background": "rgb(225, 229, 234)"
+        },
+        "closedCard": {
+          "text": "개인 리그종료종료 · 개인 리그경기6 / 6",
+          "color": "rgb(78, 89, 104)",
+          "background": "rgb(238, 240, 243)"
+        }
+      },
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "list-player-390",
+      "passed": true,
+      "groups": [
+        {
+          "title": "진행 중",
+          "ids": [
+            901,
+            907,
+            902
+          ]
+        },
+        {
+          "title": "완료",
+          "ids": [
+            903,
+            905
+          ]
+        },
+        {
+          "title": "종료",
+          "ids": [
+            904,
+            906
+          ]
+        }
+      ],
+      "colors": {
+        "active": {
+          "text": "진행 중",
+          "color": "rgb(0, 141, 104)",
+          "background": "rgb(233, 251, 245)"
+        },
+        "completed": {
+          "text": "완료",
+          "color": "rgb(27, 100, 218)",
+          "background": "rgb(234, 243, 255)"
+        },
+        "closed": {
+          "text": "종료",
+          "color": "rgb(89, 100, 115)",
+          "background": "rgb(225, 229, 234)"
+        },
+        "closedCard": {
+          "text": "개인 리그종료종료 · 개인 리그경기6 / 6",
+          "color": "rgb(78, 89, 104)",
+          "background": "rgb(238, 240, 243)"
+        }
+      },
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "list-admin-390",
+      "passed": true,
+      "groups": [
+        {
+          "title": "진행 중",
+          "ids": [
+            902,
+            901,
+            907
+          ]
+        },
+        {
+          "title": "완료",
+          "ids": [
+            903,
+            905
+          ]
+        },
+        {
+          "title": "종료",
+          "ids": [
+            904,
+            906
+          ]
+        }
+      ],
+      "colors": {
+        "active": {
+          "text": "진행 중",
+          "color": "rgb(0, 141, 104)",
+          "background": "rgb(233, 251, 245)"
+        },
+        "completed": {
+          "text": "완료",
+          "color": "rgb(27, 100, 218)",
+          "background": "rgb(234, 243, 255)"
+        },
+        "closed": {
+          "text": "종료",
+          "color": "rgb(89, 100, 115)",
+          "background": "rgb(225, 229, 234)"
+        },
+        "closedCard": {
+          "text": "개인 리그종료종료 · 개인 리그경기6 / 6",
+          "color": "rgb(78, 89, 104)",
+          "background": "rgb(238, 240, 243)"
+        }
+      },
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "list-player-1280",
+      "passed": true,
+      "groups": [
+        {
+          "title": "진행 중",
+          "ids": [
+            901,
+            907,
+            902
+          ]
+        },
+        {
+          "title": "완료",
+          "ids": [
+            903,
+            905
+          ]
+        },
+        {
+          "title": "종료",
+          "ids": [
+            904,
+            906
+          ]
+        }
+      ],
+      "colors": {
+        "active": {
+          "text": "진행 중",
+          "color": "rgb(0, 141, 104)",
+          "background": "rgb(233, 251, 245)"
+        },
+        "completed": {
+          "text": "완료",
+          "color": "rgb(27, 100, 218)",
+          "background": "rgb(234, 243, 255)"
+        },
+        "closed": {
+          "text": "종료",
+          "color": "rgb(89, 100, 115)",
+          "background": "rgb(225, 229, 234)"
+        },
+        "closedCard": {
+          "text": "개인 리그종료종료 · 개인 리그경기6 / 6",
+          "color": "rgb(78, 89, 104)",
+          "background": "rgb(238, 240, 243)"
+        }
+      },
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "list-admin-1280",
+      "passed": true,
+      "groups": [
+        {
+          "title": "진행 중",
+          "ids": [
+            902,
+            901,
+            907
+          ]
+        },
+        {
+          "title": "완료",
+          "ids": [
+            903,
+            905
+          ]
+        },
+        {
+          "title": "종료",
+          "ids": [
+            904,
+            906
+          ]
+        }
+      ],
+      "colors": {
+        "active": {
+          "text": "진행 중",
+          "color": "rgb(0, 141, 104)",
+          "background": "rgb(233, 251, 245)"
+        },
+        "completed": {
+          "text": "완료",
+          "color": "rgb(27, 100, 218)",
+          "background": "rgb(234, 243, 255)"
+        },
+        "closed": {
+          "text": "종료",
+          "color": "rgb(89, 100, 115)",
+          "background": "rgb(225, 229, 234)"
+        },
+        "closedCard": {
+          "text": "개인 리그종료종료 · 개인 리그경기6 / 6",
+          "color": "rgb(78, 89, 104)",
+          "background": "rgb(238, 240, 243)"
+        }
+      },
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-player-901",
+      "passed": true,
+      "status": "active",
+      "type": "league",
+      "inputCount": 3,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-player-903",
+      "passed": true,
+      "status": "completed",
+      "type": "league",
+      "inputCount": 0,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-player-904",
+      "passed": true,
+      "status": "closed",
+      "type": "league",
+      "inputCount": 0,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-player-905",
+      "passed": true,
+      "status": "completed",
+      "type": "team",
+      "inputCount": 0,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-player-906",
+      "passed": true,
+      "status": "closed",
+      "type": "team",
+      "inputCount": 0,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-player-907",
+      "passed": true,
+      "status": "active",
+      "type": "team",
+      "inputCount": 1,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-admin-901",
+      "passed": true,
+      "status": "active",
+      "type": "league",
+      "inputCount": 0,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-admin-903",
+      "passed": true,
+      "status": "completed",
+      "type": "league",
+      "inputCount": 0,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-admin-904",
+      "passed": true,
+      "status": "closed",
+      "type": "league",
+      "inputCount": 0,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-admin-905",
+      "passed": true,
+      "status": "completed",
+      "type": "team",
+      "inputCount": 0,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-admin-906",
+      "passed": true,
+      "status": "closed",
+      "type": "team",
+      "inputCount": 0,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "detail-admin-907",
+      "passed": true,
+      "status": "active",
+      "type": "team",
+      "inputCount": 1,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "midnight-list",
+      "passed": true,
+      "deviceTimeZone": "America/New_York",
+      "boundary": "2026-09-10T15:00:00Z",
+      "backgroundRequestCount": 1,
+      "automaticallyClosedUi": true
+    },
+    {
+      "name": "midnight-detail",
+      "passed": true,
+      "deviceTimeZone": "America/New_York",
+      "boundary": "2026-09-10T15:00:00Z",
+      "backgroundRequestCount": 1,
+      "automaticallyClosedUi": true
+    },
+    {
+      "name": "admin-close-dialog-pauses-refresh",
+      "passed": true,
+      "noRefreshDuringConfirmation": true,
+      "resumesAfterClosing": true,
+      "noMutationSubmitted": true,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "poll-return-hidden-offline-failure-inflight-cleanup",
+      "passed": true,
+      "visibleMinutePolling": true,
+      "hiddenPollsInThreeMinutes": 0,
+      "returnEventBurstRequests": 1,
+      "offlineRequests": 0,
+      "onlineRecovery": true,
+      "failedRefreshPreservesUi": true,
+      "inFlightDeduplication": true,
+      "unmountedListTimersCleaned": true,
+      "visibilitySimulation": "document visibilityState override + native event dispatch; not physical app backgrounding"
+    }
+  ],
+  "screenshots": [
+    "competition-lifecycle-list-320-2026-09-11.png",
+    "competition-lifecycle-list-390-2026-09-11.png",
+    "competition-lifecycle-list-1280-2026-09-11.png",
+    "competition-lifecycle-detail-player-league-390-2026-09-11.png",
+    "competition-lifecycle-detail-player-team-390-2026-09-11.png",
+    "competition-lifecycle-detail-admin-league-390-2026-09-11.png",
+    "competition-lifecycle-detail-admin-team-390-2026-09-11.png",
+    "competition-lifecycle-close-dialog-admin-320-2026-09-11.png"
+  ],
+  "errors": [],
+  "blockedMutations": [],
+  "unexpectedApi": [],
+  "externalRequests": [],
+  "passed": true,
+  "assets": {
+    "main": "index-Tk4YRxMW.js",
+    "css": "index-D7QBrMV-.css"
+  }
+}

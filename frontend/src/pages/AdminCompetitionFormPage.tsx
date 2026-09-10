@@ -13,6 +13,7 @@ import {
   teamNamesError,
   teamSelectionError,
 } from "../lib/competition";
+import { competitionRosterChanges } from "../lib/competitionEditing";
 import type {
   CompetitionCreateInput,
   CompetitionDetail,
@@ -155,9 +156,8 @@ export function AdminCompetitionFormPage() {
     try {
       if (editing) {
         const payload: CompetitionUpdateInput = { name: trimmedName };
-        if (!rosterLocked) {
-          if (type === "league") payload.participant_ids = participantIds;
-          else payload.teams = normalizedTeams;
+        if (!rosterLocked && detail) {
+          Object.assign(payload, competitionRosterChanges(detail, participantIds, normalizedTeams));
         }
         const result = await apiRequest<CompetitionDetail>(`/admin/competitions/${parsedId}`, {
           method: "PATCH",

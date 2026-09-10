@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 
-from sqlalchemy import delete, func, select
+from sqlalchemy import case, delete, func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -33,6 +33,7 @@ from app.schemas.competitions import (
     CompetitionTeamRead,
     CompetitionTeamSummary,
     CompetitionUpdate,
+    ExpectedDoubles,
     LeagueCompetitionDetail,
     LeagueFixtureRead,
     LeagueStanding,
@@ -46,6 +47,7 @@ from app.schemas.competitions import (
     team_name_key,
 )
 from app.services.matches import (
+    SEOUL,
     DailyMatchConflictError,
     PlayerNotFoundError,
     _canonicalize,
@@ -238,8 +240,8 @@ def _ensure_type(competition: Competition, expected: CompetitionType) -> None:
 
 
 def _ensure_player_writable(competition: Competition) -> None:
-    if competition.status != CompetitionStatus.ACTIVE:
-        raise CompetitionConflictError("마감된 대회에는 결과를 제출할 수 없습니다.")
+    if _effective_competition_status(competition) != CompetitionStatus.ACTIVE:
+        raise CompetitionConflictError("완료되거나 종료된 대회에는 결과를 제출할 수 없습니다.")
 
 
 def _new_competition_match(
@@ -324,18 +326,36 @@ def _score_for_players(match: Match, first_player_id: int) -> tuple[int, int]:
     return match.score2, match.score1
 
 
+def _seoul_day_start_utc(now: datetime) -> datetime:
+    return now.astimezone(SEOUL).replace(hour=0, minute=0, second=0, microsecond=0).astimezone(UTC)
+
+
+def _effective_competition_status(
+    competition: Competition, *, now: datetime | None = None
+) -> CompetitionStatus:
+    if competition.status == CompetitionStatus.COMPLETED and competition.completed_at is not None:
+        completed_at = competition.completed_at
+        # SQLite returns naive timestamps even for DateTime(timezone=True).
+        if completed_at.tzinfo is None:
+            completed_at = completed_at.replace(tzinfo=UTC)
+        if completed_at < _seoul_day_start_utc(now if now is not None else utc_now()):
+            return CompetitionStatus.CLOSED
+    return competition.status
+
+
 def _competition_common(
     competition: Competition,
     *,
     completed_count: int,
     total_count: int,
     is_participant: bool = False,
+    now: datetime | None = None,
 ) -> dict[str, object]:
     return {
         "id": competition.id,
         "name": competition.name,
         "type": competition.type,
-        "status": competition.status,
+        "status": _effective_competition_status(competition, now=now),
         "completed_count": completed_count,
         "total_count": total_count,
         "is_participant": is_participant,
@@ -427,6 +447,8 @@ def _league_detail(
     *,
     actor_id: int | None,
 ) -> LeagueCompetitionDetail:
+    now = utc_now()
+    status = _effective_competition_status(competition, now=now)
     member_ids = list(
         db.scalars(
             select(CompetitionMember.user_id)
@@ -483,7 +505,7 @@ def _league_detail(
                 winner_id=winner_id,
                 completed=completed,
                 can_submit=(
-                    competition.status == CompetitionStatus.ACTIVE
+                    status == CompetitionStatus.ACTIVE
                     and not completed
                     and actor_id in {fixture.player1_id, fixture.player2_id}
                 ),
@@ -495,6 +517,7 @@ def _league_detail(
             completed_count=completed_count,
             total_count=len(fixtures),
             is_participant=actor_id in member_ids,
+            now=now,
         ),
         members=[player_map[player_id] for player_id in member_ids],
         standings=_league_standings(member_ids, player_map, fixture_matches),
@@ -666,6 +689,8 @@ def _team_detail(
     *,
     actor_id: int | None,
 ) -> TeamCompetitionDetail:
+    now = utc_now()
+    status = _effective_competition_status(competition, now=now)
     teams, team_members, encounters, singles, doubles, player_map = _team_data(db, competition)
     team_reads = {
         team.id: CompetitionTeamRead(
@@ -764,12 +789,12 @@ def _team_detail(
                     if player_id not in used_team2
                 ],
                 can_submit_singles=(
-                    competition.status == CompetitionStatus.ACTIVE
+                    status == CompetitionStatus.ACTIVE
                     and actor_in_encounter
                     and len(single_reads) < 4
                 ),
                 can_submit_doubles=(
-                    competition.status == CompetitionStatus.ACTIVE
+                    status == CompetitionStatus.ACTIVE
                     and actor_in_encounter
                     and double is not None
                     and double.score1 is None
@@ -782,6 +807,7 @@ def _team_detail(
             completed_count=completed_count,
             total_count=len(encounters),
             is_participant=actor_team_id is not None,
+            now=now,
         ),
         teams=[team_reads[team.id] for team in teams],
         standings=_team_standings(teams, encounters, singles, doubles),
@@ -896,15 +922,29 @@ def list_competitions(
     status: CompetitionStatus | None,
     competition_type: CompetitionType | None,
 ) -> list[CompetitionSummary]:
+    now = utc_now()
+    # Resolve the same KST boundary in SQL and serialization without writing on
+    # reads. A dormant competition closes correctly on its first later request.
+    day_start = _seoul_day_start_utc(now)
+    # SQLite CURRENT_TIMESTAMP omits fractional digits, while SQLAlchemy writes
+    # them. Compare against whole seconds so an exact midnight stays completed.
+    cutoff = func.datetime(day_start) if db.get_bind().dialect.name == "sqlite" else day_start
+    effective_status = case(
+        (
+            (Competition.status == CompetitionStatus.COMPLETED)
+            & (Competition.completed_at < cutoff),
+            CompetitionStatus.CLOSED.value,
+        ),
+        else_=Competition.status,
+    )
     statement = select(Competition)
     if status is not None:
-        statement = statement.where(Competition.status == status)
+        statement = statement.where(effective_status == status)
     if competition_type is not None:
         statement = statement.where(Competition.type == competition_type)
     competitions = list(
         db.scalars(
             statement.order_by(
-                (Competition.status == CompetitionStatus.ACTIVE).desc(),
                 Competition.created_at.desc(),
                 Competition.id.desc(),
             )
@@ -951,6 +991,7 @@ def list_competitions(
                 completed_count=progress[competition.id][0],
                 total_count=progress[competition.id][1],
                 is_participant=competition.id in participating_ids,
+                now=now,
             )
         )
         for competition in competitions
@@ -1174,30 +1215,37 @@ def delete_competition(db: Session, *, competition_id: int) -> None:
 
 
 def _competition_complete(db: Session, competition: Competition) -> bool:
-    detail = (
-        _league_detail(db, competition, actor_id=None)
+    progress = (
+        _league_summary_progress(db, [competition.id])
         if competition.type == CompetitionType.LEAGUE
-        else _team_detail(db, competition, actor_id=None)
+        else _team_summary_progress(db, [competition.id])
     )
-    return detail.total_count > 0 and detail.completed_count == detail.total_count
+    completed_count, total_count = progress.get(competition.id, (0, 0))
+    return total_count > 0 and completed_count == total_count
 
 
-def _reopen_if_incomplete(db: Session, competition: Competition) -> None:
-    if competition.status == CompetitionStatus.COMPLETED and not _competition_complete(
-        db, competition
-    ):
+def _sync_competition_completion(db: Session, competition: Competition) -> None:
+    # Every result mutation holds the competition lock until commit. Flush the
+    # result first because production sessions intentionally disable autoflush.
+    _flush(db)
+    if not _competition_complete(db, competition):
         competition.status = CompetitionStatus.ACTIVE
         competition.completed_at = None
-        _flush(db)
+    elif competition.status == CompetitionStatus.ACTIVE:
+        competition.status = CompetitionStatus.COMPLETED
+        competition.completed_at = utc_now()
+    # Complete corrections preserve both the original completion instant and
+    # any explicit admin closure, including after the automatic day boundary.
 
 
 def complete_competition(db: Session, *, competition_id: int) -> None:
     competition = _competition_or_error(db, competition_id, for_update=True)
     if not _competition_complete(db, competition):
         raise CompetitionConflictError("모든 대진의 결과가 있어야 마감할 수 있습니다.")
-    if competition.status != CompetitionStatus.COMPLETED:
-        competition.status = CompetitionStatus.COMPLETED
-        competition.completed_at = utc_now()
+    if competition.status != CompetitionStatus.CLOSED:
+        competition.status = CompetitionStatus.CLOSED
+        if competition.completed_at is None:
+            competition.completed_at = utc_now()
         _commit(db)
 
 
@@ -1234,6 +1282,7 @@ def submit_league_result(
         played_at=played_at,
     )
     fixture.match_id = match.id
+    _sync_competition_completion(db, competition)
     _commit(db)
 
 
@@ -1271,6 +1320,7 @@ def put_admin_league_result(
             score_b=score2,
             played_on=played_on or match.played_on,
         )
+    _sync_competition_completion(db, competition)
     _commit(db)
 
 
@@ -1291,7 +1341,7 @@ def delete_admin_league_result(
     if match is not None:
         db.delete(match)
     _flush(db)
-    _reopen_if_incomplete(db, competition)
+    _sync_competition_completion(db, competition)
     _commit(db)
 
 
@@ -1518,6 +1568,7 @@ def submit_team_single(
         team1_members=team1_members,
         team2_members=team2_members,
     )
+    _sync_competition_completion(db, competition)
     _commit(db)
 
 
@@ -1545,6 +1596,7 @@ def post_admin_team_single(
         score2=score2,
         played_on=played_on or seoul_today(),
     )
+    _sync_competition_completion(db, competition)
     _commit(db)
 
 
@@ -1594,7 +1646,7 @@ def put_admin_team_single(
     single.team2_player_id = team2_player_id
     _flush(db)
     _reconcile_doubles(db, encounter)
-    _reopen_if_incomplete(db, competition)
+    _sync_competition_completion(db, competition)
     _commit(db)
     return encounter.id
 
@@ -1616,7 +1668,7 @@ def delete_admin_team_single(
         db.delete(match)
         _flush(db)
     _reconcile_doubles(db, encounter)
-    _reopen_if_incomplete(db, competition)
+    _sync_competition_completion(db, competition)
     _commit(db)
 
 
@@ -1625,11 +1677,23 @@ def _doubles_or_error(
     encounter_id: int,
     *,
     for_update: bool,
+    expected_doubles: ExpectedDoubles | None = None,
 ) -> TeamDoublesGame:
     statement = select(TeamDoublesGame).where(TeamDoublesGame.encounter_id == encounter_id)
     if for_update:
         statement = statement.with_for_update().execution_options(populate_existing=True)
     double = db.scalar(statement)
+    if expected_doubles is not None and (
+        double is None
+        or double.id != expected_doubles.id
+        or sorted(expected_doubles.team1_player_ids)
+        != sorted((double.team1_player1_id, double.team1_player2_id))
+        or sorted(expected_doubles.team2_player_ids)
+        != sorted((double.team2_player1_id, double.team2_player2_id))
+    ):
+        raise CompetitionConflictError(
+            "복식 출전자가 변경되었습니다. 대진을 새로 불러와 다시 입력해 주세요."
+        )
     if double is None:
         raise CompetitionConflictError("복식 대진이 아직 생성되지 않았습니다.")
     return double
@@ -1643,6 +1707,7 @@ def submit_team_doubles(
     actor: User,
     my_team_score: int,
     opponent_team_score: int,
+    expected_doubles: ExpectedDoubles | None = None,
 ) -> None:
     competition = _competition_or_error(db, competition_id, for_update=True)
     _ensure_type(competition, CompetitionType.TEAM)
@@ -1650,7 +1715,7 @@ def submit_team_doubles(
     encounter = _encounter_or_error(db, competition_id, encounter_id, for_update=True)
     team1_members, team2_members = _team_members_for_encounter(db, encounter)
     actor_team_id = _actor_team(actor.id, encounter, team1_members, team2_members)
-    double = _doubles_or_error(db, encounter.id, for_update=True)
+    double = _doubles_or_error(db, encounter.id, for_update=True, expected_doubles=expected_doubles)
     if double.score1 is not None:
         raise CompetitionConflictError("이미 복식 결과가 제출되었습니다.")
     if actor_team_id == encounter.team1_id:
@@ -1663,6 +1728,7 @@ def submit_team_doubles(
     double.played_on = played_on
     double.played_at = played_at
     double.submitted_by_id = actor.id
+    _sync_competition_completion(db, competition)
     _commit(db)
 
 
@@ -1675,11 +1741,12 @@ def put_admin_team_doubles(
     score1: int,
     score2: int,
     played_on: date | None,
+    expected_doubles: ExpectedDoubles | None = None,
 ) -> None:
     competition = _competition_or_error(db, competition_id, for_update=True)
     _ensure_type(competition, CompetitionType.TEAM)
     encounter = _encounter_or_error(db, competition_id, encounter_id, for_update=True)
-    double = _doubles_or_error(db, encounter.id, for_update=True)
+    double = _doubles_or_error(db, encounter.id, for_update=True, expected_doubles=expected_doubles)
     was_completed = double.score1 is not None
     target_played_on = played_on or double.played_on or seoul_today()
     double.score1 = score1
@@ -1690,6 +1757,7 @@ def put_admin_team_doubles(
         double.updated_by_id = admin.id
     else:
         double.submitted_by_id = admin.id
+    _sync_competition_completion(db, competition)
     _commit(db)
 
 
@@ -1712,5 +1780,5 @@ def delete_admin_team_doubles(
     double.submitted_by_id = None
     double.updated_by_id = None
     _flush(db)
-    _reopen_if_incomplete(db, competition)
+    _sync_competition_completion(db, competition)
     _commit(db)

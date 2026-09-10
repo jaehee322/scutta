@@ -4,7 +4,7 @@ export type MatchKind = "casual" | "daily" | "competition";
 export type RankingCategory = "matches" | "wins" | "losses" | "opponents";
 export type SettlementCategoryKey = Exclude<RankingCategory, "opponents">;
 export type CompetitionType = "league" | "team";
-export type CompetitionStatus = "active" | "completed";
+export type CompetitionStatus = "active" | "completed" | "closed";
 
 export interface UserRead {
   id: number;

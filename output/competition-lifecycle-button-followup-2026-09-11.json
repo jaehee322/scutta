@@ -1,0 +1,29 @@
+{
+  "scope": "Actual production build, isolated Chrome context, mocked admin auth and competition GET responses. No real API data or writes.",
+  "viewport": {
+    "width": 320,
+    "height": 844
+  },
+  "errors": [],
+  "blockedRequests": [],
+  "passed": true,
+  "scripts": [
+    "/assets/index-B1QyQ4fr.js"
+  ],
+  "trigger": {
+    "text": "종료",
+    "lineCount": 1,
+    "width": 75.328125,
+    "height": 48,
+    "visible": true
+  },
+  "confirm": {
+    "text": "종료하기",
+    "lineCount": 1,
+    "width": 135,
+    "height": 48,
+    "visible": true
+  },
+  "noHorizontalOverflow": true,
+  "closeRestoresFocus": true
+}

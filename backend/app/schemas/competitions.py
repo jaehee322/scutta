@@ -286,9 +286,23 @@ class TeamSingleSubmit(ScorePair):
         return self
 
 
+class ExpectedDoubles(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: int = Field(gt=0)
+    team1_player_ids: list[Annotated[int, Field(gt=0)]] = Field(min_length=2, max_length=2)
+    team2_player_ids: list[Annotated[int, Field(gt=0)]] = Field(min_length=2, max_length=2)
+
+    @field_validator("team1_player_ids", "team2_player_ids")
+    @classmethod
+    def validate_players(cls, values: list[int]) -> list[int]:
+        return _unique_ids(values, label="복식 선수")
+
+
 class TeamDoublesSubmit(ScorePair):
     my_team_score: int = Field(ge=0, le=3)
     opponent_team_score: int = Field(ge=0, le=3)
+    expected_doubles: ExpectedDoubles | None = None
 
     @model_validator(mode="after")
     def validate_score(self) -> TeamDoublesSubmit:
@@ -313,4 +327,4 @@ class AdminTeamSingleResult(AdminLeagueResult):
 
 
 class AdminTeamDoublesResult(AdminLeagueResult):
-    pass
+    expected_doubles: ExpectedDoubles | None = None

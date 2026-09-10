@@ -12,17 +12,23 @@ import {
 } from "./competition";
 
 describe("competition helpers", () => {
-  it("splits active and completed competitions without changing their order", () => {
+  it("groups active and completed competitions together with participants first, keeping closed separate", () => {
     const items = [
-      { id: 1, status: "active" },
-      { id: 2, status: "completed" },
-      { id: 3, status: "active" },
+      { id: 1, status: "active", is_participant: false },
+      { id: 2, status: "completed", is_participant: false },
+      { id: 3, status: "active", is_participant: true },
+      { id: 4, status: "active", is_participant: false },
+      { id: 5, status: "completed", is_participant: true },
+      { id: 6, status: "active", is_participant: true },
+      { id: 7, status: "closed", is_participant: true },
+      { id: 8, status: "closed", is_participant: false },
     ] as Parameters<typeof splitCompetitions>[0];
 
     const result = splitCompetitions(items);
 
-    expect(result.active.map((item) => item.id)).toEqual([1, 3]);
-    expect(result.completed.map((item) => item.id)).toEqual([2]);
+    expect(result.ongoing.map((item) => item.id)).toEqual([3, 5, 6, 1, 2, 4]);
+    expect(result.closed.map((item) => item.id)).toEqual([7, 8]);
+    expect(items.map((item) => item.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
   });
 
   it("keeps progress between zero and one hundred", () => {

@@ -1,0 +1,322 @@
+{
+  "scope": "Actual production bundle and CSS in isolated Chrome. Every API GET and mutation mocked; no real authentication, database access or writes. Shortened viewports emulate reduced keyboard space, not physical iOS/Android keyboard behavior.",
+  "checks": [
+    {
+      "name": "name-only-edit-preserves-roster-payload-801",
+      "passed": true,
+      "type": "league",
+      "patch": {
+        "name": "이름만 변경 완료"
+      },
+      "rosterFieldsOmitted": true
+    },
+    {
+      "name": "name-only-edit-preserves-roster-payload-807",
+      "passed": true,
+      "type": "team",
+      "patch": {
+        "name": "이름만 변경 완료"
+      },
+      "rosterFieldsOmitted": true
+    },
+    {
+      "name": "late-poll-response-cannot-overwrite-successful-result",
+      "passed": true,
+      "order": "poll A starts → result POST succeeds → manual reload B applied → stale A arrives",
+      "latestResultRemainsVisible": true
+    },
+    {
+      "name": "doubles-snapshot-conflict-reopens-current-lineup",
+      "passed": true,
+      "notice": "복식 출전 선수가 변경되었습니다. 최신 대진을 확인한 뒤 다시 입력해 주세요.",
+      "originalLineupSnapshotSent": true,
+      "staleFormCannotResubmit": true,
+      "reopenedFormUsesCurrentLineup": true,
+      "finalCompletionSucceeds": true
+    },
+    {
+      "name": "single-conflict-invalidates-used-players-but-preserves-score",
+      "passed": true,
+      "notice": "대진이 변경되었습니다. 남은 선수를 다시 선택해 주세요. 선택할 선수가 없으면 창을 닫고 최신 대진을 확인해 주세요.\n이미 해당 단식에 출전한 선수입니다. 최신 대진을 확인한 뒤 다시 입력해 주세요.",
+      "unavailableSelectionCannotSubmit": true,
+      "lossAndScorePreserved": true,
+      "reselectionThenSaveSucceeds": true
+    },
+    {
+      "name": "background-return-refresh-after-input-closes",
+      "passed": true,
+      "hiddenAndOpenFormRequests": 0,
+      "choicesPreserved": true,
+      "closedFormReturnRequests": 1,
+      "visibilitySimulation": "document visibilityState override and native events"
+    },
+    {
+      "name": "all-competition-requests-send-lifecycle-version",
+      "passed": true,
+      "requestCount": 28,
+      "methods": [
+        "GET",
+        "PATCH",
+        "POST"
+      ],
+      "header": "X-Competition-Lifecycle: 3"
+    }
+  ],
+  "errors": [],
+  "unexpected": [],
+  "mockMutations": [
+    {
+      "path": "/api/v1/admin/competitions/801",
+      "payload": {
+        "name": "이름만 변경 완료"
+      },
+      "actor": 999
+    },
+    {
+      "path": "/api/v1/admin/competitions/807",
+      "payload": {
+        "name": "이름만 변경 완료"
+      },
+      "actor": 999
+    },
+    {
+      "path": "/competitions/801/league-fixtures/100/result",
+      "payload": {
+        "my_score": 3,
+        "opponent_score": 0
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/singles",
+      "payload": {
+        "my_team_player_id": 2,
+        "opponent_team_player_id": 6,
+        "my_team_score": 1,
+        "opponent_team_score": 2
+      },
+      "actor": 1,
+      "conflict": true
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/doubles",
+      "payload": {
+        "expected_doubles": {
+          "id": 501,
+          "team1_player_ids": [
+            3,
+            4
+          ],
+          "team2_player_ids": [
+            5,
+            6
+          ]
+        },
+        "my_team_score": 1,
+        "opponent_team_score": 2
+      },
+      "actor": 1,
+      "conflict": true
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/doubles",
+      "payload": {
+        "expected_doubles": {
+          "id": 501,
+          "team1_player_ids": [
+            1,
+            4
+          ],
+          "team2_player_ids": [
+            6,
+            7
+          ]
+        },
+        "my_team_score": 2,
+        "opponent_team_score": 1
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/singles",
+      "payload": {
+        "my_team_player_id": 2,
+        "opponent_team_player_id": 6,
+        "my_team_score": 1,
+        "opponent_team_score": 2
+      },
+      "actor": 1,
+      "conflict": true
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/singles",
+      "payload": {
+        "my_team_player_id": 1,
+        "opponent_team_player_id": 5,
+        "my_team_score": 1,
+        "opponent_team_score": 2
+      },
+      "actor": 1
+    }
+  ],
+  "screenshots": [
+    "competition-final-ux-doubles-conflict-320-2026-09-11.png",
+    "competition-final-ux-single-conflict-390-2026-09-11.png"
+  ],
+  "passed": true,
+  "lifecycleHeaders": [
+    {
+      "path": "/api/v1/admin/competitions/801",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/admin/competitions/801",
+      "method": "PATCH",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/admin/competitions/801",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/admin/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/admin/competitions/807",
+      "method": "PATCH",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/admin/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/801",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/801",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/801/league-fixtures/100/result",
+      "method": "POST",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/801",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807/team-encounters/500/singles",
+      "method": "POST",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807/team-encounters/500/doubles",
+      "method": "POST",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807/team-encounters/500/doubles",
+      "method": "POST",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/801",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807/team-encounters/500/singles",
+      "method": "POST",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807/team-encounters/500/singles",
+      "method": "POST",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/807",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/801",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/801",
+      "method": "GET",
+      "version": "3"
+    },
+    {
+      "path": "/api/v1/competitions/801",
+      "method": "GET",
+      "version": "3"
+    }
+  ],
+  "bundle": [
+    "/assets/index-CLV9eoZn.js"
+  ],
+  "harnessCorrections": [
+    "Scoped the legitimate pair of 409 alerts as a collection.",
+    "Centered the result button before the fake-clock forced click to avoid fixed bottom navigation."
+  ],
+  "harnessBlockedRequests": [
+    {
+      "path": "/minigames/coin-flip",
+      "method": "GET"
+    }
+  ]
+}

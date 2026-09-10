@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "competitions": 23,
+  "originalUsersPreserved": 24,
+  "originalOrdinaryMatchesPreserved": 1,
+  "originalSessionsPreserved": 8,
+  "allNonCompetitionRowsPreserved": true,
+  "temporaryQaSessionsRemoved": 2,
+  "baselineBackup": "C:\\Users\\jaehe\\scutta\\backend\\.backups\\competition-demo-before-20260910-231011.db",
+  "integrity": "ok"
+}

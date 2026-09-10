@@ -1,0 +1,204 @@
+{
+  "scope": "Actual production bundle and CSS in isolated Chrome. Every API GET and mutation mocked; no real authentication, database access or writes. Shortened viewports emulate reduced keyboard space, not physical iOS/Android keyboard behavior.",
+  "checks": [
+    {
+      "name": "list-participation-creation-order-completed-in-ongoing",
+      "passed": true,
+      "groups": [
+        {
+          "title": "진행 중",
+          "ids": [
+            802,
+            801,
+            804,
+            805
+          ]
+        },
+        {
+          "title": "종료",
+          "ids": [
+            803
+          ]
+        }
+      ],
+      "closedBackground": "rgb(238, 240, 243)"
+    },
+    {
+      "name": "league-failure-retry-double-submit-refresh-recovery-final-completion",
+      "passed": true,
+      "mockPostAttempts": 4,
+      "successfulResults": 3,
+      "failedPostPreservesChoices": true,
+      "doubleClickSingleWrite": true,
+      "readRetryDoesNotRepeatWrite": true,
+      "playerOnBothFixtureSides": true,
+      "finalCompletionReturnsToList": true,
+      "reducedViewport": {
+        "buttonTop": 343.609375,
+        "buttonBottom": 401.609375,
+        "viewportHeight": 420,
+        "dialogScrollTop": 0,
+        "dialogHeight": 386,
+        "dialogScrollHeight": 392,
+        "noOverflow": true
+      }
+    },
+    {
+      "name": "team-four-singles-selection-exclusion-2to2-doubles-final-completion",
+      "passed": true,
+      "singleCount": 4,
+      "playedPlayersExcluded": true,
+      "tiedSinglesUnlockDoubles": true,
+      "doublesPlayersFromSinglesLosses": true,
+      "doublesCompletionEndsCompetition": true,
+      "reducedViewport": {
+        "buttonTop": 337.609375,
+        "buttonBottom": 395.609375,
+        "viewportHeight": 420,
+        "dialogScrollTop": 106,
+        "dialogHeight": 386,
+        "dialogScrollHeight": 492,
+        "noOverflow": true
+      }
+    },
+    {
+      "name": "team-second-side-losing-score-orientation",
+      "passed": true,
+      "ownTeamB": true,
+      "selectedPlayersPreserved": true,
+      "scoreMatchesLosingOwnTeam": true
+    },
+    {
+      "name": "background-refresh-preserves-open-draft",
+      "passed": true,
+      "backgroundReadsWhileDraftOpen": 1,
+      "draftPlayersAndChoicesPreserved": true
+    },
+    {
+      "name": "concurrent-result-keeps-current-player-selection-readable",
+      "passed": true,
+      "ownLabel": "가상선수02",
+      "otherLabel": "가상선수06",
+      "saveEnabled": true,
+      "renderedSingles": 0,
+      "bundle": [
+        "/assets/index-CLV9eoZn.js"
+      ]
+    }
+  ],
+  "errors": [],
+  "unexpected": [],
+  "mockMutations": [
+    {
+      "path": "/competitions/801/league-fixtures/100/result",
+      "payload": {
+        "my_score": 2,
+        "opponent_score": 1
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/801/league-fixtures/100/result",
+      "payload": {
+        "my_score": 2,
+        "opponent_score": 1
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/801/league-fixtures/101/result",
+      "payload": {
+        "my_score": 0,
+        "opponent_score": 3
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/801/league-fixtures/102/result",
+      "payload": {
+        "my_score": 3,
+        "opponent_score": 0
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/singles",
+      "payload": {
+        "my_team_player_id": 2,
+        "opponent_team_player_id": 6,
+        "my_team_score": 2,
+        "opponent_team_score": 1
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/singles",
+      "payload": {
+        "my_team_player_id": 1,
+        "opponent_team_player_id": 5,
+        "my_team_score": 3,
+        "opponent_team_score": 0
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/singles",
+      "payload": {
+        "my_team_player_id": 3,
+        "opponent_team_player_id": 7,
+        "my_team_score": 1,
+        "opponent_team_score": 2
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/singles",
+      "payload": {
+        "my_team_player_id": 4,
+        "opponent_team_player_id": 8,
+        "my_team_score": 0,
+        "opponent_team_score": 3
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/doubles",
+      "payload": {
+        "my_team_score": 2,
+        "opponent_team_score": 1
+      },
+      "actor": 1
+    },
+    {
+      "path": "/competitions/807/team-encounters/500/singles",
+      "payload": {
+        "my_team_player_id": 6,
+        "opponent_team_player_id": 2,
+        "my_team_score": 1,
+        "opponent_team_score": 2
+      },
+      "actor": 5
+    }
+  ],
+  "screenshots": [
+    "competition-final-ux-list-390-2026-09-11.png",
+    "competition-final-ux-league-390x420-2026-09-11.png",
+    "competition-final-ux-team-320x420-2026-09-11.png",
+    "competition-final-ux-doubles-320-2026-09-11.png",
+    "competition-final-ux-concurrent-draft-390-2026-09-11.png",
+    "competition-final-ux-concurrent-draft-390-2026-09-11.png"
+  ],
+  "passed": true,
+  "bundle": [
+    "/assets/index-BitnvStQ.js"
+  ],
+  "concurrentObservation": {
+    "ownLabel": "가상선수02",
+    "otherLabel": "가상선수06",
+    "saveEnabled": true,
+    "renderedSingles": 0,
+    "bundle": [
+      "/assets/index-CLV9eoZn.js"
+    ]
+  }
+}

@@ -88,7 +88,10 @@ export function Modal({
   };
 
   return (
-    <div className="modal-backdrop" role="presentation" onMouseDown={requestClose}>
+    <div className="modal-backdrop" role="presentation" onMouseDown={(event) => {
+      event.preventDefault();
+      requestClose();
+    }}>
       <section
         ref={dialogRef}
         className={`modal-sheet ${wide ? "modal-sheet--wide" : ""}`}

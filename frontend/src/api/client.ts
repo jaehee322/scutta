@@ -37,6 +37,9 @@ export async function apiRequest<T>(path: string, options: ApiRequestOptions = {
   const { timeoutMs = REQUEST_TIMEOUT_MS, ...requestOptions } = options;
   const sessionVersion = getAuthSessionVersion();
   const headers = new Headers(requestOptions.headers);
+  if (/^\/(?:admin\/)?competitions(?:[/?]|$)/.test(path)) {
+    headers.set("X-Competition-Lifecycle", "3");
+  }
   if (requestOptions.body !== undefined && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }

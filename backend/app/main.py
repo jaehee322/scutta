@@ -94,7 +94,7 @@ def create_app(frontend_dist: Path | None = None) -> FastAPI:
         allow_origins=settings.cors_origins,
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-        allow_headers=["Content-Type"],
+        allow_headers=["Content-Type", "X-Competition-Lifecycle"],
     )
     application.add_middleware(GZipMiddleware, minimum_size=1_000, compresslevel=5)
 

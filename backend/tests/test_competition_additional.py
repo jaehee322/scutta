@@ -357,7 +357,7 @@ def test_league_admin_crud_roster_lock_close_reopen_and_match_isolation(api) -> 
 
     completed = admin.post(f"/api/v1/admin/competitions/{competition_id}/complete")
     assert completed.status_code == 200, completed.text
-    assert completed.json()["status"] == "completed"
+    assert completed.json()["status"] == "closed"
 
     deleted = admin.delete(
         f"/api/v1/admin/competitions/{competition_id}/league-fixtures/{first['id']}/result"
@@ -612,7 +612,7 @@ def test_team_admin_result_crud_roster_lock_close_and_reopen(api) -> None:
     assert created_doubles.json()["completed"] is True
     completed = admin.post(f"/api/v1/admin/competitions/{competition_id}/complete")
     assert completed.status_code == 200, completed.text
-    assert completed.json()["status"] == "completed"
+    assert completed.json()["status"] == "closed"
 
     updated_doubles = admin.put(
         f"/api/v1/admin/competitions/{competition_id}/team-encounters/{encounter['id']}/doubles",

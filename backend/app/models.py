@@ -50,6 +50,7 @@ class CompetitionType(enum.StrEnum):
 class CompetitionStatus(enum.StrEnum):
     ACTIVE = "active"
     COMPLETED = "completed"
+    CLOSED = "closed"
 
 
 def string_enum(enum_class: type[enum.Enum], name: str) -> Enum:
@@ -291,10 +292,10 @@ class Competition(TimestampMixin, Base):
     __tablename__ = "competitions"
     __table_args__ = (
         CheckConstraint("type IN ('league', 'team')", name="competition_type"),
-        CheckConstraint("status IN ('active', 'completed')", name="competition_status"),
+        CheckConstraint("status IN ('active', 'completed', 'closed')", name="competition_status"),
         CheckConstraint(
             "(status = 'active' AND completed_at IS NULL) OR "
-            "(status = 'completed' AND completed_at IS NOT NULL)",
+            "(status IN ('completed', 'closed') AND completed_at IS NOT NULL)",
             name="completion_state",
         ),
     )

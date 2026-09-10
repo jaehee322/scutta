@@ -5,7 +5,7 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
-import { type FormEvent, type ReactNode, useCallback, useEffect, useState } from "react";
+import { type FormEvent, type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { ApiError, apiRequest, jsonBody } from "../api/client";
@@ -16,6 +16,7 @@ import { Modal } from "../components/Modal";
 import { Notice } from "../components/Notice";
 import {
   competitionProgress,
+  competitionStatusLabel,
   competitionTypeLabel,
   findPlayerTeam,
   isCompetitionDeleteConfirmed,
@@ -23,7 +24,9 @@ import {
   type ResultScore,
   resultScorePair,
 } from "../lib/competition";
+import { doublesSnapshot } from "../lib/competitionEditing";
 import { formatKoreanDateTime } from "../lib/match";
+import { useCompetitionRefresh } from "../lib/useCompetitionRefresh";
 import type {
   CompetitionDetail,
   CompetitionPlayerRef,
@@ -48,41 +51,62 @@ export function CompetitionDetailPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const parsedId = Number(competitionId);
-  const [detail, setDetail] = useState<CompetitionDetail | null>(null);
+  const [loadedDetail, setDetail] = useState<CompetitionDetail | null>(null);
+  const detail = loadedDetail?.id === parsedId ? loadedDetail : null;
+  const requestSequence = useRef(0);
+  const routeController = useRef<AbortController | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [completeOpen, setCompleteOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const requestDetail = useCallback(async () => {
+  const requestDetail = useCallback(async (signal?: AbortSignal) => {
     if (!Number.isInteger(parsedId) || parsedId <= 0) {
       throw new Error("리그전 번호가 올바르지 않습니다.");
     }
     const prefix = user?.role === "admin" ? "/admin/competitions" : "/competitions";
-    return apiRequest<CompetitionDetail>(`${prefix}/${parsedId}`);
+    return apiRequest<CompetitionDetail>(`${prefix}/${parsedId}`, { signal });
   }, [parsedId, user?.role]);
 
-  const reload = useCallback(async () => {
-    const nextDetail = await requestDetail();
+  const reload = useCallback(async (signal = routeController.current?.signal) => {
+    const sequence = ++requestSequence.current;
+    const nextDetail = await requestDetail(signal);
+    if (signal?.aborted || sequence !== requestSequence.current) return;
     setDetail(nextDetail);
     setError("");
   }, [requestDetail]);
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (signal = routeController.current?.signal) => {
     setLoading(true);
     setError("");
     try {
-      await reload();
+      await reload(signal);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "리그전을 불러오지 못했습니다.");
+      if (!signal?.aborted) setError(caught instanceof Error ? caught.message : "리그전을 불러오지 못했습니다.");
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
   }, [reload]);
 
   useEffect(() => {
-    void load();
+    const controller = new AbortController();
+    routeController.current = controller;
+    setDetail(null);
+    setCompleteOpen(false);
+    setDeleteOpen(false);
+    void load(controller.signal);
+    return () => {
+      controller.abort();
+      requestSequence.current += 1;
+    };
   }, [load]);
+
+  useCompetitionRefresh(async (signal) => {
+    const sequence = ++requestSequence.current;
+    const nextDetail = await requestDetail(signal);
+    if (signal.aborted || sequence !== requestSequence.current || document.body.classList.contains("modal-open")) return;
+    setDetail(nextDetail);
+  }, { enabled: detail !== null && !loading && !completeOpen && !deleteOpen });
 
   if (loading && !detail) return <PageLoader />;
 
@@ -110,7 +134,7 @@ export function CompetitionDetailPage() {
         <div className="competition-detail-hero__badges">
           <span className="competition-type-badge">{competitionTypeLabel[detail.type]}</span>
           <span className={`competition-status-badge is-${detail.status}`}>
-            {detail.status === "active" ? "진행 중" : "종료"}
+            {competitionStatusLabel[detail.status]}
           </span>
         </div>
         <div className="competition-detail-hero__title">
@@ -127,9 +151,9 @@ export function CompetitionDetailPage() {
               >
                 <Trash2 size={17} /> 삭제
               </button>
-              {detail.status === "active" && (
+              {detail.status === "completed" && (
                 <button className="primary-button" type="button" onClick={() => setCompleteOpen(true)}>
-                  <Check size={17} /> 마감
+                  <Check size={17} /> 종료
                 </button>
               )}
             </div>
@@ -140,6 +164,9 @@ export function CompetitionDetailPage() {
           <strong>{detail.completed_count} / {detail.total_count}</strong>
         </div>
         <div className="competition-progress" aria-hidden="true"><i style={{ width: `${progress}%` }} /></div>
+        {detail.status === "completed" && (
+          <p className="competition-completion-note">모든 경기가 완료되었습니다. 완료된 다음 날 0시(한국 시간)에 자동 종료됩니다.</p>
+        )}
       </section>
 
       {error && <Notice>{error}</Notice>}
@@ -277,15 +304,15 @@ function CompleteCompetitionModal({
     } catch (caught) {
       setError(
         applied
-          ? "마감은 완료되었습니다. 아래 버튼으로 최신 정보를 다시 불러와 주세요."
-          : caught instanceof Error ? caught.message : "마감하지 못했습니다.",
+          ? "종료되었습니다. 아래 버튼으로 최신 정보를 다시 불러와 주세요."
+          : caught instanceof Error ? caught.message : "종료하지 못했습니다.",
       );
     } finally {
       setSaving(false);
     }
   };
   return (
-    <Modal title="리그전을 마감할까요?" onClose={onClose} closeDisabled={saving || mutationApplied}>
+    <Modal title="리그전을 지금 종료할까요?" description="다음 날 자동 종료를 기다리지 않고 종료 상태로 바꿉니다." onClose={onClose} closeDisabled={saving || mutationApplied}>
       <div className="confirm-match">
         <strong>{detail.name}</strong>
         <span>{detail.completed_count} / {detail.total_count}경기 완료</span>
@@ -295,8 +322,8 @@ function CompleteCompetitionModal({
         <button className="secondary-button" type="button" disabled={saving || mutationApplied} onClick={onClose}>취소</button>
         <button className="primary-button" type="button" disabled={saving} onClick={() => void submit()}>
           {saving
-            ? mutationApplied ? "불러오는 중" : "마감하는 중"
-            : mutationApplied ? "최신 정보 불러오기" : "마감하기"}
+            ? mutationApplied ? "불러오는 중" : "종료하는 중"
+            : mutationApplied ? "최신 정보 불러오기" : "종료하기"}
         </button>
       </div>
     </Modal>
@@ -332,7 +359,7 @@ function LeagueDetail({
               <span className="standing-name" role="cell">
                 <b>{standing.player.username}</b><small>{standing.player.club_rank}부</small>
               </span>
-              <span role="cell">{standing.wins}</span><span role="cell">{standing.losses}</span>
+              <span className="standing-result-value" role="cell">{standing.wins}</span><span className="standing-result-value" role="cell">{standing.losses}</span>
             </div>
           ))}
         </div>
@@ -524,13 +551,12 @@ function TeamDetail({
         <PanelHeading title="순위" />
         <div className="competition-table-wrap" role="table" aria-label="단체전 순위">
           <div className="team-standing-row team-standing-row--header" role="row">
-            <span role="columnheader">순위</span><span role="columnheader">팀</span><span role="columnheader">경기</span><span role="columnheader">승</span><span role="columnheader">패</span><span role="columnheader">게임</span>
+            <span role="columnheader">순위</span><span role="columnheader">팀</span><span role="columnheader">경기</span><span role="columnheader">승</span><span role="columnheader">패</span>
           </div>
           {detail.standings.map((standing) => (
             <div key={standing.team.id} className={`team-standing-row ${standing.team.id === myTeam?.id ? "is-me" : ""}`} role="row">
               <strong role="cell">{standing.rank}</strong><b role="cell">{standing.team.name}</b><span role="cell">{standing.played}</span>
-              <span role="cell">{standing.wins}</span><span role="cell">{standing.losses}</span>
-              <span role="cell" className={standing.game_difference > 0 ? "is-positive" : ""}>{standing.games_won}:{standing.games_lost}</span>
+              <span className="standing-result-value" role="cell">{standing.wins}</span><span className="standing-result-value" role="cell">{standing.losses}</span>
             </div>
           ))}
         </div>
@@ -544,7 +570,6 @@ function TeamDetail({
               key={encounter.id}
               competitionId={detail.id}
               encounter={encounter}
-              detail={detail}
               myTeamId={myTeam?.id}
               isAdmin={isAdmin}
               active={detail.status === "active"}
@@ -560,7 +585,6 @@ function TeamDetail({
 function TeamEncounterCard({
   competitionId,
   encounter,
-  detail,
   myTeamId,
   isAdmin,
   active,
@@ -568,7 +592,6 @@ function TeamEncounterCard({
 }: {
   competitionId: number;
   encounter: TeamEncounter;
-  detail: TeamCompetitionDetail;
   myTeamId: number | undefined;
   isAdmin: boolean;
   active: boolean;
@@ -576,7 +599,7 @@ function TeamEncounterCard({
 }) {
   const [addingSingles, setAddingSingles] = useState(false);
   const [editingSingle, setEditingSingle] = useState<TeamSingleMatch | null>(null);
-  const [editingDoubles, setEditingDoubles] = useState(false);
+  const [editingDoubles, setEditingDoubles] = useState<TeamDoublesMatch | null>(null);
   const [error, setError] = useState("");
   const [deletingAction, setDeletingAction] = useState<string | null>(null);
   const [reloadRequired, setReloadRequired] = useState(false);
@@ -619,14 +642,15 @@ function TeamEncounterCard({
     }
   };
 
-  const team1 = detail.teams.find((team) => team.id === encounter.team1.id)!;
-  const team2 = detail.teams.find((team) => team.id === encounter.team2.id)!;
-
   return (
-    <article className="team-encounter-card">
+    <article className={`team-encounter-card ${isAdmin || (active && encounter.can_submit_doubles) ? "team-encounter-card--with-actions" : ""}`}>
       <header className="team-encounter-card__header">
         <span>{encounter.round_no}R</span>
-        <div><strong>{encounter.team1.name}</strong><b>{encounter.team1_wins} : {encounter.team2_wins}</b><strong>{encounter.team2.name}</strong></div>
+        <div>
+          <strong className={encounter.completed ? encounter.winner_team_id === encounter.team1.id ? "is-winner" : encounter.winner_team_id === encounter.team2.id ? "is-loser" : undefined : undefined}>{encounter.team1.name}</strong>
+          <b>{encounter.team1_wins} : {encounter.team2_wins}</b>
+          <strong className={encounter.completed ? encounter.winner_team_id === encounter.team2.id ? "is-winner" : encounter.winner_team_id === encounter.team1.id ? "is-loser" : undefined : undefined}>{encounter.team2.name}</strong>
+        </div>
         <small>{encounter.completed ? "완료" : `${encounter.singles.length}/4 단식`}</small>
       </header>
 
@@ -634,7 +658,11 @@ function TeamEncounterCard({
         {encounter.singles.map((single) => (
           <div className="team-game-row" key={single.id}>
             <span>단식 {single.sequence}</span>
-            <div><strong>{single.team1_player.username}</strong><small>vs</small><strong>{single.team2_player.username}</strong></div>
+            <div>
+              <strong className={single.winner_team_id === encounter.team1.id ? "is-winner" : undefined}>{single.team1_player.username}</strong>
+              <small>vs</small>
+              <strong className={single.winner_team_id === encounter.team2.id ? "is-winner" : undefined}>{single.team2_player.username}</strong>
+            </div>
             <b>{single.score1} : {single.score2}</b>
             {isAdmin && (
               <div className="competition-match-actions">
@@ -656,14 +684,14 @@ function TeamEncounterCard({
           <div className="team-game-row team-game-row--doubles">
             <span>복식</span>
             <div>
-              <strong>{playerNames(encounter.doubles.team1_players)}</strong>
+              <strong className={encounter.doubles.completed && encounter.doubles.winner_team_id === encounter.team1.id ? "is-winner" : undefined}>{playerNames(encounter.doubles.team1_players)}</strong>
               <small>vs</small>
-              <strong>{playerNames(encounter.doubles.team2_players)}</strong>
+              <strong className={encounter.doubles.completed && encounter.doubles.winner_team_id === encounter.team2.id ? "is-winner" : undefined}>{playerNames(encounter.doubles.team2_players)}</strong>
             </div>
             <b>{encounter.doubles.completed ? `${encounter.doubles.score1} : ${encounter.doubles.score2}` : "예정"}</b>
             {(isAdmin || (active && encounter.can_submit_doubles)) && (
               <div className="competition-match-actions">
-                <button className={isAdmin ? "small-icon-button" : "small-primary-button"} type="button" aria-label={isAdmin ? "복식 결과 수정" : undefined} disabled={actionBlocked} onClick={() => setEditingDoubles(true)}>
+                <button className={isAdmin ? "small-icon-button" : "small-primary-button"} type="button" aria-label={isAdmin ? "복식 결과 수정" : undefined} disabled={actionBlocked} onClick={() => setEditingDoubles(encounter.doubles)}>
                   {isAdmin ? <Pencil size={16} /> : "결과 입력"}
                 </button>
                 {isAdmin && encounter.doubles.completed && (
@@ -704,8 +732,6 @@ function TeamEncounterCard({
         <TeamSinglesModal
           competitionId={competitionId}
           encounter={encounter}
-          team1Members={team1.members}
-          team2Members={team2.members}
           myTeamId={myTeamId}
           isAdmin={isAdmin}
           onClose={() => setAddingSingles(false)}
@@ -716,8 +742,6 @@ function TeamEncounterCard({
         <TeamSinglesModal
           competitionId={competitionId}
           encounter={encounter}
-          team1Members={team1.members}
-          team2Members={team2.members}
           myTeamId={myTeamId}
           isAdmin
           single={editingSingle}
@@ -725,14 +749,14 @@ function TeamEncounterCard({
           onSaved={reload}
         />
       )}
-      {editingDoubles && encounter.doubles && (
+      {editingDoubles && (
         <TeamDoublesModal
           competitionId={competitionId}
           encounter={encounter}
-          doubles={encounter.doubles}
+          doubles={editingDoubles}
           myTeamId={myTeamId}
           isAdmin={isAdmin}
-          onClose={() => setEditingDoubles(false)}
+          onClose={() => setEditingDoubles(null)}
           onSaved={reload}
         />
       )}
@@ -743,8 +767,6 @@ function TeamEncounterCard({
 function TeamSinglesModal({
   competitionId,
   encounter,
-  team1Members,
-  team2Members,
   myTeamId,
   isAdmin,
   single,
@@ -753,8 +775,6 @@ function TeamSinglesModal({
 }: {
   competitionId: number;
   encounter: TeamEncounter;
-  team1Members: CompetitionPlayerRef[];
-  team2Members: CompetitionPlayerRef[];
   myTeamId: number | undefined;
   isAdmin: boolean;
   single?: TeamSingleMatch;
@@ -777,9 +797,12 @@ function TeamSinglesModal({
   const [mutationApplied, setMutationApplied] = useState(false);
   const [error, setError] = useState("");
   const mySide = myTeamId === encounter.team1.id ? 1 : myTeamId === encounter.team2.id ? 2 : null;
+  const selectionValid = team1Options.some((player) => player.id === team1PlayerId)
+    && team2Options.some((player) => player.id === team2PlayerId);
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    if (saving || (!mutationApplied && !selectionValid)) return;
     setSaving(true);
     setError("");
     let applied = mutationApplied;
@@ -813,11 +836,15 @@ function TeamSinglesModal({
       await onSaved();
       onClose();
     } catch (caught) {
-      setError(
-        applied
-          ? "저장은 완료되었습니다. 아래 버튼으로 최신 정보를 다시 불러와 주세요."
-          : caught instanceof Error ? caught.message : "결과를 저장하지 못했습니다.",
-      );
+      if (!applied && caught instanceof ApiError && caught.status === 409) {
+        await refreshAfterConflict(caught, onSaved, setError);
+      } else {
+        setError(
+          applied
+            ? "저장은 완료되었습니다. 아래 버튼으로 최신 정보를 다시 불러와 주세요."
+            : caught instanceof Error ? caught.message : "결과를 저장하지 못했습니다.",
+        );
+      }
     } finally {
       setSaving(false);
     }
@@ -835,8 +862,8 @@ function TeamSinglesModal({
           <>
             {isAdmin ? (
               <div className="form-row">
-                <PlayerSelect label={encounter.team1.name} players={team1Options.length ? team1Options : team1Members} value={team1PlayerId} onChange={setTeam1PlayerId} />
-                <PlayerSelect label={encounter.team2.name} players={team2Options.length ? team2Options : team2Members} value={team2PlayerId} onChange={setTeam2PlayerId} />
+                <PlayerSelect label={encounter.team1.name} players={team1Options} value={team1PlayerId} onChange={setTeam1PlayerId} />
+                <PlayerSelect label={encounter.team2.name} players={team2Options} value={team2PlayerId} onChange={setTeam2PlayerId} />
               </div>
             ) : (
               <div className="form-row">
@@ -861,8 +888,11 @@ function TeamSinglesModal({
             )}
           </>
         )}
+        {!mutationApplied && !selectionValid && (
+          <Notice>대진이 변경되었습니다. 남은 선수를 다시 선택해 주세요. 선택할 선수가 없으면 창을 닫고 최신 대진을 확인해 주세요.</Notice>
+        )}
         {error && <Notice>{error}</Notice>}
-        <button className="primary-button primary-button--large" disabled={saving || (!mutationApplied && (!team1PlayerId || !team2PlayerId))}>
+        <button className="primary-button primary-button--large" disabled={saving || (!mutationApplied && !selectionValid)}>
           {saving
             ? mutationApplied ? "불러오는 중" : "저장하는 중"
             : mutationApplied ? "최신 정보 불러오기" : "저장하기"}
@@ -889,19 +919,24 @@ function TeamDoublesModal({
   onClose: () => void;
   onSaved: () => Promise<void>;
 }) {
-  const initial = doubles.completed ? `${doubles.score1}:${doubles.score2}` as AllowedScore : "3:0";
-  const title = `${playerNames(doubles.team1_players)} · ${playerNames(doubles.team2_players)}`;
+  const [openedDoubles] = useState(() => ({
+    expected: doublesSnapshot(doubles),
+    score: (doubles.completed ? `${doubles.score1}:${doubles.score2}` : "3:0") as AllowedScore,
+    playedOn: doubles.played_on ?? seoulDateInputValue(),
+    title: `${playerNames(doubles.team1_players)} · ${playerNames(doubles.team2_players)}`,
+  }));
   if (isAdmin) {
     return (
       <AdminScoreModal
-        title={title}
-        initialScore={initial}
-        initialDate={doubles.played_on ?? seoulDateInputValue()}
+        title={openedDoubles.title}
+        initialScore={openedDoubles.score}
+        initialDate={openedDoubles.playedOn}
+        reopenOnConflict
         onClose={onClose}
         onSubmit={async (score1, score2, playedOn) => {
           await apiRequest(`/admin/competitions/${competitionId}/team-encounters/${encounter.id}/doubles`, {
             method: "PUT",
-            body: jsonBody({ score1, score2, played_on: playedOn }),
+            body: jsonBody({ score1, score2, played_on: playedOn, expected_doubles: openedDoubles.expected }),
           });
         }}
         onSaved={onSaved}
@@ -911,9 +946,10 @@ function TeamDoublesModal({
   if (myTeamId !== encounter.team1.id && myTeamId !== encounter.team2.id) return null;
   return (
     <PlayerResultModal
-      title={title}
+      title={openedDoubles.title}
       submitPath={`/competitions/${competitionId}/team-encounters/${encounter.id}/doubles`}
       payloadKeys={["my_team_score", "opponent_team_score"]}
+      extraPayload={{ expected_doubles: openedDoubles.expected }}
       onClose={onClose}
       onSaved={onSaved}
     />
@@ -924,12 +960,14 @@ function PlayerResultModal({
   title,
   submitPath,
   payloadKeys = ["my_score", "opponent_score"],
+  extraPayload,
   onClose,
   onSaved,
 }: {
   title: string;
   submitPath: string;
   payloadKeys?: [string, string];
+  extraPayload?: Record<string, unknown>;
   onClose: () => void;
   onSaved: () => Promise<void>;
 }) {
@@ -937,18 +975,20 @@ function PlayerResultModal({
   const [score, setScore] = useState<ResultScore>("3:0");
   const [saving, setSaving] = useState(false);
   const [mutationApplied, setMutationApplied] = useState(false);
+  const [conflict, setConflict] = useState(false);
   const [error, setError] = useState("");
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    if (saving) return;
     setSaving(true);
     setError("");
     const [myScore, opponentScore] = resultScorePair(outcome, score);
     let applied = mutationApplied;
     try {
-      if (!applied) {
+      if (!applied && !conflict) {
         await apiRequest(submitPath, {
           method: "POST",
-          body: jsonBody({ [payloadKeys[0]]: myScore, [payloadKeys[1]]: opponentScore }),
+          body: jsonBody({ ...extraPayload, [payloadKeys[0]]: myScore, [payloadKeys[1]]: opponentScore }),
         });
         applied = true;
         setMutationApplied(true);
@@ -956,11 +996,16 @@ function PlayerResultModal({
       await onSaved();
       onClose();
     } catch (caught) {
-      setError(
-        applied
-          ? "저장은 완료되었습니다. 아래 버튼으로 최신 정보를 다시 불러와 주세요."
-          : caught instanceof Error ? caught.message : "결과를 저장하지 못했습니다.",
-      );
+      if (!applied && caught instanceof ApiError && caught.status === 409) {
+        setConflict(true);
+        await refreshAfterConflict(caught, onSaved, setError);
+      } else {
+        setError(
+          applied
+            ? "저장은 완료되었습니다. 아래 버튼으로 최신 정보를 다시 불러와 주세요."
+            : caught instanceof Error ? caught.message : "결과를 저장하지 못했습니다.",
+        );
+      }
     } finally {
       setSaving(false);
     }
@@ -968,12 +1013,12 @@ function PlayerResultModal({
   return (
     <Modal title={title} onClose={onClose} closeDisabled={saving || mutationApplied}>
       <form className="modal-form" onSubmit={submit}>
-        {!mutationApplied && <ResultPicker outcome={outcome} score={score} onOutcomeChange={setOutcome} onScoreChange={setScore} />}
+        {!mutationApplied && !conflict && <ResultPicker outcome={outcome} score={score} onOutcomeChange={setOutcome} onScoreChange={setScore} />}
         {error && <Notice>{error}</Notice>}
         <button className="primary-button primary-button--large" disabled={saving}>
           {saving
-            ? mutationApplied ? "불러오는 중" : "저장하는 중"
-            : mutationApplied ? "최신 정보 불러오기" : "저장하기"}
+            ? mutationApplied || conflict ? "불러오는 중" : "저장하는 중"
+            : conflict ? "대진 다시 확인" : mutationApplied ? "최신 정보 불러오기" : "저장하기"}
         </button>
       </form>
     </Modal>
@@ -987,6 +1032,7 @@ function AdminScoreModal({
   onClose,
   onSubmit,
   onSaved,
+  reopenOnConflict = false,
 }: {
   title: string;
   initialScore: AllowedScore;
@@ -994,20 +1040,23 @@ function AdminScoreModal({
   onClose: () => void;
   onSubmit: (score1: number, score2: number, playedOn: string) => Promise<void>;
   onSaved: () => Promise<void>;
+  reopenOnConflict?: boolean;
 }) {
   const [score, setScore] = useState(initialScore);
   const [playedOn, setPlayedOn] = useState(initialDate);
   const [saving, setSaving] = useState(false);
   const [mutationApplied, setMutationApplied] = useState(false);
+  const [conflict, setConflict] = useState(false);
   const [error, setError] = useState("");
   const submit = async (event: FormEvent) => {
     event.preventDefault();
+    if (saving) return;
     setSaving(true);
     setError("");
     const [score1, score2] = score.split(":").map(Number);
     let applied = mutationApplied;
     try {
-      if (!applied) {
+      if (!applied && !conflict) {
         await onSubmit(score1, score2, playedOn);
         applied = true;
         setMutationApplied(true);
@@ -1015,11 +1064,16 @@ function AdminScoreModal({
       await onSaved();
       onClose();
     } catch (caught) {
-      setError(
-        applied
-          ? "저장은 완료되었습니다. 아래 버튼으로 최신 정보를 다시 불러와 주세요."
-          : caught instanceof Error ? caught.message : "결과를 저장하지 못했습니다.",
-      );
+      if (!applied && caught instanceof ApiError && caught.status === 409) {
+        setConflict(reopenOnConflict);
+        await refreshAfterConflict(caught, onSaved, setError);
+      } else {
+        setError(
+          applied
+            ? "저장은 완료되었습니다. 아래 버튼으로 최신 정보를 다시 불러와 주세요."
+            : caught instanceof Error ? caught.message : "결과를 저장하지 못했습니다.",
+        );
+      }
     } finally {
       setSaving(false);
     }
@@ -1027,16 +1081,29 @@ function AdminScoreModal({
   return (
     <Modal title={title} onClose={onClose} closeDisabled={saving || mutationApplied}>
       <form className="modal-form" onSubmit={submit}>
-        {!mutationApplied && <AdminScoreFields score={score} onScoreChange={setScore} playedOn={playedOn} onDateChange={setPlayedOn} />}
+        {!mutationApplied && !conflict && <AdminScoreFields score={score} onScoreChange={setScore} playedOn={playedOn} onDateChange={setPlayedOn} />}
         {error && <Notice>{error}</Notice>}
         <button className="primary-button primary-button--large" disabled={saving}>
           {saving
-            ? mutationApplied ? "불러오는 중" : "저장하는 중"
-            : mutationApplied ? "최신 정보 불러오기" : "저장하기"}
+            ? mutationApplied || conflict ? "불러오는 중" : "저장하는 중"
+            : conflict ? "대진 다시 확인" : mutationApplied ? "최신 정보 불러오기" : "저장하기"}
         </button>
       </form>
     </Modal>
   );
+}
+
+async function refreshAfterConflict(
+  caught: ApiError,
+  reload: () => Promise<void>,
+  showError: (message: string) => void,
+) {
+  try {
+    await reload();
+    showError(`${caught.message} 최신 대진을 확인한 뒤 다시 입력해 주세요.`);
+  } catch {
+    showError(`${caught.message} 최신 대진을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.`);
+  }
 }
 
 function ResultPicker({
@@ -1103,10 +1170,10 @@ function PlayerSelect({
   return (
     <CustomSelect
       label={label}
-      value={value || null}
+      value={players.some((player) => player.id === value) ? value : null}
       options={players.map((player) => ({ value: player.id, label: player.username }))}
       onChange={onChange}
-      placeholder="선수 없음"
+      placeholder={players.length ? "선수를 다시 선택해 주세요" : "선수 없음"}
       disabled={!players.length}
       required
     />

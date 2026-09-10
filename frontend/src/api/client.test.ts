@@ -8,6 +8,17 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+it("requests the three-state competition contract without changing other APIs", async () => {
+  const fetchMock = vi.fn<typeof fetch>(async () => new Response("[]", { status: 200 }));
+  vi.stubGlobal("fetch", fetchMock);
+  await apiRequest("/competitions");
+  await apiRequest("/admin/competitions/1/complete", { method: "POST" });
+  await apiRequest("/rankings");
+  expect(new Headers(fetchMock.mock.calls[0][1]?.headers).get("X-Competition-Lifecycle")).toBe("3");
+  expect(new Headers(fetchMock.mock.calls[1][1]?.headers).get("X-Competition-Lifecycle")).toBe("3");
+  expect(new Headers(fetchMock.mock.calls[2][1]?.headers).has("X-Competition-Lifecycle")).toBe(false);
+});
+
 function pendingBody(status: number) {
   let streamController!: ReadableStreamDefaultController<Uint8Array>;
   const stream = new ReadableStream<Uint8Array>({

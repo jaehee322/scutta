@@ -1,5 +1,6 @@
 import type {
   CompetitionDetail,
+  CompetitionStatus,
   CompetitionSummary,
   CompetitionTeam,
   CompetitionTeamInput,
@@ -14,10 +15,20 @@ export const competitionTypeLabel: Record<CompetitionType, string> = {
   team: "단체전",
 };
 
+export const competitionStatusLabel: Record<CompetitionStatus, string> = {
+  active: "진행 중",
+  completed: "완료",
+  closed: "종료",
+};
+
 export function splitCompetitions(items: CompetitionSummary[]) {
+  const ongoing = items.filter((item) => item.status === "active" || item.status === "completed");
   return {
-    active: items.filter((item) => item.status === "active"),
-    completed: items.filter((item) => item.status === "completed"),
+    ongoing: [
+      ...ongoing.filter((item) => item.is_participant),
+      ...ongoing.filter((item) => !item.is_participant),
+    ],
+    closed: items.filter((item) => item.status === "closed"),
   };
 }
 

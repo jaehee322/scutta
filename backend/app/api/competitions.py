@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Annotated, NoReturn
 
-from fastapi import APIRouter, HTTPException, Query, Response, status
+from fastapi import APIRouter, Header, HTTPException, Query, Response, status
 
 from app.api.deps import CurrentAdmin, CurrentPlayer, DbSession
 from app.models import CompetitionStatus, CompetitionType
@@ -47,6 +47,50 @@ from app.services.competitions import (
 
 router = APIRouter(prefix="/competitions", tags=["competitions"])
 admin_router = APIRouter(prefix="/admin/competitions", tags=["admin:competitions"])
+
+LifecycleVersion = Annotated[str | None, Header(alias="X-Competition-Lifecycle")]
+
+
+def _client_view[Summary: CompetitionSummary](
+    item: Summary, lifecycle_version: str | None
+) -> Summary:
+    # Installed PWAs may keep the previous two-state UI until the user updates.
+    # Preserve its active/completed contract so closed events do not disappear.
+    if lifecycle_version == "3":
+        return item
+    legacy_status = (
+        CompetitionStatus.COMPLETED
+        if item.status == CompetitionStatus.CLOSED
+        else CompetitionStatus.ACTIVE
+    )
+    return item.model_copy(
+        update={
+            "status": legacy_status,
+            "completed_at": item.completed_at
+            if legacy_status == CompetitionStatus.COMPLETED
+            else None,
+        }
+    )
+
+
+def _client_list(
+    db: DbSession,
+    *,
+    actor_id: int | None,
+    competition_status: CompetitionStatus | None,
+    competition_type: CompetitionType | None,
+    lifecycle_version: str | None,
+) -> list[CompetitionSummary]:
+    items = list_competitions(
+        db,
+        actor_id=actor_id,
+        status=competition_status if lifecycle_version == "3" else None,
+        competition_type=competition_type,
+    )
+    views = [_client_view(item, lifecycle_version) for item in items]
+    return [
+        item for item in views if competition_status is None or item.status == competition_status
+    ]
 
 
 def _raise_competition_error(error: Exception) -> NoReturn:
@@ -94,12 +138,14 @@ def list_player_competitions(
     current_player: CurrentPlayer,
     competition_status: Annotated[CompetitionStatus | None, Query(alias="status")] = None,
     competition_type: Annotated[CompetitionType | None, Query(alias="type")] = None,
+    lifecycle_version: LifecycleVersion = None,
 ) -> list[CompetitionSummary]:
-    return list_competitions(
+    return _client_list(
         db,
         actor_id=current_player.id,
-        status=competition_status,
+        competition_status=competition_status,
         competition_type=competition_type,
+        lifecycle_version=lifecycle_version,
     )
 
 
@@ -108,8 +154,9 @@ def get_player_competition(
     competition_id: int,
     db: DbSession,
     current_player: CurrentPlayer,
+    lifecycle_version: LifecycleVersion = None,
 ) -> CompetitionDetail:
-    return _detail(db, competition_id, actor_id=current_player.id)
+    return _client_view(_detail(db, competition_id, actor_id=current_player.id), lifecycle_version)
 
 
 @router.post(
@@ -193,6 +240,7 @@ def post_player_team_doubles(
             actor=current_player,
             my_team_score=payload.my_team_score,
             opponent_team_score=payload.opponent_team_score,
+            expected_doubles=payload.expected_doubles,
         )
     except (
         CompetitionNotFoundError,
@@ -210,12 +258,14 @@ def list_admin_competitions(
     _admin: CurrentAdmin,
     competition_status: Annotated[CompetitionStatus | None, Query(alias="status")] = None,
     competition_type: Annotated[CompetitionType | None, Query(alias="type")] = None,
+    lifecycle_version: LifecycleVersion = None,
 ) -> list[CompetitionSummary]:
-    return list_competitions(
+    return _client_list(
         db,
         actor_id=None,
-        status=competition_status,
+        competition_status=competition_status,
         competition_type=competition_type,
+        lifecycle_version=lifecycle_version,
     )
 
 
@@ -224,8 +274,9 @@ def get_admin_competition(
     competition_id: int,
     db: DbSession,
     _admin: CurrentAdmin,
+    lifecycle_version: LifecycleVersion = None,
 ) -> CompetitionDetail:
-    return _detail(db, competition_id, actor_id=None)
+    return _client_view(_detail(db, competition_id, actor_id=None), lifecycle_version)
 
 
 @admin_router.post("", response_model=CompetitionDetail, status_code=status.HTTP_201_CREATED)
@@ -233,12 +284,13 @@ def post_admin_competition(
     payload: CompetitionCreate,
     db: DbSession,
     _admin: CurrentAdmin,
+    lifecycle_version: LifecycleVersion = None,
 ) -> CompetitionDetail:
     try:
         competition_id = create_competition(db, payload=payload)
     except (CompetitionConflictError, CompetitionValidationError) as error:
         _raise_competition_error(error)
-    return _detail(db, competition_id, actor_id=None)
+    return _client_view(_detail(db, competition_id, actor_id=None), lifecycle_version)
 
 
 @admin_router.patch("/{competition_id}", response_model=CompetitionDetail)
@@ -247,6 +299,7 @@ def patch_admin_competition(
     payload: CompetitionUpdate,
     db: DbSession,
     _admin: CurrentAdmin,
+    lifecycle_version: LifecycleVersion = None,
 ) -> CompetitionDetail:
     try:
         update_competition(db, competition_id=competition_id, payload=payload)
@@ -256,7 +309,7 @@ def patch_admin_competition(
         CompetitionValidationError,
     ) as error:
         _raise_competition_error(error)
-    return _detail(db, competition_id, actor_id=None)
+    return _client_view(_detail(db, competition_id, actor_id=None), lifecycle_version)
 
 
 @admin_router.delete("/{competition_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -277,6 +330,7 @@ def post_admin_complete_competition(
     competition_id: int,
     db: DbSession,
     _admin: CurrentAdmin,
+    lifecycle_version: LifecycleVersion = None,
 ) -> CompetitionDetail:
     try:
         complete_competition(db, competition_id=competition_id)
@@ -286,7 +340,7 @@ def post_admin_complete_competition(
         CompetitionValidationError,
     ) as error:
         _raise_competition_error(error)
-    return _detail(db, competition_id, actor_id=None)
+    return _client_view(_detail(db, competition_id, actor_id=None), lifecycle_version)
 
 
 @admin_router.put(
@@ -446,6 +500,7 @@ def put_admin_team_doubles_result(
             score1=payload.score1,
             score2=payload.score2,
             played_on=payload.played_on,
+            expected_doubles=payload.expected_doubles,
         )
     except (
         CompetitionNotFoundError,

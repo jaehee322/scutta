@@ -1,0 +1,21 @@
+{
+  "scope": "Read-only local database check; no accounts, sessions or competition data created or changed by this audit.",
+  "counts": {
+    "auth_sessions": 8,
+    "competitions": 23,
+    "league_fixtures": 112,
+    "matches": 298,
+    "team_doubles_games": 17,
+    "team_encounters": 100,
+    "team_single_games": 232,
+    "users": 24
+  },
+  "statuses": {
+    "active": 16,
+    "closed": 4,
+    "completed": 3
+  },
+  "foreignKeyViolations": 0,
+  "integrity": "ok",
+  "schemaRevision": "20260911_0013"
+}

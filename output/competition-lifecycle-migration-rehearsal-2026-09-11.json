@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "rehearsal_database": "C:\\Users\\jaehe\\scutta\\backend\\.backups\\lifecycle-rehearsal-20260911-002418.db",
+  "competition_count": 23,
+  "status_counts": {
+    "active": 16,
+    "closed": 4,
+    "completed": 3
+  },
+  "preserved_tables": {
+    "auth_sessions": {
+      "count": 8,
+      "sha256": "3c4c0cd6e78e68933b5d88f64c4982bf370ce5adb3ccf056418f2f65b858fd5f"
+    },
+    "competition_members": {
+      "count": 60,
+      "sha256": "7be83223f16ca2bc72b8c405b2c256dcf6063c21f81ba8e494420b2f27d67a5f"
+    },
+    "competition_teams": {
+      "count": 50,
+      "sha256": "dab2922d76c60bfa1a5ea0231b81db87512cbd03b69ecba6fba8e0b0cf887b1e"
+    },
+    "league_fixtures": {
+      "count": 112,
+      "sha256": "5907a44db172013dcf9f66be3f074c914862625f7f003acb7139c77b4f5159cf"
+    },
+    "competition_team_members": {
+      "count": 200,
+      "sha256": "5f4d6059088a4faae232dfd4927afd3245e8acdc0cd70dfdecb31f4b23ae6e66"
+    },
+    "team_encounters": {
+      "count": 100,
+      "sha256": "6a306181b22eef2d8cced9323d78902f337293ce84ee1f8ad220fa6a597a8093"
+    },
+    "team_doubles_games": {
+      "count": 17,
+      "sha256": "bbcae4fcdfb904b7745cb79d907d65f16a22a46c50facca57685013cda4ef4a8"
+    },
+    "team_single_games": {
+      "count": 232,
+      "sha256": "ebdfb4d6494163b089d0408f88e122cf51e8d22a460b63c8e614bdf2d7837c55"
+    },
+    "settlement_settings": {
+      "count": 1,
+      "sha256": "9ed9da00474db78c85b8b65bcf1a98789ba5d38ac2cc3d4cda4da578b69b4c85"
+    },
+    "matches": {
+      "count": 298,
+      "sha256": "5c4bc56cb82d310444ef623f6669262a1b79548dcac0357237dc503eb665f36e"
+    },
+    "users": {
+      "count": 24,
+      "sha256": "4d8729d4bc36e9a353e0143f849165f67de54da4eb66d5cf936213a97ed125ec"
+    },
+    "coin_flip_states": {
+      "count": 2,
+      "sha256": "bc5c740b4c58d0d4250b6900563c2e9298de8a8d9a412f60da425490e6c63e10"
+    },
+    "paddle_flight_scores": {
+      "count": 2,
+      "sha256": "c9c7e3eae6f7b8525b28f08d3bc6c60535e3e50b32ac4aec0ab8623b0ea0da90"
+    },
+    "paddle_flight_cosmetics": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "paddle_flight_owned_skins": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "paddle_flight_chest_claims": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  }
+}

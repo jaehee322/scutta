@@ -4046,6 +4046,115 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
   font-size: 34px;
 }
 
+.competition-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.competition-info-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.competition-rules-dialog .modal-backdrop {
+  align-items: center;
+  padding: 0;
+}
+
+.competition-rules-dialog .modal-sheet {
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  height: 88vh;
+  height: 88dvh;
+  max-height: 88vh;
+  max-height: 88dvh;
+  padding: clamp(18px, 3vw, 28px);
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.competition-rules-dialog .modal-sheet__header {
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.competition-rules-dialog .modal-sheet__header > div {
+  min-width: 0;
+}
+
+.competition-rules-dialog .modal-sheet__header h2 {
+  font-size: 22px;
+}
+
+.competition-rules-dialog .modal-sheet__header .icon-button {
+  width: 44px;
+  height: 44px;
+  flex: none;
+}
+
+.competition-rules-content {
+  width: 100%;
+  max-width: 820px;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 2px 4px 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  color: #4e5968;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.competition-rules-content::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.competition-rules-content > section + section {
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+  padding-top: 22px;
+}
+
+.competition-rules-content h3 {
+  margin: 0 0 10px;
+  color: var(--blue);
+  font-size: 18px;
+}
+
+.competition-rules-content h4 {
+  margin: 16px 0 8px;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.competition-rules-content p {
+  margin: 0 0 10px;
+}
+
+.competition-rules-content ol, .competition-rules-content ul {
+  margin: 0;
+  padding-left: 21px;
+}
+
+.competition-rules-content li + li {
+  margin-top: 7px;
+}
+
+.competition-rules-content .competition-rules-note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .competition-sections, .competition-section, .competition-card-grid, .competition-card {
   min-width: 0;
 }
@@ -4105,6 +4214,27 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
   box-shadow: 0 0 0 1px #3182f629, 0 10px 30px #3182f614;
 }
 
+.competition-card.is-closed {
+  background: #eef0f3;
+  border-color: #dfe3e8;
+  box-shadow: none;
+  color: #4e5968;
+}
+
+.competition-card.is-closed .competition-type-badge,
+.competition-card.is-closed .competition-status-badge {
+  background: #e1e5ea;
+  color: #596473;
+}
+
+.competition-card.is-closed .competition-progress {
+  background: #dfe3e8;
+}
+
+.competition-card.is-closed .competition-progress i {
+  background: #9aa4b2;
+}
+
 .competition-card:hover {
   transform: translateY(-2px);
 }
@@ -4135,6 +4265,11 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 }
 
 .competition-status-badge.is-completed {
+  color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.competition-status-badge.is-closed {
   color: var(--subtle);
   background: #f2f4f6;
 }
@@ -4185,6 +4320,13 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
   border-radius: 9px;
   height: 100%;
   display: block;
+}
+
+.competition-completion-note {
+  margin: 14px 0 0;
+  color: var(--blue);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .competition-empty-state {
@@ -4312,7 +4454,7 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 }
 
 .team-standing-row {
-  grid-template-columns: 70px minmax(140px, 1fr) repeat(3, 70px) 90px;
+  grid-template-columns: 70px minmax(140px, 1fr) repeat(3, 70px);
 }
 
 .league-standing-row:first-child, .team-standing-row:first-child {
@@ -4339,6 +4481,10 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 
 .league-standing-row > strong, .team-standing-row > strong {
   color: var(--blue);
+}
+
+.standing-result-value {
+  font-size: calc(1em + 1px);
 }
 
 .standing-name {
@@ -4409,8 +4555,14 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
   color: var(--subtle);
 }
 
-.competition-match-players .is-winner {
+.competition-match-players .is-winner,
+.team-game-row .is-winner,
+.team-encounter-card__header .is-winner {
   color: var(--blue);
+}
+
+.team-encounter-card__header .is-loser {
+  color: #000;
 }
 
 .competition-match-result {
@@ -4491,17 +4643,22 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 }
 
 .team-encounter-card {
+  --team-row-columns: 70px minmax(0, 1fr) 70px;
   border: 1px solid var(--line);
   border-radius: 19px;
   overflow: hidden;
 }
 
+.team-encounter-card--with-actions {
+  --team-row-columns: 70px minmax(0, 1fr) 70px 82px;
+}
+
 .team-encounter-card__header {
-  background: #fafbfc;
-  grid-template-columns: 50px 1fr auto;
+  background: #f2f4f6;
+  grid-template-columns: var(--team-row-columns);
   align-items: center;
   gap: 12px;
-  padding: 18px 20px;
+  padding: 12px 20px;
   display: grid;
 }
 
@@ -4511,15 +4668,26 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
   font-weight: 800;
 }
 
+.team-encounter-card__header > small {
+  grid-column: 3;
+  text-align: center;
+  white-space: nowrap;
+}
+
 .team-encounter-card__header > div {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 15px;
+  min-width: 0;
   display: grid;
 }
 
 .team-encounter-card__header > div strong {
-  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  font-size: 20px;
+  overflow: hidden;
 }
 
 .team-encounter-card__header > div strong:first-child {
@@ -4527,8 +4695,9 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 }
 
 .team-encounter-card__header > div b {
-  color: var(--blue);
-  font-size: 18px;
+  color: #000;
+  font-size: 19px;
+  white-space: nowrap;
 }
 
 .team-game-list {
@@ -4537,7 +4706,7 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 
 .team-game-row {
   border-top: 1px solid #f2f4f6;
-  grid-template-columns: 70px minmax(0, 1fr) 70px auto;
+  grid-template-columns: var(--team-row-columns);
   align-items: center;
   gap: 12px;
   min-height: 64px;
@@ -4552,15 +4721,21 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 }
 
 .team-game-row > div:nth-child(2) {
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 8px;
   min-width: 0;
-  display: flex;
+  display: grid;
+}
+
+.team-game-row > div:nth-child(2) strong:first-child {
+  text-align: right;
 }
 
 .team-game-row > div:nth-child(2) strong {
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
   font-size: 14px;
   overflow: hidden;
 }
@@ -4584,7 +4759,7 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
   gap: 6px;
   width: calc(100% - 40px);
   min-height: 44px;
-  margin: 0 20px 18px;
+  margin: 18px 20px;
   display: flex;
 }
 
@@ -5226,6 +5401,10 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 
   .competition-admin-actions > * {
     flex: 1;
+    gap: 5px;
+    padding: 0 8px;
+    font-size: 14px;
+    white-space: nowrap;
   }
 
   .competition-panel {
@@ -5252,7 +5431,7 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
   }
 
   .team-standing-row {
-    grid-template-columns: 30px minmax(84px, 1fr) 28px 28px 28px 44px;
+    grid-template-columns: 30px minmax(84px, 1fr) repeat(3, 28px);
   }
 
   .league-standing-row--header, .team-standing-row--header {
@@ -5299,15 +5478,13 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
     padding: 12px;
   }
 
-  .team-encounter-card__header {
-    grid-template-columns: 32px 1fr;
-    gap: 7px;
-    padding: 15px 12px;
+  .team-encounter-card {
+    --team-row-columns: 44px minmax(0, 1fr) 48px;
   }
 
-  .team-encounter-card__header > small {
-    text-align: right;
-    grid-column: 2;
+  .team-encounter-card__header {
+    gap: 6px;
+    padding: 10px 12px;
   }
 
   .team-encounter-card__header > div {
@@ -5315,27 +5492,16 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
   }
 
   .team-encounter-card__header > div strong {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 0;
-    font-size: 13px;
-    overflow: hidden;
+    font-size: 18px;
   }
 
   .team-game-row {
-    grid-template-columns: 44px minmax(0, 1fr) 48px;
     gap: 6px;
     padding: 11px 12px;
   }
 
   .team-game-row > div:nth-child(2) {
-    grid-template-columns: 1fr auto 1fr;
     gap: 4px;
-    display: grid;
-  }
-
-  .team-game-row > div:nth-child(2) strong:first-child {
-    text-align: right;
   }
 
   .team-game-row > div:nth-child(2) strong {
@@ -5352,7 +5518,7 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 
   .team-add-game-button {
     width: calc(100% - 24px);
-    margin: 0 12px 12px;
+    margin: 12px;
   }
 
   .competition-form-card {

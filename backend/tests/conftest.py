@@ -10,6 +10,7 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from app.api.auth import login_rate_limiter
 from app.core.config import get_settings
 from app.core.database import Base, get_db
 from app.core.security import hash_password
@@ -49,6 +50,9 @@ class ApiHarness:
 
 @pytest.fixture
 def api() -> Generator[ApiHarness, None, None]:
+    # A fresh test database must also have a fresh process-local login quota.
+    # TestClient otherwise shares one IP across hundreds of unrelated logins.
+    login_rate_limiter.reset()
     engine = create_engine(
         "sqlite://",
         connect_args={"check_same_thread": False},
@@ -76,7 +80,9 @@ def api() -> Generator[ApiHarness, None, None]:
     with ExitStack() as stack:
         harness = ApiHarness(
             session_factory=factory,
-            client=lambda: stack.enter_context(TestClient(app)),
+            client=lambda: stack.enter_context(
+                TestClient(app, headers={"X-Competition-Lifecycle": "3"})
+            ),
         )
         yield harness
 
@@ -84,3 +90,4 @@ def api() -> Generator[ApiHarness, None, None]:
     settings.session_cookie_secure = original_secure
     Base.metadata.drop_all(engine)
     engine.dispose()
+    login_rate_limiter.reset()
