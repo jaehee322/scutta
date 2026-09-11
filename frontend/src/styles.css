@@ -4435,6 +4435,112 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
   font-weight: 700;
 }
 
+.competition-team-roster {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 20px 24px;
+  list-style: none;
+}
+
+.competition-team-roster__team {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fafbfc;
+}
+
+.competition-team-roster__team.is-me {
+  border-color: #c4d9fb;
+  background: #f5f9ff;
+}
+
+.competition-team-roster__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px 8px;
+  border-right: 1px solid var(--line);
+  text-align: center;
+}
+
+.competition-team-roster__label h3 {
+  margin: 0;
+  max-width: 100%;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.competition-team-roster__label small {
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.competition-team-roster__members {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  gap: 10px 16px;
+  margin: 0;
+  padding: 16px;
+  list-style: none;
+}
+
+.competition-team-roster__member {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 5px;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.competition-team-roster__member > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
+.competition-team-roster__member.is-me > span {
+  color: var(--blue);
+}
+
+.competition-team-roster__member small {
+  color: var(--subtle);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.competition-team-roster__team--named > .competition-team-roster__label {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-right: 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.competition-team-roster__team--named h3 {
+  min-width: 0;
+  font-size: 15px;
+}
+
+.competition-team-roster__team--named .competition-team-roster__label small {
+  flex-shrink: 0;
+}
+
+.competition-team-roster__team--named > .competition-team-roster__members {
+  grid-column: 1 / -1;
+}
+
 .competition-table-wrap {
   overflow: hidden;
 }
@@ -5413,6 +5519,26 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 
   .competition-panel__heading {
     padding: 21px 16px;
+  }
+
+  .competition-team-roster {
+    gap: 8px;
+    padding: 14px 12px;
+  }
+
+  .competition-team-roster__team {
+    grid-template-columns: 52px minmax(0, 1fr);
+    border-radius: 14px;
+  }
+
+  .competition-team-roster__members {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 10px;
+    padding: 12px;
+  }
+
+  .competition-team-roster__member {
+    font-size: 13px;
   }
 
   .competition-table-wrap {

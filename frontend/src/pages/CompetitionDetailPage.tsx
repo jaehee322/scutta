@@ -547,6 +547,28 @@ function TeamDetail({
   const myTeam = findPlayerTeam(detail.teams, currentUserId);
   return (
     <div className="competition-detail-sections">
+      <section className="competition-panel competition-team-participants" aria-label="단체전 참가자">
+        <PanelHeading title="참가자" count={`${detail.teams.length}팀 · ${detail.teams.reduce((total, team) => total + team.members.length, 0)}명`} />
+        <ul className="competition-team-roster" aria-label="팀별 참가자" role="list">
+          {detail.teams.map((team) => (
+            <li key={team.id} className={`competition-team-roster__team ${team.name.length > 3 ? "competition-team-roster__team--named" : ""} ${team.id === myTeam?.id ? "is-me" : ""}`}>
+              <div className="competition-team-roster__label">
+                <h3>{team.name}</h3>
+                {team.id === myTeam?.id && <small>내 팀</small>}
+              </div>
+              <ul className="competition-team-roster__members" aria-label={`${team.name} 팀 참가자`} role="list">
+                {team.members.map((member) => (
+                  <li key={member.id} className={`competition-team-roster__member ${member.id === currentUserId ? "is-me" : ""}`}>
+                    <span>{member.username}</span>
+                    {member.club_rank !== null && <small>{member.club_rank}부</small>}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section className="competition-panel">
         <PanelHeading title="순위" />
         <div className="competition-table-wrap" role="table" aria-label="단체전 순위">

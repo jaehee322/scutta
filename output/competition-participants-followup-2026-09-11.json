@@ -1,0 +1,135 @@
+{
+  "scope": "Focused long-team-name layout follow-up against actual production bundle/CSS. Auth and all API responses mocked; no real data or sessions used.",
+  "checks": [
+    {
+      "width": 320,
+      "passed": true,
+      "longTeam": {
+        "name": "탁구를아주좋아하는친구들모임",
+        "named": true,
+        "height": 191.5,
+        "label": {
+          "x": 31,
+          "y": 637,
+          "width": 258,
+          "bottom": 698
+        },
+        "members": {
+          "x": 31,
+          "y": 698,
+          "width": 258
+        },
+        "titleLines": 2,
+        "memberCount": 4
+      },
+      "normalTeams": [
+        {
+          "name": "A",
+          "named": false,
+          "height": 110,
+          "label": {
+            "x": 31,
+            "y": 401,
+            "width": 52,
+            "bottom": 509
+          },
+          "members": {
+            "x": 83,
+            "y": 401,
+            "width": 206
+          },
+          "titleLines": 1,
+          "memberCount": 4
+        },
+        {
+          "name": "B",
+          "named": false,
+          "height": 110,
+          "label": {
+            "x": 31,
+            "y": 519,
+            "width": 52,
+            "bottom": 627
+          },
+          "members": {
+            "x": 83,
+            "y": 519,
+            "width": 206
+          },
+          "titleLines": 1,
+          "memberCount": 4
+        }
+      ],
+      "memberCount": 20,
+      "noHorizontalOverflow": true
+    },
+    {
+      "width": 390,
+      "passed": true,
+      "longTeam": {
+        "name": "탁구를아주좋아하는친구들모임",
+        "named": true,
+        "height": 152,
+        "label": {
+          "x": 31,
+          "y": 563,
+          "width": 328,
+          "bottom": 604
+        },
+        "members": {
+          "x": 31,
+          "y": 604,
+          "width": 328
+        },
+        "titleLines": 1,
+        "memberCount": 4
+      },
+      "normalTeams": [
+        {
+          "name": "A",
+          "named": false,
+          "height": 73,
+          "label": {
+            "x": 31,
+            "y": 401,
+            "width": 52,
+            "bottom": 472
+          },
+          "members": {
+            "x": 83,
+            "y": 401,
+            "width": 276
+          },
+          "titleLines": 1,
+          "memberCount": 4
+        },
+        {
+          "name": "B",
+          "named": false,
+          "height": 73,
+          "label": {
+            "x": 31,
+            "y": 482,
+            "width": 52,
+            "bottom": 553
+          },
+          "members": {
+            "x": 83,
+            "y": 482,
+            "width": 276
+          },
+          "titleLines": 1,
+          "memberCount": 4
+        }
+      ],
+      "memberCount": 20,
+      "noHorizontalOverflow": true
+    }
+  ],
+  "errors": [],
+  "unexpected": [],
+  "passed": true,
+  "bundle": [
+    "/assets/index-Cp27zHGd.js"
+  ]
+}

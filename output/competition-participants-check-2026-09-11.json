@@ -1,0 +1,132 @@
+{
+  "scope": "Actual local production bundle/CSS, mocked player auth and all competition GET responses. No real sessions, database reads or writes.",
+  "checks": [
+    {
+      "name": "team-roster-320",
+      "passed": true,
+      "headings": [
+        "참가자",
+        "순위",
+        "대진"
+      ],
+      "teamCount": 5,
+      "memberCount": 20,
+      "ownTeamCount": 1,
+      "ownStyles": {
+        "background": "rgb(245, 249, 255)",
+        "border": "rgb(196, 217, 251)"
+      },
+      "ownMemberColor": "rgb(27, 100, 218)",
+      "longTeam": {
+        "text": "탁구를아주좋아하는친구들모임",
+        "lines": 14,
+        "inside": true,
+        "scrollWidth": 35,
+        "clientWidth": 35
+      },
+      "longPlayer": {
+        "text": "아주긴이름도빠짐없이보여야하는가상선수",
+        "lines": 4,
+        "inside": true,
+        "scrollWidth": 86,
+        "clientWidth": 86
+      },
+      "overflow": {
+        "page": false,
+        "panel": false
+      }
+    },
+    {
+      "name": "team-roster-390",
+      "passed": true,
+      "headings": [
+        "참가자",
+        "순위",
+        "대진"
+      ],
+      "teamCount": 5,
+      "memberCount": 20,
+      "ownTeamCount": 1,
+      "ownStyles": {
+        "background": "rgb(245, 249, 255)",
+        "border": "rgb(196, 217, 251)"
+      },
+      "ownMemberColor": "rgb(27, 100, 218)",
+      "longTeam": {
+        "text": "탁구를아주좋아하는친구들모임",
+        "lines": 14,
+        "inside": true,
+        "scrollWidth": 35,
+        "clientWidth": 35
+      },
+      "longPlayer": {
+        "text": "아주긴이름도빠짐없이보여야하는가상선수",
+        "lines": 3,
+        "inside": true,
+        "scrollWidth": 121,
+        "clientWidth": 121
+      },
+      "overflow": {
+        "page": false,
+        "panel": false
+      }
+    },
+    {
+      "name": "team-roster-1280",
+      "passed": true,
+      "headings": [
+        "참가자",
+        "순위",
+        "대진"
+      ],
+      "teamCount": 5,
+      "memberCount": 20,
+      "ownTeamCount": 1,
+      "ownStyles": {
+        "background": "rgb(245, 249, 255)",
+        "border": "rgb(196, 217, 251)"
+      },
+      "ownMemberColor": "rgb(27, 100, 218)",
+      "longTeam": {
+        "text": "탁구를아주좋아하는친구들모임",
+        "lines": 5,
+        "inside": true,
+        "scrollWidth": 55,
+        "clientWidth": 55
+      },
+      "longPlayer": {
+        "text": "아주긴이름도빠짐없이보여야하는가상선수",
+        "lines": 2,
+        "inside": true,
+        "scrollWidth": 220,
+        "clientWidth": 220
+      },
+      "overflow": {
+        "page": false,
+        "panel": false
+      }
+    },
+    {
+      "name": "league-unchanged-390",
+      "passed": true,
+      "headings": [
+        "순위",
+        "대진"
+      ],
+      "standingPlayers": 4,
+      "fixtures": 6,
+      "teamPanelAbsent": true
+    }
+  ],
+  "errors": [],
+  "unexpected": [],
+  "screenshots": [
+    "competition-participants-320-2026-09-11.png",
+    "competition-participants-390-2026-09-11.png",
+    "competition-participants-1280-2026-09-11.png"
+  ],
+  "passed": true,
+  "bundle": [
+    "/assets/index-ChvSi4Za.js"
+  ]
+}
