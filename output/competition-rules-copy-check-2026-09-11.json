@@ -1,0 +1,45 @@
+{
+  "scope": "Actual local production bundle and CSS with mocked auth/competition GET responses. No real account sessions or database writes.",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "errors": [],
+  "unexpectedRequests": [],
+  "passed": true,
+  "bundle": [
+    "/assets/index-D4CGH-vV.js"
+  ],
+  "personalCriteria": [
+    "전체 경기에서 거둔 승리 수",
+    "승리 수가 같은 경우, 해당 사람들끼리의 승패",
+    "전체 경기에서 승리한 세트 수"
+  ],
+  "teamCriteria": [
+    "팀 대결에서 거둔 승리 수",
+    "승리 수가 같은 경우, 해당 팀끼리의 승패",
+    "전체 경기에서 승리한 세트 수"
+  ],
+  "tieNoteCount": 0,
+  "recordRules": [
+    "개인 리그는 내 경기, 단체전은 내 팀의 경기 결과를 입력할 수 있습니다.",
+    "단식·복식 점수는 3:0 또는 2:1로 기록합니다.",
+    "단식은 개인 경기 기록·랭킹·정산에 포함됩니다. 복식은 개인 통계에 포함되지 않습니다.",
+    "모든 대진의 결과가 입력되면 자동으로 완료 상태가 됩니다. 완료된 다음 날 0시(한국 시간)에 자동으로 종료됩니다.",
+    "관리자는 완료된 대회를 바로 종료하거나, 완료·종료 후에도 결과를 정정할 수 있습니다. 결과 삭제나 정정으로 미완료 대진이 생기면 다시 진행 중 상태가 됩니다."
+  ],
+  "noHorizontalOverflow": true,
+  "dialogBounds": {
+    "x": 19.5,
+    "y": 50.640625,
+    "width": 351,
+    "height": 742.71875,
+    "visible": true
+  },
+  "scroll": {
+    "scrollTop": 641,
+    "clientHeight": 637,
+    "scrollHeight": 1278,
+    "atBottom": true
+  }
+}

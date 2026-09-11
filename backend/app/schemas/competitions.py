@@ -98,6 +98,7 @@ class TeamStanding(BaseModel):
     games_won: int
     games_lost: int
     game_difference: int
+    sets_won: int
 
 
 class TeamSingleRead(BaseModel):

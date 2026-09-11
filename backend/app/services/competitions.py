@@ -408,10 +408,9 @@ def _league_standings(
 
     ranked: list[tuple[tuple[int, ...], tuple[int, dict[str, int]]]] = []
     for player_id, values in stats.items():
-        difference = values["sets_won"] - values["sets_lost"]
         ranked.append(
             (
-                (values["wins"], head_to_head[player_id], difference),
+                (values["wins"], head_to_head[player_id], values["sets_won"]),
                 (player_id, values),
             )
         )
@@ -622,13 +621,30 @@ def _team_standings(
     doubles: dict[int, TeamDoublesGame],
 ) -> list[TeamStanding]:
     stats = {
-        team.id: {"played": 0, "wins": 0, "losses": 0, "games_won": 0, "games_lost": 0}
+        team.id: {
+            "played": 0,
+            "wins": 0,
+            "losses": 0,
+            "games_won": 0,
+            "games_lost": 0,
+            "sets_won": 0,
+        }
         for team in teams
     }
     completed_results: list[tuple[int, int, int]] = []
     for encounter in encounters:
+        # Every recorded set counts, including sets from a lost game or an
+        # encounter still waiting for its remaining singles/doubles results.
+        for single, match in singles[encounter.id]:
+            score1, score2 = _score_for_players(match, single.team1_player_id)
+            stats[encounter.team1_id]["sets_won"] += score1
+            stats[encounter.team2_id]["sets_won"] += score2
+        double = doubles.get(encounter.id)
+        if double is not None and double.score1 is not None and double.score2 is not None:
+            stats[encounter.team1_id]["sets_won"] += double.score1
+            stats[encounter.team2_id]["sets_won"] += double.score2
         team1_wins, team2_wins, completed, winner_id = _encounter_scores(
-            encounter, singles[encounter.id], doubles.get(encounter.id)
+            encounter, singles[encounter.id], double
         )
         if not completed or winner_id is None:
             continue
@@ -654,8 +670,9 @@ def _team_standings(
     team_by_id = {team.id: team for team in teams}
     ranked: list[tuple[tuple[int, ...], tuple[int, dict[str, int]]]] = []
     for team_id, values in stats.items():
-        difference = values["games_won"] - values["games_lost"]
-        ranked.append(((values["wins"], head_to_head[team_id], difference), (team_id, values)))
+        ranked.append(
+            ((values["wins"], head_to_head[team_id], values["sets_won"]), (team_id, values))
+        )
     ranked.sort(key=lambda row: (team_by_id[row[1][0]].name.casefold(), row[1][0]))
     ranked.sort(key=lambda row: row[0], reverse=True)
     result: list[TeamStanding] = []
@@ -678,6 +695,7 @@ def _team_standings(
                 games_won=values["games_won"],
                 games_lost=values["games_lost"],
                 game_difference=values["games_won"] - values["games_lost"],
+                sets_won=values["sets_won"],
             )
         )
     return result

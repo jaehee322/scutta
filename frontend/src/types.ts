@@ -272,6 +272,7 @@ export interface TeamStanding {
   played: number;
   wins: number;
   losses: number;
+  sets_won: number;
   games_won: number;
   games_lost: number;
   game_difference: number;
