@@ -557,7 +557,7 @@ function TeamDetail({
                 {team.id === myTeam?.id && <small>내 팀</small>}
               </div>
               <ul className="competition-team-roster__members" aria-label={`${team.name} 팀 참가자`} role="list">
-                {team.members.map((member) => (
+                {[...team.members].sort((left, right) => (left.club_rank ?? Infinity) - (right.club_rank ?? Infinity)).map((member) => (
                   <li key={member.id} className={`competition-team-roster__member ${member.id === currentUserId ? "is-me" : ""}`}>
                     <span>{member.username}</span>
                     {member.club_rank !== null && <small>{member.club_rank}부</small>}
