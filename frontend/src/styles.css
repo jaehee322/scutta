@@ -5044,17 +5044,14 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
 }
 
 .competition-team-form-card__topline {
-  grid-template-columns: 1fr auto;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
   gap: 10px;
   display: grid;
 }
 
 .competition-team-form-name {
   min-width: 0;
-  overflow-wrap: anywhere;
-  margin: 0;
-  font-size: 21px;
 }
 
 .competition-form-submit {
@@ -5660,7 +5657,7 @@ body.minigame-fullscreen-open .pwa-install-recommendation {
   }
 
   .competition-team-form-card__topline {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 }
 

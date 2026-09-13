@@ -97,6 +97,101 @@ describe("paddle flight score queue", () => {
     expect(queue.getSnapshot().error).toContain("12점");
   });
 
+  it("explicitly retries the highest failed score once, including after a lower score succeeds", async () => {
+    const retry = deferred<PaddleFlightOverview>();
+    const submit = vi.fn()
+      .mockRejectedValueOnce(new Error("연결이 끊겼습니다."))
+      .mockResolvedValueOnce(overview(2))
+      .mockReturnValueOnce(retry.promise);
+    const queue = createPaddleFlightScoreQueue({ submit, getSessionVersion: () => 1 });
+
+    await queue.enqueue(8);
+    await queue.enqueue(2);
+    expect(queue.getSnapshot().failedScore).toBe(8);
+    const retryRequest = queue.retryFailedScore();
+    expect(queue.retryFailedScore()).toBeUndefined();
+    expect(queue.getSnapshot()).toMatchObject({ failedScore: 8, pendingCount: 1 });
+    await Promise.resolve();
+    expect(submit.mock.calls.map(([score]) => score)).toEqual([8, 2, 8]);
+
+    retry.resolve(overview(8));
+    await expect(retryRequest).resolves.toMatchObject({ status: "saved" });
+    expect(queue.getSnapshot()).toMatchObject({ failedScore: null, pendingCount: 0, error: "" });
+    expect(queue.retryFailedScore()).toBeUndefined();
+  });
+
+  it("retains a failed retry and prevents retrying while another completed run is saving", async () => {
+    const laterRun = deferred<PaddleFlightOverview>();
+    const submit = vi.fn()
+      .mockRejectedValueOnce(new Error("offline"))
+      .mockRejectedValueOnce(new Error("still offline"))
+      .mockReturnValueOnce(laterRun.promise);
+    const queue = createPaddleFlightScoreQueue({ submit, getSessionVersion: () => 1 });
+
+    await queue.enqueue(8);
+    await expect(queue.retryFailedScore()).resolves.toEqual({ status: "failed" });
+    expect(queue.getSnapshot()).toMatchObject({ failedScore: 8, pendingCount: 0 });
+    const savingRun = queue.enqueue(10);
+    expect(queue.retryFailedScore()).toBeUndefined();
+    laterRun.resolve(overview(10));
+    await savingRun;
+    expect(queue.getSnapshot().failedScore).toBeNull();
+    expect(queue.retryFailedScore()).toBeUndefined();
+    expect(submit.mock.calls.map(([score]) => score)).toEqual([8, 8, 10]);
+  });
+
+  it("does not retry a previous account's failure after session changes", async () => {
+    let session = 1;
+    const submit = vi.fn()
+      .mockRejectedValueOnce(new Error("offline"))
+      .mockResolvedValueOnce(overview(2));
+    const queue = createPaddleFlightScoreQueue({ submit, getSessionVersion: () => session });
+
+    await queue.enqueue(12);
+    session += 1;
+    expect(queue.retryFailedScore()).toBeUndefined();
+    queue.invalidate();
+    expect(queue.getSnapshot()).toMatchObject({ failedScore: null, error: "" });
+    expect(queue.retryFailedScore()).toBeUndefined();
+    await queue.enqueue(2);
+    expect(submit.mock.calls.map(([score]) => score)).toEqual([12, 2]);
+  });
+
+  it("aborts an in-flight retry at logout and ignores its late response", async () => {
+    let session = 1;
+    const retry = deferred<PaddleFlightOverview>();
+    const submit = vi.fn()
+      .mockRejectedValueOnce(new Error("offline"))
+      .mockReturnValueOnce(retry.promise);
+    const queue = createPaddleFlightScoreQueue({ submit, getSessionVersion: () => session });
+    await queue.enqueue(12);
+    const retryRequest = queue.retryFailedScore();
+    await Promise.resolve();
+    const signal = submit.mock.calls[1][1] as AbortSignal;
+
+    session += 1;
+    queue.invalidate();
+    expect(signal.aborted).toBe(true);
+    retry.resolve(overview(12));
+    await expect(retryRequest).resolves.toEqual({ status: "cancelled" });
+    expect(queue.getSnapshot()).toMatchObject({ failedScore: null, pendingCount: 0, overview: null, error: "" });
+  });
+
+  it("allows a zero-point failed run to be retried and clears it if a refresh confirms the save", async () => {
+    const submit = vi.fn()
+      .mockRejectedValueOnce(new Error("offline"))
+      .mockResolvedValueOnce(overview(0))
+      .mockRejectedValueOnce(new Error("response lost"));
+    const queue = createPaddleFlightScoreQueue({ submit, getSessionVersion: () => 1 });
+    await queue.enqueue(0);
+    await expect(queue.retryFailedScore()).resolves.toMatchObject({ status: "saved" });
+    await queue.enqueue(8);
+    queue.acceptOverview(overview(8));
+    expect(queue.retryFailedScore()).toBeUndefined();
+    expect(queue.getSnapshot()).toMatchObject({ failedScore: null, error: "" });
+    expect(submit.mock.calls.map(([score]) => score)).toEqual([0, 0, 8]);
+  });
+
   it("distinguishes refreshed server state from a previous read snapshot", async () => {
     const queue = createPaddleFlightScoreQueue({
       submit: async () => overview(3),

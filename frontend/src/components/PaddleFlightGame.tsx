@@ -474,6 +474,18 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
       {(loadError || (!isGameView && saveState.error)) && (
         <Notice>{saveState.error || loadError}</Notice>
       )}
+      {!isGameView && saveState.failedScore !== null && (
+        <div className="paddle-treasure-pending">
+          <button
+            type="button"
+            className="secondary-button"
+            disabled={saveState.pendingCount > 0}
+            onClick={() => void paddleFlightScores.retryFailedScore()}
+          >
+            {saveState.pendingCount > 0 ? "저장하는 중" : "점수 다시 저장"}
+          </button>
+        </div>
+      )}
       {!isGameView && saveState.pendingCount > 0 && <Notice tone="info">점수를 저장하고 있어요.</Notice>}
       {!isGameView && cosmetics.error && <Notice>{cosmetics.error}</Notice>}
       {!isGameView && rewardNotice && <Notice tone="success">{rewardMessage}</Notice>}
@@ -665,6 +677,17 @@ export function PaddleFlightGame({ userId }: PaddleFlightGameProps) {
                       <RotateCcw size={18} aria-hidden="true" />
                       다시 도전
                     </button>
+                    {saveState.failedScore !== null && (
+                      <button
+                        type="button"
+                        className="secondary-button"
+                        style={{ gridColumn: "1 / -1" }}
+                        disabled={saveState.pendingCount > 0}
+                        onClick={() => void paddleFlightScores.retryFailedScore()}
+                      >
+                        {saveState.pendingCount > 0 ? "저장하는 중" : "점수 다시 저장"}
+                      </button>
+                    )}
                   </div>
                 </div>
               )}

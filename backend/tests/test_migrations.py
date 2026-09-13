@@ -270,8 +270,10 @@ def test_alembic_schema_round_trip(tmp_path, monkeypatch) -> None:
             assert "ck_users_club_rank_range" in user_checks
             assert "ck_users_club_rank_positive" not in user_checks
             assert any(
-                constraint["name"] == "daily_player_pair"
-                for constraint in schema.get_unique_constraints("matches")
+                index["name"] == "daily_player_pair"
+                and index["unique"]
+                and str(index["dialect_options"]["sqlite_where"]) == "competition_id IS NULL"
+                for index in schema.get_indexes("matches")
             )
             match_columns = {column["name"] for column in schema.get_columns("matches")}
             assert "played_at" in match_columns

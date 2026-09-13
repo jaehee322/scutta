@@ -205,7 +205,7 @@ def test_competition_creation_requires_admin_and_valid_rosters(api) -> None:
     )
 
 
-def test_league_player_permissions_orientation_stats_and_daily_conflicts(api) -> None:
+def test_league_player_permissions_orientation_stats_and_casual_overlap(api) -> None:
     admin, _ = _admin(api)
     players = _players(admin, 4)
     detail = _create_league(admin, players)
@@ -276,13 +276,14 @@ def test_league_player_permissions_orientation_stats_and_daily_conflicts(api) ->
 
     reverse_fixture = _fixture_for(detail, casual_actor["id"], casual_opponent["id"])
     reverse_client = _login(api, casual_opponent["username"])
-    conflict = reverse_client.post(
+    overlap = reverse_client.post(
         f"/api/v1/competitions/{detail['id']}/league-fixtures/{reverse_fixture['id']}/result",
         json={"my_score": 2, "opponent_score": 1},
     )
-    assert conflict.status_code == 409
+    assert overlap.status_code == 200, overlap.text
+    assert overlap.json()["winner_id"] == casual_opponent["id"]
     refreshed = admin.get(f"/api/v1/admin/competitions/{detail['id']}").json()
-    assert _fixture_for(refreshed, casual_actor["id"], casual_opponent["id"])["completed"] is False
+    assert _fixture_for(refreshed, casual_actor["id"], casual_opponent["id"])["completed"] is True
 
 
 def test_league_admin_crud_roster_lock_close_reopen_and_match_isolation(api) -> None:

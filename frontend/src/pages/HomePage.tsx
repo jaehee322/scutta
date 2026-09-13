@@ -354,7 +354,7 @@ export function HomePage() {
               {submitting ? "제출 중" : "제출"}
               {!submitting && <ArrowRight size={20} />}
             </button>
-            <p className="form-hint">같은 상대와는 하루 1경기만 기록할 수 있습니다.</p>
+            <p className="form-hint">일반 경기는 같은 상대와 하루 1경기만 기록할 수 있습니다.</p>
           </form>
         </section>
 

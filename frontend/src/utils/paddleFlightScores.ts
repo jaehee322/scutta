@@ -5,6 +5,7 @@ import type { PaddleFlightOverview } from "../types";
 interface ScoreSnapshot {
   readonly pendingCount: number;
   readonly pendingBestScore: number;
+  readonly failedScore: number | null;
   readonly overview: PaddleFlightOverview | null;
   readonly error: string;
 }
@@ -20,14 +21,16 @@ interface ScoreQueueOptions {
 }
 
 // Only completed runs are queued, for the lifetime of this app instance.
-// There is deliberately no automatic retry or persistent/offline replay.
+// Failed scores stay in memory for an explicit retry by the same account.
+// There is no automatic retry or persistent/offline replay.
 export function createPaddleFlightScoreQueue({ submit, getSessionVersion }: ScoreQueueOptions) {
-  let snapshot: ScoreSnapshot = { pendingCount: 0, pendingBestScore: 0, overview: null, error: "" };
+  let snapshot: ScoreSnapshot = { pendingCount: 0, pendingBestScore: 0, failedScore: null, overview: null, error: "" };
   let queue = Promise.resolve();
   let generation = 0;
   let responseVersion = 0;
   let nextId = 0;
   let failedScore: number | null = null;
+  let failedSessionVersion: number | null = null;
   let activeController: AbortController | null = null;
   const pending = new Map<number, number>();
   const listeners = new Set<() => void>();
@@ -38,6 +41,7 @@ export function createPaddleFlightScoreQueue({ submit, getSessionVersion }: Scor
       ...changes,
       pendingCount: pending.size,
       pendingBestScore: Math.max(0, ...pending.values()),
+      failedScore,
     };
     for (const listener of listeners) listener();
   };
@@ -46,13 +50,14 @@ export function createPaddleFlightScoreQueue({ submit, getSessionVersion }: Scor
     responseVersion += 1;
     if (failedScore !== null && overview.best_score >= failedScore) {
       failedScore = null;
+      failedSessionVersion = null;
       publish({ overview, error: "" });
     } else {
       publish({ overview });
     }
   };
 
-  return {
+  const store = {
     getSnapshot: () => snapshot,
     getResponseVersion: () => responseVersion,
     acceptOverview,
@@ -67,6 +72,7 @@ export function createPaddleFlightScoreQueue({ submit, getSessionVersion }: Scor
       activeController = null;
       pending.clear();
       failedScore = null;
+      failedSessionVersion = null;
       queue = Promise.resolve();
       publish({ overview: null, error: "" });
     },
@@ -94,6 +100,7 @@ export function createPaddleFlightScoreQueue({ submit, getSessionVersion }: Scor
           pending.delete(id);
           if (failedScore === null || score >= failedScore) {
             failedScore = score;
+            failedSessionVersion = sessionVersion;
             const message = error instanceof Error ? error.message : "연결을 확인해 주세요.";
             publish({ error: `${score}점 기록을 저장하지 못했습니다. ${message}` });
           } else {
@@ -107,7 +114,12 @@ export function createPaddleFlightScoreQueue({ submit, getSessionVersion }: Scor
       queue = result.then(() => undefined);
       return result;
     },
+    retryFailedScore(): Promise<ScoreResult> | undefined {
+      if (failedScore === null || pending.size > 0 || failedSessionVersion !== getSessionVersion()) return;
+      return store.enqueue(failedScore);
+    },
   };
+  return store;
 }
 
 export const paddleFlightScores = createPaddleFlightScoreQueue({

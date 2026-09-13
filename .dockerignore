@@ -23,3 +23,7 @@
 **/*.db
 **/*.sqlite3
 backend/tests
+output
+tmp
+**/.logs
+**/.backups

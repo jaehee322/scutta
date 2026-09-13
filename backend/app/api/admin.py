@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, Response, status
 from sqlalchemy import delete, func, select, text
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session
 
 from app.api.deps import CurrentAdmin, DbSession
@@ -333,6 +333,33 @@ def get_database_reset_preview(db: Session) -> DatabaseResetPreview:
     )
 
 
+def _lock_database_for_reset(db: Session) -> None:
+    if db.get_bind().dialect.name != "postgresql":
+        return
+    try:
+        # Authenticated requests read users/sessions before accessing domain
+        # tables. Never wait while holding a partial set of maintenance locks:
+        # that can deadlock with a request waiting on one of those domain tables.
+        db.execute(
+            text(
+                "LOCK TABLE competitions, competition_members, competition_teams, "
+                "competition_team_members, "
+                "league_fixtures, team_encounters, team_single_games, "
+                "team_doubles_games, matches, coin_flip_states, paddle_flight_scores, "
+                "users, auth_sessions "
+                "IN ACCESS EXCLUSIVE MODE NOWAIT"
+            )
+        )
+    except OperationalError as error:
+        if getattr(error.orig, "sqlstate", None) != "55P03":
+            raise
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="다른 요청이 처리 중입니다. 잠시 후 다시 초기화해 주세요.",
+        ) from error
+
+
 @router.get("/database/reset-preview", response_model=DatabaseResetPreview)
 def preview_database_reset(db: DbSession, _: CurrentAdmin) -> DatabaseResetPreview:
     return get_database_reset_preview(db)
@@ -362,19 +389,7 @@ def reset_database(
             detail="관리자 비밀번호가 올바르지 않습니다.",
         )
 
-    if db.get_bind().dialect.name == "postgresql":
-        # Competition writes lock their competition before player rows. Locking
-        # tables in the same direction avoids a reset/result-submit deadlock.
-        db.execute(
-            text(
-                "LOCK TABLE competitions, competition_members, competition_teams, "
-                "competition_team_members, "
-                "league_fixtures, team_encounters, team_single_games, "
-                "team_doubles_games, matches, coin_flip_states, paddle_flight_scores, "
-                "users, auth_sessions "
-                "IN ACCESS EXCLUSIVE MODE"
-            )
-        )
+    _lock_database_for_reset(db)
 
     # Recheck after the maintenance locks so a concurrent password change can
     # never authorize the reset with a stale credential.

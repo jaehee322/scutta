@@ -48,11 +48,9 @@ from app.schemas.competitions import (
 )
 from app.services.matches import (
     SEOUL,
-    DailyMatchConflictError,
     PlayerNotFoundError,
     _canonicalize,
     _classify_integrity_error,
-    _ensure_pair_available,
     _ensure_players,
     current_played_time,
     played_at_for_date,
@@ -108,10 +106,6 @@ def _flush(db: Session) -> None:
     except IntegrityError as error:
         translated = _classify_integrity_error(error)
         db.rollback()
-        if isinstance(translated, DailyMatchConflictError):
-            raise CompetitionConflictError(
-                "같은 날짜에는 동일한 상대와 한 경기만 기록할 수 있습니다."
-            ) from error
         if isinstance(translated, PlayerNotFoundError):
             raise CompetitionValidationError("선수 정보를 확인해 주세요.") from error
         raise CompetitionConflictError("동시에 처리된 요청과 충돌했습니다.") from error
@@ -121,12 +115,7 @@ def _commit(db: Session) -> None:
     try:
         db.commit()
     except IntegrityError as error:
-        translated = _classify_integrity_error(error)
         db.rollback()
-        if isinstance(translated, DailyMatchConflictError):
-            raise CompetitionConflictError(
-                "같은 날짜에는 동일한 상대와 한 경기만 기록할 수 있습니다."
-            ) from error
         raise CompetitionConflictError("동시에 처리된 요청과 충돌했습니다.") from error
 
 
@@ -259,17 +248,6 @@ def _new_competition_match(
     player1_id, player2_id, score1, score2 = _canonicalize(
         player_a_id, player_b_id, score_a, score_b
     )
-    try:
-        _ensure_pair_available(
-            db,
-            played_on=played_on,
-            player1_id=player1_id,
-            player2_id=player2_id,
-        )
-    except DailyMatchConflictError as error:
-        raise CompetitionConflictError(
-            "같은 날짜에는 동일한 상대와 한 경기만 기록할 수 있습니다."
-        ) from error
     match = Match(
         competition_id=competition.id,
         player1_id=player1_id,
@@ -299,18 +277,6 @@ def _update_competition_match(
     player1_id, player2_id, score1, score2 = _canonicalize(
         player_a_id, player_b_id, score_a, score_b
     )
-    try:
-        _ensure_pair_available(
-            db,
-            played_on=played_on,
-            player1_id=player1_id,
-            player2_id=player2_id,
-            exclude_match_id=match.id,
-        )
-    except DailyMatchConflictError as error:
-        raise CompetitionConflictError(
-            "같은 날짜에는 동일한 상대와 한 경기만 기록할 수 있습니다."
-        ) from error
     match.player1_id = player1_id
     match.player2_id = player2_id
     match.score1 = score1

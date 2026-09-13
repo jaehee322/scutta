@@ -25,7 +25,7 @@ import type {
 
 type TeamDraft = CompetitionTeamInput & { key: number };
 
-const initialTeams: TeamDraft[] = [
+const initialTeams = (): TeamDraft[] => [
   { key: 1, name: "A", member_ids: [] },
   { key: 2, name: "B", member_ids: [] },
 ];
@@ -71,6 +71,12 @@ export function AdminCompetitionFormPage() {
             member_ids: team.members.map((member) => member.id),
           })));
         }
+      } else {
+        setDetail(null);
+        setName("");
+        setType("league");
+        setParticipantIds([]);
+        setTeams(initialTeams());
       }
       setLoaded(true);
     } catch (caught) {
@@ -90,7 +96,7 @@ export function AdminCompetitionFormPage() {
     if (rosterLocked || saving) return;
     setTeams((current) => {
       const usedNames = new Set(current.map((team) => team.name.trim().normalize("NFKC").toLocaleUpperCase("ko-KR")));
-      let nameIndex = 0;
+      let nameIndex = current.length;
       while (usedNames.has(competitionTeamName(nameIndex))) nameIndex += 1;
       return [...current, {
         key: Math.max(0, ...current.map((team) => team.key)) + 1,
@@ -103,8 +109,7 @@ export function AdminCompetitionFormPage() {
   const removeTeam = (teamKey: number) => {
     if (rosterLocked || saving) return;
     setTeams((current) => current.length <= 2 ? current : current
-      .filter((team) => team.key !== teamKey)
-      .map((team, index) => editing ? team : { ...team, name: competitionTeamName(index) }));
+      .filter((team) => team.key !== teamKey));
   };
 
   const addLeaguePlayer = (playerId: number) => {
@@ -156,8 +161,12 @@ export function AdminCompetitionFormPage() {
     try {
       if (editing) {
         const payload: CompetitionUpdateInput = { name: trimmedName };
-        if (!rosterLocked && detail) {
-          Object.assign(payload, competitionRosterChanges(detail, participantIds, normalizedTeams));
+        if (detail) {
+          Object.assign(payload, competitionRosterChanges(detail, participantIds, teams.map((team) => ({
+            id: team.key,
+            name: team.name.trim(),
+            member_ids: team.member_ids,
+          }))));
         }
         const result = await apiRequest<CompetitionDetail>(`/admin/competitions/${parsedId}`, {
           method: "PATCH",
@@ -221,7 +230,7 @@ export function AdminCompetitionFormPage() {
         {rosterLocked && (
           <Notice tone="info">
             {type === "team"
-              ? "경기가 시작되어 선수 편성과 팀 수는 변경할 수 없습니다."
+              ? "경기가 시작되어 선수 편성과 팀 수는 변경할 수 없습니다. 팀 이름은 수정할 수 있습니다."
               : "경기가 시작되어 참가 선수는 변경할 수 없습니다."}
           </Notice>
         )}
@@ -252,7 +261,19 @@ export function AdminCompetitionFormPage() {
                 return (
                   <article className="competition-form-card" key={team.key}>
                     <div className="competition-team-form-card__topline">
-                      <h3 className="competition-team-form-name">{team.name}</h3>
+                      <label className="field competition-team-form-name">
+                        <span>팀 이름</span>
+                        <input
+                          value={team.name}
+                          aria-label={`${index + 1}번 팀 이름`}
+                          disabled={saving}
+                          maxLength={64}
+                          required
+                          onChange={(event) => setTeams((current) => current.map((item) => item.key === team.key
+                            ? { ...item, name: event.target.value }
+                            : item))}
+                        />
+                      </label>
                       {!rosterLocked && teams.length > 2 && <button className="small-icon-button is-danger" type="button" disabled={saving} aria-label={`${index + 1}번 팀 삭제`} onClick={() => removeTeam(team.key)}><Trash2 size={18} /></button>}
                     </div>
                     <div className="competition-form-card__heading"><h3>선수</h3><span aria-live="polite">{team.member_ids.length}/4</span></div>

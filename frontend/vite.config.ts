@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "prompt",
-      includeAssets: ["scutta-logo.png", "scutta-university-logo.png"],
+      includeAssets: ["scutta-logo.png", "scutta-university-logo.png", "coin-mascot-mark.png"],
       pwaAssets: {
         image: "public/scutta-logo.png",
         preset: "minimal-2023",

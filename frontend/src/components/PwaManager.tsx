@@ -19,6 +19,7 @@ import {
   isPwaDisplayMode,
 } from "./pwaInstallRecommendation";
 import { applyPwaUpdateLifecycle } from "./pwaUpdate";
+import { startPwaUpdateChecks } from "./pwaUpdateCheck";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -167,31 +168,11 @@ export function PwaProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!registration) return;
-
-    const checkForUpdate = () => {
-      if (navigator.onLine) void registration.update().catch(() => undefined);
-    };
-    const resumeApp = () => {
+    return startPwaUpdateChecks(registration, {
+      onWaiting: () => setNeedsRefresh(true),
       // Dismissing the notice lasts until the user returns to the app.
-      setUpdateDismissed(false);
-      checkForUpdate();
-    };
-    const handleVisibility = () => {
-      if (document.visibilityState === "visible") resumeApp();
-    };
-    const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted && document.visibilityState === "visible") resumeApp();
-    };
-    const interval = window.setInterval(checkForUpdate, 60 * 60 * 1_000);
-    window.addEventListener("online", checkForUpdate);
-    window.addEventListener("pageshow", handlePageShow);
-    document.addEventListener("visibilitychange", handleVisibility);
-    return () => {
-      window.clearInterval(interval);
-      window.removeEventListener("online", checkForUpdate);
-      window.removeEventListener("pageshow", handlePageShow);
-      document.removeEventListener("visibilitychange", handleVisibility);
-    };
+      onResume: () => setUpdateDismissed(false),
+    });
   }, [registration]);
 
   const requestInstall = useCallback(async () => {

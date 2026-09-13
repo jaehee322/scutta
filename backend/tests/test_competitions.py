@@ -343,7 +343,7 @@ def test_doubles_invalidation_and_completed_reopen(api) -> None:
     assert admin.get(f"/api/v1/admin/competitions/{competition_id}").json()["status"] == "active"
 
 
-def test_league_standings_daily_rule_completion_and_admin_isolation(api) -> None:
+def test_league_standings_completion_and_admin_isolation(api) -> None:
     admin = _admin(api)
     players = _players(admin, 4)
     response = admin.post(
@@ -431,13 +431,13 @@ def test_league_standings_daily_rule_completion_and_admin_isolation(api) -> None
     assert reopened["completed_at"] is None
 
 
-def test_competition_single_conflicts_with_same_day_casual_match(api) -> None:
+def test_competition_single_allows_same_day_casual_match(api) -> None:
     admin = _admin(api)
     players = _players(admin, 4)
     detail = admin.post(
         "/api/v1/admin/competitions",
         json={
-            "name": "일일 제한",
+            "name": "대회 경기 별도 기록",
             "type": "league",
             "participant_ids": [player["id"] for player in players],
         },
@@ -462,11 +462,11 @@ def test_competition_single_conflicts_with_same_day_casual_match(api) -> None:
                 "opponent_score": 1,
             },
         ).status_code
-        == 409
+        == 201
     )
     profile = actor.get("/api/v1/players/me").json()
-    assert profile["stats"]["matches"] == 1
-    assert profile["stats"]["wins"] == 1
+    assert profile["stats"]["matches"] == 2
+    assert profile["stats"]["wins"] == 2
 
 
 def test_reset_removes_all_competition_children(api) -> None:

@@ -21,9 +21,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app/backend
 
-COPY backend/pyproject.toml backend/README.md ./
+COPY backend/pyproject.toml backend/constraints.txt backend/README.md ./
 COPY backend/app ./app
-RUN python -m pip install --no-cache-dir .
+RUN python -m pip install --no-cache-dir --constraint constraints.txt . \
+    && python -m pip check
 
 COPY backend/alembic.ini ./
 COPY backend/migrations ./migrations

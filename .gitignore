@@ -23,3 +23,7 @@ dist/
 build/
 *.egg-info/
 migration_test*.db
+/output/
+/tmp/
+**/.logs/
+**/.backups/

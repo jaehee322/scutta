@@ -38,7 +38,7 @@ export function CompetitionRulesModal({ onClose }: { onClose: () => void }) {
           <section>
             <h3>기록과 마감</h3>
             <ul>
-              <li>개인 리그는 내 경기, 단체전은 내 팀의 경기 결과를 입력할 수 있습니다.</li>
+              <li>개인 리그는 내 경기, 단체전은 내 팀의 경기 결과를 입력할 수 있습니다. 일반 경기 제출 여부와 관계없이 기록할 수 있습니다.</li>
               <li>단식·복식 점수는 <strong>3:0 또는 2:1</strong>로 기록합니다.</li>
               <li>단식은 개인 경기 기록·랭킹·정산에 포함됩니다. 복식은 개인 통계에 포함되지 않습니다.</li>
               <li>모든 대진의 결과가 입력되면 자동으로 <strong>완료</strong> 상태가 됩니다. 완료된 다음 날 <strong>0시(한국 시간)</strong>에 자동으로 <strong>종료</strong>됩니다.</li>

@@ -11,21 +11,23 @@ function samePlayerIds(left: number[], right: number[]): boolean {
   return [...left].sort((a, b) => a - b).every((id, index) => id === ordered[index]);
 }
 
-/** Omit unchanged rosters so a name edit preserves existing fixture IDs. */
+/** Send name-only edits by team ID so existing rosters and fixtures are preserved. */
 export function competitionRosterChanges(
   detail: CompetitionDetail,
   participantIds: number[],
-  teams: CompetitionTeamInput[],
-): Pick<CompetitionUpdateInput, "participant_ids" | "teams"> {
+  teams: Array<CompetitionTeamInput & { id: number }>,
+): Pick<CompetitionUpdateInput, "participant_ids" | "teams" | "team_names"> {
   if (detail.type === "league") {
     return samePlayerIds(detail.members.map((member) => member.id), participantIds)
       ? {} : { participant_ids: participantIds };
   }
   const unchanged = detail.teams.length === teams.length && detail.teams.every((original) => {
-    const draft = teams.find((team) => team.name === original.name);
+    const draft = teams.find((team) => team.id === original.id);
     return draft !== undefined && samePlayerIds(original.members.map((member) => member.id), draft.member_ids);
   });
-  return unchanged ? {} : { teams };
+  if (!unchanged) return { teams: teams.map(({ name, member_ids }) => ({ name, member_ids })) };
+  const renamed = detail.teams.some((original) => teams.find((team) => team.id === original.id)?.name !== original.name);
+  return renamed ? { team_names: teams.map(({ id, name }) => ({ id, name })) } : {};
 }
 
 export function doublesSnapshot(doubles: TeamDoublesMatch) {

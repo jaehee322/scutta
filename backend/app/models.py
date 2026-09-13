@@ -19,6 +19,7 @@ from sqlalchemy import (
     UniqueConstraint,
     Uuid,
     func,
+    text,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -558,7 +559,15 @@ class Match(Base):
             "(score1 = 1 AND score2 = 2)",
             name="allowed_score",
         ),
-        UniqueConstraint("played_on", "player1_id", "player2_id", name="daily_player_pair"),
+        Index(
+            "daily_player_pair",
+            "played_on",
+            "player1_id",
+            "player2_id",
+            unique=True,
+            sqlite_where=text("competition_id IS NULL"),
+            postgresql_where=text("competition_id IS NULL"),
+        ),
         Index("ix_matches_player1_played_on", "player1_id", "played_on"),
         Index("ix_matches_player2_played_on", "player2_id", "played_on"),
     )

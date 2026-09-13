@@ -10,8 +10,8 @@ describe("competition editing", () => {
   const team = {
     type: "team",
     teams: [
-      { name: "A", members: [1, 2, 3, 4].map((id) => ({ id })) },
-      { name: "B", members: [5, 6, 7, 8].map((id) => ({ id })) },
+      { id: 10, name: "A", members: [1, 2, 3, 4].map((id) => ({ id })) },
+      { id: 20, name: "B", members: [5, 6, 7, 8].map((id) => ({ id })) },
     ],
   } as CompetitionDetail;
 
@@ -22,24 +22,37 @@ describe("competition editing", () => {
 
   it("omits unchanged teams but sends actual transfers between teams", () => {
     const unchanged = [
-      { name: "B", member_ids: [8, 7, 6, 5] },
-      { name: "A", member_ids: [4, 3, 2, 1] },
+      { id: 20, name: "B", member_ids: [8, 7, 6, 5] },
+      { id: 10, name: "A", member_ids: [4, 3, 2, 1] },
     ];
     expect(competitionRosterChanges(team, [], unchanged)).toEqual({});
     const transferred = [
-      { name: "A", member_ids: [1, 2, 3, 5] },
-      { name: "B", member_ids: [4, 6, 7, 8] },
+      { id: 10, name: "A", member_ids: [1, 2, 3, 5] },
+      { id: 20, name: "B", member_ids: [4, 6, 7, 8] },
     ];
-    expect(competitionRosterChanges(team, [], transferred)).toEqual({ teams: transferred });
+    expect(competitionRosterChanges(team, [], transferred)).toEqual({
+      teams: transferred.map(({ name, member_ids }) => ({ name, member_ids })),
+    });
   });
 
-  it("sends changes to the team count or names", () => {
+  it("sends name-only changes separately to preserve existing team and encounter IDs", () => {
     const renamed = [
-      { name: "C", member_ids: [1, 2, 3, 4] },
-      { name: "B", member_ids: [5, 6, 7, 8] },
+      { id: 10, name: "청팀", member_ids: [1, 2, 3, 4] },
+      { id: 20, name: "B", member_ids: [5, 6, 7, 8] },
     ];
-    expect(competitionRosterChanges(team, [], renamed)).toEqual({ teams: renamed });
-    expect(competitionRosterChanges(team, [], renamed.slice(1))).toEqual({ teams: renamed.slice(1) });
+    expect(competitionRosterChanges(team, [], renamed)).toEqual({
+      team_names: [{ id: 10, name: "청팀" }, { id: 20, name: "B" }],
+    });
+    expect(competitionRosterChanges(team, [], renamed.slice(1))).toEqual({
+      teams: [{ name: "B", member_ids: [5, 6, 7, 8] }],
+    });
+  });
+
+  it("keeps names attached to their team IDs when names are swapped", () => {
+    expect(competitionRosterChanges(team, [], [
+      { id: 20, name: "A", member_ids: [5, 6, 7, 8] },
+      { id: 10, name: "B", member_ids: [1, 2, 3, 4] },
+    ])).toEqual({ team_names: [{ id: 20, name: "A" }, { id: 10, name: "B" }] });
   });
 
   it("keeps a doubles participant snapshot independent of later match changes", () => {

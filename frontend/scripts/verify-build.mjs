@@ -1,4 +1,4 @@
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
 const dist = path.resolve("dist");
@@ -22,11 +22,24 @@ if (!index.includes("apple-touch-icon")) {
   throw new Error("index.html does not include an Apple touch icon");
 }
 
-for (const logo of ["scutta-logo.png", "scutta-university-logo.png"]) {
+for (const logo of ["scutta-logo.png", "scutta-university-logo.png", "coin-mascot-mark.png"]) {
   await requireFile(logo);
   if (!serviceWorker.includes(logo)) {
     throw new Error(`PWA service worker does not precache ${logo}`);
   }
+}
+
+// Every screen must remain available to an already installed app after redeploy.
+for (const file of await readdir(path.join(dist, "assets"))) {
+  if (!/\.(?:js|css)$/.test(file)) continue;
+  const asset = `assets/${file}`;
+  if (!serviceWorker.includes(asset)) {
+    throw new Error(`PWA service worker does not precache ${asset}`);
+  }
+}
+
+for (const match of index.matchAll(/(?:src|href)=["'](\/assets\/[^"']+)["']/g)) {
+  await requireFile(match[1].slice(1));
 }
 
 const manifest = JSON.parse(await readFile(manifestPath, "utf8"));

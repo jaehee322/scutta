@@ -202,6 +202,7 @@ def _ensure_pair_available(
     exclude_match_id: int | None = None,
 ) -> None:
     query = select(Match.id).where(
+        Match.competition_id.is_(None),
         Match.played_on == played_on,
         Match.player1_id == player1_id,
         Match.player2_id == player2_id,
